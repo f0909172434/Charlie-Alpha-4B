@@ -234,6 +234,7 @@ def _tracked_content_gate(config: ProjectConfig) -> dict[str, Any]:
         "data/final/",
         "data/v2/",
         "reports/v2/generated/",
+        "reports/v3/generated/",
     )
     forbidden = [
         path
@@ -313,6 +314,12 @@ def check_release(config: ProjectConfig) -> dict[str, Any]:
         if clean_load_path.exists()
         else None
     )
+    dynamic_router_path = config.root / "reports" / "v2" / "dynamic-router.json"
+    dynamic_router = (
+        json.loads(dynamic_router_path.read_text(encoding="utf-8"))
+        if forge and dynamic_router_path.exists()
+        else None
+    )
     gates = {
         "source_locks_and_licenses": _source_lock_gate(config),
         "data_schema_and_split_isolation": (
@@ -330,6 +337,10 @@ def check_release(config: ProjectConfig) -> dict[str, Any]:
         "clean_environment_load": {
             "passed": bool(clean_load and clean_load.get("passed"))
         },
+        "dynamic_sparse_router": {
+            "passed": bool(not forge or (dynamic_router and dynamic_router.get("passed"))),
+            "report": "reports/v2/dynamic-router.json" if forge else None,
+        },
     }
     hard_gate_names = (
         "source_locks_and_licenses",
@@ -340,6 +351,7 @@ def check_release(config: ProjectConfig) -> dict[str, Any]:
         "adapter_load",
         "fused_mlx_load",
         "clean_environment_load",
+        "dynamic_sparse_router",
     )
     hard_pass = all(gates[name]["passed"] for name in hard_gate_names)
     if not hard_pass:
@@ -479,9 +491,30 @@ def publish_github(config: ProjectConfig) -> dict[str, Any]:
     )
     assets = [archive, config.path, reports_dir / "release-gate.json"]
     if config.section("project").get("profile") == "forge-overnight":
+        release_asset_dir = artifact_dir / "release"
+        named_assets = (
+            (
+                config.root / "reports" / "v2" / "evaluation.json",
+                "evaluation-direct-adapter.json",
+            ),
+            (
+                config.root / "reports" / "v2" / "dynamic-router.json",
+                "dynamic-router-equivalence.json",
+            ),
+            (
+                config.root / "reports" / "v3" / "evaluation.json",
+                "evaluation-sparse-router.json",
+            ),
+        )
+        for source, name in named_assets:
+            if source.exists():
+                shutil.copy2(source, release_asset_dir / name)
         assets.extend(
             [
-                config.root / "reports" / "v2" / "evaluation.json",
+                release_asset_dir / "evaluation-direct-adapter.json",
+                release_asset_dir / "dynamic-router-equivalence.json",
+                release_asset_dir / "evaluation-sparse-router.json",
+                config.root / "configs" / "router.v3.yaml",
                 config.root / "data" / "manifests" / "v2" / "forge-summary.json",
             ]
         )
@@ -498,18 +531,27 @@ def publish_github(config: ProjectConfig) -> dict[str, Any]:
         if config.section("project").get("profile") == "forge-overnight"
         else None
     )
-    delta = (
+    direct_delta = (
         evaluation.get("delta_percentage_points", {}).get("overall")
         if evaluation
         else None
     )
+    routed_path = config.root / "reports" / "v3" / "evaluation.json"
+    routed = json.loads(routed_path.read_text()) if routed_path.exists() else None
+    routed_delta = (
+        routed.get("delta_percentage_points", {}).get("overall") if routed else None
+    )
     notes = (
         f"Charlie alpha {classification}.\n\n"
-        f"Base-to-adapter locked evaluation delta: {delta:+.2f} percentage points.\n\n"
+        f"Direct-adapter locked evaluation delta: {direct_delta:+.2f} percentage points.\n"
+        f"Disjoint routed-confirmation delta: {routed_delta:+.2f} percentage points.\n\n"
+        "Both frozen 62-task suites improved by one correct answer, but neither reached the "
+        "predeclared +2 percentage-point release threshold. This is an Experimental release, "
+        "not evidence of broad or statistically established superiority.\n\n"
         "This release contains the MLX adapter, reproducible configuration, compact evaluation "
         "results, data provenance hashes, and SHA-256 checksums. Training corpora and credentials "
         "are not included."
-        if delta is not None
+        if direct_delta is not None and routed_delta is not None
         else f"Charlie alpha {classification}. See the attached reports and checksums."
     )
     command = [
@@ -525,6 +567,7 @@ def publish_github(config: ProjectConfig) -> dict[str, Any]:
         classification,
         "--notes",
         notes,
+        *(["--prerelease"] if classification.startswith("Experimental") else []),
         *[str(path) for path in assets],
     ]
     result = subprocess.run(

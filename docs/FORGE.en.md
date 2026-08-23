@@ -38,6 +38,10 @@ success criterion is higher accuracy than the same Qwen3.5-4B base on a frozen u
    A locked-dev search over 0.125, 0.16, 0.18, 0.22, and 0.25 selected 0.22 by accuracy, maximum
    subgroup regression, then smaller delta; final remained sealed throughout. This explicitly
    demonstrates that validation loss is not a sufficient checkpoint selector for reasoning.
+9. **Single-model dynamic sparse LoRA.** The first final suite showed gains on code and Chinese but
+   a loss on English math. The fixed runtime therefore enables the adapter for code or Chinese and
+   bypasses it otherwise. It loads one 4B model plus an 8.52 MB adapter and switches eight LoRA
+   scales, with no second generation. Bypass exactly matches an independent base at the logit level.
 
 The ingredients are motivated by [Rho-1](https://arxiv.org/abs/2404.07965),
 [LESS](https://arxiv.org/abs/2402.04333), [BIDS](https://arxiv.org/abs/2501.12147),
@@ -57,5 +61,19 @@ only the locked evaluation can establish whether FORGE works here.
   than 2 points. A failed capability gate permits only an Experimental label; a safety, licensing,
   loading, or leakage failure prohibits weight release.
 
+## Observed result
+
+The 312-record training run took 2,896 seconds and peaked at 16.05 GB. Best validation loss fell
+from 0.8640 to 0.6867. On the first frozen 62-task final suite, the direct adapter scored 44/62
+against 43/62 (+1.62 points), while trading English MATH performance for code and Chinese gains.
+
+The sparse route was fixed after that result. Only then was a fully disjoint 62-task confirmation
+lock created. Routed Charlie alpha scored 43/62 against 42/62 (+1.61 points); code rose from 11/16
+to 12/16, and no other language or domain lost a correct answer. Both suites observed one additional
+correct answer, but both missed the +2-point gate. The release is therefore **Experimental v0.2.0**
+and does not claim statistically established or broad superiority.
+
 Run the entire resumable workflow with `make forge`, or inspect the individual `make forge-*`
 targets in the root Makefile. The Traditional Chinese document contains the complete command list.
+Use `make forge-router-verify`, `make forge-chat`, and `make forge-serve` for the canonical dynamic
+runtime.

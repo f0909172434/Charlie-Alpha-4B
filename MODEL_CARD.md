@@ -3,7 +3,7 @@ language:
   - en
   - zh
 license: apache-2.0
-base_model: Qwen/Qwen3-4B-Thinking-2507
+base_model: Qwen/Qwen3.5-4B
 library_name: mlx
 pipeline_tag: text-generation
 tags:
@@ -12,71 +12,105 @@ tags:
   - mathematics
   - code
   - experimental
+  - sparse-routing
 ---
 
 # Charlie alpha model card
 
 ## Model description
 
-Charlie alpha is a 4B-parameter-class derivative fine-tune for introductory through early
-university mathematics, Python, C++, data structures, and algorithms. Its response languages are
-English, Traditional Chinese, and Simplified Chinese. The base is
-`Qwen/Qwen3-4B-Thinking-2507`; training uses a quantized MLX LoRA adapter rather than full
-pretraining.
+Charlie alpha is an experimental 4B-class derivative for English, Traditional Chinese, and
+Simplified Chinese mathematics and programming. It starts from Apache-2.0-licensed Qwen3.5-4B and
+uses a quantized MLX LoRA adapter; it is not pretrained from scratch.
 
-## Training data
+The canonical v0.2 runtime is a single-model, deterministic sparse route. One 4-bit base and one
+8.52 MB adapter remain loaded. Chinese or coding prompts enable eight LoRA modules in the final four
+layers; English non-coding prompts bypass their contribution. A request is generated once. No
+teacher, judge, second candidate, or second base-model copy is used at inference time. Users can
+override the route when the prompt classifier is inappropriate.
 
-- Verified correct trajectories from `open-r1/OpenR1-Math-220k`.
-- Decontaminated Python and C++ trajectories from `open-r1/codeforces-cots`.
-- A small locally generated Chinese translation/refinement layer using a pinned Qwen3.5 teacher.
+The adapter contains 2,129,920 parameters. The published numerical check reports zero maximum
+logit error between its bypass path and an independently loaded base, and zero error after restoring
+the adapter path. See `reports/v2/dynamic-router.json`.
 
-Records are split by original problem identity before translation. Exact duplicates, incomplete
-answers, over-length rows, and local 8-gram benchmark overlaps are rejected. Source revisions and
-record hashes are published without redistributing the raw corpora.
+## Training method
 
-The released overnight mix contains 829 records and 123,737 assistant tokens. The train split has
-781 records and 115,644 assistant tokens, balanced to 50.01% math / 49.99% code, 50.00% Python /
-50.00% C++ within code, and 84.00% English / 8.01% Traditional Chinese / 7.99% Simplified Chinese.
-The one-hour teacher pass accepted 35 Traditional Chinese and 17 Simplified Chinese records before
-bounded train-only repetition and script conversion; rejected translations are counted in the
-published manifest.
+FORGE combines several compute-saving techniques under a frozen evaluation protocol:
 
-## Overnight training profile
+- Correct, locally decontaminated math and Python/C++ trajectories are scored once with pinned 4B
+  student and 9B teacher models under teacher forcing. Positive student-teacher token-loss gaps
+  select the useful portion of each English answer; 52.7% of English target tokens are retained.
+- Fifty-two semantic groups are split into 26 math, 13 Python, and 13 C++. Each optimizer update
+  couples one source problem in English, Simplified Chinese, and Traditional Chinese with three
+  same-capability English replays. Loss weights make the language gradient mass exactly
+  70%/15%/15% and the category mass 50%/25%/25%.
+- Formulae, numbers, URLs, and code are replaced with validated placeholders during local 9B
+  translation and restored byte-for-byte. Training has 312 records; validation has 18 records.
+- Four equal-parameter pilots compare standard LoRA, LoRA+, and selective/full target loss. The
+  selected rank-32 recipe trains eight projections in the final four hybrid Qwen3.5 layers.
+- Full training stopped after two validation checks without improvement. It took 2,896 seconds,
+  peaked at 16.05 GB, and reduced best validation loss from 0.8640 to 0.6867 at iteration 431.
+- A development-only LoRA-B delta-scale search selected 0.22. The final suite remained sealed
+  until the recipe, data, prompt, adapter, and task hashes were frozen.
 
-The initial run is deliberately compute-bounded: 1,024-token sequences, two 40-iteration pilots on
-the last 16 layers, batch size 1, gradient accumulation 4, prompt masking, gradient checkpointing,
-3% warm-up, cosine decay, full-validation early stopping, and at most two epochs or six hours. The
-configured seed is 42. The released configuration records which pilot won.
+Model, dataset, teacher, and tool revisions are pinned in `configs/sources.lock.json`. Public data
+manifests contain metadata and hashes, not redistributed training text.
 
-Rank-8 Q/V won the trilingual pilot canary. The main run reached 490 cumulative iterations before
-the fixed Metal OOM fallbacks were exhausted. The best full-validation loss fell from 1.106 to
-0.586 at cumulative iteration 440; that 16-layer checkpoint was restored for evaluation and
-release. The run is therefore resource-stopped, not a completed two-epoch run.
+## Evaluation
 
-## Evaluation and release status
+All comparisons use the same pinned Qwen3.5-4B MLX base, prompts, greedy decoding, task scoring, and
+generation limits. Dev can guide selection; final and router-confirm are one-time, disjoint frozen
+suites. Neither 62-task result reached the predeclared +2 percentage-point normal-release gate.
 
-**Experimental v0.1.0.** On the fixed 60-task overnight suite, Charlie alpha scored 27/60 (45.00%)
-against 23/60 (38.33%) for the identically prompted base model, a gain of 6.67 percentage points.
-The suite uses temperature 0 and the same direct-answer prompt for both variants.
+### Direct adapter final
 
-| Group | Base | Charlie alpha | Delta |
+| Group | Base | Adapter | Delta (points) |
 | --- | ---: | ---: | ---: |
-| MATH-500 (13) | 38.46% | 53.85% | +15.39 |
-| GSM8K (12) | 66.67% | 75.00% | +8.33 |
-| HumanEval+ (10) | 20.00% | 20.00% | 0.00 |
-| MBPP+ (10) | 0.00% | 20.00% | +20.00 |
-| Trilingual canary (9) | 33.33% | 11.11% | -22.22 |
-| Retention canary (6) | 83.33% | 100.00% | +16.67 |
+| Overall (62) | 43/62, 69.35% | 44/62, 70.97% | +1.62 |
+| Code (16) | 11/16 | 12/16 | +6.25 |
+| Math (40) | 28/40 | 28/40 | 0.00 |
+| English (42) | 27/42 | 26/42 | -2.39 |
+| Simplified Chinese (10) | 10/10 | 10/10 | 0.00 |
+| Traditional Chinese (10) | 6/10 | 8/10 | +20.00 |
 
-English rose from 32.00% to 44.00% and Traditional Chinese stayed at 60.00%, but Simplified Chinese
-fell from 80.00% to 40.00%. This exceeds the three-point subgroup-regression limit, so the model is
-not a stable candidate and no broad multilingual improvement is claimed. The adapter, fused MLX
-model, source/data gates, privacy checks, sandbox tests, and fresh-environment load tests passed.
-GGUF is deferred because its behavioral parity gate was not run.
+The direct adapter gained one total answer but traded two English MATH-500 answers for one MBPP+
+and two Chinese MGSM answers. Because it did not preserve every subgroup, it is not the canonical
+always-on runtime.
 
-## Limitations
+### Disjoint sparse-router confirmation
 
-The one-night data volume and 60-task evaluation are small; the Chinese language groups contain
-only five evaluation tasks each. Exact calculations, proofs, citations, and generated programs can
-still be wrong. The measured Simplified Chinese regression is material. Users should independently
-verify answers and run code in an isolated environment.
+The fixed rule—adapter for code or either Chinese script, base otherwise—was written after the
+first final result. A new 62-task lock was then created before any routed generation and excludes all
+v0.1 and v0.2 dev/final tasks.
+
+| Group | Base | Routed | Delta (points) |
+| --- | ---: | ---: | ---: |
+| Overall (62) | 42/62, 67.74% | 43/62, 69.35% | +1.61 |
+| HumanEval+ (8) | 7/8 | 8/8 | +12.50 |
+| Code (16) | 11/16 | 12/16 | +6.25 |
+| Math (40) | 27/40 | 27/40 | 0.00 |
+| English (42) | 24/42 | 25/42 | +2.38 |
+| Simplified Chinese (10) | 9/10 | 9/10 | 0.00 |
+| Traditional Chinese (10) | 9/10 | 9/10 | 0.00 |
+
+No measured language or domain lost a correct answer in this confirmation, but one additional
+answer in 62 tasks is not statistically persuasive. This result is evidence for further study, not
+proof that Charlie alpha is broadly stronger.
+
+## Release status and limitations
+
+**Experimental v0.2.0.** Both frozen suites observed a positive one-answer difference, but both
+missed the predeclared +2-point threshold. The test sets are small, and benchmark accuracy is a
+limited proxy for real use. Auto-routing can misclassify cross-domain English prompts. Generated
+proofs, calculations, explanations, and programs can be wrong; run code in an isolated environment
+and independently verify important answers.
+
+Dynamic sparse routing cannot be faithfully collapsed into one fused GGUF. GGUF is therefore not
+published without a separate behavioral-parity pass. The fused always-on MLX export is a specialist
+artifact and does not reproduce the canonical route.
+
+## License and provenance
+
+Project code and derivative artifacts use Apache-2.0. Upstream datasets retain their own licenses;
+see `THIRD_PARTY_NOTICES.md` and `DATA_SOURCES.md`. The release excludes training corpora, caches,
+credentials, and machine-specific paths.

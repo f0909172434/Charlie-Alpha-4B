@@ -1,0 +1,25 @@
+schema_version: 1
+version: "0.3.0-research"
+seed: 20260825
+evaluation_lock: "configs/evaluation.router.v3.lock.json"
+retention_canary: "configs/retention_canary.router.v3.jsonl"
+artifact_dir: "artifacts/v3"
+report_dir: "reports/v3/generated"
+route:
+  adapter_domains: [code]
+  adapter_languages: [zh_Hans, zh_Hant]
+  fallback: qwen35-base
+counts:
+  math500: 12
+  gsm8k: 12
+  humaneval_plus: 8
+  mbpp_plus: 8
+  mgsm_zh_hans: 8
+  mgsm_zh_hant: 8
+gate:
+  improvement_points: 2.0
+  max_subgroup_regression_points: 2.0
+policy: >-
+  Created after v0.2 final to test one fixed sparse route. The confirmation lock
+  must be written before any routed generations, must exclude all prior v1/v2
+  tasks, and must not be reused to revise the route.

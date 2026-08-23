@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "mechanism": "single loaded 4B model with eight runtime-switchable LoRA scales",
+  "lora_modules": 8,
+  "adapter_parameters": 2129920,
+  "adapter_sha256": "594da4ad202658ecd3d223aa5f10a024aa47038e2198c301c8cf821964156d58",
+  "adapter_vs_bypass_max_abs_logit": 0.59375,
+  "adapter_restore_max_abs_logit_error": 0.0,
+  "bypass_vs_independent_base_max_abs_logit_error": 0.0,
+  "module_names": [
+    "language_model.model.layers.31.self_attn.v_proj",
+    "language_model.model.layers.31.self_attn.q_proj",
+    "language_model.model.layers.30.linear_attn.out_proj",
+    "language_model.model.layers.30.linear_attn.in_proj_qkv",
+    "language_model.model.layers.29.linear_attn.out_proj",
+    "language_model.model.layers.29.linear_attn.in_proj_qkv",
+    "language_model.model.layers.28.linear_attn.out_proj",
+    "language_model.model.layers.28.linear_attn.in_proj_qkv"
+  ]
+}

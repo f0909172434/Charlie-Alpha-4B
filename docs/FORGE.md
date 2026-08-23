@@ -60,6 +60,10 @@ Forge 的依據包括：
    LoRA B 矩陣，在 0.125、0.16、0.18、0.22、0.25 間做鎖定 dev 線搜尋。這等價於連續縮放
    低秩權重增量，不需重訓。依「dev 正確率、最大分組退步、較小增量」順序選出 0.22；final
    在整個選擇過程仍封存。這一步揭露了 valid loss 不是推理能力的可靠 checkpoint 指標。
+9. **單模型動態稀疏 LoRA。** 第一組 final 顯示 adapter 對程式與中文有利、對英文數學
+   有害，因此固定成「中文或程式啟用 adapter，其餘使用底模」的可解釋路由。執行時只載入
+   一份 4B 與一個 8.52 MB adapter；切換 8 個 LoRA scale，不多做一次生成。旁路與獨立底模
+   的 logits 最大誤差為 0，恢復 adapter 的誤差也為 0。
 
 ## 防止自我欺騙
 
@@ -70,6 +74,17 @@ Forge 的依據包括：
 - 數學、程式、英文、簡中、繁中都以相同提示與生成參數比較底模與 Forge。
 - 正式發布門檻是總分至少增加 2 個百分點，且任何語言或領域不得下降超過 2 點。未通過時
   只能標為 Experimental；載入、授權、洩漏或沙箱安全失敗時不得發布權重。
+
+## 實測結果
+
+- 訓練資料為 52 個語義群、312 筆 train 與 18 筆 valid；英文目標 token 保留 52.7%。
+- 正式訓練 2,896 秒，峰值記憶體 16.05 GB；最佳 valid loss 為 0.6867，初始為 0.8640。
+- 第一組 62 題封存 final：直接 adapter 44/62，底模 43/62（+1.62 點）。adapter 改善程式與
+  中文，但英文由 27/42 降到 26/42，因此不適合全域啟用。
+- 路由規則寫定後才建立第二組完全不重疊的 62 題確認集。稀疏路由為 43/62，底模為 42/62
+  （+1.61 點）；程式由 11/16 到 12/16，其餘語言與領域正確題數不變。
+- 兩次都多答對一題，但都未達 +2 點發布門檻，所以成果標為 **Experimental v0.2.0**，不
+  宣稱已證明全面更強。
 
 ## 可重現入口
 
@@ -89,6 +104,12 @@ uv run charlie-alpha forge eval --variant qwen35-base --suite dev \
 uv run charlie-alpha forge compare --suite dev --config configs/pipeline.v2.yaml
 make forge-freeze
 make forge-final
+make forge-router-lock
+make forge-router-freeze
+make forge-router-eval
+make forge-router-verify
+make forge-chat
+make forge-serve
 ```
 
 評分與翻譯逐筆寫入並可續跑；有效的資料、訓練與評測結果均有輸入指紋。final 指令刻意不

@@ -30,6 +30,12 @@ from .forge_eval import (
     run_forge_evaluation,
 )
 from .forge_orchestrator import run_forge_overnight
+from .forge_router import (
+    build_router_confirmation_lock,
+    compare_router_confirmation,
+    freeze_router_recipe,
+    run_router_confirmation,
+)
 from .forge_training import (
     calibrate_forge_adapter,
     run_forge_pilot_candidate,
@@ -39,6 +45,7 @@ from .forge_training import (
 from .mixer import mix_data
 from .orchestrator import run_overnight
 from .release import check_release, publish_github, publish_hugging_face
+from .routed_inference import generate_routed, load_routed_model, verify_dynamic_router
 from .training import _base_snapshot, run_pilot, run_training
 
 app = typer.Typer(no_args_is_help=True, help="Charlie alpha overnight training pipeline.")
@@ -246,6 +253,43 @@ def forge_overnight(config: ConfigOption = Path("configs/pipeline.v2.yaml")) -> 
     _show(run_forge_overnight(load_config(config)))
 
 
+@forge_app.command("router-lock")
+def forge_router_lock(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(build_router_confirmation_lock(load_config(config), force=force))
+
+
+@forge_app.command("router-freeze")
+def forge_router_freeze(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"),
+) -> None:
+    _show(freeze_router_recipe(load_config(config)))
+
+
+@forge_app.command("router-eval")
+def forge_router_eval(
+    variant: Annotated[str, typer.Option("--variant")] = "qwen35-base",
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"),
+    force: bool = False,
+) -> None:
+    _show(run_router_confirmation(load_config(config), variant=variant, force=force))
+
+
+@forge_app.command("router-compare")
+def forge_router_compare(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"),
+) -> None:
+    _show(compare_router_confirmation(load_config(config)))
+
+
+@forge_app.command("router-verify")
+def forge_router_verify(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"),
+) -> None:
+    _show(verify_dynamic_router(load_config(config)))
+
+
 def _adapter(config: ProjectConfig) -> str:
     selected = config.path_for("artifact_dir") / "selected.json"
     if not selected.exists():
@@ -259,8 +303,42 @@ def overnight(config: ConfigOption = Path("configs/pipeline.yaml")) -> None:
 
 
 @app.command("chat")
-def chat(config: ConfigOption = Path("configs/pipeline.yaml")) -> None:
+def chat(
+    config: ConfigOption = Path("configs/pipeline.yaml"),
+    route: Annotated[str, typer.Option("--route")] = "auto",
+) -> None:
     project = load_config(config)
+    if project.section("project").get("profile") == "forge-overnight":
+        model, tokenizer, router = load_routed_model(project)
+        console.print(
+            "Charlie alpha — FORGE dynamic sparse LoRA; type /quit to exit "
+            "([dim]/route auto|base|adapter[/dim])"
+        )
+        active_route = route
+        while True:
+            question = console.input("[bold cyan]You> [/bold cyan]")
+            if question.strip() in {"/quit", "/exit"}:
+                break
+            if question.startswith("/route "):
+                candidate = question.split(maxsplit=1)[1].strip().lower()
+                if candidate not in {"auto", "base", "adapter"}:
+                    console.print("[red]route must be auto, base, or adapter[/red]")
+                    continue
+                active_route = candidate
+                console.print(f"route override: {active_route}")
+                continue
+            answer, decision = generate_routed(
+                model,
+                tokenizer,
+                router,
+                [{"role": "user", "content": question}],
+                route=active_route,
+            )
+            console.print(
+                f"[dim]route={decision.route} ({decision.reason})[/dim]\n"
+                f"[bold green]Charlie alpha>[/bold green] {answer}"
+            )
+        return
     model, tokenizer = load(
         _base_snapshot(project),
         adapter_path=_adapter(project),
@@ -294,6 +372,21 @@ def serve(
     port: int = 8080,
 ) -> None:
     project = load_config(config)
+    if project.section("project").get("profile") == "forge-overnight":
+        command = [
+            "/usr/bin/caffeinate",
+            "-dimsu",
+            sys.executable,
+            "-m",
+            "charlie_alpha.routed_server",
+            "--config",
+            str(project.path),
+            "--host",
+            host,
+            "--port",
+            str(port),
+        ]
+        raise typer.Exit(subprocess.call(command, cwd=project.root))
     command = [
         "/usr/bin/caffeinate",
         "-dimsu",

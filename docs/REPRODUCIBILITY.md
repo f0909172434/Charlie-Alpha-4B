@@ -2,52 +2,60 @@
 
 ## Immutable inputs
 
-Model and dataset repositories are resolved to full commit SHAs in
-`configs/sources.lock.json`. EvalPlus release contents are pinned by version and SHA-256. The Python
-environment is locked in `uv.lock`; the user-local `uv` installer itself is fixed at 0.12.5 in CI.
+`configs/sources.lock.json` pins every model and dataset to a full commit SHA. EvalPlus artifacts
+are pinned by version and SHA-256, while `uv.lock` fixes the Python environment. The v0.2 and router
+evaluation locks store canonical task hashes and are committed without generated answers.
 
-Prepared corpora and weights are intentionally not committed. Tracked manifests retain source IDs,
-revisions, licenses, split assignments, token counts, and content hashes. Rebuilding with the same
-configuration produces the same deterministic problem-level split (seed 42).
+Prepared training text, model caches, and weights are intentionally ignored. Public manifests keep
+source IDs, revisions, category and language weights, record hashes, and output hashes. The Forge
+seed is 20260824; the disjoint router confirmation seed is 20260825.
 
-## One command
+## Resumable workflow
 
 ```bash
 make setup
-make overnight
+make forge-lock
+make forge-prepare
+make forge-score
+make forge-select
+make forge-distill
+make forge-build
+make forge-pilot
+make forge-train
+make forge-calibrate
+make forge-dev
+make forge-freeze
+make forge-final
+make forge-router-lock
+make forge-router-freeze
+make forge-router-eval
+make forge-router-verify
+make forge-export
+make forge-clean-load
+make forge-release-check
 ```
 
-`make overnight` runs each stage in a separate `caffeinate`-protected process and imposes an
-11-hour overall cap. Its status is updated atomically in
-`reports/generated/overnight-status.json`. Completed data, translations, training checkpoints,
-generations, and exports are reused when their input fingerprint is unchanged.
+Heavy stages use fingerprints, append-only per-task generations, or checkpoints. A matching result
+is reused; changed inputs invalidate only the affected stage. Final evaluation refuses to run until
+the recipe is frozen, and any changed frozen hash blocks it. Router confirmation has an independent
+freeze and excludes every v0.1/v0.2 task.
 
-## Time allocation
+## Actual compute profile
 
-| Stage | Hard budget |
-|---|---:|
-| English preparation and verification | 1 hour |
-| Chinese teacher refinement | 1 hour |
-| QLoRA pilot | 30 minutes |
-| Main QLoRA | 6 hours |
-| Compact base/adapter evaluation and export | 2 hours |
-| Buffer | 30 minutes |
+The selected dataset contains 52 semantic groups, 312 train records, and 18 validation records.
+Training uses batch size 1, six-step gradient accumulation, 704-token maximum length, and only
+384/544/704 padding buckets. Four rank-32 pilots train the same 2,129,920 parameters in the final
+four layers. The winning full run took 2,896 seconds, peaked at 16.05 GB, and early-stopped with its
+best checkpoint at iteration 431.
 
-The already prepared English data makes the normal resumed run substantially shorter than the
-upper bound. GGUF is optional in the overnight profile because downloading BF16 weights, merging,
-building llama.cpp, quantizing, and parity evaluation can displace the core training run.
-
-## Fixed fallbacks
-
-Two 40-iteration pilots use 1,024 tokens on the last 16 layers: rank-8 Q/V and rank-16 Q/K/V/O.
-They share seed 42 and the complete validation set; a trilingual canary score wins first, with final
-validation loss as the tie-breaker. A Metal out-of-memory failure changes only one dimension at a
-time: first 768 tokens, then eight LoRA layers. Other errors stop the run and preserve logs.
-Checkpoints are written every 50 iterations; the main run resumes from the selected pilot adapter.
+The 9B model is used only for one-pass teacher-forced scoring and protected Chinese translation.
+It is absent from inference. The canonical runtime loads one 4B base and one 8.52 MB adapter, then
+changes eight LoRA scales before a single generation.
 
 ## Security boundary
 
-Generated Python and C++ execute through the macOS sandbox with no network access, writes limited
-to a temporary directory, five CPU-seconds per process, a 1.5 GiB resident-memory monitor, and a
-wall-clock timeout. C++ is compiled with the installed Command Line Tools compiler inside the same
-file/network sandbox. `make test` includes live probes for denied network and external writes.
+Generated Python and C++ are evaluated through the macOS sandbox with no network access, writes
+limited to a temporary directory, CPU and memory limits, and a wall-clock timeout. Source/data
+gates verify schema, original-problem split isolation, locked revisions, code checks, language and
+category gradient ratios, and benchmark separation. Release scans reject training text, caches,
+credentials, and machine-specific home paths from tracked or published artifacts.

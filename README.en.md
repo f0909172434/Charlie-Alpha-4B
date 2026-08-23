@@ -1,65 +1,79 @@
 # Charlie alpha
 
-Charlie alpha (`Charlie-Alpha-4B`) is an experimental Traditional Chinese, Simplified Chinese,
-and English model focused on mathematics and programming. It is a derivative fine-tune of the
-Apache-2.0-licensed
-[`Qwen3-4B-Thinking-2507`](https://huggingface.co/Qwen/Qwen3-4B-Thinking-2507),
-trained with 4-bit QLoRA on Apple Silicon using MLX. It is not trained from scratch.
+Charlie alpha (`Charlie-Alpha-4B`) is an experimental English, Traditional Chinese, and
+Simplified Chinese math-and-code model completed in one night on an Apple Silicon laptop. It is a
+4-bit MLX QLoRA derivative of the Apache-2.0-licensed
+[`Qwen3.5-4B`](https://huggingface.co/Qwen/Qwen3.5-4B), not a model pretrained from scratch.
 
-> Status: `Experimental v0.1.0`. The identically prompted 60-task suite rose from 38.33% to
-> 45.00%, but Simplified Chinese fell from 80.00% to 40.00%. The subgroup gate failed, so no
-> broad improvement is claimed.
+> Release status: **Experimental v0.2.0**. Charlie alpha answered one additional task correctly on
+> each of two disjoint frozen 62-task suites. The gains, +1.62 and +1.61 percentage points, missed
+> the predeclared +2-point release threshold. They are reproducible positive observations, not
+> evidence of broad or statistically established superiority.
 
-> The `v0.2` research branch is testing **FORGE** (Focused One-pass Relative-Gap Gradient
-> Equivalence): a Qwen3.5-4B hybrid base, 4B/9B token-level learning-gap selection, and coupled
-> English/Simplified/Traditional updates for each task. It will claim a stronger model only if a
-> frozen 62-task unseen suite improves by at least two points against the same base with no
-> language or domain falling by more than two points. See
-> [`docs/FORGE.en.md`](docs/FORGE.en.md).
+[繁體中文](README.md) · [简体中文](README.zh-Hans.md) · [Model card](MODEL_CARD.md) ·
+[FORGE method](docs/FORGE.en.md)
 
-[繁體中文](README.md) · [简体中文](README.zh-Hans.md) · [Model card](MODEL_CARD.md)
+## Efficient by construction
 
-## Overnight profile
+The canonical runtime does not load two models or generate two candidate answers. It holds one 4B
+base plus an 8.52 MB adapter and switches eight LoRA modules in the last four layers before
+generation:
 
-- 600 verified short English trajectories: 300 math, 150 Python, and 150 C++.
-- Up to 50 teacher-refined examples in each Chinese script, with a floor of 10 when generation
-  would exceed its one-hour budget.
-- 1,024 tokens; two 40-iteration pilots compare rank-8 Q/V and rank-16 Q/K/V/O LoRA on
-  the last 16 layers, after which only the winner continues.
-- At most six hours and two epochs for the main run, with full-validation early stopping. Fixed
-  OOM fallbacks are 768 tokens and then eight trainable layers.
-- The MLX adapter is the priority artifact. GGUF conversion and large evaluations never displace
-  the core training run.
+- Chinese or coding prompt: enable 2,129,920 LoRA parameters.
+- English non-coding prompt: zero the LoRA contribution and use the base path.
+- One generation per request, with no teacher, judge, or second 4B copy at inference time.
+- Numerical tests show an exact `0.0` maximum logit error between bypass and an independently
+  loaded base, and `0.0` between the restored and original adapter paths.
 
-## Actual overnight result
+The route was formulated after the first final suite and then tested once on a newly locked,
+fully disjoint confirmation suite. Routed Charlie alpha scored 43/62 versus 42/62 for the base;
+code rose from 11/16 to 12/16, while no other language or domain lost a correct answer. See
+[`reports/v3/evaluation.json`](reports/v3/evaluation.json).
 
-- Rank-8 Q/V on the last 16 layers won; best full-validation loss fell from 1.106 to 0.586.
-- Fixed Metal fallbacks were exhausted at cumulative iteration 490; the best checkpoint from
-  cumulative iteration 440 is released.
-- MATH-500 rose from 38.46% to 53.85%, GSM8K from 66.67% to 75.00%, and MBPP+ from 0% to 20.00%.
-- English rose from 32.00% to 44.00%, Traditional Chinese stayed at 60.00%, and Simplified Chinese
-  fell from 80.00% to 40.00%.
-- Adapter, fused MLX, sandbox, privacy, and fresh-environment load gates passed. GGUF parity is
-  deferred.
+## One-night result
 
-See [`reports/evaluation.json`](reports/evaluation.json) and [`MODEL_CARD.md`](MODEL_CARD.md) for
-the complete result and limitations.
+FORGE (Focused One-pass Relative-Gap Gradient Equivalence) concentrates the compute budget on
+high-value updates:
+
+- The 9B teacher does not regenerate a large English corpus. Teacher-forced 4B/9B token losses
+  identify where the student lags; 52.7% of English answer tokens are retained.
+- Fifty-two semantic groups are fixed at 26 math, 13 Python, and 13 C++. Each optimizer update
+  couples the same task in English, Simplified Chinese, and Traditional Chinese with three English
+  replays. Gradient mass is exactly 70%/15%/15% by language.
+- Four equal-parameter pilots compare standard LoRA, LoRA+, and selective loss. The winning
+  rank-32 recipe trains only the final four layers. Full training took 2,896 seconds, peaked at
+  16.05 GB, and reduced best validation loss from 0.8640 to 0.6867.
+- A sealed-development LoRA-B delta line search selected 0.22 without retraining or opening final.
+
+The direct adapter scored 44/62 against 43/62 on the first frozen final suite. It improved code and
+Chinese but hurt English MATH-500, which is why the adapter is not applied globally. The disjoint
+router confirmation again gained one correct answer with no subgroup losing one. Both suites are
+small, so these results must not be generalized to all math and programming tasks.
+
+## Run it
+
+An Apple Silicon Mac, Python 3.12, and `uv` are required:
 
 ```bash
 make setup
-make data
-make distill
-make mix
-make pilot
-make train
-make eval
-make export
+make forge-router-verify
+make forge-chat
 ```
 
-Heavy steps are resumable. Every model and dataset source is pinned to a commit SHA; see
-[`configs/sources.lock.json`](configs/sources.lock.json) and
-[`DATA_SOURCES.md`](DATA_SOURCES.md). Scores, failures, and limitations are recorded under
-`reports/`.
+Use `/route auto`, `/route base`, or `/route adapter` in chat. The local, non-streaming
+OpenAI-compatible endpoint starts with `make forge-serve`; requests may include
+`"charlie_route":"base"` or `"adapter"` to override automatic routing.
 
-Project code and derivative model artifacts are intended for release under
-[Apache-2.0](LICENSE). Upstream datasets retain their own terms.
+The full resumable pipeline and frozen evaluation procedure are documented in
+[`docs/FORGE.en.md`](docs/FORGE.en.md). Pinned revisions and licenses are in
+[`configs/sources.lock.json`](configs/sources.lock.json) and
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). Training text, caches, credentials, and machine
+paths are never committed.
+
+The current evidence consists of only two 62-task suites. Routing is an explainable, high-precision
+rule but can still misclassify cross-domain English prompts; manual override is available. Proofs,
+calculations, and generated code can be wrong. Dynamic routing cannot be faithfully represented by
+one fused GGUF, so v0.2.0 does not publish a GGUF that has not passed behavioral parity.
+
+Project code and derivative model artifacts use [Apache-2.0](LICENSE); upstream datasets retain
+their own terms.

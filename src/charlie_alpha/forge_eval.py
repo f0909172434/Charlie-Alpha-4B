@@ -381,7 +381,7 @@ def _metrics(rows: list[dict[str, Any]], expected: int) -> dict[str, Any]:
 
 
 def _score(task: dict[str, Any], output: str) -> dict[str, Any]:
-    if task["benchmark"] != "retention-v2":
+    if not task["benchmark"].startswith("retention-"):
         return _score_task(task, output)
     visible = re.sub(r"<think>.*?</think>", "", output, flags=re.DOTALL).strip()
     normalized = re.sub(r"[\s`*_.,!?;:。！？，：；]", "", visible).lower()

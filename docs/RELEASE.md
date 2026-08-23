@@ -1,16 +1,22 @@
 # Release procedure
 
-1. Run `make overnight`, then rerun any incomplete resumable stage.
-2. Run `make export` and `make clean-load`.
-3. Run `make release-check` and inspect every hard gate.
-4. If the aggregate improvement is at least two points and no language/domain subgroup loses more
-   than three points, use the normal `v0.1.0` label. Otherwise publish as Experimental with the full
-   result table. A load, license, split-leak, sandbox, or clean-environment failure blocks weights.
-5. Publish the small MLX adapter, configuration, compact reports, and SHA-256 file as GitHub release
-   assets. Publish the fused 4-bit MLX model on Hugging Face only after the user runs `hf auth login`.
-6. Run the optional `make gguf` only with enough remaining time. Publish GGUF only after its
-   numerical mapping and behavioral parity gates pass.
+Charlie alpha v0.2.0 is an Experimental release. Its direct-adapter final and disjoint routed
+confirmation each improved by one correct answer, but neither reached the predeclared +2
+percentage-point normal-release threshold.
 
-Authentication is always interactive and user-owned. The project never reads, prints, copies, or
-commits tokens.
+1. Run or resume `make forge`; do not change the frozen recipe or task locks after generation.
+2. Run `make forge-router-verify`. Bypass must exactly match an independently loaded base, restore
+   must exactly match the adapter, and all eight intended LoRA modules must be present.
+3. Run `make forge-export` and `make forge-clean-load`.
+4. Run `make forge-release-check`. License, source revision, split isolation, sandbox, privacy,
+   adapter, fused MLX, clean-environment, and dynamic-router gates are hard blockers.
+5. Commit and push the exact release tree on `main`, then run `make forge-publish-github`. The
+   GitHub release includes the adapter archive, frozen configurations, both compact evaluations,
+   public data manifest, release gate, and SHA-256 file.
+6. Hugging Face authentication is interactive and user-owned. Run `hf auth login` personally,
+   then publish only after reviewing the model card. The project does not read, copy, or print a
+   token.
 
+The canonical artifact is the MLX adapter plus dynamic routing code. A fused MLX export is tested
+for recoverability but behaves as an always-on specialist. One fused GGUF cannot reproduce dynamic
+routing; do not publish GGUF unless a separate behavioral-parity gate has passed.

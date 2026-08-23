@@ -1,7 +1,7 @@
 UV ?= uv
 CLI := $(UV) run charlie-alpha
 
-.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-calibrate forge-dev forge-freeze forge-final forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
+.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-calibrate forge-dev forge-freeze forge-final forge-router-lock forge-router-freeze forge-router-eval forge-router-verify forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
 
 setup:
 	$(UV) sync --extra eval --group dev
@@ -103,6 +103,20 @@ forge-final:
 	$(CLI) forge eval --suite final --variant qwen35-base --config configs/pipeline.v2.yaml
 	$(CLI) forge eval --suite final --variant forge --config configs/pipeline.v2.yaml
 	$(CLI) forge compare --suite final --config configs/pipeline.v2.yaml
+
+forge-router-lock:
+	$(CLI) forge router-lock --config configs/pipeline.v2.yaml
+
+forge-router-freeze:
+	$(CLI) forge router-freeze --config configs/pipeline.v2.yaml
+
+forge-router-eval:
+	$(CLI) forge router-eval --variant qwen35-base --config configs/pipeline.v2.yaml
+	$(CLI) forge router-eval --variant routed --config configs/pipeline.v2.yaml
+	$(CLI) forge router-compare --config configs/pipeline.v2.yaml
+
+forge-router-verify:
+	$(CLI) forge router-verify --config configs/pipeline.v2.yaml
 
 forge-chat:
 	$(CLI) chat --config configs/pipeline.v2.yaml

@@ -115,8 +115,9 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
     forge_status_path = adapter_path / "status.json"
     if forge_status_path.exists():
         public_status = json.loads(forge_status_path.read_text(encoding="utf-8"))
-        for key in ("adapter_path", "base_model_path"):
-            public_status.pop(key, None)
+        for key in list(public_status):
+            if key.endswith("_path"):
+                public_status.pop(key)
         write_json(package_dir / "training-status.json", public_status)
     shutil.copy2(config.root / "LICENSE", package_dir / "LICENSE")
     shutil.copy2(config.root / "MODEL_CARD.md", package_dir / "README.md")
@@ -126,6 +127,15 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
         for source, name in (
             (config.path_for("eval_lock"), "evaluation.lock.json"),
             (config.root / "reports" / "v2" / "evaluation.json", "evaluation.json"),
+            (
+                config.root / "reports" / "v2" / "dynamic-router.json",
+                "dynamic-router.json",
+            ),
+            (
+                config.root / "reports" / "v3" / "evaluation.json",
+                "router-confirmation.json",
+            ),
+            (config.root / "configs" / "router.v3.yaml", "router.yaml"),
             (
                 config.root / "data" / "manifests" / "v2" / "forge-summary.json",
                 "data-manifest.json",
@@ -425,11 +435,31 @@ def check(model_path, adapter_path=None):
     return bool(output.strip()), model
 
 adapter_ok, model = check({model_path!r}, {str(adapter_path)!r})
+tokens = mx.array([[17, 18, 19]])
+adapter_logits = model(tokens)[:, -1, :]
+mx.eval(adapter_logits)
+modules = [module for _, module in model.named_modules() if hasattr(module, "lora_a")]
+for module in modules:
+    module.scale = 0.0
+bypass_logits = model(tokens)[:, -1, :]
+mx.eval(bypass_logits)
 del model
 gc.collect()
 mx.clear_cache()
+base_model, _ = load({model_path!r})
+base_logits = base_model(tokens)[:, -1, :]
+mx.eval(base_logits)
+dynamic_error = float(mx.max(mx.abs(bypass_logits - base_logits)).item())
+del base_model
+gc.collect()
+mx.clear_cache()
 fused_ok, model = check({str(fused_path)!r})
-print(json.dumps({{"adapter_loaded": adapter_ok, "fused_loaded": fused_ok}}))
+print(json.dumps({{
+    "adapter_loaded": adapter_ok,
+    "fused_loaded": fused_ok,
+    "dynamic_lora_modules": len(modules),
+    "dynamic_bypass_max_abs_logit_error": dynamic_error,
+}}))
 """
     result = subprocess.run(
         ["/usr/bin/caffeinate", "-dimsu", str(python), "-c", script],
@@ -442,16 +472,25 @@ print(json.dumps({{"adapter_loaded": adapter_ok, "fused_loaded": fused_ok}}))
     if result.returncode != 0:
         raise RuntimeError(f"Clean load validation failed: {result.stderr[-1000:]}")
     payload = json.loads(result.stdout.strip().splitlines()[-1])
-    passed = bool(payload.get("adapter_loaded") and payload.get("fused_loaded"))
+    passed = bool(
+        payload.get("adapter_loaded")
+        and payload.get("fused_loaded")
+        and payload.get("dynamic_lora_modules") == 8
+        and payload.get("dynamic_bypass_max_abs_logit_error") == 0.0
+    )
     validation = {
         "fingerprint": fingerprint,
         "passed": passed,
         "adapter_loaded": bool(payload.get("adapter_loaded")),
         "fused_loaded": bool(payload.get("fused_loaded")),
+        "dynamic_lora_modules": int(payload.get("dynamic_lora_modules", 0)),
+        "dynamic_bypass_max_abs_logit_error": float(
+            payload.get("dynamic_bypass_max_abs_logit_error", float("inf"))
+        ),
         "versions": {"mlx": "0.32.1", "mlx_lm": "0.31.3", "transformers": "5.15.1"},
     }
     write_json(_report_path(config, "clean-load.json"), validation)
-    export_report_path = config.root / "reports" / "export.json"
+    export_report_path = _report_path(config, "export.json")
     export_report = json.loads(export_report_path.read_text(encoding="utf-8"))
     export_report["clean_environment_validation_pending"] = not passed
     export_report["clean_environment_load"] = validation

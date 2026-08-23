@@ -15,7 +15,9 @@ from charlie_alpha.forge_data import (
     _smooth_category_schedule,
     _translated_pair,
 )
+from charlie_alpha.forge_router import route_uses_adapter
 from charlie_alpha.forge_training import ForgeDataset, forge_iterate_batches
+from charlie_alpha.routed_inference import DynamicLoraRouter, classify_prompt
 
 
 class FakeTokenizer:
@@ -160,6 +162,52 @@ def test_adapter_calibration_scales_only_lora_b() -> None:
     assert np.allclose(np.asarray(scaled["layer.lora_b"]), [0.66, 0.88])
     with pytest.raises(ValueError):
         forge_training._scale_lora_delta(weights, 0.0)
+
+
+def test_sparse_router_is_fixed_by_domain_and_language() -> None:
+    settings = {
+        "route": {
+            "adapter_domains": ["code"],
+            "adapter_languages": ["zh_Hans", "zh_Hant"],
+        }
+    }
+    assert route_uses_adapter({"domain": "code", "language": "en"}, settings)
+    assert route_uses_adapter({"domain": "math", "language": "zh_Hant"}, settings)
+    assert not route_uses_adapter({"domain": "math", "language": "en"}, settings)
+
+
+def test_runtime_router_is_high_precision_and_overrideable() -> None:
+    assert classify_prompt("請用繁體中文解這題").route == "adapter"
+    assert classify_prompt("Implement this algorithm in C++.").route == "adapter"
+    assert classify_prompt("Find the derivative of this function.").route == "base"
+    assert classify_prompt("Find 2 + 2.", override="adapter").route == "adapter"
+    with pytest.raises(ValueError):
+        classify_prompt("anything", override="unknown")
+
+
+def test_dynamic_lora_router_changes_only_adapter_scales() -> None:
+    class FakeLora:
+        def __init__(self, scale):
+            self.scale = scale
+            self.lora_a = mx.zeros((3, 2))
+            self.lora_b = mx.zeros((2, 4))
+
+    first = FakeLora(20.0)
+    second = FakeLora(10.0)
+    plain = object()
+
+    class FakeModel:
+        def named_modules(self):
+            return [("first", first), ("plain", plain), ("second", second)]
+
+    router = DynamicLoraRouter(FakeModel())
+    assert router.module_count == 2
+    assert router.adapter_parameter_count == 28
+    assert router.set_route("base")
+    assert (first.scale, second.scale) == (0.0, 0.0)
+    assert not router.set_route("base")
+    assert router.set_route("adapter")
+    assert (first.scale, second.scale) == (20.0, 10.0)
 
 
 def test_full_training_runs_every_requested_epoch(tmp_path, monkeypatch) -> None:

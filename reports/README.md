@@ -1,25 +1,23 @@
 # Reports
 
-## Experimental v0.1.0 result
+## Experimental v0.2.0
 
-The fixed 60-task overnight comparison scored 23/60 (38.33%) for the base model and 27/60
-(45.00%) for Charlie alpha. The overall delta is +6.67 percentage points, with gains on MATH-500,
-GSM8K, MBPP+, English, and the retention canary. Simplified Chinese regressed by 40 points and the
-trilingual canary regressed by 22.22 points, so the stable-candidate gate did not pass. Weight
-publication is permitted under an Experimental label because every loading, source, data, privacy,
-and sandbox hard gate passed. GGUF remains unpublished pending behavioral parity.
+- `v2/development.json`: sealed-development calibration result, 22/34 versus 21/34.
+- `v2/evaluation.json`: first frozen 62-task final, direct adapter 44/62 versus base 43/62.
+- `v2/dynamic-router.json`: logit-level proof that runtime bypass exactly equals the base and restore
+  exactly equals the calibrated adapter.
+- `v3/evaluation.json`: disjoint frozen router confirmation, routed model 43/62 versus base 42/62,
+  with no language or domain losing a correct answer.
 
-This directory holds the reviewable outputs used by the release gate. Generated model responses,
-large logs, and machine-local paths stay under the ignored `reports/generated/` directory. Compact
-aggregate reports are copied here before a release.
+Both unseen 62-task suites observed one additional correct answer, but +1.62 and +1.61 percentage
+points miss the predeclared +2-point normal-release threshold. The release is Experimental and does
+not claim broad or statistically established superiority.
 
-Expected files after an overnight run:
+Generated answers, logs, weights, and machine-local paths stay under ignored `generated/` or
+`artifacts/` directories. Compact aggregate reports are tracked. Missing reports are never treated
+as a pass; license, source, data isolation, privacy, sandbox, adapter, fused-model, clean-environment,
+and dynamic-router checks are hard gates for weight publication. GGUF remains unpublished because
+one fused GGUF cannot reproduce the canonical dynamic route and behavioral parity was not run.
 
-- `evaluation.json`: identical-parameter base/adapter comparison and subgroup deltas.
-- `export.json`: adapter and fused-MLX checksums and load tests.
-- `clean-load.json`: fresh-environment adapter and fused-model load validation.
-- `release-gate.json`: stable, experimental, or blocked classification.
-- `gguf-export.json`: conversion revision, matrix-equivalence result, and quantized checksum when
-  the optional GGUF path is completed.
-
-Missing files mean the corresponding gate has not run; they are never interpreted as a pass.
+The original `evaluation.json`, `export.json`, `clean-load.json`, and `release-gate.json` document
+the earlier Experimental v0.1.0 result and are retained for provenance.
