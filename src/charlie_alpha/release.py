@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 import subprocess
 from collections import defaultdict
 from pathlib import Path
@@ -413,3 +414,136 @@ def publish_hugging_face(config: ProjectConfig, include_gguf: bool = False) -> d
     reports_dir = config.path_for("report_dir") if forge else config.root / "reports"
     write_json(reports_dir / "huggingface-release.json", result)
     return result
+
+
+def publish_github(config: ProjectConfig) -> dict[str, Any]:
+    gate = check_release(config)
+    if not gate["weights_publishable"]:
+        raise RuntimeError("Release gate blocks GitHub publication")
+    if subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=config.root,
+        text=True,
+        capture_output=True,
+        check=True,
+    ).stdout.strip():
+        raise RuntimeError("Git working tree must be clean before publication")
+    branch = subprocess.run(
+        ["git", "branch", "--show-current"],
+        cwd=config.root,
+        text=True,
+        capture_output=True,
+        check=True,
+    ).stdout.strip()
+    if branch != "main":
+        raise RuntimeError("GitHub release publication is allowed only from the main branch")
+    commit = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=config.root,
+        text=True,
+        capture_output=True,
+        check=True,
+    ).stdout.strip()
+    remote = subprocess.run(
+        ["git", "ls-remote", "origin", "refs/heads/main"],
+        cwd=config.root,
+        text=True,
+        capture_output=True,
+        check=True,
+    ).stdout.split()
+    if not remote or remote[0] != commit:
+        raise RuntimeError("Local main must be pushed to origin before creating a release")
+
+    gh = shutil.which("gh") or str(Path.home() / ".local" / "bin" / "gh")
+    if not Path(gh).exists():
+        raise RuntimeError("GitHub CLI is required for release publication")
+    release = config.section("release")
+    tag = str(release["tag"])
+    repository = str(release["github_repo"])
+    existing = subprocess.run(
+        [gh, "release", "view", tag, "-R", repository, "--json", "url,tagName,name"],
+        cwd=config.root,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if existing.returncode == 0:
+        return json.loads(existing.stdout)
+
+    artifact_dir = config.path_for("artifact_dir")
+    archive = artifact_dir / "release" / "Charlie-Alpha-4B-MLX-adapter.tar.gz"
+    reports_dir = (
+        config.path_for("report_dir")
+        if config.section("project").get("profile") == "forge-overnight"
+        else config.root / "reports"
+    )
+    assets = [archive, config.path, reports_dir / "release-gate.json"]
+    if config.section("project").get("profile") == "forge-overnight":
+        assets.extend(
+            [
+                config.root / "reports" / "v2" / "evaluation.json",
+                config.root / "data" / "manifests" / "v2" / "forge-summary.json",
+            ]
+        )
+    missing = [str(path) for path in assets if not path.exists()]
+    if missing:
+        raise RuntimeError(f"GitHub release assets are missing: {missing}")
+    checksums = {path.name: sha256_file(path) for path in assets}
+    checksum_path = artifact_dir / "release" / "github-assets-sha256.json"
+    write_json(checksum_path, checksums)
+    assets.append(checksum_path)
+    classification = str(gate["classification"])
+    evaluation = (
+        json.loads((config.root / "reports" / "v2" / "evaluation.json").read_text())
+        if config.section("project").get("profile") == "forge-overnight"
+        else None
+    )
+    delta = (
+        evaluation.get("delta_percentage_points", {}).get("overall")
+        if evaluation
+        else None
+    )
+    notes = (
+        f"Charlie alpha {classification}.\n\n"
+        f"Base-to-adapter locked evaluation delta: {delta:+.2f} percentage points.\n\n"
+        "This release contains the MLX adapter, reproducible configuration, compact evaluation "
+        "results, data provenance hashes, and SHA-256 checksums. Training corpora and credentials "
+        "are not included."
+        if delta is not None
+        else f"Charlie alpha {classification}. See the attached reports and checksums."
+    )
+    command = [
+        gh,
+        "release",
+        "create",
+        tag,
+        "-R",
+        repository,
+        "--target",
+        commit,
+        "--title",
+        classification,
+        "--notes",
+        notes,
+        *[str(path) for path in assets],
+    ]
+    result = subprocess.run(
+        command,
+        cwd=config.root,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"GitHub release failed: {result.stderr[-1000:]}")
+    payload = json.loads(
+        subprocess.run(
+            [gh, "release", "view", tag, "-R", repository, "--json", "url,tagName,name"],
+            cwd=config.root,
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout
+    )
+    write_json(reports_dir / "github-release.json", payload)
+    return payload

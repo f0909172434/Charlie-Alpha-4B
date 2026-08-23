@@ -1,7 +1,7 @@
 UV ?= uv
 CLI := $(UV) run charlie-alpha
 
-.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-dev forge-freeze forge-final forge-chat forge-serve
+.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-dev forge-freeze forge-final forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
 
 setup:
 	$(UV) sync --extra eval --group dev
@@ -60,6 +60,9 @@ release-check:
 publish-hf:
 	$(CLI) release publish-hf --config configs/pipeline.yaml
 
+publish-github:
+	$(CLI) release publish-github --config configs/pipeline.yaml
+
 forge:
 	$(CLI) forge overnight --config configs/pipeline.v2.yaml
 
@@ -103,3 +106,15 @@ forge-chat:
 
 forge-serve:
 	$(CLI) serve --config configs/pipeline.v2.yaml
+
+forge-export:
+	$(CLI) export all --config configs/pipeline.v2.yaml
+
+forge-clean-load:
+	$(CLI) export validate-clean --config configs/pipeline.v2.yaml
+
+forge-release-check:
+	$(CLI) release check --config configs/pipeline.v2.yaml
+
+forge-publish-github:
+	$(CLI) release publish-github --config configs/pipeline.v2.yaml

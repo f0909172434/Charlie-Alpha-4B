@@ -33,7 +33,7 @@ from .forge_orchestrator import run_forge_overnight
 from .forge_training import run_forge_pilots, run_forge_training
 from .mixer import mix_data
 from .orchestrator import run_overnight
-from .release import check_release, publish_hugging_face
+from .release import check_release, publish_github, publish_hugging_face
 from .training import _base_snapshot, run_pilot, run_training
 
 app = typer.Typer(no_args_is_help=True, help="Charlie alpha overnight training pipeline.")
@@ -124,6 +124,13 @@ def release_publish_hf(
     gguf: Annotated[bool, typer.Option("--gguf")] = False,
 ) -> None:
     _show(publish_hugging_face(load_config(config), include_gguf=gguf))
+
+
+@release_app.command("publish-github")
+def release_publish_github(
+    config: ConfigOption = Path("configs/pipeline.yaml"),
+) -> None:
+    _show(publish_github(load_config(config)))
 
 
 @forge_app.command("lock-eval")
