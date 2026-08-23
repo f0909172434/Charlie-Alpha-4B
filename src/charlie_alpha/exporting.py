@@ -121,6 +121,18 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
     shutil.copy2(config.root / "LICENSE", package_dir / "LICENSE")
     shutil.copy2(config.root / "MODEL_CARD.md", package_dir / "README.md")
     shutil.copy2(config.root / "configs" / "sources.lock.json", package_dir / "sources.lock.json")
+    shutil.copy2(config.path, package_dir / config.path.name)
+    if config.section("project").get("profile") == "forge-overnight":
+        for source, name in (
+            (config.path_for("eval_lock"), "evaluation.lock.json"),
+            (config.root / "reports" / "v2" / "evaluation.json", "evaluation.json"),
+            (
+                config.root / "data" / "manifests" / "v2" / "forge-summary.json",
+                "data-manifest.json",
+            ),
+        ):
+            if source.exists():
+                shutil.copy2(source, package_dir / name)
 
     checksums = {
         path.name: sha256_file(path)

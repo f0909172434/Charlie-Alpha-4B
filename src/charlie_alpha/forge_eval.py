@@ -662,4 +662,7 @@ def verify_frozen_recipe(config: ProjectConfig) -> dict[str, Any]:
 def compare_forge_evaluation(config: ProjectConfig, suite: str) -> dict[str, Any]:
     if suite == "final":
         verify_frozen_recipe(config)
-    return _comparison(config, suite)
+    comparison = _comparison(config, suite)
+    public_name = "evaluation.json" if suite == "final" else "development.json"
+    write_json(config.root / "reports" / "v2" / public_name, comparison)
+    return comparison

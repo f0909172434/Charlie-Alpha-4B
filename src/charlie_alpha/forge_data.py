@@ -888,6 +888,75 @@ def _ratio(values: Counter[str]) -> dict[str, float]:
     return {key: round(value / total, 6) for key, value in sorted(values.items())}
 
 
+def _write_public_forge_manifests(
+    config: ProjectConfig,
+    manifest: dict[str, Any],
+    train_rows: list[dict[str, Any]],
+    valid_rows: list[dict[str, Any]],
+) -> None:
+    public_dir = config.root / "data" / "manifests" / "v2"
+    records: list[dict[str, Any]] = []
+    for split, rows in (("train", train_rows), ("valid", valid_rows)):
+        for row in rows:
+            metadata = row["metadata"]
+            records.append(
+                {
+                    key: metadata.get(key)
+                    for key in (
+                        "candidate_id",
+                        "parent_candidate_id",
+                        "source_id",
+                        "source_repo",
+                        "source_revision",
+                        "source_license",
+                        "category",
+                        "domain",
+                        "code_language",
+                        "language",
+                        "semantic_group_id",
+                        "microstep_slot",
+                        "loss_weight",
+                        "token_count_qwen35",
+                        "assistant_token_count_qwen35",
+                        "prompt_sha256",
+                        "assistant_sha256",
+                    )
+                    if metadata.get(key) is not None
+                }
+                | {
+                    "split": split,
+                    "selective_target_token_count": len(
+                        metadata.get("selective_target_indices", [])
+                    ),
+                }
+            )
+    write_jsonl(public_dir / "forge-records.jsonl", records)
+    public_summary = {
+        key: value
+        for key, value in manifest.items()
+        if key not in {"translation_lengths"}
+    }
+    public_summary.update(
+        {
+            "student_score_sha256": sha256_file(
+                config.path_for("score_dir") / "student.jsonl"
+            ),
+            "teacher_score_sha256": sha256_file(
+                config.path_for("score_dir") / "teacher.jsonl"
+            ),
+            "selection_sha256": sha256_file(
+                config.path_for("forge_dir") / "selection.json"
+            ),
+            "translation_sha256": sha256_file(
+                config.path_for("translation_dir") / "translations.jsonl"
+            ),
+            "record_manifest_sha256": sha256_file(public_dir / "forge-records.jsonl"),
+            "policy": "metadata-and-hashes-only-no-training-text",
+        }
+    )
+    write_json(public_dir / "forge-summary.json", public_summary)
+
+
 def build_forge_data(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
     final_dir = config.path_for("final_dir")
     done_path = final_dir / ".done.json"
@@ -916,7 +985,13 @@ def build_forge_data(config: ProjectConfig, force: bool = False) -> dict[str, An
     )
     if done_path.exists() and not force:
         existing = json.loads(done_path.read_text(encoding="utf-8"))
-        if existing.get("fingerprint") == fingerprint:
+        public_summary = config.root / "data" / "manifests" / "v2" / "forge-summary.json"
+        public_records = config.root / "data" / "manifests" / "v2" / "forge-records.jsonl"
+        if (
+            existing.get("fingerprint") == fingerprint
+            and public_summary.exists()
+            and public_records.exists()
+        ):
             return existing
 
     selection = json.loads(selection_path.read_text(encoding="utf-8"))
@@ -1120,4 +1195,5 @@ def build_forge_data(config: ProjectConfig, force: bool = False) -> dict[str, An
         },
     }
     write_json(done_path, manifest)
+    _write_public_forge_manifests(config, manifest, train_rows, valid_rows)
     return manifest
