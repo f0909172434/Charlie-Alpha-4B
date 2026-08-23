@@ -168,12 +168,16 @@ def forge_loss(
 def _schedule(learning_rate: float, updates: int, warmup_fraction: float) -> Any:
     warmup = max(1, round(updates * warmup_fraction))
     decay = max(1, updates - warmup)
-    warmup_schedule = optim.schedulers.linear_schedule(0.0, learning_rate, warmup)
+    warmup_schedule = optim.schedulers.linear_schedule(
+        learning_rate / warmup,
+        learning_rate,
+        max(1, warmup - 1),
+    )
     cosine_schedule = optim.schedulers.cosine_decay(
         learning_rate, decay, learning_rate * 0.1
     )
     return optim.schedulers.join_schedules(
-        [warmup_schedule, cosine_schedule], [warmup + 1]
+        [warmup_schedule, cosine_schedule], [warmup]
     )
 
 
@@ -334,7 +338,7 @@ def _train_candidate(
             "train": sha256_file(final_dir / "train.jsonl"),
             "valid": sha256_file(final_dir / "valid.jsonl"),
             "base": config.sources["models"]["research_base_mlx_4bit"],
-            "forge_training_version": 1,
+            "forge_training_version": 2,
         }
     )
     status_path = adapter_dir / "status.json"

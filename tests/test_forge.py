@@ -1,4 +1,6 @@
+import mlx.core as mx
 import numpy as np
+import pytest
 
 import charlie_alpha.forge_training as forge_training
 from charlie_alpha.forge_data import (
@@ -138,6 +140,11 @@ def test_batch_iterator_reuses_configured_padding_buckets() -> None:
         )
     )
     assert batch[0].shape == (1, 8)
+
+
+def test_short_pilot_warmup_never_wastes_an_optimizer_update() -> None:
+    schedule = forge_training._schedule(1.0e-5, updates=8, warmup_fraction=0.03)
+    assert float(schedule(mx.array(0))) == pytest.approx(1.0e-5)
 
 
 def test_gradient_checkpointing_wraps_each_layer_type_once(monkeypatch) -> None:
