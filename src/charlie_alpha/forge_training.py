@@ -5,6 +5,7 @@ import json
 import math
 import os
 import subprocess
+import sys
 import time
 from collections.abc import Iterator
 from pathlib import Path
@@ -504,44 +505,91 @@ def _train_candidate(
     return status
 
 
+def run_forge_pilot_candidate(
+    config: ProjectConfig, candidate_name: str, force: bool = False
+) -> dict[str, Any]:
+    from .forge_eval import pilot_task_ids, run_forge_evaluation
+
+    settings = config.section("training_v2")
+    candidate = next(
+        (item for item in settings["candidates"] if item["name"] == candidate_name),
+        None,
+    )
+    if candidate is None:
+        raise ValueError(f"Unknown Forge pilot candidate: {candidate_name}")
+    artifact_dir = config.path_for("artifact_dir")
+    pilot_budget = int(config.section("overnight_v2")["pilot_seconds"])
+    eval_seconds = int(config.section("evaluation_v2")["pilot_max_seconds_per_variant"])
+    per_candidate_seconds = max(
+        300,
+        (pilot_budget - eval_seconds * len(settings["candidates"]))
+        // len(settings["candidates"]),
+    )
+    result = _train_candidate(
+        config,
+        candidate=candidate,
+        adapter_dir=artifact_dir / "adapters" / "pilots" / candidate["name"],
+        microsteps=int(settings["pilot_microsteps"]),
+        max_seconds=per_candidate_seconds,
+        early_stop_patience=None,
+        force=force,
+    )
+    canary = run_forge_evaluation(
+        config,
+        variant="pilot",
+        suite="dev",
+        force=force,
+        adapter_path_override=Path(result["adapter_path"]),
+        task_ids=pilot_task_ids(config),
+        report_label=candidate["name"],
+        max_seconds_override=eval_seconds,
+    )
+    result["canary"] = canary
+    write_json(Path(result["adapter_path"]) / "status.json", result)
+    return result
+
+
 def run_forge_pilots(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
     build_forge_data(config)
-    from .forge_eval import pilot_task_ids, run_forge_evaluation
 
     settings = config.section("training_v2")
     artifact_dir = config.path_for("artifact_dir")
     candidates: list[dict[str, Any]] = []
     caffeinate = _start_caffeinate()
     try:
-        pilot_budget = int(config.section("overnight_v2")["pilot_seconds"])
-        eval_seconds = int(config.section("evaluation_v2")["pilot_max_seconds_per_variant"])
-        per_candidate_seconds = max(
-            300,
-            (pilot_budget - eval_seconds * len(settings["candidates"]))
-            // len(settings["candidates"]),
-        )
         for candidate in settings["candidates"]:
-            result = _train_candidate(
-                config,
-                candidate=candidate,
-                adapter_dir=artifact_dir / "adapters" / "pilots" / candidate["name"],
-                microsteps=int(settings["pilot_microsteps"]),
-                max_seconds=per_candidate_seconds,
-                early_stop_patience=None,
-                force=force,
+            command = [
+                sys.executable,
+                "-m",
+                "charlie_alpha.cli",
+                "forge",
+                "pilot-one",
+                "--candidate",
+                candidate["name"],
+                "--config",
+                str(config.path),
+            ]
+            if force:
+                command.append("--force")
+            completed = subprocess.run(command, cwd=config.root, check=False)
+            status_path = (
+                artifact_dir
+                / "adapters"
+                / "pilots"
+                / candidate["name"]
+                / "status.json"
             )
-            canary = run_forge_evaluation(
-                config,
-                variant="pilot",
-                suite="dev",
-                force=force,
-                adapter_path_override=Path(result["adapter_path"]),
-                task_ids=pilot_task_ids(config),
-                report_label=candidate["name"],
-                max_seconds_override=eval_seconds,
-            )
-            result["canary"] = canary
-            write_json(Path(result["adapter_path"]) / "status.json", result)
+            if completed.returncode != 0 or not status_path.exists():
+                candidates.append(
+                    {
+                        "candidate": candidate["name"],
+                        "complete": False,
+                        "returncode": completed.returncode,
+                        "canary": {"coverage": 0.0},
+                    }
+                )
+                continue
+            result = json.loads(status_path.read_text(encoding="utf-8"))
             candidates.append(result)
     finally:
         if caffeinate is not None and caffeinate.poll() is None:

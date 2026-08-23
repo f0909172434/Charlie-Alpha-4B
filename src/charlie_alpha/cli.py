@@ -30,7 +30,11 @@ from .forge_eval import (
     run_forge_evaluation,
 )
 from .forge_orchestrator import run_forge_overnight
-from .forge_training import run_forge_pilots, run_forge_training
+from .forge_training import (
+    run_forge_pilot_candidate,
+    run_forge_pilots,
+    run_forge_training,
+)
 from .mixer import mix_data
 from .orchestrator import run_overnight
 from .release import check_release, publish_github, publish_hugging_face
@@ -180,6 +184,19 @@ def forge_pilot(
     config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
 ) -> None:
     _show(run_forge_pilots(load_config(config), force=force))
+
+
+@forge_app.command("pilot-one", hidden=True)
+def forge_pilot_one(
+    candidate: Annotated[str, typer.Option("--candidate")],
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"),
+    force: bool = False,
+) -> None:
+    _show(
+        run_forge_pilot_candidate(
+            load_config(config), candidate_name=candidate, force=force
+        )
+    )
 
 
 @forge_app.command("train")
