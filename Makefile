@@ -1,7 +1,7 @@
 UV ?= uv
 CLI := $(UV) run charlie-alpha
 
-.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-dev forge-freeze forge-final forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
+.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-calibrate forge-dev forge-freeze forge-final forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
 
 setup:
 	$(UV) sync --extra eval --group dev
@@ -89,6 +89,9 @@ forge-pilot:
 
 forge-train:
 	$(CLI) forge train --config configs/pipeline.v2.yaml
+
+forge-calibrate:
+	$(CLI) forge calibrate --config configs/pipeline.v2.yaml
 
 forge-dev:
 	$(CLI) forge eval --suite dev --variant forge --config configs/pipeline.v2.yaml

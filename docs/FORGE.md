@@ -56,6 +56,10 @@ Forge 的依據包括：
 7. **編譯形狀壓縮。** 訓練序列限制為 704 tokens，並只使用 384、544、704 三個 padding
    buckets。這讓 MLX 重用反向圖，而不是為幾乎每個 32-token 長度重新編譯；同時三筆 replay
    讓每次能力更新的 microsteps 從八降到六。
+8. **能力校準線搜尋。** 最低 valid loss 的 adapter 在 dev 上讓英文算術退化；因此只縮放
+   LoRA B 矩陣，在 0.125、0.16、0.18、0.22、0.25 間做鎖定 dev 線搜尋。這等價於連續縮放
+   低秩權重增量，不需重訓。依「dev 正確率、最大分組退步、較小增量」順序選出 0.22；final
+   在整個選擇過程仍封存。這一步揭露了 valid loss 不是推理能力的可靠 checkpoint 指標。
 
 ## 防止自我欺騙
 
@@ -78,6 +82,7 @@ make forge-distill
 make forge-build
 make forge-pilot
 make forge-train
+make forge-calibrate
 make forge-dev
 uv run charlie-alpha forge eval --variant qwen35-base --suite dev \
   --config configs/pipeline.v2.yaml

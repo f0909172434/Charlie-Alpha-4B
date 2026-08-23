@@ -20,7 +20,11 @@ from .forge_eval import (
     freeze_forge_recipe,
     run_forge_evaluation,
 )
-from .forge_training import run_forge_pilots, run_forge_training
+from .forge_training import (
+    calibrate_forge_adapter,
+    run_forge_pilots,
+    run_forge_training,
+)
 from .io_utils import write_json
 
 console = Console()
@@ -72,6 +76,7 @@ def run_forge_overnight(config: ProjectConfig) -> dict[str, Any]:
     training = stage("train", lambda: run_forge_training(config), minimum_remaining=27_600)
     if not training["complete"]:
         raise RuntimeError("Forge full training stopped before a validated checkpoint was complete")
+    stage("calibrate", lambda: calibrate_forge_adapter(config))
 
     stage(
         "dev_base",

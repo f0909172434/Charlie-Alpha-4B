@@ -33,6 +33,11 @@ success criterion is higher accuracy than the same Qwen3.5-4B base on a frozen u
    544, or 704-token buckets, allowing MLX to reuse backward graphs. Reducing replay from five to
    three also cuts microsteps per capability update by 25% without changing the 70/15/15 gradient
    mass.
+8. **Capability-calibrated line search.** The minimum-validation-loss adapter damaged English
+   arithmetic on dev. Scaling only LoRA B continuously scales the low-rank delta without retraining.
+   A locked-dev search over 0.125, 0.16, 0.18, 0.22, and 0.25 selected 0.22 by accuracy, maximum
+   subgroup regression, then smaller delta; final remained sealed throughout. This explicitly
+   demonstrates that validation loss is not a sufficient checkpoint selector for reasoning.
 
 The ingredients are motivated by [Rho-1](https://arxiv.org/abs/2404.07965),
 [LESS](https://arxiv.org/abs/2402.04333), [BIDS](https://arxiv.org/abs/2501.12147),

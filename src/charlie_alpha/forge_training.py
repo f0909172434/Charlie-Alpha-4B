@@ -214,6 +214,94 @@ def _research_snapshot(config: ProjectConfig) -> str:
     return snapshot_download(repo_id=source["repo_id"], revision=source["revision"])
 
 
+def _scale_lora_delta(weights: dict[str, mx.array], scale: float) -> dict[str, mx.array]:
+    if not 0.0 < scale <= 1.0:
+        raise ValueError("Forge adapter delta scale must be in (0, 1]")
+    lora_b_keys = [key for key in weights if key.endswith("lora_b")]
+    if not lora_b_keys:
+        raise ValueError("Forge adapter contains no LoRA B matrices")
+    return {
+        key: value * scale if key.endswith("lora_b") else value
+        for key, value in weights.items()
+    }
+
+
+def calibrate_forge_adapter(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
+    artifact_dir = config.path_for("artifact_dir")
+    selected_path = artifact_dir / "selected.json"
+    if not selected_path.exists():
+        raise RuntimeError("Forge training must complete before adapter calibration")
+    selected = json.loads(selected_path.read_text(encoding="utf-8"))
+    calibration = config.section("calibration_v2")
+    scale = float(calibration["selected_delta_scale"])
+    raw_adapter_path = Path(selected.get("raw_adapter_path") or selected["adapter_path"])
+    raw_adapter_file = raw_adapter_path / "adapters.safetensors"
+    raw_sha = sha256_file(raw_adapter_file)
+    fingerprint = canonical_hash(
+        {
+            "raw_adapter_sha256": raw_sha,
+            "delta_scale": scale,
+            "policy": calibration,
+            "version": 1,
+        }
+    )
+    scale_label = str(scale).replace(".", "p")
+    output_dir = artifact_dir / "adapters" / f"calibrated-scale-{scale_label}"
+    status_path = output_dir / "status.json"
+    if status_path.exists() and not force:
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+        if status.get("fingerprint") == fingerprint:
+            write_json(selected_path, {**selected, **status, "recipe_frozen": False})
+            return status
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    weights = mx.load(str(raw_adapter_file))
+    scaled = _scale_lora_delta(weights, scale)
+    output_file = output_dir / "adapters.safetensors"
+    mx.save_safetensors(str(output_file), scaled)
+    reloaded = mx.load(str(output_file))
+    if set(reloaded) != set(weights):
+        raise RuntimeError("Calibrated Forge adapter changed the matrix key set")
+    for key in weights:
+        expected = weights[key] * scale if key.endswith("lora_b") else weights[key]
+        if not bool(mx.allclose(reloaded[key], expected, rtol=1e-6, atol=1e-8)):
+            raise RuntimeError(f"Calibrated Forge adapter failed equivalence for {key}")
+
+    adapter_config = json.loads(
+        (raw_adapter_path / "adapter_config.json").read_text(encoding="utf-8")
+    )
+    adapter_config.setdefault("forge", {})["post_training_delta_scale"] = scale
+    adapter_config["forge"]["calibration_policy"] = calibration["selection_policy"]
+    write_json(output_dir / "adapter_config.json", adapter_config)
+    status = {
+        "fingerprint": fingerprint,
+        "complete": True,
+        "candidate": selected["candidate"],
+        "adapter_path": str(output_dir),
+        "adapter_sha256": sha256_file(output_file),
+        "raw_adapter_path": str(raw_adapter_path),
+        "raw_adapter_sha256": raw_sha,
+        "adapter_delta_scale": scale,
+        "calibration_candidates": list(calibration["candidate_delta_scales"]),
+        "calibration_selection_policy": calibration["selection_policy"],
+        "trainable_parameters": selected["trainable_parameters"],
+        "initial_validation_loss": selected["initial_validation_loss"],
+        "best_validation_loss": selected["best_validation_loss"],
+        "best_validation_iteration": selected["best_validation_iteration"],
+        "peak_memory_gb": selected["peak_memory_gb"],
+        "elapsed_seconds": selected["elapsed_seconds"],
+        "microsteps": selected["microsteps"],
+        "optimizer_updates": selected["optimizer_updates"],
+        "stop_reason": selected["stop_reason"],
+    }
+    write_json(status_path, status)
+    write_json(selected_path, {**selected, **status, "recipe_frozen": False})
+    del weights, scaled, reloaded
+    gc.collect()
+    mx.clear_cache()
+    return status
+
+
 def _adapter_config(
     config: ProjectConfig,
     candidate: dict[str, Any],

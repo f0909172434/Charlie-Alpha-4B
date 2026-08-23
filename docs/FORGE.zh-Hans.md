@@ -28,6 +28,10 @@ alpha v0.2 面向 24 GB Apple Silicon 笔记本的研究配方。它不宣称创
 7. **编译形状压缩。** 序列限制为 704 tokens，只使用 384、544、704 三个 padding buckets，
    让 MLX 重用反向图。把 replay 从五条降到三条，也让每次能力更新的 microsteps 减少 25%，
    同时保持 70%／15%／15% 梯度质量不变。
+8. **能力校准线搜索。** 最低 valid loss 的 adapter 在 dev 上损害了英文算术；因此只缩放
+   LoRA B 矩阵，在 0.125、0.16、0.18、0.22、0.25 之间做锁定 dev 线搜索。该操作连续缩放
+   低秩权重增量，无需重训。按“dev 正确率、最大分组退步、较小增量”选出 0.22；整个过程
+   仍未打开 final。这也直接证明 valid loss 不是推理能力的充分 checkpoint 指标。
 
 设计依据包括 [Rho-1](https://arxiv.org/abs/2404.07965)、
 [LESS](https://arxiv.org/abs/2402.04333)、[BIDS](https://arxiv.org/abs/2501.12147)、

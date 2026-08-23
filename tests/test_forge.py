@@ -150,6 +150,18 @@ def test_short_pilot_warmup_never_wastes_an_optimizer_update() -> None:
     assert float(schedule(mx.array(0))) == pytest.approx(1.0e-5)
 
 
+def test_adapter_calibration_scales_only_lora_b() -> None:
+    weights = {
+        "layer.lora_a": mx.array([1.0, 2.0]),
+        "layer.lora_b": mx.array([3.0, 4.0]),
+    }
+    scaled = forge_training._scale_lora_delta(weights, 0.22)
+    assert np.allclose(np.asarray(scaled["layer.lora_a"]), [1.0, 2.0])
+    assert np.allclose(np.asarray(scaled["layer.lora_b"]), [0.66, 0.88])
+    with pytest.raises(ValueError):
+        forge_training._scale_lora_delta(weights, 0.0)
+
+
 def test_full_training_runs_every_requested_epoch(tmp_path, monkeypatch) -> None:
     artifact_dir = tmp_path / "artifacts"
     final_dir = tmp_path / "final"

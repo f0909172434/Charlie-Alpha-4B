@@ -88,6 +88,14 @@ training_v2:
       learning_rate_b: 2.0e-5
       selective_loss: false
 
+calibration_v2:
+  method: "LoRA-B delta-scale line search"
+  candidate_delta_scales: [0.125, 0.16, 0.18, 0.22, 0.25]
+  selected_delta_scale: 0.22
+  selection_policy: >-
+    locked development accuracy first, then maximum language/domain regression,
+    then the smaller delta scale; final remains sealed
+
 evaluation_v2:
   seed: 20260824
   prompt_version: "adaptive-math-cot-v3"

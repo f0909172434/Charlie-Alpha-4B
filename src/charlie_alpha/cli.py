@@ -31,6 +31,7 @@ from .forge_eval import (
 )
 from .forge_orchestrator import run_forge_overnight
 from .forge_training import (
+    calibrate_forge_adapter,
     run_forge_pilot_candidate,
     run_forge_pilots,
     run_forge_training,
@@ -204,6 +205,13 @@ def forge_train(
     config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
 ) -> None:
     _show(run_forge_training(load_config(config), force=force))
+
+
+@forge_app.command("calibrate")
+def forge_calibrate(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(calibrate_forge_adapter(load_config(config), force=force))
 
 
 @forge_app.command("eval")
