@@ -43,5 +43,7 @@ def test_adapter_mapping_is_numerically_equivalent(tmp_path: Path) -> None:
     assert report["tensor_count"] == 4
     assert peft_config["lora_alpha"] == 6.0
     assert peft_config["target_modules"] == ["q_proj", "v_proj"]
+    assert peft_config["layers_to_transform"] == [30]
+    assert peft_config["layers_pattern"] == "layers"
     assert equivalence["passed"]
     assert equivalence["max_abs_error"] <= 1e-5

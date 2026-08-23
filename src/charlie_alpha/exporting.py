@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import gzip
 import json
 import shutil
 import subprocess
@@ -68,6 +69,8 @@ def _selected_adapter(config: ProjectConfig) -> Path:
 def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any]:
     release_dir = config.path_for("artifact_dir") / "release"
     package_dir = release_dir / "Charlie-Alpha-4B-MLX-adapter"
+    if package_dir.exists():
+        shutil.rmtree(package_dir)
     package_dir.mkdir(parents=True, exist_ok=True)
     required = ["adapters.safetensors"]
     optional = ["best_adapters.safetensors"]
@@ -106,8 +109,33 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
     }
     write_json(package_dir / "SHA256SUMS.json", checksums)
     archive_path = release_dir / "Charlie-Alpha-4B-MLX-adapter.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as archive:
-        archive.add(package_dir, arcname=package_dir.name)
+
+    def normalized_tar_info(info: tarfile.TarInfo) -> tarfile.TarInfo:
+        info.uid = 0
+        info.gid = 0
+        info.uname = ""
+        info.gname = ""
+        info.mtime = 0
+        return info
+
+    with (
+        archive_path.open("wb") as raw_archive,
+        gzip.GzipFile(fileobj=raw_archive, mode="wb", mtime=0, filename="") as compressed,
+        tarfile.open(fileobj=compressed, mode="w", format=tarfile.PAX_FORMAT) as archive,
+    ):
+        archive.add(
+            package_dir,
+            arcname=package_dir.name,
+            recursive=False,
+            filter=normalized_tar_info,
+        )
+        for path in sorted(package_dir.rglob("*")):
+            archive.add(
+                path,
+                arcname=str(Path(package_dir.name) / path.relative_to(package_dir)),
+                recursive=False,
+                filter=normalized_tar_info,
+            )
     return {
         "directory": str(package_dir),
         "archive": str(archive_path),
@@ -118,7 +146,21 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
 
 def _fuse_mlx(config: ProjectConfig, adapter_path: Path, model_path: str) -> Path:
     output = config.path_for("artifact_dir") / "exports" / "Charlie-Alpha-4B-MLX-4bit"
-    if not (output / "config.json").exists():
+    fingerprint = canonical_hash(
+        {
+            "base": config.sources["models"]["base_mlx_4bit"],
+            "adapter": sha256_file(adapter_path / "adapters.safetensors"),
+            "adapter_config": sha256_file(adapter_path / "adapter_config.json"),
+        }
+    )
+    manifest_path = output / "charlie-alpha-export.json"
+    reusable = False
+    if (output / "config.json").exists() and manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        reusable = manifest.get("fingerprint") == fingerprint
+    if not reusable:
+        if output.exists():
+            shutil.rmtree(output)
         output.parent.mkdir(parents=True, exist_ok=True)
         _run(
             [
@@ -135,6 +177,14 @@ def _fuse_mlx(config: ProjectConfig, adapter_path: Path, model_path: str) -> Pat
             ],
             cwd=config.root,
             timeout=3600,
+        )
+        write_json(
+            manifest_path,
+            {
+                "fingerprint": fingerprint,
+                "base_revision": config.sources["models"]["base_mlx_4bit"]["revision"],
+                "adapter_sha256": sha256_file(adapter_path / "adapters.safetensors"),
+            },
         )
     shutil.copy2(config.root / "MODEL_CARD.md", output / "README.md")
     shutil.copy2(config.root / "LICENSE", output / "LICENSE")

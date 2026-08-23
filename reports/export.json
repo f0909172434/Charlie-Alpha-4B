@@ -1,0 +1,42 @@
+{
+  "profile": "overnight",
+  "adapter": {
+    "archive_name": "Charlie-Alpha-4B-MLX-adapter.tar.gz",
+    "archive_sha256": "6b54ca24013daa125612ad113a11a5066d4563b8b2ffde0cf0674714fa1eecba",
+    "files": {
+      "LICENSE": "5d910346e8d5e4e4527a1aa614f3fa8d2dbb3750ad9bf8df0a733663ac36371d",
+      "README.md": "b07413ba5b0e2a5275a6ebddba7f17ab1303260d4283285e654fecb21e9fd297",
+      "adapter_config.json": "aeb65cbe8f999cb4108c0959a7f209df4a25858679edbcf85dc13841e0b77a3e",
+      "adapters.safetensors": "7bf53ad90b21965076bb38901be48b8f4cdbff870c0f1fb777ad0ab45118476a",
+      "best_adapters.safetensors": "7bf53ad90b21965076bb38901be48b8f4cdbff870c0f1fb777ad0ab45118476a",
+      "sources.lock.json": "300ac4aacf4ad935d0713e54ef7e1e9651c3c5daab3b6cf7b887461e7f646561",
+      "training-status.json": "7ceb9e6642ee754fddf540d020bc8486183856bdd86b7f54b82a2ddcfe0a97e1"
+    },
+    "load_test": {
+      "loaded": true,
+      "generated_nonempty": true
+    }
+  },
+  "fused_mlx": {
+    "directory_name": "Charlie-Alpha-4B-MLX-4bit",
+    "load_test": {
+      "loaded": true,
+      "generated_nonempty": true
+    }
+  },
+  "gguf": {
+    "status": "deferred-by-overnight-profile"
+  },
+  "clean_environment_validation_pending": false,
+  "clean_environment_load": {
+    "fingerprint": "07f238acda31d50d473d986fd07588a7a68db23f6e76cc3c33999d88c8e5e8a8",
+    "passed": true,
+    "adapter_loaded": true,
+    "fused_loaded": true,
+    "versions": {
+      "mlx": "0.32.1",
+      "mlx_lm": "0.31.3",
+      "transformers": "5.15.1"
+    }
+  }
+}

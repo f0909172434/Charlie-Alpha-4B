@@ -1,0 +1,44 @@
+{
+  "classification": "Experimental v0.1.0",
+  "weights_publishable": true,
+  "gates": {
+    "source_locks_and_licenses": {
+      "passed": true,
+      "failures": []
+    },
+    "data_schema_and_split_isolation": {
+      "passed": true,
+      "records": 829,
+      "failures": []
+    },
+    "tracked_content": {
+      "passed": true,
+      "forbidden_tracked_files": []
+    },
+    "artifact_privacy": {
+      "passed": true,
+      "failures": []
+    },
+    "sandbox": {
+      "network_blocked": true,
+      "write_blocked": true,
+      "passed": true
+    },
+    "evaluation_present": {
+      "passed": true
+    },
+    "export_present": {
+      "passed": true
+    },
+    "adapter_load": {
+      "passed": true
+    },
+    "fused_mlx_load": {
+      "passed": true
+    },
+    "clean_environment_load": {
+      "passed": true
+    }
+  },
+  "gguf_publishable": false
+}

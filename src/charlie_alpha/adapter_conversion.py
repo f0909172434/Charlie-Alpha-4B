@@ -54,6 +54,8 @@ def convert_mlx_adapter_to_peft(
     peft_output_dir.mkdir(parents=True, exist_ok=True)
     save_file(converted, peft_output_dir / "adapter_model.safetensors")
     target_modules = sorted({key.split(".")[-1] for key in parameters["keys"]})
+    layer_ids = sorted({int(item["mlx_key"].split(".")[2]) for item in mapped})
+    peft_alpha = scale * rank
     peft_config = {
         "alpha_pattern": {},
         "auto_mapping": None,
@@ -66,10 +68,10 @@ def convert_mlx_adapter_to_peft(
         "inference_mode": True,
         "init_lora_weights": True,
         "layer_replication": None,
-        "layers_pattern": None,
-        "layers_to_transform": None,
+        "layers_pattern": "layers",
+        "layers_to_transform": layer_ids,
         "loftq_config": {},
-        "lora_alpha": scale * rank,
+        "lora_alpha": int(peft_alpha) if peft_alpha.is_integer() else peft_alpha,
         "lora_bias": False,
         "lora_dropout": float(parameters["dropout"]),
         "megatron_config": None,
@@ -91,8 +93,9 @@ def convert_mlx_adapter_to_peft(
     report = {
         "rank": rank,
         "mlx_scale": scale,
-        "peft_alpha": scale * rank,
+        "peft_alpha": peft_alpha,
         "target_modules": target_modules,
+        "layer_ids": layer_ids,
         "tensor_count": len(converted),
         "mapped": mapped,
     }

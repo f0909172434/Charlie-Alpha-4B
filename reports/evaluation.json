@@ -1,0 +1,191 @@
+{
+  "profile": "overnight",
+  "base": {
+    "expected_tasks": 60,
+    "completed_tasks": 60,
+    "coverage": 1.0,
+    "scores": {
+      "benchmark:GSM8K": {
+        "correct": 8,
+        "total": 12,
+        "accuracy": 0.6667
+      },
+      "benchmark:HumanEval+": {
+        "correct": 2,
+        "total": 10,
+        "accuracy": 0.2
+      },
+      "benchmark:MATH-500": {
+        "correct": 5,
+        "total": 13,
+        "accuracy": 0.3846
+      },
+      "benchmark:MBPP+": {
+        "correct": 0,
+        "total": 10,
+        "accuracy": 0.0
+      },
+      "benchmark:retention-canary": {
+        "correct": 5,
+        "total": 6,
+        "accuracy": 0.8333
+      },
+      "benchmark:trilingual-canary": {
+        "correct": 3,
+        "total": 9,
+        "accuracy": 0.3333
+      },
+      "domain:code": {
+        "correct": 2,
+        "total": 21,
+        "accuracy": 0.0952
+      },
+      "domain:general": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.6667
+      },
+      "domain:math": {
+        "correct": 16,
+        "total": 33,
+        "accuracy": 0.4848
+      },
+      "domain:stem": {
+        "correct": 3,
+        "total": 3,
+        "accuracy": 1.0
+      },
+      "language:en": {
+        "correct": 16,
+        "total": 50,
+        "accuracy": 0.32
+      },
+      "language:zh_Hans": {
+        "correct": 4,
+        "total": 5,
+        "accuracy": 0.8
+      },
+      "language:zh_Hant": {
+        "correct": 3,
+        "total": 5,
+        "accuracy": 0.6
+      },
+      "overall": {
+        "correct": 23,
+        "total": 60,
+        "accuracy": 0.3833
+      }
+    },
+    "variant": "base",
+    "model": {
+      "repo_id": "mlx-community/Qwen3-4B-Thinking-2507-4bit",
+      "revision": "627b019c66f22d4de0a641d289b41497651a55c9",
+      "license": "Apache-2.0"
+    },
+    "adapter_id": null,
+    "elapsed_seconds": 0.0
+  },
+  "adapter": {
+    "expected_tasks": 60,
+    "completed_tasks": 60,
+    "coverage": 1.0,
+    "scores": {
+      "benchmark:GSM8K": {
+        "correct": 9,
+        "total": 12,
+        "accuracy": 0.75
+      },
+      "benchmark:HumanEval+": {
+        "correct": 2,
+        "total": 10,
+        "accuracy": 0.2
+      },
+      "benchmark:MATH-500": {
+        "correct": 7,
+        "total": 13,
+        "accuracy": 0.5385
+      },
+      "benchmark:MBPP+": {
+        "correct": 2,
+        "total": 10,
+        "accuracy": 0.2
+      },
+      "benchmark:retention-canary": {
+        "correct": 6,
+        "total": 6,
+        "accuracy": 1.0
+      },
+      "benchmark:trilingual-canary": {
+        "correct": 1,
+        "total": 9,
+        "accuracy": 0.1111
+      },
+      "domain:code": {
+        "correct": 4,
+        "total": 21,
+        "accuracy": 0.1905
+      },
+      "domain:general": {
+        "correct": 3,
+        "total": 3,
+        "accuracy": 1.0
+      },
+      "domain:math": {
+        "correct": 17,
+        "total": 33,
+        "accuracy": 0.5152
+      },
+      "domain:stem": {
+        "correct": 3,
+        "total": 3,
+        "accuracy": 1.0
+      },
+      "language:en": {
+        "correct": 22,
+        "total": 50,
+        "accuracy": 0.44
+      },
+      "language:zh_Hans": {
+        "correct": 2,
+        "total": 5,
+        "accuracy": 0.4
+      },
+      "language:zh_Hant": {
+        "correct": 3,
+        "total": 5,
+        "accuracy": 0.6
+      },
+      "overall": {
+        "correct": 27,
+        "total": 60,
+        "accuracy": 0.45
+      }
+    },
+    "variant": "adapter",
+    "model": {
+      "repo_id": "mlx-community/Qwen3-4B-Thinking-2507-4bit",
+      "revision": "627b019c66f22d4de0a641d289b41497651a55c9",
+      "license": "Apache-2.0"
+    },
+    "adapter_id": "pilot-a-qv-r8-s1024-l16",
+    "elapsed_seconds": 0.92
+  },
+  "delta_percentage_points": {
+    "benchmark:GSM8K": 8.33,
+    "benchmark:HumanEval+": 0.0,
+    "benchmark:MATH-500": 15.39,
+    "benchmark:MBPP+": 20.0,
+    "benchmark:retention-canary": 16.67,
+    "benchmark:trilingual-canary": -22.22,
+    "domain:code": 9.53,
+    "domain:general": 33.33,
+    "domain:math": 3.04,
+    "domain:stem": 0.0,
+    "language:en": 12.0,
+    "language:zh_Hans": -40.0,
+    "language:zh_Hant": 0.0,
+    "overall": 6.67
+  },
+  "quality_classification": "experimental",
+  "note": "The overnight compact suite is not a substitute for the full release suite."
+}

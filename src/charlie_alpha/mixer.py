@@ -1,14 +1,25 @@
 from __future__ import annotations
 
 import json
+import re
 from collections import Counter
+from copy import deepcopy
 from typing import Any
 
+from opencc import OpenCC
 from rich.console import Console
+from transformers import AutoTokenizer
 
 from .config import ProjectConfig
 from .data_pipeline import load_processed
-from .io_utils import canonical_hash, read_jsonl, sha256_file, write_json, write_jsonl
+from .io_utils import (
+    canonical_hash,
+    read_jsonl,
+    sha256_file,
+    sha256_text,
+    write_json,
+    write_jsonl,
+)
 from .validators import has_target_script, translation_preserves_source
 
 console = Console()
@@ -35,6 +46,100 @@ def _trim_to_budget(rows: list[dict[str, Any]], budget: int) -> list[dict[str, A
             selected.append(row)
             used += tokens
     return selected
+
+
+def _repeat_to_budget(
+    rows: list[dict[str, Any]], budget: int, max_repeats: int
+) -> list[dict[str, Any]]:
+    ordered = sorted(
+        rows,
+        key=lambda row: (row["metadata"]["prompt_sha256"], row["metadata"]["language"]),
+    )
+    selected: list[dict[str, Any]] = []
+    used = 0
+    for repeat_index in range(max_repeats):
+        added = False
+        for row in ordered:
+            tokens = _assistant_tokens(row)
+            if used + tokens > budget:
+                continue
+            repeated = deepcopy(row)
+            repeated["metadata"]["sampling_repeat_index"] = repeat_index
+            selected.append(repeated)
+            used += tokens
+            added = True
+        if not added or used >= budget:
+            break
+    return selected
+
+
+_PROTECTED_RE = re.compile(
+    r"(```.*?```|\\\[.*?\\\]|\$\$.*?\$\$|(?<!\$)\$(?!\$).*?(?<!\$)\$(?!\$)|\\\(.*?\\\))",
+    re.DOTALL,
+)
+
+
+def _convert_prose(value: str, converter: OpenCC) -> str:
+    parts = _PROTECTED_RE.split(value)
+    return "".join(
+        part if index % 2 else converter.convert(part) for index, part in enumerate(parts)
+    )
+
+
+def _augment_scripts(
+    distilled: dict[str, list[dict[str, Any]]], tokenizer: Any
+) -> dict[str, list[dict[str, Any]]]:
+    converters = {"zh_Hant": OpenCC("s2twp"), "zh_Hans": OpenCC("t2s")}
+    augmented = {language: list(rows) for language, rows in distilled.items()}
+    for target_language, source_language in (("zh_Hant", "zh_Hans"), ("zh_Hans", "zh_Hant")):
+        existing_parents = {
+            row["metadata"]["parent_prompt_sha256"] for row in augmented[target_language]
+        }
+        for source in distilled[source_language]:
+            parent = source["metadata"]["parent_prompt_sha256"]
+            if parent in existing_parents:
+                continue
+            converted = deepcopy(source)
+            converted["messages"] = [
+                {
+                    "role": message["role"],
+                    "content": _convert_prose(message["content"], converters[target_language]),
+                }
+                for message in source["messages"]
+            ]
+            if any(
+                not translation_preserves_source(original["content"], translated["content"])[0]
+                for original, translated in zip(
+                    source["messages"], converted["messages"], strict=True
+                )
+            ):
+                continue
+            if not has_target_script(
+                "\n".join(message["content"] for message in converted["messages"]),
+                target_language,
+            ):
+                continue
+            metadata = converted["metadata"]
+            metadata["language"] = target_language
+            metadata["script_conversion_from"] = source_language
+            metadata["prompt_sha256"] = sha256_text(converted["messages"][0]["content"])
+            metadata["assistant_sha256"] = sha256_text(converted["messages"][-1]["content"])
+            metadata["assistant_token_count"] = len(
+                tokenizer.encode(converted["messages"][-1]["content"], add_special_tokens=False)
+            )
+            metadata["token_count"] = len(
+                tokenizer.apply_chat_template(
+                    converted["messages"],
+                    tokenize=True,
+                    add_generation_prompt=False,
+                    return_dict=False,
+                )
+            )
+            if metadata["token_count"] > 1024:
+                continue
+            augmented[target_language].append(converted)
+            existing_parents.add(parent)
+    return augmented
 
 
 def _by_category(rows: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
@@ -170,7 +275,7 @@ def mix_data(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
                 "domain": config.section("data")["domain_token_ratios"],
                 "code": config.section("data")["code_language_ratios"],
             },
-            "version": "mix-v2",
+            "version": "mix-v3",
         }
     )
     done_path = final_dir / ".done.json"
@@ -186,6 +291,13 @@ def mix_data(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
         for language in ("zh_Hant", "zh_Hans")
     }
     distilled, distillation_rejections = _revalidate_distilled(processed, distilled)
+    model_source = config.sources["models"]["base_hf"]
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_source["repo_id"],
+        revision=model_source["revision"],
+        trust_remote_code=True,
+    )
+    distilled = _augment_scripts(distilled, tokenizer)
     minimum = int(config.section("distillation")["minimum_per_language"])
     too_small = {language: len(rows) for language, rows in distilled.items() if len(rows) < minimum}
     if too_small:
@@ -197,6 +309,21 @@ def mix_data(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
         english = processed[split]
         hant = [row for row in distilled["zh_Hant"] if row["metadata"]["split"] == split]
         hans = [row for row in distilled["zh_Hans"] if row["metadata"]["split"] == split]
+        if split == "train":
+            english_categories = _by_category(english)
+            english_capacity = 4 * min(
+                _token_sum(english_categories["math"]) // 2,
+                _token_sum(english_categories["python"]),
+                _token_sum(english_categories["cpp"]),
+            )
+            target_per_chinese_language = round(
+                english_capacity
+                * float(language_targets["zh_Hant"])
+                / float(language_targets["en"])
+            )
+            max_repeats = int(config.section("data")["max_train_repeats_per_chinese_record"])
+            hant = _repeat_to_budget(hant, target_per_chinese_language, max_repeats)
+            hans = _repeat_to_budget(hans, target_per_chinese_language, max_repeats)
         chinese_budget = min(_token_sum(hant), _token_sum(hans))
         hant = _trim_to_budget(hant, chinese_budget) if chinese_budget else []
         hans = _trim_to_budget(hans, chinese_budget) if chinese_budget else []
@@ -243,6 +370,8 @@ def mix_data(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
                 "parent_prompt_sha256",
                 "teacher_repo",
                 "teacher_revision",
+                "script_conversion_from",
+                "sampling_repeat_index",
             )
             if row["metadata"].get(key) is not None
         }

@@ -5,8 +5,8 @@ Charlie alpha（模型識別碼：`Charlie-Alpha-4B`）是一個專攻數學與�
 [`Qwen3-4B-Thinking-2507`](https://huggingface.co/Qwen/Qwen3-4B-Thinking-2507)
 為底模，在 Apple Silicon 上使用 MLX 4-bit QLoRA 微調；這不是從零預訓練的模型。
 
-> 目前狀態：訓練流程建置中，尚未發布權重或宣稱能力提升。品質門檻未通過時，
-> `v0.1.0` 會明確標成 Experimental。
+> 目前狀態：`Experimental v0.1.0`。60 題同條件小型評測由底模 38.33% 提升至
+> 45.00%，但簡中由 80.00% 降至 40.00%，未通過語言退步門檻，不宣稱全面提升。
 
 [简体中文](README.zh-Hans.md) · [English](README.en.md) · [模型卡](MODEL_CARD.md)
 
@@ -16,9 +16,22 @@ Charlie alpha（模型識別碼：`Charlie-Alpha-4B`）是一個專攻數學與�
 
 - 600 筆已驗證的英文短軌跡：數學 300、Python 150、C++ 150。
 - 最多各 50 筆繁中與簡中教師精煉；教師下載或生成太慢時，各語言至少 10 筆即可繼續。
-- 1,024 tokens、rank 8、最後 8 層 Q/V LoRA、單一短試跑與單一正式設定。
-- 正式訓練上限 6 小時、1 epoch；OOM 時固定降到 768 tokens，再降到最後 4 層。
+- 1,024 tokens；以兩個 40-iteration 短試跑比較最後 16 層的 rank-8 Q/V 與
+  rank-16 Q/K/V/O LoRA，再只用勝出的設定正式訓練。
+- 正式訓練上限 6 小時、2 epochs；全 valid set 連續兩次未改善即停止。OOM 時固定降到
+  768 tokens，再降到最後 8 層。
 - 先產出可用的 MLX adapter；完整 GGUF 與大評測不會擠占核心訓練時間。
+
+## 實際一晚結果
+
+- rank-8 Q/V、最後 16 層勝出；最佳完整驗證 loss 從 1.106 降至 0.586。
+- Metal 固定降級用盡後在累計第 490 步資源早停，發布累計第 440 步的最佳檢查點。
+- MATH-500 38.46% → 53.85%、GSM8K 66.67% → 75.00%、MBPP+ 0% → 20.00%。
+- 英文 32.00% → 44.00%、繁中維持 60.00%、簡中 80.00% → 40.00%。
+- adapter、融合 MLX、沙箱、隱私與乾淨環境載入皆通過；GGUF 等價評測延後。
+
+完整數字與限制見 [`reports/evaluation.json`](reports/evaluation.json) 與
+[`MODEL_CARD.md`](MODEL_CARD.md)。
 
 ## 快速開始
 
@@ -60,4 +73,3 @@ make serve
 
 專案程式碼與模型衍生物預定以 [Apache-2.0](LICENSE) 發布；資料仍受各上游授權約束。
 詳見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
-

@@ -39,10 +39,11 @@ building llama.cpp, quantizing, and parity evaluation can displace the core trai
 
 ## Fixed fallbacks
 
-The first pilot uses 1,024 tokens and Q/V LoRA on the last eight layers. A Metal out-of-memory
-failure changes only one dimension at a time: first 768 tokens, then four LoRA layers. Other errors
-stop the run and preserve logs. Checkpoints are written every 50 iterations; the main run resumes
-from the selected pilot adapter.
+Two 40-iteration pilots use 1,024 tokens on the last 16 layers: rank-8 Q/V and rank-16 Q/K/V/O.
+They share seed 42 and the complete validation set; a trilingual canary score wins first, with final
+validation loss as the tie-breaker. A Metal out-of-memory failure changes only one dimension at a
+time: first 768 tokens, then eight LoRA layers. Other errors stop the run and preserve logs.
+Checkpoints are written every 50 iterations; the main run resumes from the selected pilot adapter.
 
 ## Security boundary
 
@@ -50,4 +51,3 @@ Generated Python and C++ execute through the macOS sandbox with no network acces
 to a temporary directory, five CPU-seconds per process, a 1.5 GiB resident-memory monitor, and a
 wall-clock timeout. C++ is compiled with the installed Command Line Tools compiler inside the same
 file/network sandbox. `make test` includes live probes for denied network and external writes.
-

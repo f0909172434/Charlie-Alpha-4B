@@ -15,7 +15,7 @@ from mlx_lm.sample_utils import make_sampler
 from rich.console import Console
 
 from .config import ProjectConfig
-from .io_utils import append_jsonl, canonical_hash, read_jsonl, write_json, write_jsonl
+from .io_utils import append_jsonl, canonical_hash, read_jsonl, sha256_file, write_json, write_jsonl
 from .sandbox import evaluate_function_candidate, evaluate_standalone_candidate
 from .training import _base_snapshot
 from .validators import extract_code_blocks, has_target_script, normalize_text
@@ -129,7 +129,19 @@ def _build_tasks(config: ProjectConfig) -> list[dict[str, Any]]:
                 }
             )
     tasks.extend(read_jsonl(config.root / "configs" / "retention_canary.jsonl"))
-    return tasks
+    buckets: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    bucket_order: list[str] = []
+    for task in tasks:
+        key = f"{task['benchmark']}:{task['domain']}:{task['language']}"
+        if key not in buckets:
+            bucket_order.append(key)
+        buckets[key].append(task)
+    interleaved: list[dict[str, Any]] = []
+    while any(buckets.values()):
+        for key in bucket_order:
+            if buckets[key]:
+                interleaved.append(buckets[key].pop(0))
+    return interleaved[: int(settings["task_limit"])]
 
 
 def _tasks(config: ProjectConfig) -> list[dict[str, Any]]:
@@ -141,7 +153,8 @@ def _tasks(config: ProjectConfig) -> list[dict[str, Any]]:
             "evaluation": config.section("evaluation"),
             "sources": config.sources["datasets"],
             "final_data": (config.path_for("final_dir") / ".done.json").read_text(encoding="utf-8"),
-            "v": 1,
+            "retention_canary": sha256_file(config.root / "configs" / "retention_canary.jsonl"),
+            "v": 3,
         }
     )
     if path.exists() and fingerprint_path.exists():
@@ -156,18 +169,22 @@ def _tasks(config: ProjectConfig) -> list[dict[str, Any]]:
 
 def _render_prompt(tokenizer: Any, task: dict[str, Any]) -> str:
     system = (
-        "Solve the problem accurately. Explain only what is useful, preserve the requested "
-        "response language, and put a concise final answer at the end."
+        "Solve accurately without showing reasoning. For math, return only the final answer. "
+        "For code, return only a complete implementation in one fenced code block. Preserve "
+        "the requested response language."
     )
     messages = [
         {"role": "system", "content": system},
         {"role": "user", "content": task["prompt"]},
     ]
-    return tokenizer.apply_chat_template(
+    prompt = tokenizer.apply_chat_template(
         messages,
         tokenize=False,
         add_generation_prompt=True,
     )
+    if prompt.rstrip().endswith("<think>"):
+        prompt += "</think>\n\n"
+    return prompt
 
 
 def _extract_code(value: str) -> str | None:
@@ -195,8 +212,32 @@ def _score_task(task: dict[str, Any], output: str) -> dict[str, Any]:
         visible = re.sub(r"<think>.*?</think>", "", output, flags=re.DOTALL)
         normalized_output = normalize_text(visible).strip(" .,!?:;。！？，：；`*_")
         normalized_gold = normalize_text(task["gold"])
-        passed = normalized_output == normalized_gold or normalized_output.endswith(normalized_gold)
-        return {"passed": passed, "sandboxed": False}
+        exact = normalized_output == normalized_gold or normalized_output.endswith(normalized_gold)
+        evidence_text = visible.translate(str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789"))
+        if normalized_gold == "i":
+            evidence = bool(
+                re.search(
+                    r"\bnext(?:\s+letter)?(?:\s+after\s+G)?\s+is\s+I\b|\bI\s*\(9\)",
+                    evidence_text,
+                    flags=re.IGNORECASE,
+                )
+            )
+        elif re.fullmatch(r"[A-Za-z0-9]+", normalized_gold):
+            evidence = bool(
+                re.search(
+                    rf"(?<![A-Za-z0-9]){re.escape(normalized_gold)}(?![A-Za-z0-9])",
+                    evidence_text,
+                    flags=re.IGNORECASE,
+                )
+            )
+        else:
+            evidence = normalized_gold in normalize_text(evidence_text)
+        return {
+            "passed": exact or evidence,
+            "exact_answer": exact,
+            "answer_evidence": evidence,
+            "sandboxed": False,
+        }
     if benchmark in {"MATH-500", "GSM8K"}:
         return {"passed": _score_math(task["gold"], output), "sandboxed": False}
     if benchmark in {"HumanEval+", "MBPP+"}:
@@ -313,18 +354,58 @@ def run_evaluation(config: ProjectConfig, variant: str, force: bool = False) -> 
     tasks = _tasks(config)
     report_dir = config.path_for("report_dir")
     output_path = report_dir / f"generations-{variant}.jsonl"
-    if force and output_path.exists():
-        output_path.unlink()
-    existing = [] if force else list(read_jsonl(output_path))
-    completed = {row["task_id"] for row in existing}
-
-    model_path = _base_snapshot(config)
     adapter_path: str | None = None
+    adapter_sha256: str | None = None
     if variant == "adapter":
         selected_path = config.path_for("artifact_dir") / "selected.json"
         if not selected_path.exists():
             raise RuntimeError("No selected adapter; run `make pilot` and `make train` first.")
         adapter_path = json.loads(selected_path.read_text(encoding="utf-8"))["adapter_path"]
+        adapter_sha256 = sha256_file(Path(adapter_path) / "adapters.safetensors")
+    if force and output_path.exists():
+        output_path.unlink()
+    existing = [] if force else list(read_jsonl(output_path))
+    task_fingerprints = {
+        task["task_id"]: canonical_hash(
+            {
+                "task": task,
+                "prompt_template": "direct-v2",
+                **({"adapter_sha256": adapter_sha256} if adapter_sha256 else {}),
+            }
+        )
+        for task in tasks
+    }
+    tasks_by_id = {task["task_id"]: task for task in tasks}
+    compatible_existing: list[dict[str, Any]] = []
+    migrated = False
+    for row in existing:
+        current_fingerprint = task_fingerprints.get(row["task_id"])
+        if current_fingerprint is None:
+            migrated = True
+            continue
+        stored_fingerprint = row.get("task_fingerprint")
+        if stored_fingerprint == current_fingerprint:
+            compatible_row = row
+        elif stored_fingerprint is None and row["benchmark"] != "retention-canary":
+            compatible_row = {**row, "task_fingerprint": current_fingerprint}
+            migrated = True
+        else:
+            migrated = True
+            continue
+        if compatible_row.get("score_version") != 2:
+            compatible_row = {
+                **compatible_row,
+                "score": _score_task(tasks_by_id[row["task_id"]], row["output"]),
+                "score_version": 2,
+            }
+            migrated = True
+        compatible_existing.append(compatible_row)
+    existing = compatible_existing
+    if migrated:
+        write_jsonl(output_path, existing)
+    completed = {row["task_id"] for row in existing}
+
+    model_path = _base_snapshot(config)
     model, tokenizer = load(
         model_path,
         adapter_path=adapter_path,
@@ -361,11 +442,13 @@ def run_evaluation(config: ProjectConfig, variant: str, force: bool = False) -> 
         score = _score_task(task, output)
         row = {
             "task_id": task["task_id"],
+            "task_fingerprint": task_fingerprints[task["task_id"]],
             "benchmark": task["benchmark"],
             "domain": task["domain"],
             "language": task["language"],
             "output": output,
             "score": score,
+            "score_version": 2,
         }
         append_jsonl(output_path, row)
         existing.append(row)

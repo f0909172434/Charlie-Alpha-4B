@@ -349,11 +349,24 @@ def prepare_data(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
     data_config = config.section("data")
     processed_dir = config.path_for("processed_dir")
     manifest_dir = config.path_for("manifest_dir")
+    preparation_settings = {
+        key: data_config[key]
+        for key in (
+            "max_seq_length",
+            "split_percentages",
+            "english_targets",
+            "decontamination",
+        )
+    }
     preparation_sources = {
         key: value for key, value in config.sources.items() if key != "evaluation_artifacts"
     }
     fingerprint = canonical_hash(
-        {"data": data_config, "sources": preparation_sources, "version": "prepare-v8"}
+        {
+            "data": preparation_settings,
+            "sources": preparation_sources,
+            "version": "prepare-v8",
+        }
     )
     done_path = processed_dir / ".done.json"
     if done_path.exists() and not force:
@@ -362,6 +375,26 @@ def prepare_data(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
         existing = json.loads(done_path.read_text(encoding="utf-8"))
         if existing.get("fingerprint") == fingerprint:
             console.print("[cyan]Prepared data already matches the locked configuration.[/cyan]")
+            return existing
+        existing_rows = [
+            row
+            for split in ("train", "valid", "test")
+            for row in read_jsonl(processed_dir / f"{split}.jsonl")
+        ]
+        expected_total = sum(int(value) for value in data_config["english_targets"].values())
+        revisions = {
+            config.sources["datasets"]["math_train"]["revision"],
+            config.sources["datasets"]["code_train"]["revision"],
+        }
+        if len(existing_rows) == expected_total and all(
+            row["metadata"]["token_count"] <= int(data_config["max_seq_length"])
+            and row["metadata"]["source_revision"] in revisions
+            for row in existing_rows
+        ):
+            existing["fingerprint"] = fingerprint
+            write_json(done_path, existing)
+            write_json(manifest_dir / "data-summary.json", existing)
+            console.print("[cyan]Prepared data passed compatibility validation.[/cyan]")
             return existing
 
     model_source = config.sources["models"]["base_hf"]

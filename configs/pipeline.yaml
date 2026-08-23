@@ -28,6 +28,7 @@ data:
   distilled_targets:
     zh_Hant: 50
     zh_Hans: 50
+  max_train_repeats_per_chinese_record: 8
   language_token_ratios:
     en: 0.84
     zh_Hant: 0.08
@@ -54,28 +55,39 @@ training:
   seed: 42
   batch_size: 1
   grad_accumulation_steps: 4
-  num_layers: 8
-  fallback_num_layers: 4
+  num_layers: 16
+  fallback_num_layers: 8
   max_seq_length: 1024
   fallback_seq_length: 768
-  max_epochs: 1
+  max_epochs: 2
   max_seconds: 21600
   pilot_iterations: 40
   checkpoint_every: 50
   eval_every: 50
-  val_batches: 10
+  val_batches: -1
   early_stop_evaluations: 2
   warmup_fraction: 0.03
   candidates:
-    - name: "overnight-qv-r8"
+    - name: "pilot-a-qv-r8"
       learning_rate: 1.0e-5
       rank: 8
       scale: 2.0
       dropout: 0.05
       keys: ["self_attn.q_proj", "self_attn.v_proj"]
+    - name: "pilot-b-qkvo-r16"
+      learning_rate: 5.0e-6
+      rank: 16
+      scale: 2.0
+      dropout: 0.05
+      keys:
+        - "self_attn.q_proj"
+        - "self_attn.k_proj"
+        - "self_attn.v_proj"
+        - "self_attn.o_proj"
 
 evaluation:
   temperature: 0.0
+  task_limit: 60
   math_max_new_tokens: 768
   code_max_new_tokens: 768
   math500_limit: 20

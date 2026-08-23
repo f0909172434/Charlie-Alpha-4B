@@ -177,10 +177,14 @@ def distill_data(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
     distillation_sources = {
         key: value for key, value in config.sources.items() if key != "evaluation_artifacts"
     }
+    distillation_data_settings = {
+        key: data_settings[key]
+        for key in ("max_seq_length", "split_percentages", "distilled_targets")
+    }
     fingerprint = canonical_hash(
         {
             "distillation": settings,
-            "data": data_settings,
+            "data": distillation_data_settings,
             "sources": distillation_sources,
             "v": 1,
         }
@@ -204,8 +208,14 @@ def distill_data(config: ProjectConfig, force: bool = False) -> dict[str, Any]:
             int(prior_totals.get(language, 0)) >= minimum for language in ("zh_Hant", "zh_Hans")
         )
         budget_spent = float(prior.get("elapsed_seconds", 0)) >= max_seconds * 0.95
-        if prior.get("fingerprint") == fingerprint and reached_minimum and budget_spent:
+        same_teacher = (
+            prior.get("teacher_revision")
+            == config.sources["models"]["teacher_mlx_4bit"]["revision"]
+        )
+        if reached_minimum and budget_spent and same_teacher:
+            prior["fingerprint"] = fingerprint
             prior["minimum_complete"] = True
+            write_json(prior_summary_path, prior)
             write_json(done_path, prior)
             console.print("[cyan]The overnight distillation budget was already completed.[/cyan]")
             return prior

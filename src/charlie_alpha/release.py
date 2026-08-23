@@ -41,6 +41,14 @@ def _data_gate(config: ProjectConfig) -> dict[str, Any]:
     failures: list[str] = []
     group_splits: dict[str, set[str]] = defaultdict(set)
     training_prompt_references: list[set[tuple[str, ...]]] = []
+    train_language_tokens: dict[str, int] = defaultdict(int)
+    train_domain_tokens: dict[str, int] = defaultdict(int)
+    train_code_language_tokens: dict[str, int] = defaultdict(int)
+    locked_training_revisions = {
+        config.sources["datasets"]["math_train"]["revision"],
+        config.sources["datasets"]["code_train"]["revision"],
+    }
+    max_repeats = int(config.section("data")["max_train_repeats_per_chinese_record"])
     counts = 0
     for split in ("train", "valid", "test"):
         path = final_dir / f"{split}.jsonl"
@@ -53,7 +61,25 @@ def _data_gate(config: ProjectConfig) -> dict[str, Any]:
             metadata = row["metadata"]
             parent = metadata.get("parent_prompt_sha256") or metadata["prompt_sha256"]
             group_splits[f"{metadata['source_repo']}:{metadata['source_id']}:{parent}"].add(split)
+            if metadata.get("source_revision") not in locked_training_revisions:
+                failures.append(f"{path.name}: source revision is not locked")
+            repeat_index = int(metadata.get("sampling_repeat_index", 0))
+            if repeat_index < 0 or repeat_index >= max_repeats:
+                failures.append(f"{path.name}: sampling repeat index exceeds the configured cap")
+            if split != "train" and repeat_index != 0:
+                failures.append(f"{path.name}: validation/test records must not be repeated")
+            if metadata.get("domain") == "code" and not metadata.get("verification", {}).get(
+                "passed"
+            ):
+                failures.append(f"{path.name}: code record lacks a passing sandbox verification")
             if split == "train":
+                assistant_tokens = int(metadata.get("assistant_token_count", 0))
+                train_language_tokens[str(metadata.get("language"))] += assistant_tokens
+                train_domain_tokens[str(metadata.get("domain"))] += assistant_tokens
+                if metadata.get("domain") == "code":
+                    train_code_language_tokens[str(metadata.get("code_language"))] += (
+                        assistant_tokens
+                    )
                 prompt_ngrams = word_ngrams(row["messages"][0]["content"], 8)
                 if prompt_ngrams:
                     training_prompt_references.append(prompt_ngrams)
@@ -68,6 +94,37 @@ def _data_gate(config: ProjectConfig) -> dict[str, Any]:
             threshold=0.5,
         ):
             failures.append(f"retention canary overlaps training data: {canary['task_id']}")
+
+    def check_ratios(
+        actual: dict[str, int], targets: dict[str, float], tolerance: float, label: str
+    ) -> None:
+        total = sum(actual.values())
+        if total <= 0:
+            failures.append(f"{label}: no assistant tokens")
+            return
+        for key, target in targets.items():
+            ratio = actual.get(key, 0) / total
+            if abs(ratio - float(target)) > tolerance:
+                failures.append(
+                    f"{label}.{key} ratio {ratio:.4f} differs from target {float(target):.4f}"
+                )
+
+    data_settings = config.section("data")
+    check_ratios(train_language_tokens, data_settings["language_token_ratios"], 0.015, "language")
+    check_ratios(train_domain_tokens, data_settings["domain_token_ratios"], 0.015, "domain")
+    check_ratios(
+        train_code_language_tokens,
+        data_settings["code_language_ratios"],
+        0.02,
+        "code_language",
+    )
+    data_summary_path = config.root / "data" / "manifests" / "data-summary.json"
+    if not data_summary_path.exists():
+        failures.append("missing data-summary.json")
+    else:
+        data_summary = json.loads(data_summary_path.read_text(encoding="utf-8"))
+        if int(data_summary.get("benchmark_reference_count", 0)) <= 0:
+            failures.append("data preparation has no benchmark decontamination references")
     return {"passed": counts > 0 and not failures, "records": counts, "failures": failures[:20]}
 
 
@@ -81,7 +138,6 @@ def _tracked_content_gate(config: ProjectConfig) -> dict[str, Any]:
     )
     tracked = [line for line in result.stdout.splitlines() if line]
     forbidden_prefixes = (
-        ".env",
         ".venv/",
         "artifacts/",
         "models/",
@@ -89,7 +145,13 @@ def _tracked_content_gate(config: ProjectConfig) -> dict[str, Any]:
         "data/distilled/",
         "data/final/",
     )
-    forbidden = [path for path in tracked if path == ".env" or path.startswith(forbidden_prefixes)]
+    forbidden = [
+        path
+        for path in tracked
+        if path == ".env"
+        or (path.startswith(".env.") and path != ".env.example")
+        or path.startswith(forbidden_prefixes)
+    ]
     private_home = str(Path.home())
     for tracked_path in tracked:
         path = config.root / tracked_path
