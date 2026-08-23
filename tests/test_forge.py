@@ -1,8 +1,11 @@
+import json
+
 import mlx.core as mx
 import numpy as np
 import pytest
 
 import charlie_alpha.forge_training as forge_training
+from charlie_alpha.config import ProjectConfig
 from charlie_alpha.forge_data import (
     _allocate,
     _protect,
@@ -145,6 +148,42 @@ def test_batch_iterator_reuses_configured_padding_buckets() -> None:
 def test_short_pilot_warmup_never_wastes_an_optimizer_update() -> None:
     schedule = forge_training._schedule(1.0e-5, updates=8, warmup_fraction=0.03)
     assert float(schedule(mx.array(0))) == pytest.approx(1.0e-5)
+
+
+def test_full_training_runs_every_requested_epoch(tmp_path, monkeypatch) -> None:
+    artifact_dir = tmp_path / "artifacts"
+    final_dir = tmp_path / "final"
+    artifact_dir.mkdir()
+    final_dir.mkdir()
+    (artifact_dir / "pilot-selected.json").write_text(
+        json.dumps({"candidate": "winner"}), encoding="utf-8"
+    )
+    (final_dir / "train.jsonl").write_text("{}\n{}\n{}\n", encoding="utf-8")
+    config = ProjectConfig(
+        path=tmp_path / "pipeline.yaml",
+        root=tmp_path,
+        values={
+            "paths": {"artifact_dir": "artifacts", "final_dir": "final"},
+            "training_v2": {
+                "candidates": [{"name": "winner"}],
+                "full_epochs": 2,
+                "max_seconds": 60,
+                "early_stop_evaluations": 2,
+            },
+        },
+        sources={},
+    )
+    captured = {}
+
+    def fake_train(*args, **kwargs):
+        captured.update(kwargs)
+        return {"microsteps": kwargs["microsteps"]}
+
+    monkeypatch.setattr(forge_training, "_train_candidate", fake_train)
+    monkeypatch.setattr(forge_training, "_start_caffeinate", lambda: None)
+    result = forge_training.run_forge_training(config)
+    assert captured["microsteps"] == 6
+    assert result["microsteps"] == 6
 
 
 def test_gradient_checkpointing_wraps_each_layer_type_once(monkeypatch) -> None:

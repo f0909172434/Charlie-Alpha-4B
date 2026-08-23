@@ -398,7 +398,8 @@ def _train_candidate(
         selective_loss=False,
         padding_buckets=padding_buckets,
     )
-    microsteps = min(microsteps, len(train_dataset))
+    if microsteps < 1:
+        raise ValueError("Forge training requires at least one microstep")
     training_args = TrainingArgs(
         batch_size=1,
         iters=microsteps,
@@ -655,6 +656,10 @@ def run_forge_training(config: ProjectConfig, force: bool = False) -> dict[str, 
     finally:
         if caffeinate is not None and caffeinate.poll() is None:
             caffeinate.terminate()
+    if int(result["microsteps"]) != microsteps:
+        raise RuntimeError(
+            f"Forge requested {microsteps} microsteps but ran {result['microsteps']}"
+        )
     selected = {**result, "recipe_frozen": False}
     write_json(artifact_dir / "selected.json", selected)
     return selected
