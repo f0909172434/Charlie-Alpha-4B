@@ -670,7 +670,6 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
         output_path.unlink()
     fingerprint = canonical_hash(
         {
-            "selection": selection["fingerprint"],
             "teacher": config.sources["models"]["teacher_mlx_4bit"],
             "translation": {
                 key: config.section("forge")[key]
@@ -680,6 +679,7 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
                 )
             },
             "placeholder_version": 3,
+            "translation_cache_version": 1,
         }
     )
     base_source = config.sources["models"]["research_base_mlx_4bit"]
@@ -689,11 +689,15 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
     length_tokenizer = AutoTokenizer.from_pretrained(base_path, trust_remote_code=True)
     maximum = int(config.section("forge")["max_seq_length"])
 
+    teacher = config.sources["models"]["teacher_mlx_4bit"]
+
     def usable_translation(row: dict[str, Any]) -> bool:
         candidate_id = row.get("candidate_id")
         if candidate_id not in candidates:
             return False
-        if row.get("translation_fingerprint") != fingerprint:
+        if row.get("teacher_repo") != teacher["repo_id"]:
+            return False
+        if row.get("teacher_revision") != teacher["revision"]:
             return False
         if row.get("source_sha256") != canonical_hash(candidates[candidate_id]):
             return False
@@ -704,7 +708,7 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
         )
 
     existing = [
-        row
+        {**row, "translation_fingerprint": fingerprint}
         for row in read_jsonl(output_path)
         if usable_translation(row)
     ]
@@ -750,7 +754,6 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
                 if candidate_id not in completed
             )
 
-    teacher = config.sources["models"]["teacher_mlx_4bit"]
     teacher_path = snapshot_download(repo_id=teacher["repo_id"], revision=teacher["revision"])
     model, tokenizer = load(teacher_path, tokenizer_config={"trust_remote_code": True})
     model.eval()
@@ -1007,7 +1010,7 @@ def build_forge_data(config: ProjectConfig, force: bool = False) -> dict[str, An
             "selection": sha256_file(selection_path),
             "translations": sha256_file(translation_path),
             "forge": settings,
-            "version": 1,
+            "version": 2,
         }
     )
     if done_path.exists() and not force:
@@ -1086,13 +1089,20 @@ def build_forge_data(config: ProjectConfig, force: bool = False) -> dict[str, An
             if row["metadata"]["split"] == "train"
             and row["metadata"]["category"] == category
             and row["metadata"]["candidate_id"] not in chosen_train_ids
+            and int(row["metadata"]["token_count_qwen35"])
+            <= int(settings["translation_source_max_length"])
         ]
         replay[category] = _balanced_mmr(
             eligible, target, float(settings["diversity_penalty"])
         )
 
     desired = settings["language_gradient_ratios"]
-    observed_frequency = {"en": 6 / 8, "zh_Hans": 1 / 8, "zh_Hant": 1 / 8}
+    group_size = replay_per_group + 3
+    observed_frequency = {
+        "en": (replay_per_group + 1) / group_size,
+        "zh_Hans": 1 / group_size,
+        "zh_Hant": 1 / group_size,
+    }
     language_weights = {
         language: float(desired[language]) / observed_frequency[language]
         for language in observed_frequency

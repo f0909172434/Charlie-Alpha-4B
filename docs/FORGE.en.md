@@ -18,16 +18,21 @@ success criterion is higher accuracy than the same Qwen3.5-4B base on a frozen u
    13 Python, and 13 C++ groups. Diversity-aware replay prevents one narrow template from winning
    merely because its loss is large.
 4. **Coupled language updates.** Every group contains one task in English, Simplified Chinese, and
-   Traditional Chinese, followed by five high-value English replay examples from the same ability.
-   All eight microsteps form one optimizer update. Per-example weights make the nominal loss mass
+   Traditional Chinese, followed by three high-value English replay examples from the same ability.
+   All six microsteps form one optimizer update. Per-example weights make the nominal loss mass
    exactly 70/15/15 across English/Simplified/Traditional.
 5. **Lossless translation.** Code, LaTeX, URLs, and numbers become immutable placeholders before a
    single 9B translation to Simplified Chinese. Protected OpenCC conversion then produces the
    Traditional version. Every placeholder and preserved structure is verified before acceptance.
-6. **Equal-cost ablations.** Last-16-layer rank-8 LoRA, rank-8 LoRA+, LoRA+ without token
-   selection, and all-32-layer rank-4 LoRA+ must have identical trainable parameter counts. A
-   nine-task locked trilingual canary picks the highest-accuracy pilot; validation loss and elapsed
-   time break ties.
+6. **Equal-cost ablations.** On-device trials showed that 16 trainable layers OOM and eight layers
+   cause severe swapping. Candidates therefore use the final four layers at rank 32, covering
+   three DeltaNet layers and one full-attention layer. Standard LoRA, conservative LoRA+, fast
+   LoRA+, and fast LoRA+ without token selection have identical trainable parameter counts. A
+   nine-task locked trilingual canary chooses by accuracy, then validation loss and elapsed time.
+7. **Compile-shape compression.** Sequences are capped at 704 tokens and padded into only 384,
+   544, or 704-token buckets, allowing MLX to reuse backward graphs. Reducing replay from five to
+   three also cuts microsteps per capability update by 25% without changing the 70/15/15 gradient
+   mass.
 
 The ingredients are motivated by [Rho-1](https://arxiv.org/abs/2404.07965),
 [LESS](https://arxiv.org/abs/2402.04333), [BIDS](https://arxiv.org/abs/2501.12147),

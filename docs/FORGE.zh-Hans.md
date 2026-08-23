@@ -15,15 +15,19 @@ alpha v0.2 面向 24 GB Apple Silicon 笔记本的研究配方。它不宣称创
    最大的 token，并始终保留答案末尾至少 32 tokens。
 3. **能力平衡 replay。** 52 个 optimizer 更新组固定为数学 26、Python 13、C++ 13；
    多样性约束避免单一模板只因损失较高而占满数据。
-4. **三语耦合更新。** 每组先放同一题的英文、简中、繁中版本，再放五条同能力英文 replay，
-   八个 microsteps 合并为一次更新。样本权重让英文／简中／繁中的名义 loss 质量精确为
+4. **三语耦合更新。** 每组先放同一题的英文、简中、繁中版本，再放三条同能力英文 replay，
+   六个 microsteps 合并为一次更新。样本权重让英文／简中／繁中的名义 loss 质量精确为
    70%／15%／15%。
 5. **无损翻译。** 程序码、LaTeX、URL 和数字先替换成不可更改的 placeholder，只让 9B
    教师生成一次简中翻译，再用保护区段的 OpenCC 产生繁中。所有 placeholder 与结构在接纳
    前都会逐项验证。
-6. **等成本消融。** 比较最后 16 层 rank-8 LoRA、rank-8 LoRA+、不做 token 选择的
-   LoRA+、全部 32 层 rank-4 LoRA+；四者可训练参数必须完全相等。九题锁定三语 canary
-   先比较正确率，再以验证 loss 与耗时打破平手。
+6. **等成本消融。** 实机试验显示最后 16 层会 OOM、8 层会严重使用 swap，因此候选统一为
+   最后四层 rank-32，刚好覆盖三个 DeltaNet 层与一个完整注意力层。比较标准 LoRA、保守
+   LoRA+、高学习率 LoRA+，以及不做 token 选择的高学习率 LoRA+；四者可训练参数完全相同。
+   九题锁定三语 canary 先按正确率、再按验证 loss 与耗时选择。
+7. **编译形状压缩。** 序列限制为 704 tokens，只使用 384、544、704 三个 padding buckets，
+   让 MLX 重用反向图。把 replay 从五条降到三条，也让每次能力更新的 microsteps 减少 25%，
+   同时保持 70%／15%／15% 梯度质量不变。
 
 设计依据包括 [Rho-1](https://arxiv.org/abs/2404.07965)、
 [LESS](https://arxiv.org/abs/2402.04333)、[BIDS](https://arxiv.org/abs/2501.12147)、

@@ -48,10 +48,12 @@ class ForgeDataset:
         seed: int,
         grouped: bool,
         selective_loss: bool = True,
+        padding_buckets: list[int] | None = None,
     ) -> None:
         self.group_size = group_size
         self.seed = seed
         self.grouped = grouped
+        self.padding_buckets = sorted(set(padding_buckets or []))
         self.items: list[tuple[list[int], int, list[int], float]] = []
         for row in rows:
             tokens, offset = _tokenize_chat(tokenizer, row["messages"])
@@ -111,10 +113,22 @@ def forge_iterate_batches(
                 raise RuntimeError(
                     f"Forge forbids truncation: {len(tokens)} > {max_seq_length} tokens"
                 )
-            padded_length = min(
-                max_seq_length,
-                1 + 32 * ((len(tokens) + 31) // 32),
-            )
+            if dataset.padding_buckets:
+                eligible_buckets = [
+                    bucket
+                    for bucket in dataset.padding_buckets
+                    if len(tokens) <= bucket <= max_seq_length
+                ]
+                if not eligible_buckets:
+                    raise RuntimeError(
+                        f"No Forge padding bucket fits {len(tokens)} tokens"
+                    )
+                padded_length = eligible_buckets[0]
+            else:
+                padded_length = min(
+                    max_seq_length,
+                    1 + 32 * ((len(tokens) + 31) // 32),
+                )
             batch = np.zeros((1, padded_length), dtype=np.int32)
             batch[0, : len(tokens)] = tokens
             target_mask = np.zeros((1, padded_length - 1), dtype=np.bool_)
@@ -358,6 +372,9 @@ def _train_candidate(
     train_rows = list(read_jsonl(final_dir / "train.jsonl"))
     valid_rows = list(read_jsonl(final_dir / "valid.jsonl"))
     group_size = int(settings["grad_accumulation_steps"])
+    padding_buckets = [int(value) for value in settings.get("padding_buckets", [])]
+    if padding_buckets and max(padding_buckets) != int(settings["max_seq_length"]):
+        raise ValueError("The largest Forge padding bucket must equal max_seq_length")
     train_dataset = ForgeDataset(
         train_rows,
         tokenizer,
@@ -365,6 +382,7 @@ def _train_candidate(
         seed=seed,
         grouped=True,
         selective_loss=bool(candidate.get("selective_loss", True)),
+        padding_buckets=padding_buckets,
     )
     valid_dataset = ForgeDataset(
         valid_rows,
@@ -373,6 +391,7 @@ def _train_candidate(
         seed=seed,
         grouped=False,
         selective_loss=False,
+        padding_buckets=padding_buckets,
     )
     microsteps = min(microsteps, len(train_dataset))
     training_args = TrainingArgs(

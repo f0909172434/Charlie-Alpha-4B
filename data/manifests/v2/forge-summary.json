@@ -1,19 +1,19 @@
 {
-  "fingerprint": "428ed900afa36a903d177521b54b6bea30525ce54daa58ee9bf5cc8905cd4ed6",
+  "fingerprint": "d071ed1ace985bb8c4531f1c26225e2b4b42497f91008c05da1951af3459f3cc",
   "method": "Forge triad-coupled selective distillation",
-  "train_records": 416,
+  "train_records": 312,
   "valid_records": 18,
   "semantic_groups": 52,
-  "group_size": 8,
+  "group_size": 6,
   "category_groups": {
     "math": 26,
     "python": 13,
     "cpp": 13
   },
   "language_gradient_mass": {
-    "en": 291.1999989600004,
-    "zh_Hans": 62.40000000000006,
-    "zh_Hant": 62.40000000000006
+    "en": 218.40000000000074,
+    "zh_Hans": 46.799999999999955,
+    "zh_Hant": 46.799999999999955
   },
   "language_gradient_ratios": {
     "en": 0.7,
@@ -21,19 +21,19 @@
     "zh_Hant": 0.15
   },
   "category_gradient_mass": {
-    "math": 207.9999994800002,
-    "python": 103.99999973999986,
-    "cpp": 103.99999973999986
+    "math": 156.0000000000002,
+    "python": 77.99999999999993,
+    "cpp": 77.99999999999993
   },
   "category_gradient_ratios": {
     "cpp": 0.25,
     "math": 0.5,
     "python": 0.25
   },
-  "english_full_target_tokens": 71537,
-  "english_selected_target_tokens": 36118,
-  "english_token_keep_ratio": 0.504886,
-  "train_sha256": "5e87a8ee504c40988cc8a62c0f8445a211274bcc40ecab6ae78639d6a60dec20",
+  "english_full_target_tokens": 41222,
+  "english_selected_target_tokens": 21724,
+  "english_token_keep_ratio": 0.527,
+  "train_sha256": "9ced50dab164230fe800c4027f31d543aacc6dcf0e23eeef57de75cc382e7f9e",
   "valid_sha256": "c947b262563e37bbf4ba500a6d4ba866b272a613a6d0c2ea11b68fad30de21b6",
   "selected_train_ids": [
     "0dc10e3572b3128f0b74c1a9",
@@ -101,6 +101,6 @@
   "teacher_score_sha256": "be02e6ab2b572d18da9ac7a1e0be3fb84cac72aa4540650c4ea37f9858b322df",
   "selection_sha256": "80b4caf5b67b6d8dbf8bdbe48caf153edfb1235fe96ff4dd07678fb4685922f4",
   "translation_sha256": "fbe28890fd5b602275b52c4da64323af146681f689d661165a11ad16f8470861",
-  "record_manifest_sha256": "11d232a69f951b1a55c633dddf89a94e2f696e30ee6b256b300799d44c153758",
+  "record_manifest_sha256": "57d5c44622495dff4b4ec0e738a123647da3250564348cf97345f604c00b76cf",
   "policy": "metadata-and-hashes-only-no-training-text"
 }

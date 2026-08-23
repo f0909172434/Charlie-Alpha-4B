@@ -123,6 +123,23 @@ def test_batch_iterator_keeps_semantic_groups_together() -> None:
     assert signatures[0] != signatures[3]
 
 
+def test_batch_iterator_reuses_configured_padding_buckets() -> None:
+    dataset = ForgeDataset(
+        [_row("group-a", 0)],
+        FakeTokenizer(),
+        group_size=1,
+        seed=42,
+        grouped=True,
+        padding_buckets=[8, 16, 32],
+    )
+    batch = next(
+        forge_iterate_batches(
+            dataset, batch_size=1, max_seq_length=32, loop=False
+        )
+    )
+    assert batch[0].shape == (1, 8)
+
+
 def test_gradient_checkpointing_wraps_each_layer_type_once(monkeypatch) -> None:
     class LayerA:
         pass

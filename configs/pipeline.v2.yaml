@@ -30,7 +30,7 @@ forge:
     en: 0.70
     zh_Hans: 0.15
     zh_Hant: 0.15
-  english_replay_per_group: 5
+  english_replay_per_group: 3
   selective_keep_fraction: 0.75
   final_token_floor: 32
   excess_loss_floor: 0.0
@@ -41,17 +41,18 @@ forge:
 
 training_v2:
   batch_size: 1
-  grad_accumulation_steps: 8
-  num_layers: 16
-  max_seq_length: 832
-  rank: 8
-  scale: 2.0
+  grad_accumulation_steps: 6
+  num_layers: 4
+  max_seq_length: 704
+  padding_buckets: [384, 544, 704]
+  rank: 32
+  scale: 20.0
   dropout: 0.05
-  pilot_microsteps: 64
-  full_epochs: 1
+  pilot_microsteps: 48
+  full_epochs: 2
   max_seconds: 18000
-  validation_every: 64
-  checkpoint_every: 64
+  validation_every: 48
+  checkpoint_every: 48
   early_stop_evaluations: 2
   warmup_fraction: 0.03
   weight_decay: 0.01
@@ -62,30 +63,30 @@ training_v2:
     - "self_attn.q_proj"
     - "self_attn.v_proj"
   candidates:
-    - name: "dual16-r8-standard"
-      num_layers: 16
-      rank: 8
+    - name: "tail4-r32-standard"
+      num_layers: 4
+      rank: 32
+      learning_rate_a: 1.0e-5
+      learning_rate_b: 1.0e-5
+      selective_loss: true
+    - name: "tail4-r32-loraplus"
+      num_layers: 4
+      rank: 32
+      learning_rate_a: 2.5e-6
+      learning_rate_b: 1.0e-5
+      selective_loss: true
+    - name: "tail4-r32-loraplus-fast"
+      num_layers: 4
+      rank: 32
       learning_rate_a: 5.0e-6
-      learning_rate_b: 5.0e-6
+      learning_rate_b: 2.0e-5
       selective_loss: true
-    - name: "dual16-r8-loraplus"
-      num_layers: 16
-      rank: 8
-      learning_rate_a: 2.0e-6
-      learning_rate_b: 8.0e-6
-      selective_loss: true
-    - name: "dual16-r8-loraplus-fullmask"
-      num_layers: 16
-      rank: 8
-      learning_rate_a: 2.0e-6
-      learning_rate_b: 8.0e-6
+    - name: "tail4-r32-loraplus-fast-fullmask"
+      num_layers: 4
+      rank: 32
+      learning_rate_a: 5.0e-6
+      learning_rate_b: 2.0e-5
       selective_loss: false
-    - name: "dual32-r4-loraplus"
-      num_layers: 32
-      rank: 4
-      learning_rate_a: 2.0e-6
-      learning_rate_b: 8.0e-6
-      selective_loss: true
 
 evaluation_v2:
   seed: 20260824
