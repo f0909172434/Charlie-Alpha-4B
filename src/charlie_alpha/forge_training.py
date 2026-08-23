@@ -38,6 +38,7 @@ class ForgeDataset:
         group_size: int,
         seed: int,
         grouped: bool,
+        selective_loss: bool = True,
     ) -> None:
         self.group_size = group_size
         self.seed = seed
@@ -46,7 +47,9 @@ class ForgeDataset:
         for row in rows:
             tokens, offset = _tokenize_chat(tokenizer, row["messages"])
             metadata = row["metadata"]
-            selected = metadata.get("selective_target_indices")
+            selected = (
+                metadata.get("selective_target_indices") if selective_loss else None
+            )
             if selected is None:
                 selected = list(range(max(0, offset - 1), len(tokens) - 1))
             self.items.append(
@@ -206,7 +209,11 @@ def _adapter_config(
             "candidate": candidate["name"],
             "learning_rate_a": float(candidate["learning_rate_a"]),
             "learning_rate_b": float(candidate["learning_rate_b"]),
-            "loss": "teacher-student-positive-excess-token-mask",
+            "loss": (
+                "teacher-student-positive-excess-token-mask"
+                if candidate.get("selective_loss", True)
+                else "full-assistant-token-mask"
+            ),
             "batch_order": "triad-coupled-groups",
         },
         "base_model_repo": config.sources["models"]["research_base_mlx_4bit"]["repo_id"],
@@ -348,6 +355,7 @@ def _train_candidate(
         group_size=group_size,
         seed=seed,
         grouped=True,
+        selective_loss=bool(candidate.get("selective_loss", True)),
     )
     valid_dataset = ForgeDataset(
         valid_rows,
@@ -355,6 +363,7 @@ def _train_candidate(
         group_size=1,
         seed=seed,
         grouped=False,
+        selective_loss=False,
     )
     microsteps = min(microsteps, len(train_dataset))
     training_args = TrainingArgs(

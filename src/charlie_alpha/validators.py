@@ -12,7 +12,7 @@ _FENCE_RE = re.compile(r"```[^\n]*\n(.*?)```", re.DOTALL)
 _DISPLAY_MATH_RE = re.compile(r"\\\[(.*?)\\\]|\$\$(.*?)\$\$", re.DOTALL)
 _INLINE_MATH_RE = re.compile(r"(?<!\$)\$(?!\$)(.+?)(?<!\$)\$(?!\$)", re.DOTALL)
 _PAREN_MATH_RE = re.compile(r"\\\((.*?)\\\)", re.DOTALL)
-_NUMBER_RE = re.compile(r"(?<![\w.])-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?")
+_NUMBER_RE = re.compile(r"(?<![A-Za-z0-9_.])-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?")
 _CJK_RE = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff]")
 _WHITESPACE_RE = re.compile(r"\s+")
 

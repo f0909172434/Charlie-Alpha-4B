@@ -1,6 +1,7 @@
 from charlie_alpha.validators import (
     extract_code_blocks,
     extract_formulas,
+    extract_numbers,
     has_target_script,
     is_contaminated,
     translation_preserves_source,
@@ -38,6 +39,10 @@ def test_extractors_and_script_checks() -> None:
 
 def test_word_ngrams_are_normalized() -> None:
     assert word_ngrams("A  B c", 2) == {("a", "b"), ("b", "c")}
+
+
+def test_numbers_adjacent_to_chinese_are_still_preserved() -> None:
+    assert extract_numbers("第3個、C++17、变量x2") == ["3", "17"]
 
 
 def test_contamination_compares_candidate_against_all_references() -> None:

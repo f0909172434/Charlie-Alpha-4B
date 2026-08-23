@@ -23,9 +23,10 @@ success criterion is higher accuracy than the same Qwen3.5-4B base on a frozen u
 5. **Lossless translation.** Code, LaTeX, URLs, and numbers become immutable placeholders before a
    single 9B translation to Simplified Chinese. Protected OpenCC conversion then produces the
    Traditional version. Every placeholder and preserved structure is verified before acceptance.
-6. **Equal-cost ablations.** Last-16-layer rank-8 LoRA, rank-8 LoRA+, and all-32-layer rank-4
-   LoRA+ must have identical trainable parameter counts. A nine-task locked trilingual canary picks
-   the highest-accuracy pilot; validation loss and elapsed time break ties.
+6. **Equal-cost ablations.** Last-16-layer rank-8 LoRA, rank-8 LoRA+, LoRA+ without token
+   selection, and all-32-layer rank-4 LoRA+ must have identical trainable parameter counts. A
+   nine-task locked trilingual canary picks the highest-accuracy pilot; validation loss and elapsed
+   time break ties.
 
 The ingredients are motivated by [Rho-1](https://arxiv.org/abs/2404.07965),
 [LESS](https://arxiv.org/abs/2402.04333), [BIDS](https://arxiv.org/abs/2501.12147),

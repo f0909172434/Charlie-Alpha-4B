@@ -20,9 +20,9 @@ alpha v0.2 面向 24 GB Apple Silicon 笔记本的研究配方。它不宣称创
 5. **无损翻译。** 程序码、LaTeX、URL 和数字先替换成不可更改的 placeholder，只让 9B
    教师生成一次简中翻译，再用保护区段的 OpenCC 产生繁中。所有 placeholder 与结构在接纳
    前都会逐项验证。
-6. **等成本消融。** 比较最后 16 层 rank-8 LoRA、rank-8 LoRA+、全部 32 层 rank-4
-   LoRA+；三者可训练参数必须完全相等。九题锁定三语 canary 先比较正确率，再以验证 loss 与
-   耗时打破平手。
+6. **等成本消融。** 比较最后 16 层 rank-8 LoRA、rank-8 LoRA+、不做 token 选择的
+   LoRA+、全部 32 层 rank-4 LoRA+；四者可训练参数必须完全相等。九题锁定三语 canary
+   先比较正确率，再以验证 loss 与耗时打破平手。
 
 设计依据包括 [Rho-1](https://arxiv.org/abs/2404.07965)、
 [LESS](https://arxiv.org/abs/2402.04333)、[BIDS](https://arxiv.org/abs/2501.12147)、

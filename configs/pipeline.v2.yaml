@@ -47,7 +47,7 @@ training_v2:
   rank: 8
   scale: 2.0
   dropout: 0.05
-  pilot_microsteps: 32
+  pilot_microsteps: 64
   full_epochs: 1
   max_seconds: 18000
   validation_every: 64
@@ -67,16 +67,25 @@ training_v2:
       rank: 8
       learning_rate_a: 5.0e-6
       learning_rate_b: 5.0e-6
+      selective_loss: true
     - name: "dual16-r8-loraplus"
       num_layers: 16
       rank: 8
       learning_rate_a: 2.0e-6
       learning_rate_b: 8.0e-6
+      selective_loss: true
+    - name: "dual16-r8-loraplus-fullmask"
+      num_layers: 16
+      rank: 8
+      learning_rate_a: 2.0e-6
+      learning_rate_b: 8.0e-6
+      selective_loss: false
     - name: "dual32-r4-loraplus"
       num_layers: 32
       rank: 4
       learning_rate_a: 2.0e-6
       learning_rate_b: 8.0e-6
+      selective_loss: true
 
 evaluation_v2:
   seed: 20260824
