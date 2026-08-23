@@ -18,7 +18,7 @@ from huggingface_hub import snapshot_download
 from mlx.utils import tree_flatten
 from mlx_lm import load
 from mlx_lm.tuner.callbacks import TrainingCallback
-from mlx_lm.tuner.trainer import TrainingArgs, evaluate, train
+from mlx_lm.tuner.trainer import TrainingArgs, evaluate, grad_checkpoint, train
 from mlx_lm.tuner.utils import linear_to_lora_layers
 from rich.console import Console
 
@@ -27,6 +27,15 @@ from .forge_data import _tokenize_chat, build_forge_data
 from .io_utils import canonical_hash, read_jsonl, sha256_file, write_json
 
 console = Console()
+_CHECKPOINTED_LAYER_TYPES: set[type[Any]] = set()
+
+
+def _enable_gradient_checkpointing_once(model: Any) -> None:
+    for layer in model.layers:
+        layer_type = type(layer)
+        if layer_type not in _CHECKPOINTED_LAYER_TYPES:
+            grad_checkpoint(layer)
+            _CHECKPOINTED_LAYER_TYPES.add(layer_type)
 
 
 class ForgeDataset:
@@ -375,11 +384,12 @@ def _train_candidate(
         steps_per_save=min(int(settings["checkpoint_every"]), microsteps),
         max_seq_length=int(settings["max_seq_length"]),
         adapter_file=str(adapter_dir / "adapters.safetensors"),
-        grad_checkpoint=True,
+        grad_checkpoint=False,
         grad_accumulation_steps=group_size,
         clear_cache_threshold=12 * 1024**3,
     )
     optimizer = _optimizer(candidate, settings, microsteps)
+    _enable_gradient_checkpointing_once(model)
     started = time.monotonic()
     callback = _ForgeCallback(
         model=model,
@@ -530,7 +540,7 @@ def run_forge_pilots(config: ProjectConfig, force: bool = False) -> dict[str, An
         successful,
         key=lambda result: (
             -float(result["canary"]["scores"]["overall"]["accuracy"]),
-            float(result["final_validation_loss"]),
+            float(result["best_validation_loss"]),
             float(result["elapsed_seconds"]),
             result["candidate"],
         ),

@@ -1,5 +1,6 @@
 import numpy as np
 
+import charlie_alpha.forge_training as forge_training
 from charlie_alpha.forge_data import (
     _allocate,
     _protect,
@@ -120,3 +121,19 @@ def test_batch_iterator_keeps_semantic_groups_together() -> None:
     assert signatures[:3] == [signatures[0]] * 3
     assert signatures[3:] == [signatures[3]] * 3
     assert signatures[0] != signatures[3]
+
+
+def test_gradient_checkpointing_wraps_each_layer_type_once(monkeypatch) -> None:
+    class LayerA:
+        pass
+
+    class LayerB:
+        pass
+
+    model = type("Model", (), {"layers": [LayerA(), LayerA(), LayerB()]})()
+    calls = []
+    monkeypatch.setattr(forge_training, "grad_checkpoint", lambda layer: calls.append(type(layer)))
+    monkeypatch.setattr(forge_training, "_CHECKPOINTED_LAYER_TYPES", set())
+    forge_training._enable_gradient_checkpointing_once(model)
+    forge_training._enable_gradient_checkpointing_once(model)
+    assert calls == [LayerA, LayerB]
