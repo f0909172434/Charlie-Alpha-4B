@@ -32,7 +32,8 @@ Forge 的依據包括：
 
 ## 方法
 
-1. **更強且更合適的底模。** 使用 Apache-2.0 的 Qwen3.5-4B 4-bit MLX 版本。它有 32 層
+1. **更強且更合適的底模。** 使用 Apache-2.0 的
+   [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) 4-bit MLX 版本。它有 32 層
    混合架構，每四層由三個 Gated DeltaNet 線性注意力層與一個完整注意力層組成。Adapter
    同時覆蓋兩種層，避免只訓練完整注意力而忽略 75% 的骨幹。
 2. **逐 token 教師差距。** 對每筆正確且去污染的資料，用同 tokenizer 的 4B 學生與 9B

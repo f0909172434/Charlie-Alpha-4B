@@ -7,7 +7,8 @@ alpha v0.2 面向 24 GB Apple Silicon 笔记本的研究配方。它不宣称创
 
 ## 设计
 
-1. **适配混合架构。** Apache-2.0 的 Qwen3.5-4B 混合了 Gated DeltaNet 线性注意力与
+1. **适配混合架构。** Apache-2.0 的
+   [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) 混合了 Gated DeltaNet 线性注意力与
    完整注意力。LoRA 同时覆盖两条路径，而不是只训练完整注意力层。
 2. **逐 token 相对差距。** 每条已验证、去污染的答案分别通过 4B 学生与同 tokenizer 的
    9B 教师做一次 teacher-forced 前向。优先选择学生损失高于教师的样本；训练只保留正差距

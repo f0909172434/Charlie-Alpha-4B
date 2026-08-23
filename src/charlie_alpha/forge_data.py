@@ -1162,6 +1162,13 @@ def build_forge_data(config: ProjectConfig, force: bool = False) -> dict[str, An
         weight = float(row["metadata"]["loss_weight"])
         language_mass[row["metadata"]["language"]] += weight
         category_mass[row["metadata"]["category"]] += weight
+    english_rows = [row for row in train_rows if row["metadata"]["language"] == "en"]
+    english_full_target_tokens = sum(
+        int(row["metadata"]["assistant_token_count_qwen35"]) for row in english_rows
+    )
+    english_selected_target_tokens = sum(
+        len(row["metadata"]["selective_target_indices"]) for row in english_rows
+    )
 
     write_jsonl(final_dir / "train.jsonl", train_rows)
     write_jsonl(final_dir / "valid.jsonl", valid_rows)
@@ -1177,6 +1184,11 @@ def build_forge_data(config: ProjectConfig, force: bool = False) -> dict[str, An
         "language_gradient_ratios": _ratio(language_mass),
         "category_gradient_mass": dict(category_mass),
         "category_gradient_ratios": _ratio(category_mass),
+        "english_full_target_tokens": english_full_target_tokens,
+        "english_selected_target_tokens": english_selected_target_tokens,
+        "english_token_keep_ratio": round(
+            english_selected_target_tokens / english_full_target_tokens, 6
+        ),
         "train_sha256": sha256_file(final_dir / "train.jsonl"),
         "valid_sha256": sha256_file(final_dir / "valid.jsonl"),
         "selected_train_ids": sorted(chosen_train_ids),

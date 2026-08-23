@@ -7,7 +7,8 @@ success criterion is higher accuracy than the same Qwen3.5-4B base on a frozen u
 
 ## Design
 
-1. **Hybrid-aware base.** The Apache-2.0 Qwen3.5-4B base mixes Gated DeltaNet linear attention
+1. **Hybrid-aware base.** The Apache-2.0
+   [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) base mixes Gated DeltaNet linear attention
    with full attention. LoRA targets both paths instead of adapting only the full-attention layers.
 2. **Token-level relative gap.** Each verified, decontaminated answer receives one teacher-forced
    pass through the 4B student and aligned 9B teacher. Selection favors examples with positive
