@@ -1,0 +1,44 @@
+{
+  "fingerprint": "2e594ad5da9542fca6de0c43614fc2a3e804e75d6ae7feb858786d944747a440",
+  "record_count": 600,
+  "split_counts": {
+    "train": 538,
+    "valid": 31,
+    "test": 31
+  },
+  "domain_counts": {
+    "math": 300,
+    "code": 300
+  },
+  "code_language_counts": {
+    "python": 150,
+    "cpp": 150
+  },
+  "assistant_tokens": 147037,
+  "benchmark_reference_count": 2329,
+  "rejections": {
+    "math": {
+      "missing_content": 182,
+      "too_long": 29
+    },
+    "python": {
+      "sandbox_wrong answer": 27,
+      "too_long": 197,
+      "missing_code_fence": 30,
+      "interactive": 14,
+      "no_runnable_tests": 7,
+      "unfinished": 10
+    },
+    "cpp": {
+      "sandbox_compile error": 104,
+      "too_long": 394,
+      "interactive": 21,
+      "unfinished": 19,
+      "sandbox_wrong answer": 42,
+      "missing_code_fence": 32,
+      "no_runnable_tests": 6,
+      "duplicate": 4,
+      "sandbox_timeout": 1
+    }
+  }
+}
