@@ -71,6 +71,12 @@ _PROTECTED_RE = re.compile(
     re.DOTALL,
 )
 
+_ITEM_LABEL_RE = re.compile(
+    r"^\s*(?:(?:example|problem|exercise)\s+\d+(?:\.\d+)*[.:)]?\s+|"
+    r"\d+(?:\.\d+)*[.)]\s+)",
+    re.IGNORECASE,
+)
+
 
 def _category(row: dict[str, Any]) -> str:
     metadata = row["metadata"]
@@ -460,12 +466,17 @@ def select_forge_sources(config: ProjectConfig, force: bool = False) -> dict[str
     for split, targets in (("train", train_targets), ("valid", valid_targets)):
         for category, target in targets.items():
             reserve = max(1, math.ceil(target * 0.25))
+            length_limit = (
+                translation_max
+                if split == "train"
+                else int(settings["max_seq_length"])
+            )
             eligible = [
                 row
                 for row in scored
                 if row["metadata"]["split"] == split
                 and row["metadata"]["category"] == category
-                and int(row["metadata"]["token_count_qwen35"]) <= translation_max
+                and int(row["metadata"]["token_count_qwen35"]) <= length_limit
             ]
             if len(eligible) < target:
                 raise RuntimeError(
@@ -530,7 +541,8 @@ def _restore(value: str, protected: dict[str, str]) -> str | None:
 
 
 def _translation_request(source: dict[str, Any]) -> tuple[str, dict[str, str], dict[str, str]]:
-    question, question_map = _protect(source["messages"][0]["content"], "Q")
+    source_question = _ITEM_LABEL_RE.sub("", source["messages"][0]["content"], count=1)
+    question, question_map = _protect(source_question, "Q")
     answer, answer_map = _protect(source["messages"][-1]["content"], "A")
     request = f"""Translate only the prose below into natural Simplified Chinese.
 
@@ -552,6 +564,8 @@ Rules:
 
 
 def _parse_translation(value: str) -> tuple[str, str] | None:
+    if "<QUESTION_TRANSLATION>" not in value:
+        value = f"<QUESTION_TRANSLATION>{value}"
     question = re.search(
         r"<QUESTION_TRANSLATION>(.*?)</QUESTION_TRANSLATION>", value, flags=re.DOTALL
     )
@@ -577,18 +591,19 @@ def _translation_prompt(tokenizer: Any, request: str) -> str:
         {"role": "user", "content": request},
     ]
     try:
-        return tokenizer.apply_chat_template(
+        prompt = tokenizer.apply_chat_template(
             messages,
             tokenize=False,
             add_generation_prompt=True,
             enable_thinking=False,
         )
     except TypeError:
-        return tokenizer.apply_chat_template(
+        prompt = tokenizer.apply_chat_template(
             messages,
             tokenize=False,
             add_generation_prompt=True,
         )
+    return f"{prompt}<QUESTION_TRANSLATION>\n"
 
 
 def _translated_pair(
@@ -604,7 +619,8 @@ def _translated_pair(
         return None
     if not has_target_script(f"{question}\n{answer}", "zh_Hans"):
         return None
-    if not translation_preserves_source(source["messages"][0]["content"], question)[0]:
+    source_question = _ITEM_LABEL_RE.sub("", source["messages"][0]["content"], count=1)
+    if not translation_preserves_source(source_question, question)[0]:
         return None
     if not translation_preserves_source(source["messages"][-1]["content"], answer)[0]:
         return None
@@ -633,12 +649,20 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
         row["metadata"]["candidate_id"]: row
         for row in read_jsonl(config.path_for("forge_dir") / "candidates.jsonl")
     }
-    selected_ids = [
-        candidate_id
+    bucket_order = [
+        (split, category)
         for split in ("valid", "train")
         for category in ("math", "python", "cpp")
-        for candidate_id in selection["pools"][split][category]
     ]
+    requirements = {
+        bucket: int(selection["targets"][bucket[0]][bucket[1]])
+        for bucket in bucket_order
+    }
+    pools = {
+        bucket: list(selection["pools"][bucket[0]][bucket[1]])
+        for bucket in bucket_order
+    }
+    pool_ids = {candidate_id for ids in pools.values() for candidate_id in ids}
     output_dir = config.path_for("translation_dir")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / "translations.jsonl"
@@ -655,7 +679,7 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
                     "teacher_temperature",
                 )
             },
-            "placeholder_version": 1,
+            "placeholder_version": 3,
         }
     )
     existing = [
@@ -665,9 +689,45 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
     ]
     write_jsonl(output_path, existing)
     completed = {row["candidate_id"] for row in existing}
-    pending = [candidate_id for candidate_id in selected_ids if candidate_id not in completed]
-    if not pending:
-        return {"complete": True, "completed": len(completed), "target": len(selected_ids)}
+    success_counts = {
+        bucket: sum(candidate_id in completed for candidate_id in pools[bucket])
+        for bucket in bucket_order
+    }
+
+    def requirement_complete() -> bool:
+        return all(
+            success_counts[bucket] >= requirements[bucket] for bucket in bucket_order
+        )
+
+    target_total = sum(requirements.values())
+    if requirement_complete():
+        summary = {
+            "complete": True,
+            "completed": target_total,
+            "accepted_pool_records": len(completed & pool_ids),
+            "target": target_total,
+            "pool": len(pool_ids),
+            "by_bucket": {
+                f"{split}:{category}": success_counts[(split, category)]
+                for split, category in bucket_order
+            },
+            "failures": {},
+            "elapsed_seconds": 0.0,
+            "fingerprint": fingerprint,
+        }
+        write_json(output_dir / "summary.json", summary)
+        return summary
+
+    pending: list[tuple[tuple[str, str], str]] = []
+    for reserve_phase in (False, True):
+        for bucket in bucket_order:
+            target = requirements[bucket]
+            ids = pools[bucket][target:] if reserve_phase else pools[bucket][:target]
+            pending.extend(
+                (bucket, candidate_id)
+                for candidate_id in ids
+                if candidate_id not in completed
+            )
 
     teacher = config.sources["models"]["teacher_mlx_4bit"]
     teacher_path = snapshot_download(repo_id=teacher["repo_id"], revision=teacher["revision"])
@@ -677,20 +737,22 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
     started = time.monotonic()
     deadline = started + int(settings["translation_max_seconds"])
     failures: Counter[str] = Counter()
-    for candidate_id in pending:
+    for bucket, candidate_id in pending:
+        if success_counts[bucket] >= requirements[bucket]:
+            continue
         if time.monotonic() >= deadline:
             break
         source = candidates[candidate_id]
         request, _, _ = _translation_request(source)
-        prompt = _translation_prompt(tokenizer, request)
         translated = None
         for attempt in range(2):
-            retry_prompt = prompt
+            attempt_request = request
             if attempt:
-                retry_prompt += (
-                    "\nThe previous attempt was invalid. Copy all placeholders exactly once and "
-                    "return both required XML sections.\n"
+                attempt_request += (
+                    "\nThis is a strict retry: copy every placeholder exactly once, close the "
+                    "QUESTION_TRANSLATION section, and include ANSWER_TRANSLATION."
                 )
+            retry_prompt = _translation_prompt(tokenizer, attempt_request)
             output = generate(
                 model,
                 tokenizer,
@@ -716,15 +778,29 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
         }
         append_jsonl(output_path, result)
         completed.add(candidate_id)
-        console.print(f"translations: {len(completed)}/{len(selected_ids)}")
+        success_counts[bucket] += 1
+        usable = sum(
+            min(success_counts[item], requirements[item]) for item in bucket_order
+        )
+        console.print(f"translations: {usable}/{target_total}")
+        if requirement_complete():
+            break
 
     del model, tokenizer
     gc.collect()
     mx.clear_cache()
     summary = {
-        "complete": len(completed) == len(selected_ids),
-        "completed": len(completed),
-        "target": len(selected_ids),
+        "complete": requirement_complete(),
+        "completed": sum(
+            min(success_counts[bucket], requirements[bucket]) for bucket in bucket_order
+        ),
+        "accepted_pool_records": len(completed & pool_ids),
+        "target": target_total,
+        "pool": len(pool_ids),
+        "by_bucket": {
+            f"{split}:{category}": success_counts[(split, category)]
+            for split, category in bucket_order
+        },
         "failures": dict(failures),
         "elapsed_seconds": round(time.monotonic() - started, 2),
         "fingerprint": fingerprint,
