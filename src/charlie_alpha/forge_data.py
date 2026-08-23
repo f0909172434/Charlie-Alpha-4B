@@ -682,10 +682,31 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
             "placeholder_version": 3,
         }
     )
+    base_source = config.sources["models"]["research_base_mlx_4bit"]
+    base_path = snapshot_download(
+        repo_id=base_source["repo_id"], revision=base_source["revision"]
+    )
+    length_tokenizer = AutoTokenizer.from_pretrained(base_path, trust_remote_code=True)
+    maximum = int(config.section("forge")["max_seq_length"])
+
+    def usable_translation(row: dict[str, Any]) -> bool:
+        candidate_id = row.get("candidate_id")
+        if candidate_id not in candidates:
+            return False
+        if row.get("translation_fingerprint") != fingerprint:
+            return False
+        if row.get("source_sha256") != canonical_hash(candidates[candidate_id]):
+            return False
+        return all(
+            language in row
+            and len(_tokenize_chat(length_tokenizer, row[language])[0]) <= maximum
+            for language in ("zh_Hans", "zh_Hant")
+        )
+
     existing = [
         row
         for row in read_jsonl(output_path)
-        if row.get("translation_fingerprint") == fingerprint
+        if usable_translation(row)
     ]
     write_jsonl(output_path, existing)
     completed = {row["candidate_id"] for row in existing}
@@ -765,6 +786,12 @@ def distill_forge_translations(config: ProjectConfig, force: bool = False) -> di
             if translated is not None:
                 break
         if translated is None:
+            failures[source["metadata"]["category"]] += 1
+            continue
+        if any(
+            len(_tokenize_chat(length_tokenizer, messages)[0]) > maximum
+            for messages in translated
+        ):
             failures[source["metadata"]["category"]] += 1
             continue
         result = {
