@@ -21,6 +21,20 @@ from .training import _base_snapshot
 console = Console()
 
 
+def _base_source(config: ProjectConfig, *, hf: bool) -> dict[str, str]:
+    forge = config.section("project").get("profile") == "forge-overnight"
+    key = "research_base_hf" if forge and hf else "research_base_mlx_4bit" if forge else None
+    if key is None:
+        key = "base_hf" if hf else "base_mlx_4bit"
+    return config.sources["models"][key]
+
+
+def _report_path(config: ProjectConfig, name: str) -> Path:
+    if config.section("project").get("profile") == "forge-overnight":
+        return config.path_for("report_dir") / name
+    return config.root / "reports" / name
+
+
 def _run(command: list[str], *, cwd: Path, timeout: int) -> None:
     result = subprocess.run(
         ["/usr/bin/caffeinate", "-dimsu", *command],
@@ -84,11 +98,11 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
     public_adapter_config = dict(private_adapter_config)
     public_adapter_config.update(
         {
-            "model": config.sources["models"]["base_mlx_4bit"]["repo_id"],
+            "model": _base_source(config, hf=False)["repo_id"],
             "data": "not-bundled-see-data-manifests",
             "adapter_path": ".",
             "resume_adapter_file": None,
-            "config": "configs/pipeline.yaml",
+            "config": config.path.relative_to(config.root).as_posix(),
         }
     )
     write_json(package_dir / "adapter_config.json", public_adapter_config)
@@ -97,6 +111,12 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
         public_status = json.loads(private_status_path.read_text(encoding="utf-8"))
         public_status.pop("adapter_path", None)
         public_status.pop("model_path", None)
+        write_json(package_dir / "training-status.json", public_status)
+    forge_status_path = adapter_path / "status.json"
+    if forge_status_path.exists():
+        public_status = json.loads(forge_status_path.read_text(encoding="utf-8"))
+        for key in ("adapter_path", "base_model_path"):
+            public_status.pop(key, None)
         write_json(package_dir / "training-status.json", public_status)
     shutil.copy2(config.root / "LICENSE", package_dir / "LICENSE")
     shutil.copy2(config.root / "MODEL_CARD.md", package_dir / "README.md")
@@ -146,9 +166,10 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
 
 def _fuse_mlx(config: ProjectConfig, adapter_path: Path, model_path: str) -> Path:
     output = config.path_for("artifact_dir") / "exports" / "Charlie-Alpha-4B-MLX-4bit"
+    base = _base_source(config, hf=False)
     fingerprint = canonical_hash(
         {
-            "base": config.sources["models"]["base_mlx_4bit"],
+            "base": base,
             "adapter": sha256_file(adapter_path / "adapters.safetensors"),
             "adapter_config": sha256_file(adapter_path / "adapter_config.json"),
         }
@@ -182,7 +203,7 @@ def _fuse_mlx(config: ProjectConfig, adapter_path: Path, model_path: str) -> Pat
             manifest_path,
             {
                 "fingerprint": fingerprint,
-                "base_revision": config.sources["models"]["base_mlx_4bit"]["revision"],
+                "base_revision": base["revision"],
                 "adapter_sha256": sha256_file(adapter_path / "adapters.safetensors"),
             },
         )
@@ -190,7 +211,7 @@ def _fuse_mlx(config: ProjectConfig, adapter_path: Path, model_path: str) -> Pat
     shutil.copy2(config.root / "LICENSE", output / "LICENSE")
     shutil.copy2(config.root / "configs" / "sources.lock.json", output / "sources.lock.json")
     replacements = {
-        model_path: config.sources["models"]["base_mlx_4bit"]["repo_id"],
+        model_path: base["repo_id"],
         str(config.root): ".",
     }
     for json_path in output.rglob("*.json"):
@@ -209,7 +230,7 @@ def _merge_hf(config: ProjectConfig, peft_dir: Path, output: Path) -> None:
     except ImportError as error:
         raise RuntimeError("Run `make export-setup` before GGUF export.") from error
 
-    base = config.sources["models"]["base_hf"]
+    base = _base_source(config, hf=True)
     model = AutoModelForCausalLM.from_pretrained(
         base["repo_id"],
         revision=base["revision"],
@@ -250,7 +271,7 @@ def export_gguf(config: ProjectConfig, adapter_path: Path | None = None) -> dict
     adapter_path = adapter_path or _selected_adapter(config)
     artifact_dir = config.path_for("artifact_dir")
     peft_dir = artifact_dir / "exports" / "peft-adapter"
-    base = config.sources["models"]["base_hf"]
+    base = _base_source(config, hf=True)
     mapping = convert_mlx_adapter_to_peft(
         adapter_path,
         peft_dir,
@@ -299,7 +320,7 @@ def export_gguf(config: ProjectConfig, adapter_path: Path | None = None) -> dict
         "llama_cpp_revision": config.sources["tools"]["llama_cpp"]["revision"],
         "behavioral_parity_pending": True,
     }
-    write_json(config.root / "reports" / "gguf-export.json", result)
+    write_json(_report_path(config, "gguf-export.json"), result)
     return result
 
 
@@ -328,7 +349,7 @@ def export_all(config: ProjectConfig, include_gguf: bool = False) -> dict[str, A
         "gguf": gguf or {"status": "deferred-by-overnight-profile"},
         "clean_environment_validation_pending": True,
     }
-    write_json(config.root / "reports" / "export.json", result)
+    write_json(_report_path(config, "export.json"), result)
     return result
 
 
@@ -417,7 +438,7 @@ print(json.dumps({{"adapter_loaded": adapter_ok, "fused_loaded": fused_ok}}))
         "fused_loaded": bool(payload.get("fused_loaded")),
         "versions": {"mlx": "0.32.1", "mlx_lm": "0.31.3", "transformers": "5.15.1"},
     }
-    write_json(config.root / "reports" / "clean-load.json", validation)
+    write_json(_report_path(config, "clean-load.json"), validation)
     export_report_path = config.root / "reports" / "export.json"
     export_report = json.loads(export_report_path.read_text(encoding="utf-8"))
     export_report["clean_environment_validation_pending"] = not passed

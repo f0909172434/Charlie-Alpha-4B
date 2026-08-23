@@ -49,7 +49,12 @@ class RunResult:
 
 
 def _base_snapshot(config: ProjectConfig) -> str:
-    source = config.sources["models"]["base_mlx_4bit"]
+    model_key = (
+        "research_base_mlx_4bit"
+        if config.section("project").get("profile") == "forge-overnight"
+        else "base_mlx_4bit"
+    )
+    source = config.sources["models"][model_key]
     console.print("Downloading/verifying the pinned 4-bit base model…")
     return snapshot_download(repo_id=source["repo_id"], revision=source["revision"])
 

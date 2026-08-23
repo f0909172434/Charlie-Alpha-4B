@@ -83,7 +83,11 @@ def _benchmark_references(config: ProjectConfig, size: int) -> list[set[tuple[st
     try:
         from evalplus.data import get_human_eval_plus, get_mbpp_plus
 
-        for tasks in (get_human_eval_plus(), get_mbpp_plus()):
+        artifacts = config.sources["evaluation_artifacts"]
+        for tasks in (
+            get_human_eval_plus(version=artifacts["humaneval_plus"]["version"]),
+            get_mbpp_plus(version=artifacts["mbpp_plus"]["version"]),
+        ):
             for task in tasks.values():
                 prompt = task.get("prompt") or task.get("text")
                 if prompt:

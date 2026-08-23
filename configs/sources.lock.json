@@ -2,6 +2,16 @@
   "schema_version": 1,
   "resolved_at": "2026-08-23T00:00:00Z",
   "models": {
+    "research_base_hf": {
+      "repo_id": "Qwen/Qwen3.5-4B",
+      "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+      "license": "Apache-2.0"
+    },
+    "research_base_mlx_4bit": {
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "license": "Apache-2.0"
+    },
     "base_hf": {
       "repo_id": "Qwen/Qwen3-4B-Thinking-2507",
       "revision": "768f209d9ea81521153ed38c47d515654e938aea",
@@ -24,6 +34,19 @@
     }
   },
   "datasets": {
+    "mgsm_eval": {
+      "repo_id": "CohereLabs/global-mgsm",
+      "revision": "29087245a1a9788d4e0413f4927e994d49633bbb",
+      "split": "test",
+      "license": "CC-BY-4.0"
+    },
+    "limo_reference": {
+      "repo_id": "GAIR/LIMO",
+      "revision": "b60f4462da9d927930b9c9bd43399cf875564416",
+      "split": "train",
+      "license": "Apache-2.0",
+      "policy": "research-reference-only-not-used-by-default"
+    },
     "math_train": {
       "repo_id": "open-r1/OpenR1-Math-220k",
       "revision": "e4e141ec9dea9f8326f4d347be56105859b2bd68",

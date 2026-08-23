@@ -8,6 +8,7 @@
 - CodeForces-CoTs is provided by the Hugging Face Open R1 team under the attribution terms
   stated in its dataset card. Charlie alpha preserves record-level provenance and attribution.
 - EvalPlus, HumanEval, MBPP, MATH-500, and GSM8K remain subject to their upstream licenses.
+- Global-MGSM is used only for locked multilingual evaluation and remains under CC-BY-4.0.
+- LIMO is an Apache-2.0 research reference and is not included in the default training data.
 
 This file is a summary, not a replacement for the upstream license texts and dataset cards.
-

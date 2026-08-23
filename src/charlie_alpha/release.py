@@ -10,7 +10,7 @@ from typing import Any
 from huggingface_hub import HfApi
 
 from .config import ProjectConfig
-from .io_utils import read_jsonl, write_json
+from .io_utils import read_jsonl, sha256_file, write_json
 from .sandbox import sandbox_self_test
 from .validators import is_contaminated, validate_chat_record, word_ngrams
 
@@ -128,6 +128,93 @@ def _data_gate(config: ProjectConfig) -> dict[str, Any]:
     return {"passed": counts > 0 and not failures, "records": counts, "failures": failures[:20]}
 
 
+def _forge_data_gate(config: ProjectConfig) -> dict[str, Any]:
+    final_dir = config.path_for("final_dir")
+    failures: list[str] = []
+    done_path = final_dir / ".done.json"
+    if not done_path.exists():
+        return {"passed": False, "records": 0, "failures": ["missing Forge data manifest"]}
+    manifest = json.loads(done_path.read_text(encoding="utf-8"))
+    paths = {split: final_dir / f"{split}.jsonl" for split in ("train", "valid")}
+    for split, path in paths.items():
+        if not path.exists():
+            failures.append(f"missing {path.name}")
+        elif manifest.get(f"{split}_sha256") != sha256_file(path):
+            failures.append(f"{path.name} hash changed")
+    if failures:
+        return {"passed": False, "records": 0, "failures": failures}
+
+    maximum = int(config.section("forge")["max_seq_length"])
+    group_size = int(config.section("training_v2")["grad_accumulation_steps"])
+    source_ids: dict[str, set[str]] = {"train": set(), "valid": set()}
+    groups: dict[str, list[int]] = defaultdict(list)
+    language_weight: dict[str, float] = defaultdict(float)
+    category_weight: dict[str, float] = defaultdict(float)
+    counts = 0
+    for split, path in paths.items():
+        for row in read_jsonl(path):
+            counts += 1
+            failures.extend(f"{path.name}: {error}" for error in validate_chat_record(row))
+            metadata = row["metadata"]
+            candidate_id = str(metadata.get("candidate_id", ""))
+            source_ids[split].add(candidate_id)
+            if int(metadata.get("token_count_qwen35", maximum + 1)) > maximum:
+                failures.append(f"{path.name}: record exceeds the token limit")
+            if metadata.get("source_revision") not in {
+                config.sources["datasets"]["math_train"]["revision"],
+                config.sources["datasets"]["code_train"]["revision"],
+            }:
+                failures.append(f"{path.name}: source revision is not locked")
+            if metadata.get("domain") == "code" and not metadata.get(
+                "verification", {}
+            ).get("passed"):
+                failures.append(f"{path.name}: code record lacks sandbox verification")
+            if split == "train":
+                group = str(metadata.get("semantic_group_id", ""))
+                groups[group].append(int(metadata.get("microstep_slot", -1)))
+                weight = float(metadata.get("loss_weight", 0.0))
+                language_weight[str(metadata.get("language"))] += weight
+                category_weight[str(metadata.get("category"))] += weight
+                selective = metadata.get("selective_target_indices")
+                if metadata.get("language") == "en" and not selective:
+                    failures.append("English Forge row lacks its selective token mask")
+                if metadata.get("language") != "en" and selective is not None:
+                    failures.append("Chinese Forge row must use its complete assistant target")
+    if source_ids["train"] & source_ids["valid"]:
+        failures.append("Forge source candidates cross train and validation splits")
+    for group, slots in groups.items():
+        if len(slots) != group_size or sorted(slots) != list(range(group_size)):
+            failures.append(f"incomplete semantic group: {group}")
+
+    def check_weight_ratios(
+        actual: dict[str, float], targets: dict[str, float], label: str
+    ) -> None:
+        total = sum(actual.values())
+        for key, target in targets.items():
+            observed = actual.get(key, 0.0) / total if total else 0.0
+            if abs(observed - float(target)) > 1e-5:
+                failures.append(f"{label}.{key} weight ratio is {observed:.6f}")
+
+    check_weight_ratios(
+        language_weight, config.section("forge")["language_gradient_ratios"], "language"
+    )
+    check_weight_ratios(
+        category_weight, config.section("forge")["group_categories"], "category"
+    )
+
+    eval_lock = json.loads(config.path_for("eval_lock").read_text(encoding="utf-8"))
+    dev_ids = {row["task_id"] for row in eval_lock["suites"]["dev"]}
+    final_ids = {row["task_id"] for row in eval_lock["suites"]["final"]}
+    if dev_ids & final_ids:
+        failures.append("development and final evaluation locks overlap")
+    return {
+        "passed": counts > 0 and not failures,
+        "records": counts,
+        "semantic_groups": len(groups),
+        "failures": failures[:30],
+    }
+
+
 def _tracked_content_gate(config: ProjectConfig) -> dict[str, Any]:
     result = subprocess.run(
         ["git", "ls-files"],
@@ -144,6 +231,8 @@ def _tracked_content_gate(config: ProjectConfig) -> dict[str, Any]:
         "data/processed/",
         "data/distilled/",
         "data/final/",
+        "data/v2/",
+        "reports/v2/generated/",
     )
     forbidden = [
         path
@@ -172,10 +261,15 @@ def _tracked_content_gate(config: ProjectConfig) -> dict[str, Any]:
 
 def _artifact_privacy_gate(config: ProjectConfig) -> dict[str, Any]:
     artifact_dir = config.path_for("artifact_dir")
+    report_root = (
+        config.path_for("report_dir")
+        if config.section("project").get("profile") == "forge-overnight"
+        else config.root / "reports"
+    )
     roots = [
         artifact_dir / "release",
         artifact_dir / "exports" / "Charlie-Alpha-4B-MLX-4bit",
-        config.root / "reports",
+        report_root,
     ]
     suffixes = {".json", ".yaml", ".yml", ".md", ".txt"}
     credential_pattern = re.compile(
@@ -198,18 +292,31 @@ def _artifact_privacy_gate(config: ProjectConfig) -> dict[str, Any]:
 
 
 def check_release(config: ProjectConfig) -> dict[str, Any]:
-    reports_dir = config.root / "reports"
-    evaluation_path = reports_dir / "evaluation.json"
+    forge = config.section("project").get("profile") == "forge-overnight"
+    reports_dir = config.path_for("report_dir") if forge else config.root / "reports"
+    evaluation_path = (
+        reports_dir / "final" / "comparison.json"
+        if forge
+        else reports_dir / "evaluation.json"
+    )
     export_path = reports_dir / "export.json"
+    clean_load_path = reports_dir / "clean-load.json"
     evaluation = (
         json.loads(evaluation_path.read_text(encoding="utf-8"))
         if evaluation_path.exists()
         else None
     )
     export = json.loads(export_path.read_text(encoding="utf-8")) if export_path.exists() else None
+    clean_load = (
+        json.loads(clean_load_path.read_text(encoding="utf-8"))
+        if clean_load_path.exists()
+        else None
+    )
     gates = {
         "source_locks_and_licenses": _source_lock_gate(config),
-        "data_schema_and_split_isolation": _data_gate(config),
+        "data_schema_and_split_isolation": (
+            _forge_data_gate(config) if forge else _data_gate(config)
+        ),
         "tracked_content": _tracked_content_gate(config),
         "artifact_privacy": _artifact_privacy_gate(config),
         "sandbox": sandbox_self_test(),
@@ -220,7 +327,7 @@ def check_release(config: ProjectConfig) -> dict[str, Any]:
             "passed": bool(export and export["fused_mlx"]["load_test"].get("loaded"))
         },
         "clean_environment_load": {
-            "passed": bool(export and not export.get("clean_environment_validation_pending", True))
+            "passed": bool(clean_load and clean_load.get("passed"))
         },
     }
     hard_gate_names = (
@@ -236,10 +343,12 @@ def check_release(config: ProjectConfig) -> dict[str, Any]:
     hard_pass = all(gates[name]["passed"] for name in hard_gate_names)
     if not hard_pass:
         classification = "blocked"
-    elif evaluation and evaluation["quality_classification"] == "stable-candidate":
+    elif forge and evaluation and evaluation.get("gate_passed"):
+        classification = config.section("release")["tag"]
+    elif not forge and evaluation and evaluation["quality_classification"] == "stable-candidate":
         classification = "v0.1.0"
     else:
-        classification = "Experimental v0.1.0"
+        classification = f"Experimental {config.section('release')['tag']}"
     report = {
         "classification": classification,
         "weights_publishable": hard_pass,
@@ -300,5 +409,7 @@ def publish_hugging_face(config: ProjectConfig, include_gguf: bool = False) -> d
             commit_message=f"Release {config.section('release')['tag']}",
         )
         result["gguf_repo"] = gguf_repo
-    write_json(config.root / "reports" / "huggingface-release.json", result)
+    forge = config.section("project").get("profile") == "forge-overnight"
+    reports_dir = config.path_for("report_dir") if forge else config.root / "reports"
+    write_json(reports_dir / "huggingface-release.json", result)
     return result

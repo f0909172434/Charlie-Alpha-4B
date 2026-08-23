@@ -85,9 +85,24 @@ def _build_tasks(config: ProjectConfig) -> list[dict[str, Any]]:
             }
         )
 
+    evalplus = config.sources["evaluation_artifacts"]
     for benchmark, rows, limit in (
-        ("HumanEval+", list(get_human_eval_plus().values()), int(settings["humaneval_limit"])),
-        ("MBPP+", list(get_mbpp_plus().values()), int(settings["mbpp_limit"])),
+        (
+            "HumanEval+",
+            list(
+                get_human_eval_plus(
+                    version=evalplus["humaneval_plus"]["version"]
+                ).values()
+            ),
+            int(settings["humaneval_limit"]),
+        ),
+        (
+            "MBPP+",
+            list(
+                get_mbpp_plus(version=evalplus["mbpp_plus"]["version"]).values()
+            ),
+            int(settings["mbpp_limit"]),
+        ),
     ):
         selected = _stable_select(rows, limit, seed, "task_id")
         for row in selected:
@@ -104,7 +119,10 @@ def _build_tasks(config: ProjectConfig) -> list[dict[str, Any]]:
                     "function_prompt": row["prompt"],
                     "canonical_solution": row["canonical_solution"],
                     "entry_point": row["entry_point"],
-                    "inputs": [*row["base_input"], *row["plus_input"][:20]],
+                    "inputs": [
+                        *(row["base_input"] if isinstance(row["base_input"], list) else []),
+                        *(row["plus_input"][:20] if isinstance(row["plus_input"], list) else []),
+                    ],
                     "atol": row.get("atol", 0.0),
                 }
             )

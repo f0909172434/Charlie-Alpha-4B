@@ -8,7 +8,9 @@ data/raw/
 data/processed/
 data/distilled/
 data/final/
+data/v2/
 reports/generated/
+reports/v2/generated/
 vendor/
 *.log
 *.pyc

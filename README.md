@@ -8,6 +8,12 @@ Charlie alpha（模型識別碼：`Charlie-Alpha-4B`）是一個專攻數學與�
 > 目前狀態：`Experimental v0.1.0`。60 題同條件小型評測由底模 38.33% 提升至
 > 45.00%，但簡中由 80.00% 降至 40.00%，未通過語言退步門檻，不宣稱全面提升。
 
+> `v0.2` 研究分支正在實測 **FORGE**（Focused One-pass Relative-Gap Gradient
+> Equivalence）：改用 Qwen3.5-4B 混合架構，以 4B/9B 逐 token 能力差選資料，並把同一題
+> 的英文、簡中、繁中版本放在同一次梯度更新中。它只有在凍結後的 62 題全新測試相對同一
+> 底模提升至少 2 點，且各語言／領域退步不超過 2 點時，才會宣稱更強。方法、消融與防洩漏
+> 設計見 [`docs/FORGE.md`](docs/FORGE.md)。
+
 [简体中文](README.zh-Hans.md) · [English](README.en.md) · [模型卡](MODEL_CARD.md)
 
 ## 一晚訓練設定

@@ -10,7 +10,9 @@ revisions, records source IDs and hashes, and writes only reproducibility manife
 | Python reasoning SFT | `open-r1/codeforces-cots` | `solutions_py_decontaminated` | ODC-By-4.0 / dataset metadata CC-BY-4.0 |
 | Math evaluation | `HuggingFaceH4/MATH-500` | `test` | MIT |
 | Arithmetic evaluation | `openai/gsm8k` | `main/test` | MIT |
+| Chinese arithmetic evaluation | `CohereLabs/global-mgsm` | `zh/test` | CC-BY-4.0 |
 | Code evaluation | EvalPlus HumanEval+ and MBPP+ | packaged releases | Apache-2.0 / original dataset terms |
+| Research reference only | `GAIR/LIMO` | `train` | Apache-2.0 |
 
 Synthetic Traditional and Simplified Chinese examples are translations of accepted source
 records. They are generated locally with the pinned Apache-2.0 Qwen3.5 teacher and retain the
@@ -27,3 +29,9 @@ pass the available public or example tests inside the no-network macOS sandbox b
 the training set.
 
 See `configs/sources.lock.json` for immutable revisions.
+
+The v0.2 FORGE profile reuses only verified, decontaminated source records and applies a second
+Qwen3.5 tokenizer limit of 832 tokens. It removes rows whose prose is not detected as English,
+scores every remaining answer under the pinned 4B student and 9B teacher, and selects a balanced
+subset by positive teacher-student excess loss plus diversity. LIMO is cited as a data-efficiency
+reference but is not training input because its trajectories exceed the one-night sequence budget.

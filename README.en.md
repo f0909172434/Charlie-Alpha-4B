@@ -10,6 +10,13 @@ trained with 4-bit QLoRA on Apple Silicon using MLX. It is not trained from scra
 > 45.00%, but Simplified Chinese fell from 80.00% to 40.00%. The subgroup gate failed, so no
 > broad improvement is claimed.
 
+> The `v0.2` research branch is testing **FORGE** (Focused One-pass Relative-Gap Gradient
+> Equivalence): a Qwen3.5-4B hybrid base, 4B/9B token-level learning-gap selection, and coupled
+> English/Simplified/Traditional updates for each task. It will claim a stronger model only if a
+> frozen 62-task unseen suite improves by at least two points against the same base with no
+> language or domain falling by more than two points. See
+> [`docs/FORGE.en.md`](docs/FORGE.en.md).
+
 [繁體中文](README.md) · [简体中文](README.zh-Hans.md) · [Model card](MODEL_CARD.md)
 
 ## Overnight profile

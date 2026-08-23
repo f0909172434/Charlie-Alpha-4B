@@ -16,6 +16,21 @@ from .data_pipeline import prepare_data
 from .distillation import distill_data
 from .evaluation import run_evaluation
 from .exporting import export_all, export_gguf, validate_clean_environment
+from .forge_data import (
+    build_forge_data,
+    distill_forge_translations,
+    prepare_forge_candidates,
+    score_forge_candidates,
+    select_forge_sources,
+)
+from .forge_eval import (
+    build_evaluation_lock,
+    compare_forge_evaluation,
+    freeze_forge_recipe,
+    run_forge_evaluation,
+)
+from .forge_orchestrator import run_forge_overnight
+from .forge_training import run_forge_pilots, run_forge_training
 from .mixer import mix_data
 from .orchestrator import run_overnight
 from .release import check_release, publish_hugging_face
@@ -27,11 +42,13 @@ train_app = typer.Typer(no_args_is_help=True)
 eval_app = typer.Typer(no_args_is_help=True)
 export_app = typer.Typer(no_args_is_help=True)
 release_app = typer.Typer(no_args_is_help=True)
+forge_app = typer.Typer(no_args_is_help=True, help="Forge v0.2 efficient research pipeline.")
 app.add_typer(data_app, name="data")
 app.add_typer(train_app, name="train")
 app.add_typer(eval_app, name="eval")
 app.add_typer(export_app, name="export")
 app.add_typer(release_app, name="release")
+app.add_typer(forge_app, name="forge")
 console = Console()
 
 ConfigOption = Annotated[
@@ -107,6 +124,94 @@ def release_publish_hf(
     gguf: Annotated[bool, typer.Option("--gguf")] = False,
 ) -> None:
     _show(publish_hugging_face(load_config(config), include_gguf=gguf))
+
+
+@forge_app.command("lock-eval")
+def forge_lock_eval(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(build_evaluation_lock(load_config(config), force=force))
+
+
+@forge_app.command("prepare")
+def forge_prepare(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(prepare_forge_candidates(load_config(config), force=force))
+
+
+@forge_app.command("score")
+def forge_score(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(score_forge_candidates(load_config(config), force=force))
+
+
+@forge_app.command("select")
+def forge_select(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(select_forge_sources(load_config(config), force=force))
+
+
+@forge_app.command("distill")
+def forge_distill(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(distill_forge_translations(load_config(config), force=force))
+
+
+@forge_app.command("build")
+def forge_build(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(build_forge_data(load_config(config), force=force))
+
+
+@forge_app.command("pilot")
+def forge_pilot(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(run_forge_pilots(load_config(config), force=force))
+
+
+@forge_app.command("train")
+def forge_train(
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"), force: bool = False
+) -> None:
+    _show(run_forge_training(load_config(config), force=force))
+
+
+@forge_app.command("eval")
+def forge_eval(
+    variant: Annotated[str, typer.Option("--variant")] = "qwen35-base",
+    suite: Annotated[str, typer.Option("--suite")] = "dev",
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"),
+    force: bool = False,
+) -> None:
+    _show(
+        run_forge_evaluation(
+            load_config(config), variant=variant, suite=suite, force=force
+        )
+    )
+
+
+@forge_app.command("compare")
+def forge_compare(
+    suite: Annotated[str, typer.Option("--suite")] = "dev",
+    config: ConfigOption = Path("configs/pipeline.v2.yaml"),
+) -> None:
+    _show(compare_forge_evaluation(load_config(config), suite=suite))
+
+
+@forge_app.command("freeze")
+def forge_freeze(config: ConfigOption = Path("configs/pipeline.v2.yaml")) -> None:
+    _show(freeze_forge_recipe(load_config(config)))
+
+
+@forge_app.command("overnight")
+def forge_overnight(config: ConfigOption = Path("configs/pipeline.v2.yaml")) -> None:
+    _show(run_forge_overnight(load_config(config)))
 
 
 def _adapter(config: ProjectConfig) -> str:
