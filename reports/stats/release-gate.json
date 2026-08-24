@@ -48,7 +48,6 @@
           "output_exceeded": false,
           "isolated": true,
           "network_allowed": false,
-          "elapsed_seconds": 0.06321941601345316,
           "written_bytes": 0
         }
       },
@@ -68,7 +67,6 @@
           "output_exceeded": false,
           "isolated": true,
           "network_allowed": false,
-          "elapsed_seconds": 0.3793707500153687,
           "written_bytes": 0
         }
       }

@@ -234,7 +234,6 @@ def _public_isolation_report(result: dict[str, Any]) -> dict[str, Any]:
         "output_exceeded",
         "isolated",
         "network_allowed",
-        "elapsed_seconds",
         "written_bytes",
     )
     for runtime in ("python", "r"):
