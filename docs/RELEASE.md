@@ -1,23 +1,31 @@
 # Release procedure
 
-Charlie alpha v0.2.0 is an Experimental release. Its direct-adapter final and disjoint routed
-confirmation each improved by one correct answer, but neither reached the predeclared +2
-percentage-point normal-release threshold.
+## v0.3.0
 
-1. Run or resume `make forge`; do not change the frozen recipe or task locks after generation.
-2. Run `make forge-router-verify`. Bypass must exactly match an independently loaded base, restore
-   must exactly match the adapter, and all eight intended LoRA modules must be present.
-3. Run `make forge-export` and `make forge-clean-load`.
-4. Run `make forge-release-check`. License, source revision, split isolation, sandbox, privacy,
-   adapter, fused MLX, clean-environment, and dynamic-router gates are hard blockers.
-5. Commit and push the exact release tree on `main`, then run `make forge-publish-github`. The
-   GitHub release includes the adapter archive, frozen configurations, both compact evaluations,
-   public data manifest, release gate, and SHA-256 file.
-6. Hugging Face authentication is interactive and user-owned. Run `hf auth login` personally,
-   then run `uv run charlie-alpha release publish-hf --config configs/pipeline.v2.yaml`. The
-   publisher uploads the dynamic MLX adapter, downloads it again at the returned Hub revision, and
-   verifies its SHA-256. The project does not read, copy, or print a token.
+1. Complete `make stats-eval`. Final evaluation is allowed only after the adapter, delta scale,
+   data fingerprint, and sealed evaluation lock have been frozen.
+2. Run `make stats-export`. The dynamic MLX router must reproduce an independently loaded base when
+   bypassed and the adapter when restored. The adapter and fused MLX copy must load in a clean
+   environment.
+3. Run `make stats-release-check`. Source licenses, DGP schema and split isolation, 8-gram
+   decontamination, Python/R isolation, privacy, clean loading, and preservation of `v0.2.0` are
+   hard gates.
+4. If every hard gate passes but a capability threshold fails, publish as `Experimental v0.3.0`
+   with the negative result. A failed hard gate blocks weight publication.
+5. Commit and push the exact release tree on `main`. Run `make stats-publish-hf`, then
+   `make stats-publish-github`. Both publishers verify the uploaded artifacts. Authentication is
+   interactive and user-owned; the project does not read, copy, or print access tokens.
 
-The canonical artifact is the MLX adapter plus dynamic routing code. A fused MLX export is tested
-for recoverability but behaves as an always-on specialist. One fused GGUF cannot reproduce dynamic
-routing; do not publish GGUF unless a separate behavioral-parity gate has passed.
+The canonical artifact is the MLX adapter plus the deterministic `base`/`stats` router. The GitHub
+release contains the adapter archive, configuration, aggregate evaluation, release gate, sealed ID
+lock, and SHA-256 list. Generated training records and evaluation answers are not release assets.
+
+GGUF is a separate conditional artifact. It is built only from the pinned official BF16 base after
+adapter-matrix equivalence succeeds, and only when the pinned llama.cpp revision has a verified
+Qwen3.5 hybrid-model fix. Clean loading, readable generation, and 30-item parity within two points
+are also required. Otherwise MLX is released without GGUF.
+
+## Preserved v0.2 release
+
+`v0.2.0`, its GitHub release, and its existing Hugging Face revision are not rewritten. The v0.2
+FORGE release procedure remains available from that tag and in `docs/FORGE.md`.

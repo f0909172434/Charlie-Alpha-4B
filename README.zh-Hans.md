@@ -1,75 +1,120 @@
 # Charlie alpha
 
-Charlie alpha（模型标识：`Charlie-Alpha-4B`）是支持繁体中文、简体中文、英文的数学与
-编程实验模型。它基于 Apache-2.0 许可的
-[`Qwen3.5-4B`](https://huggingface.co/Qwen/Qwen3.5-4B)，使用 MLX 4-bit QLoRA；这是衍生
-微调模型，并非从零预训练。
+Charlie alpha（模型标识：`Charlie-Alpha-4B`）是支持简体中文、繁体中文和英文的统计程序
+选择模型，也提供本地数据分析接口。它基于 Apache-2.0 许可的
+[`Qwen3.5-4B`](https://huggingface.co/Qwen/Qwen3.5-4B)，使用 Apple MLX 4-bit QLoRA
+微调。这是衍生模型。
 
-> 发布状态：**Experimental v0.2.0**。两组完全不重叠、各 62 题的冻结测试都比同条件底模
-> 多答对 1 题，但 +1.62 和 +1.61 个百分点均未达到预先设定的 +2 点门槛。这是可复现的正向
-> 观察，不足以证明全面或具有统计显著性的优势。
+> 发布状态：**Experimental v0.3.0**。DGP-Regret 在冻结 DGP 上降低了 regret，但没有改善
+> P-Bench 或 StatQA，信息不足案例也出现明显退步。请将它视为程序选择研究成果，不能视为
+> 自动统计分析师。
 
 [繁體中文](README.md) · [English](README.en.md) · [模型卡](MODEL_CARD.md) ·
-[FORGE 方法](docs/FORGE.zh-Hans.md)
+[DGP-Regret 技术报告](docs/DGP_REGRET.md)
 
-## 推理架构
+## 功能
 
-正式运行时不会同时加载两个模型，也不会生成两次再挑答案。它只加载一份 4B 底模和一个
-8.52 MB adapter，在生成前切换最后 4 层的 8 个 LoRA 模块：
+运行时只加载一份 4-bit 底模和一个包含 2,129,920 个参数的 adapter：
 
-- 中文或编程题：启用 2,129,920 个 LoRA 参数。
-- 英文非编程题：将 LoRA 增量置零，直接走底模路径。
-- 每个请求只生成一次；推理时没有教师、评审模型或第二份 4B 权重。
-- 数值测试确认，旁路与独立底模的 logits 最大误差为 `0.0`，恢复 adapter 后的最大误差也为
-  `0.0`。
+- 有数据附件或统计问题时使用 `stats` 路由；其他问题使用相同底模的 `base` 路由。
+- adapter 从 28 个训练程序中选择方法。数据代理另有 7 个固定评测程序，生成文本不能作为
+  程序执行。
+- 分析方案包含估计目标、抽样单位、研究设计、相关结构、缺失机制、方法和诊断字段。
+- CSV、TSV、JSON 和 Parquet 保留在本机。Python／R 工具在 macOS 沙箱中运行，禁止联网
+  和读取其他用户文件。
 
-固定路由是在第一组 final 结果之后提出，随后才建立完全不重叠的确认集。确认集上 Charlie
-alpha 为 43/62，底模为 42/62；编程领域从 11/16 提升至 12/16，其他语言和领域都没有少答
-对。完整证据见 [`reports/v3/evaluation.json`](reports/v3/evaluation.json)。
+`adapter` 仍可作为 API 中 `stats` 路由的兼容别名。数值等价测试确认，base 旁路与独立加载
+底模的 logits 最大误差为 `0.0`，恢复 adapter 后的误差也为 `0.0`。
 
-## 方法与训练结果
+## 冻结评测
 
-FORGE（Focused One-pass Relative-Gap Gradient Equivalence）把计算集中在高价值更新上：
+三组使用相同提示、工具、temperature 0 和冻结题目。normalized regret 越低越好。
 
-- 9B 教师不重写大量英文答案，而是用 teacher-forced 4B/9B 逐 token loss 找出学生明显落后
-  的位置；英文答案 token 保留率为 52.7%。
-- 52 个语义组固定为数学 26、Python 13、C++ 13。每次梯度累积包含同一题的英文、简中、
-  繁中版本与 3 条英文 replay；语言梯度质量精确为 70%／15%／15%。
-- 四组等参数短跑比较标准 LoRA、LoRA+ 与选择性 loss。胜出配方只训练最后 4 层 rank-32；
-  最佳 validation loss 从 0.8640 降至 0.6867。
-- 只在封存 dev 上进行 LoRA-B 增量线搜索，选出 0.22，无需重新训练或提前查看 final。
+| 模型 | Final DGP regret | 方法正确率 | 无效选择率 |
+| --- | ---: | ---: | ---: |
+| Qwen3.5-4B 底模 | 0.6727 | 20.83% | 63.33% |
+| Hard-label 消融 | 0.7016 | 17.50% | 65.83% |
+| DGP-Regret | **0.4437** | **45.00%** | **38.33%** |
 
-第一组冻结 final 上，直接 adapter 为 44/62，底模为 43/62。它改善了编程和中文，却损害了
-英文 MATH-500，因此没有将 adapter 永久应用于所有题目。第二组全新确认集上的稀疏路由仍
-多答对 1 题，且没有分组正确题数下降。两组测试规模仍小，不能外推为所有任务都更强。
+DGP-Regret 相对底模降低了 34.04% regret；配对 bootstrap 的平均绝对改善为 0.2290，95% CI
+为 `[0.1199, 0.3361]`。无效选择率相对下降 39.47%。在 pilot dev 上，完整方法的 regret
+比 hard-label 低 8.54%，通过预先设定的 5% 消融门槛。
 
-## 使用
+| 评测 | 底模 | DGP-Regret | 结果 |
+| --- | ---: | ---: | --- |
+| 三语方法正确率，英文 | 16.67% | 43.33% | +26.67 点 |
+| 三语方法正确率，繁中 | 16.67% | 26.67% | +10.00 点 |
+| 三语方法正确率，简中 | 30.00% | 40.00% | +10.00 点 |
+| P-Bench Raw / Strict | 0% / 0% | 0% / 0% | 未改善 |
+| StatQA exact | 1.00% | 1.00% | 未改善 |
+| 信息不足案例 | 43.33% | 0% | 退步 |
+| 数学／编程／STEM／一般保留集 | 100% | 100% | 无变化 |
 
-需要 Apple Silicon Mac、Python 3.12 和 `uv`：
+完整汇总、置信区间和门槛判定见
+[`reports/stats/evaluation.json`](reports/stats/evaluation.json)。能力门槛未全部通过，因此
+v0.3.0 只以 Experimental 发布。
+
+## 安装与使用
+
+需要 Apple Silicon Mac、Python 3.12、`uv`，以及项目锁定的 Pixi Python／R 环境：
 
 ```bash
 make setup
-make forge-router-verify
-make forge-chat
 ```
 
-`make forge-chat` 使用本机训练结果。若只使用公开 adapter、无需重新训练：
+分析本地数据：
 
 ```bash
-uv run charlie-alpha chat --config configs/pipeline.v2.yaml \
+uv run charlie-alpha stats analyze \
+  --data survey.csv \
+  --question "比较 treatment 和 control 的平均结果，数据来自独立随机分派。" \
+  --language zh_Hans \
   --adapter-path f0909172434/Charlie-Alpha-4B-MLX-4bit
 ```
 
-聊天中可用 `/route auto`、`/route base` 或 `/route adapter` 覆盖自动路由。本地非流式
-OpenAI-compatible API 用 `make forge-serve` 启动；请求可加入 `"charlie_route":"base"` 或
-`"adapter"`。
+多轮对话：
 
-完整可续跑流程与冻结评测见 [`docs/FORGE.zh-Hans.md`](docs/FORGE.zh-Hans.md)。来源 revision
-和许可见 [`configs/sources.lock.json`](configs/sources.lock.json) 与
-[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。训练文本、缓存、凭据与机器路径不会提交。
+```bash
+uv run charlie-alpha stats chat \
+  --data survey.csv \
+  --adapter-path f0909172434/Charlie-Alpha-4B-MLX-4bit
+```
 
-当前证据仅包含两个 62 题套件。自动路由规则可解释但仍可能误判跨领域英文题，重要场景可
-手动覆盖。生成的证明、计算与代码都可能出错。动态路由无法忠实融合为单一 GGUF，因此
-v0.2.0 不发布未通过行为等价门槛的 GGUF。
+本地 OpenAI-compatible API 默认只绑定 `127.0.0.1`：
+
+```bash
+uv run charlie-alpha stats serve \
+  --adapter-path f0909172434/Charlie-Alpha-4B-MLX-4bit
+
+curl http://127.0.0.1:8080/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model":"Charlie-Alpha-4B",
+    "messages":[{"role":"user","content":"检查 treatment 对 outcome 的效果"}],
+    "charlie_files":["/absolute/path/survey.csv"],
+    "charlie_route":"stats",
+    "charlie_tools":true
+  }'
+```
+
+API 会返回路由、工具次数、隔离状态和分析方案，不返回隐藏推理。
+
+## 已知限制
+
+v0.3 的 DGP 引擎是公开的半参数 operating-characteristic emulator。它使用共同随机数和
+128／256／512 次抽样，但没有在每次 replication 中把 28 个方法全部重新拟合到原始表格。
+Final DGP 分数衡量模型是否符合这个模拟器，不代表一般统计最优性。
+
+目前数据代理在 P-Bench 几乎总是安全回退为 `needs_clarification`，因此没有产生可计分的
+p 值。adapter 也没有学会在信息不足案例中稳定要求补充资料。用户应明确提供估计目标、
+抽样单位、配对或聚类结构、分派机制和缺失假设，并检查模型选择的方法。
+
+医疗、政策和财务分析需要合格统计人员审查。GGUF 因 Qwen3.5 hybrid tensor 兼容性尚无
+可验证的上游修复而暂不发布；MLX adapter 和融合版已通过干净环境加载。
+
+完整可续跑流程见 [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md)。来源 revision 和
+许可见 [`configs/sources.lock.json`](configs/sources.lock.json) 与
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。训练文本、缓存、凭据和机器路径不会
+提交。v0.2 FORGE 的代码与成果保留在 Git tag `v0.2.0`。
 
 项目代码与模型衍生物采用 [Apache-2.0](LICENSE)；上游数据仍遵循各自许可。

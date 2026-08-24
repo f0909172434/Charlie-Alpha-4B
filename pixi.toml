@@ -1,0 +1,28 @@
+[workspace]
+name = "charlie-alpha-stats-runtime"
+version = "0.3.0"
+description = "Locked local Python and R runtime for Charlie alpha statistical tools"
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+[dependencies]
+python = "3.12.*"
+numpy = "2.2.*"
+pandas = "2.2.*"
+scipy = "1.15.*"
+statsmodels = "0.14.*"
+scikit-learn = "1.6.*"
+sympy = "1.13.*"
+pyarrow = "19.*"
+r-base = "4.4.*"
+r-survival = "3.8.*"
+r-lme4 = "1.1.*"
+r-sandwich = "3.1.*"
+r-lmtest = "0.9_40.*"
+r-aer = "1.2_14.*"
+r-jsonlite = "1.8.*"
+
+[tasks]
+python-version = "python --version"
+r-version = "R --version"
+self-test = "python -c 'import numpy,pandas,scipy,statsmodels,sklearn,sympy,pyarrow' && Rscript -e 'library(survival);library(lme4);library(sandwich);library(lmtest);library(AER)'"

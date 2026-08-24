@@ -1,52 +1,54 @@
 UV ?= uv
 CLI := $(UV) run charlie-alpha
 
-.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-calibrate forge-dev forge-freeze forge-final forge-router-lock forge-router-freeze forge-router-eval forge-router-verify forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
+.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github stats-setup stats-simulate stats-data stats-distill stats-lock stats-baseline stats-pilot stats-train stats-eval stats-export stats-chat stats-serve stats-release-check stats-publish-hf stats-publish-github forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-calibrate forge-dev forge-freeze forge-final forge-router-lock forge-router-freeze forge-router-eval forge-router-verify forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
 
 setup:
 	$(UV) sync --extra eval --group dev
+	$(CLI) stats setup --config configs/pipeline.stats.yaml
 
 export-setup:
 	$(UV) sync --extra eval --extra export --group dev
 
 data:
-	$(CLI) data prepare --config configs/pipeline.yaml
+	$(CLI) stats data --config configs/pipeline.stats.yaml
 
 distill:
-	$(CLI) data distill --config configs/pipeline.yaml
+	$(CLI) stats distill --config configs/pipeline.stats.yaml
+	$(CLI) stats data --config configs/pipeline.stats.yaml
 
 mix:
-	$(CLI) data mix --config configs/pipeline.yaml
+	$(CLI) stats data --config configs/pipeline.stats.yaml
 
 baseline:
-	$(CLI) eval run --variant base --config configs/pipeline.yaml
+	$(CLI) stats baseline --config configs/pipeline.stats.yaml
 
 pilot:
-	$(CLI) train pilot --config configs/pipeline.yaml
+	$(CLI) stats pilot --config configs/pipeline.stats.yaml
 
 train:
-	$(CLI) train run --config configs/pipeline.yaml
+	$(CLI) stats train --config configs/pipeline.stats.yaml
 
 eval:
-	$(CLI) eval run --variant adapter --config configs/pipeline.yaml
+	$(CLI) stats eval --variant all --config configs/pipeline.stats.yaml
 
 export:
-	$(CLI) export all --config configs/pipeline.yaml
+	$(CLI) stats export --config configs/pipeline.stats.yaml
 
 gguf:
-	$(CLI) export gguf --config configs/pipeline.yaml
+	$(CLI) stats export --gguf --config configs/pipeline.stats.yaml
 
 clean-load:
-	$(CLI) export validate-clean --config configs/pipeline.yaml
+	$(CLI) stats export --config configs/pipeline.stats.yaml
 
 overnight:
-	$(CLI) overnight --config configs/pipeline.yaml
+	$(CLI) stats overnight --config configs/pipeline.stats.yaml
 
 chat:
-	$(CLI) chat --config configs/pipeline.yaml
+	$(CLI) stats chat --config configs/pipeline.stats.yaml
 
 serve:
-	$(CLI) serve --config configs/pipeline.yaml
+	$(CLI) stats serve --config configs/pipeline.stats.yaml
 
 test:
 	$(UV) run pytest
@@ -55,13 +57,59 @@ lint:
 	$(UV) run ruff check src tests
 
 release-check:
-	$(CLI) release check --config configs/pipeline.yaml
+	$(CLI) stats release-check --config configs/pipeline.stats.yaml
 
 publish-hf:
-	$(CLI) release publish-hf --config configs/pipeline.yaml
+	$(CLI) stats publish-hf --config configs/pipeline.stats.yaml
 
 publish-github:
-	$(CLI) release publish-github --config configs/pipeline.yaml
+	$(CLI) stats publish-github --config configs/pipeline.stats.yaml
+
+stats-setup:
+	$(CLI) stats setup --config configs/pipeline.stats.yaml
+
+stats-simulate:
+	$(CLI) stats simulate --config configs/pipeline.stats.yaml
+
+stats-data:
+	$(CLI) stats data --config configs/pipeline.stats.yaml
+
+stats-distill:
+	$(CLI) stats distill --config configs/pipeline.stats.yaml
+	$(CLI) stats data --config configs/pipeline.stats.yaml
+
+stats-lock:
+	$(CLI) stats lock-eval --config configs/pipeline.stats.yaml
+
+stats-baseline:
+	$(CLI) stats baseline --config configs/pipeline.stats.yaml
+
+stats-pilot:
+	$(CLI) stats pilot --config configs/pipeline.stats.yaml
+
+stats-train:
+	$(CLI) stats train --config configs/pipeline.stats.yaml
+
+stats-eval:
+	$(CLI) stats eval --variant all --config configs/pipeline.stats.yaml
+
+stats-export:
+	$(CLI) stats export --config configs/pipeline.stats.yaml
+
+stats-chat:
+	$(CLI) stats chat --config configs/pipeline.stats.yaml
+
+stats-serve:
+	$(CLI) stats serve --config configs/pipeline.stats.yaml
+
+stats-release-check:
+	$(CLI) stats release-check --config configs/pipeline.stats.yaml
+
+stats-publish-hf:
+	$(CLI) stats publish-hf --config configs/pipeline.stats.yaml
+
+stats-publish-github:
+	$(CLI) stats publish-github --config configs/pipeline.stats.yaml
 
 forge:
 	$(CLI) forge overnight --config configs/pipeline.v2.yaml

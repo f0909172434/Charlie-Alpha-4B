@@ -233,8 +233,10 @@ def _tracked_content_gate(config: ProjectConfig) -> dict[str, Any]:
         "data/distilled/",
         "data/final/",
         "data/v2/",
+        "data/stats/",
         "reports/v2/generated/",
         "reports/v3/generated/",
+        "reports/stats/generated/",
     )
     forbidden = [
         path

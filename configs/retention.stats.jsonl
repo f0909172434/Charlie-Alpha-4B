@@ -1,0 +1,24 @@
+{"task_id":"stats-ret-en-math-1","domain":"math","language":"en","prompt":"Return only the number: 7 multiplied by 8 equals?","gold":"56","max_tokens":32}
+{"task_id":"stats-ret-en-math-2","domain":"math","language":"en","prompt":"Return only the expression: What is the derivative of x squared?","gold":"2x","max_tokens":32}
+{"task_id":"stats-ret-en-code-1","domain":"code","language":"en","prompt":"Return only the output of Python len([1, 2, 3]).","gold":"3","max_tokens":32}
+{"task_id":"stats-ret-en-code-2","domain":"code","language":"en","prompt":"Return only the integer printed by C++ expression 7 / 2 when both operands are int.","gold":"3","max_tokens":32}
+{"task_id":"stats-ret-en-stem-1","domain":"stem","language":"en","prompt":"Return only the chemical symbol for potassium.","gold":"K","max_tokens":32}
+{"task_id":"stats-ret-en-stem-2","domain":"stem","language":"en","prompt":"Return only the planet name: Which planet is closest to the Sun?","gold":"Mercury","max_tokens":32}
+{"task_id":"stats-ret-en-general-1","domain":"general","language":"en","prompt":"Return only the next letter: B, D, F, H, ?","gold":"J","max_tokens":32}
+{"task_id":"stats-ret-en-general-2","domain":"general","language":"en","prompt":"Return only the opposite of the English word hot.","gold":"cold","max_tokens":32}
+{"task_id":"stats-ret-zh-hant-math-1","domain":"math","language":"zh_Hant","prompt":"只回答數字：七乘以八等於多少？","gold":"56","max_tokens":32}
+{"task_id":"stats-ret-zh-hant-math-2","domain":"math","language":"zh_Hant","prompt":"只回答式子：x 平方的導數是什麼？","gold":"2x","max_tokens":32}
+{"task_id":"stats-ret-zh-hant-code-1","domain":"code","language":"zh_Hant","prompt":"只回答輸出：Python 的 len([1, 2, 3]) 是多少？","gold":"3","max_tokens":32}
+{"task_id":"stats-ret-zh-hant-code-2","domain":"code","language":"zh_Hant","prompt":"只回答整數：C++ 中兩個 int 的運算式 7 / 2 會輸出多少？","gold":"3","max_tokens":32}
+{"task_id":"stats-ret-zh-hant-stem-1","domain":"stem","language":"zh_Hant","prompt":"只回答數字：標準大氣壓下，水的攝氏凝固點是多少？","gold":"0","max_tokens":32}
+{"task_id":"stats-ret-zh-hant-stem-2","domain":"stem","language":"zh_Hant","prompt":"只回答化學式：水的化學式是什麼？","gold":"H2O","max_tokens":32}
+{"task_id":"stats-ret-zh-hant-general-1","domain":"general","language":"zh_Hant","prompt":"只回答星期名稱：星期五的下一天是？","gold":"星期六","max_tokens":32}
+{"task_id":"stats-ret-zh-hant-general-2","domain":"general","language":"zh_Hant","prompt":"只回答英文字母：A、C、E、G 的下一個字母是？","gold":"I","max_tokens":32}
+{"task_id":"stats-ret-zh-hans-math-1","domain":"math","language":"zh_Hans","prompt":"只回答数字：七乘以八等于多少？","gold":"56","max_tokens":32}
+{"task_id":"stats-ret-zh-hans-math-2","domain":"math","language":"zh_Hans","prompt":"只回答式子：x 平方的导数是什么？","gold":"2x","max_tokens":32}
+{"task_id":"stats-ret-zh-hans-code-1","domain":"code","language":"zh_Hans","prompt":"只回答输出：Python 的 len([1, 2, 3]) 是多少？","gold":"3","max_tokens":32}
+{"task_id":"stats-ret-zh-hans-code-2","domain":"code","language":"zh_Hans","prompt":"只回答整数：C++ 中两个 int 的表达式 7 / 2 会输出多少？","gold":"3","max_tokens":32}
+{"task_id":"stats-ret-zh-hans-stem-1","domain":"stem","language":"zh_Hans","prompt":"只回答化学式：二氧化碳的化学式是什么？","gold":"CO2","max_tokens":32}
+{"task_id":"stats-ret-zh-hans-stem-2","domain":"stem","language":"zh_Hans","prompt":"只回答元素符号：氧的元素符号是什么？","gold":"O","max_tokens":32}
+{"task_id":"stats-ret-zh-hans-general-1","domain":"general","language":"zh_Hans","prompt":"只回答星期名称：星期一的前一天是？","gold":"星期日","max_tokens":32}
+{"task_id":"stats-ret-zh-hans-general-2","domain":"general","language":"zh_Hans","prompt":"只回答英文单词：英文单词 up 的反义词是什么？","gold":"down","max_tokens":32}

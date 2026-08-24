@@ -9,9 +9,11 @@ data/processed/
 data/distilled/
 data/final/
 data/v2/
+data/stats/
 reports/generated/
 reports/v2/generated/
 reports/v3/generated/
+reports/stats/generated/
 vendor/
 *.log
 *.pyc

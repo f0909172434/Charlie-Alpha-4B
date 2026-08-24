@@ -1,61 +1,60 @@
-# Reproducibility and overnight execution
+# Reproducibility
 
-## Immutable inputs
+## v0.3 statistics profile
 
-`configs/sources.lock.json` pins every model and dataset to a full commit SHA. EvalPlus artifacts
-are pinned by version and SHA-256, while `uv.lock` fixes the Python environment. The v0.2 and router
-evaluation locks store canonical task hashes and are committed without generated answers.
+`configs/pipeline.stats.yaml` is the complete v0.3 recipe. Model, teacher, dataset, and conversion
+inputs are pinned to full revisions in `configs/sources.lock.json`; `uv.lock` fixes the MLX
+environment and `pixi.lock` fixes the Python/R analysis runtime. The seed is 42.
 
-Prepared training text, model caches, and weights are intentionally ignored. Public manifests keep
-source IDs, revisions, category and language weights, record hashes, and output hashes. The Forge
-seed is 20260824; the disjoint router confirmation seed is 20260825.
+The DGP blueprint is split before any language rendering. Generated training records, simulator
+caches, evaluation answers, and weights are intentionally ignored. The repository retains the
+generator, method catalog, revisions, sealed task IDs and hashes, configuration, aggregate results,
+and release checks.
 
-## Resumable workflow
+Run or resume the stages separately:
 
 ```bash
 make setup
-make forge-lock
-make forge-prepare
-make forge-score
-make forge-select
-make forge-distill
-make forge-build
-make forge-pilot
-make forge-train
-make forge-calibrate
-make forge-dev
-make forge-freeze
-make forge-final
-make forge-router-lock
-make forge-router-freeze
-make forge-router-eval
-make forge-router-verify
-make forge-export
-make forge-clean-load
-make forge-release-check
+make stats-simulate
+make stats-distill
+make stats-data
+make stats-lock
+make stats-baseline
+make stats-pilot
+make stats-train
+make stats-eval
+make stats-export
+make stats-release-check
 ```
 
-Heavy stages use fingerprints, append-only per-task generations, or checkpoints. A matching result
-is reused; changed inputs invalidate only the affected stage. Final evaluation refuses to run until
-the recipe is frozen, and any changed frozen hash blocks it. Router confirmation has an independent
-freeze and excludes every v0.1/v0.2 task.
+`make overnight` runs the same sequence under a single budget. Simulation results, teacher edits,
+training stages, and individual long-running evaluation items use input fingerprints. A matching
+completed result is reused. Training writes adapter checkpoints every 100 microsteps; external
+evaluation writes per-item progress below the ignored generated-report directory.
 
-## Actual compute profile
+Three pilots receive the same 160 microsteps and trainable parameter count. A Metal memory failure
+changes every pilot to the same fallback profile: first 512 tokens, then rank 16. The winner is
+chosen by development normalized regret, statistical method accuracy, and validation loss, in that
+order. Delta scale is chosen on development data. `stats freeze` then binds the selected adapter,
+scale, data, and sealed evaluation lock before final evaluation.
 
-The selected dataset contains 52 semantic groups, 312 train records, and 18 validation records.
-Training uses batch size 1, six-step gradient accumulation, 704-token maximum length, and only
-384/544/704 padding buckets. Four rank-32 pilots train the same 2,129,920 parameters in the final
-four layers. The winning full run took 2,896 seconds, peaked at 16.05 GB, and early-stopped with its
-best checkpoint at iteration 431.
+The published aggregate report contains no evaluation prompts or model answers. Reproduction of a
+sealed score requires the pinned public evaluation sources and the committed ID/hash lock.
 
-The 9B model is used only for one-pass teacher-forced scoring and protected Chinese translation.
-It is absent from inference. The canonical runtime loads one 4B base and one 8.52 MB adapter, then
-changes eight LoRA scales before a single generation.
+## Isolation boundary
 
-## Security boundary
+Python and R tools run in a locked Pixi environment through the macOS application sandbox. Each
+analysis call has a wall-clock, CPU, memory, write-volume, and output limit. Network access,
+reading outside the temporary input/runtime roots, writing outside the temporary directory, and
+unapproved child processes are denied. Release checks exercise these restrictions for both Python
+and R.
 
-Generated Python and C++ are evaluated through the macOS sandbox with no network access, writes
-limited to a temporary directory, CPU and memory limits, and a wall-clock timeout. Source/data
-gates verify schema, original-problem split isolation, locked revisions, code checks, language and
-category gradient ratios, and benchmark separation. Release scans reject training text, caches,
-credentials, and machine-specific home paths from tracked or published artifacts.
+The planner cannot submit arbitrary generated code. It selects from a checked-in procedure catalog,
+maps explicit column roles, and invokes a fixed Python or R implementation. Input files remain on
+the local machine.
+
+## v0.2 reproduction
+
+The v0.2 FORGE workflow and artifacts remain available at tag `v0.2.0`. Its commands retain the
+`forge-` prefix, for example `make forge-pilot`, `make forge-train`, `make forge-router-verify`, and
+`make forge-export`. See `docs/FORGE.md` for that frozen recipe.

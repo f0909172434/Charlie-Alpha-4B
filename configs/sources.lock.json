@@ -74,6 +74,20 @@
       "config": "main",
       "split": "test",
       "license": "MIT"
+    },
+    "p_bench_eval": {
+      "repo_id": "May2222/P-Bench",
+      "revision": "402205db5904b45b3f1f0aca895980f712fd61d3",
+      "split": "benchmark",
+      "license": "CC-BY-4.0",
+      "policy": "evaluation-only"
+    },
+    "statqa_eval": {
+      "repo_id": "HKUSTDial/StatQA",
+      "git_url": "https://github.com/HKUSTDial/StatQA.git",
+      "revision": "3d5f6b5b6926600dc952f39d79dfdef82999aeeb",
+      "license": "GPL-3.0-only",
+      "policy": "evaluation-only-no-redistribution"
     }
   },
   "tools": {

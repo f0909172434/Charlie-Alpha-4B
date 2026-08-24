@@ -22,15 +22,27 @@ console = Console()
 
 
 def _base_source(config: ProjectConfig, *, hf: bool) -> dict[str, str]:
-    forge = config.section("project").get("profile") == "forge-overnight"
-    key = "research_base_hf" if forge and hf else "research_base_mlx_4bit" if forge else None
+    research = config.section("project").get("profile") in {
+        "forge-overnight",
+        "stats-dgp-regret",
+    }
+    key = (
+        "research_base_hf"
+        if research and hf
+        else "research_base_mlx_4bit"
+        if research
+        else None
+    )
     if key is None:
         key = "base_hf" if hf else "base_mlx_4bit"
     return config.sources["models"][key]
 
 
 def _report_path(config: ProjectConfig, name: str) -> Path:
-    if config.section("project").get("profile") == "forge-overnight":
+    if config.section("project").get("profile") in {
+        "forge-overnight",
+        "stats-dgp-regret",
+    }:
         return config.path_for("report_dir") / name
     return config.root / "reports" / name
 
@@ -80,6 +92,28 @@ def _selected_adapter(config: ProjectConfig) -> Path:
     return adapter_path
 
 
+def _public_stats_calibration(config: ProjectConfig, source: Path, destination: Path) -> None:
+    payload = json.loads(source.read_text(encoding="utf-8"))
+
+    def scrub(value: Any) -> Any:
+        if isinstance(value, dict):
+            return {
+                key: (
+                    "not-published-local-path"
+                    if key.endswith("_path") and item is not None
+                    else scrub(item)
+                )
+                for key, item in value.items()
+            }
+        if isinstance(value, list):
+            return [scrub(item) for item in value]
+        if isinstance(value, str):
+            return value.replace(str(config.root), ".").replace(str(Path.home()), "<user-home>")
+        return value
+
+    write_json(destination, scrub(payload))
+
+
 def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any]:
     release_dir = config.path_for("artifact_dir") / "release"
     package_dir = release_dir / "Charlie-Alpha-4B-MLX-adapter"
@@ -123,7 +157,8 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
     shutil.copy2(config.root / "MODEL_CARD.md", package_dir / "README.md")
     shutil.copy2(config.root / "configs" / "sources.lock.json", package_dir / "sources.lock.json")
     shutil.copy2(config.path, package_dir / config.path.name)
-    if config.section("project").get("profile") == "forge-overnight":
+    profile = config.section("project").get("profile")
+    if profile == "forge-overnight":
         for source, name in (
             (config.path_for("eval_lock"), "evaluation.lock.json"),
             (config.root / "reports" / "v2" / "evaluation.json", "evaluation.json"),
@@ -143,6 +178,22 @@ def _package_adapter(config: ProjectConfig, adapter_path: Path) -> dict[str, Any
         ):
             if source.exists():
                 shutil.copy2(source, package_dir / name)
+    elif profile == "stats-dgp-regret":
+        for source, name in (
+            (config.path_for("eval_lock"), "evaluation.lock.json"),
+            (config.path_for("report_dir") / "comparison.json", "evaluation.json"),
+            (config.path_for("artifact_dir") / "calibration.json", "calibration.json"),
+            (
+                config.path_for("final_dir") / "manifest.json",
+                "data-manifest.json",
+            ),
+            (config.root / "docs" / "DGP_REGRET.md", "DGP_REGRET.md"),
+        ):
+            if source.exists():
+                if name == "calibration.json":
+                    _public_stats_calibration(config, source, package_dir / name)
+                else:
+                    shutil.copy2(source, package_dir / name)
 
     checksums = {
         path.name: sha256_file(path)

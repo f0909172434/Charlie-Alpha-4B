@@ -51,7 +51,8 @@ class RunResult:
 def _base_snapshot(config: ProjectConfig) -> str:
     model_key = (
         "research_base_mlx_4bit"
-        if config.section("project").get("profile") == "forge-overnight"
+        if config.section("project").get("profile")
+        in {"forge-overnight", "stats-dgp-regret"}
         else "base_mlx_4bit"
     )
     source = config.sources["models"][model_key]

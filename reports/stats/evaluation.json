@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "ability_gates_passed": false,
+  "checks": {
+    "final_regret": true,
+    "invalid_selection": true,
+    "p_bench": false,
+    "statqa": false,
+    "trilingual": true,
+    "retention": true,
+    "ability_categories": true,
+    "dgp_regret_ablation": true
+  },
+  "absolute_metrics": {
+    "base": {
+      "dgp_final": {
+        "normalized_regret": 0.6727081790340077,
+        "method_accuracy": 0.20833333333333334,
+        "invalid_selection_rate": 0.6333333333333333
+      },
+      "p_bench": {
+        "raw_accuracy": 0.0,
+        "strict_accuracy": 0.0
+      },
+      "statqa": {
+        "exact_accuracy": 0.01,
+        "method_set_accuracy": 0.05,
+        "column_set_accuracy": 0.195
+      },
+      "trilingual_method_accuracy": {
+        "en": 0.16666666666666666,
+        "zh_Hant": 0.16666666666666666,
+        "zh_Hans": 0.3
+      },
+      "clarification_accuracy": 0.43333333333333335,
+      "retention_accuracy": 1.0
+    },
+    "hard-label": {
+      "dgp_final": {
+        "normalized_regret": 0.7015802440827292,
+        "method_accuracy": 0.175,
+        "invalid_selection_rate": 0.6583333333333333
+      },
+      "p_bench": {
+        "raw_accuracy": 0.0,
+        "strict_accuracy": 0.0
+      },
+      "statqa": {
+        "exact_accuracy": 0.01,
+        "method_set_accuracy": 0.06,
+        "column_set_accuracy": 0.23
+      },
+      "trilingual_method_accuracy": {
+        "en": 0.1,
+        "zh_Hant": 0.2,
+        "zh_Hans": 0.3
+      },
+      "clarification_accuracy": 0.4,
+      "retention_accuracy": 1.0
+    },
+    "dgp-regret": {
+      "dgp_final": {
+        "normalized_regret": 0.44370426245624983,
+        "method_accuracy": 0.45,
+        "invalid_selection_rate": 0.38333333333333336
+      },
+      "p_bench": {
+        "raw_accuracy": 0.0,
+        "strict_accuracy": 0.0
+      },
+      "statqa": {
+        "exact_accuracy": 0.01,
+        "method_set_accuracy": 0.055,
+        "column_set_accuracy": 0.22
+      },
+      "trilingual_method_accuracy": {
+        "en": 0.43333333333333335,
+        "zh_Hant": 0.26666666666666666,
+        "zh_Hans": 0.4
+      },
+      "clarification_accuracy": 0.0,
+      "retention_accuracy": 1.0
+    }
+  },
+  "metrics": {
+    "regret_relative_improvement": 0.3404208893470001,
+    "paired_bootstrap": {
+      "mean_improvement": 0.22900391657775804,
+      "ci95_lower": 0.11990035876413682,
+      "ci95_upper": 0.3360968998428053
+    },
+    "invalid_selection_relative_reduction": 0.3947368421052631,
+    "language_accuracy_deltas_points": {
+      "en": 26.66666666666667,
+      "zh_Hant": 10.0,
+      "zh_Hans": 10.000000000000004
+    },
+    "dgp_regret_vs_hard_dev_relative": 0.08540392127527595,
+    "retention_accuracy_deltas_points": {
+      "domain:code": 0.0,
+      "domain:general": 0.0,
+      "domain:math": 0.0,
+      "domain:stem": 0.0,
+      "language:en": 0.0,
+      "language:zh_Hans": 0.0,
+      "language:zh_Hant": 0.0
+    },
+    "ability_category_accuracy_deltas_points": {
+      "inference_and_design": 15.277777777777777,
+      "prediction_and_analysis": 33.33333333333333,
+      "probability_and_bayes": 41.666666666666664
+    },
+    "p_bench_raw_delta_points": 0.0,
+    "statqa_delta_points": 0.0
+  },
+  "reports": {
+    "base": "0683ef303beaf9216d13d5d896d43f562f6fe8854d82da41ca05f4924d880daa",
+    "hard-label": "e873ea42d6676902b193214b2f87a30bd55325b859e9a2edcd4616d551b3e5e1",
+    "dgp-regret": "6d359d3b46c6c98b6c6b00b106d93305dc3347855111630ae7dad0618a7e85f1",
+    "selected": "6d359d3b46c6c98b6c6b00b106d93305dc3347855111630ae7dad0618a7e85f1"
+  },
+  "selected_variant": "dgp-regret",
+  "dgp_regret_benefit_claim_allowed": true
+}

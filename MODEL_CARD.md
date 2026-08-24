@@ -9,123 +9,156 @@ pipeline_tag: text-generation
 tags:
   - mlx
   - qlora
-  - mathematics
-  - code
+  - statistics
+  - dgp-regret
+  - tool-agent
+  - multilingual
   - experimental
-  - sparse-routing
 ---
 
 # Charlie alpha model card
 
-## Model description
+## Model details
 
-Charlie alpha is an experimental 4B-class derivative for English, Traditional Chinese, and
-Simplified Chinese mathematics and programming. It starts from Apache-2.0-licensed Qwen3.5-4B and
-uses a quantized MLX LoRA adapter; it is not pretrained from scratch.
+Charlie alpha v0.3 is a statistical procedure-selection derivative of Qwen3.5-4B. It supports
+English, Traditional Chinese, and Simplified Chinese. The canonical artifact uses one 4-bit MLX
+base and a LoRA adapter with 2,129,920 parameters across eight modules in the final four layers.
 
-The canonical v0.2 runtime is a single-model, deterministic sparse route. One 4-bit base and one
-8.52 MB adapter remain loaded. Chinese or coding prompts enable eight LoRA modules in the final four
-layers; English non-coding prompts bypass their contribution. A request is generated once. No
-teacher, judge, second candidate, or second base-model copy is used at inference time. Users can
-override the route when the prompt classifier is inappropriate.
+The runtime has two routes. `stats` enables the adapter for statistical questions or attached data;
+`base` bypasses LoRA for other requests. The compatibility name `adapter` maps to `stats`. Each
+request generates one answer. No teacher or judge model runs during inference.
 
-The adapter contains 2,129,920 parameters. The published numerical check reports zero maximum
-logit error between its bypass path and an independently loaded base, and zero error after restoring
-the adapter path. See `reports/v2/dynamic-router.json`.
+Release classification: **Experimental v0.3.0**. The model improved its sealed DGP procedure
+selection metrics, but the external P-Bench and StatQA gates failed. It also regressed on the
+held-out clarification suite.
+
+## Intended use
+
+The model supports research on statistical procedure selection under explicit assumptions. The
+local agent can inspect CSV, TSV, JSON, or Parquet files and call fixed Python/R procedures. It
+returns a structured plan with these fields:
+
+`status`, `estimand`, `sampling_unit`, `study_design`, `outcome_type`, `dependence`, `missingness`,
+`method_id`, `uncertainty`, `diagnostics`, `tool`, and `variables`.
+
+The current release is unsuitable for autonomous analysis. A user should state the estimand,
+sampling unit, assignment mechanism, dependence structure, and missingness assumptions, then have a
+statistician check the plan and result. Medical, financial, and policy decisions require qualified
+review.
 
 ## Training method
 
-FORGE combines several compute-saving techniques under a frozen evaluation protocol:
+DGP-Regret casts procedure selection as a bounded decision problem. The generator covers 12 DGP
+families and 28 procedures. Each item presents at most six candidates, including a robust
+alternative and `needs_clarification` where appropriate. The simulator estimates Type I error,
+coverage, bias, RMSE, power, calibration, and cost with common random numbers. It starts at 128
+replications and escalates to 256 or 512 when the method ranking remains uncertain.
 
-- Correct, locally decontaminated math and Python/C++ trajectories are scored once with pinned 4B
-  student and 9B teacher models under teacher forcing. Positive student-teacher token-loss gaps
-  select the useful portion of each English answer; 52.7% of English target tokens are retained.
-- Fifty-two semantic groups are split into 26 math, 13 Python, and 13 C++. Each optimizer update
-  couples one source problem in English, Simplified Chinese, and Traditional Chinese with three
-  same-capability English replays. Loss weights make the language gradient mass exactly
-  70%/15%/15% and the category mass 50%/25%/25%.
-- Formulae, numbers, URLs, and code are replaced with validated placeholders during local 9B
-  translation and restored byte-for-byte. Training has 312 records; validation has 18 records.
-- Four equal-parameter pilots compare standard LoRA, LoRA+, and selective/full target loss. The
-  selected rank-32 recipe trains eight projections in the final four hybrid Qwen3.5 layers.
-- Full training stopped after two validation checks without improvement. It took 2,896 seconds,
-  peaked at 16.05 GB, and reduced best validation loss from 0.8640 to 0.6867 at iteration 431.
-- A development-only LoRA-B delta-scale search selected 0.22. The final suite remained sealed
-  until the recipe, data, prompt, adapter, and task hashes were frozen.
+The simulator converts normalized regret to a listwise target:
 
-Model, dataset, teacher, and tool revisions are pinned in `configs/sources.lock.json`. Public data
-manifests contain metadata and hashes, not redistributed training text.
+\[
+q_j=\frac{\exp(-r_j/0.15)}{\sum_k\exp(-r_k/0.15)}.
+\]
+
+The primary split contains 240 training semantic groups, 30 validation groups, 60 dev DGPs, and
+120 sealed final DGPs. Splitting occurs before language rendering. Each training group has two
+English boundary views plus one Traditional Chinese and one Simplified Chinese view. Loss weights
+of 1.4, 1.4, 0.6, and 0.6 yield a 70%/15%/15% language gradient ratio.
+
+The assistant objective assigns 45% to method soft-label loss, 35% to plan/tool tokens, and 20% to
+the report. User content and tool output receive zero loss. A local Qwen3.5-9B teacher edited only
+explanations at temperature 0. It could not choose methods or alter simulator fields. Of 120 target
+explanations, 76 passed validation and 44 used the deterministic template.
+
+Three equal-compute pilots used 160 microsteps, rank 32, the final four layers, batch size 1, four
+steps of gradient accumulation, and a 640-token limit:
+
+| Pilot | Dev normalized regret | Method accuracy | Invalid selection | Final validation loss |
+| --- | ---: | ---: | ---: | ---: |
+| Hard-label | 0.6848 | 18.33% | 61.67% | 1.6983 |
+| Regret, random DGP | 0.6644 | 18.33% | 60.00% | 1.7328 |
+| DGP-Regret curriculum | **0.6263** | **30.00%** | 61.67% | 1.7125 |
+
+The DGP-Regret pilot reduced dev regret by 8.54% relative to hard-label. Formal training planned at
+most 1,920 microsteps and stopped after 1,120 because two validation checks did not improve. The
+best checkpoint occurred at microstep 800 with validation loss 1.0529. Dev calibration compared
+adapter delta scales 0.5, 0.75, and 1.0 and selected 1.0 using validity first, then normalized regret
+and retention.
+
+The v0.3 simulator is a semiparametric operating-characteristic emulator. It does not generate a
+raw table and refit all 28 methods inside every replication. Its response functions are checked in,
+seeded, and testable, but they encode modeling judgment. Sealed DGP performance measures agreement
+with that declared simulator.
 
 ## Evaluation
 
-All comparisons use the same pinned Qwen3.5-4B MLX base, prompts, greedy decoding, task scoring, and
-generation limits. Dev can guide selection; final and router-confirm are one-time, disjoint frozen
-suites. Neither 62-task result reached the predeclared +2 percentage-point normal-release gate.
+All variants use the pinned Qwen3.5-4B MLX base, the same prompts and tools, greedy decoding, and the
+same sealed IDs. The evaluation lock contains 120 final DGPs, 90 P-Bench tasks, 200 StatQA tasks, 30
+trilingual semantic tasks rendered in three languages, 30 clarification cases, and 24 retention
+items. An 8-gram audit found no overlap with training prompts.
 
-### Direct adapter final
+### DGP procedure selection
 
-| Group | Base | Adapter | Delta (points) |
+| Model | Normalized regret | Method accuracy | Invalid selection rate |
 | --- | ---: | ---: | ---: |
-| Overall (62) | 43/62, 69.35% | 44/62, 70.97% | +1.62 |
-| Code (16) | 11/16 | 12/16 | +6.25 |
-| Math (40) | 28/40 | 28/40 | 0.00 |
-| English (42) | 27/42 | 26/42 | -2.39 |
-| Simplified Chinese (10) | 10/10 | 10/10 | 0.00 |
-| Traditional Chinese (10) | 6/10 | 8/10 | +20.00 |
+| Base | 0.6727 | 20.83% | 63.33% |
+| Hard-label | 0.7016 | 17.50% | 65.83% |
+| DGP-Regret | **0.4437** | **45.00%** | **38.33%** |
 
-The direct adapter gained one total answer but traded two English MATH-500 answers for one MBPP+
-and two Chinese MGSM answers. Because it did not preserve every subgroup, it is not the canonical
-always-on runtime.
+Relative regret improved by 34.04%. The paired-bootstrap mean absolute improvement was 0.2290 with a
+95% CI of `[0.1199, 0.3361]`. The invalid selection rate fell by 39.47% relative to the base.
 
-### Disjoint sparse-router confirmation
+### External, language, and retention results
 
-The fixed rule—adapter for code or either Chinese script, base otherwise—was written after the
-first final result. A new 62-task lock was then created before any routed generation and excludes all
-v0.1 and v0.2 dev/final tasks.
-
-| Group | Base | Routed | Delta (points) |
+| Metric | Base | Hard-label | DGP-Regret |
 | --- | ---: | ---: | ---: |
-| Overall (62) | 42/62, 67.74% | 43/62, 69.35% | +1.61 |
-| HumanEval+ (8) | 7/8 | 8/8 | +12.50 |
-| Code (16) | 11/16 | 12/16 | +6.25 |
-| Math (40) | 27/40 | 27/40 | 0.00 |
-| English (42) | 24/42 | 25/42 | +2.38 |
-| Simplified Chinese (10) | 9/10 | 9/10 | 0.00 |
-| Traditional Chinese (10) | 9/10 | 9/10 | 0.00 |
+| P-Bench Raw | 0% | 0% | 0% |
+| P-Bench Strict | 0% | 0% | 0% |
+| StatQA exact | 1.00% | 1.00% | 1.00% |
+| StatQA method-set accuracy | 5.00% | 6.00% | 5.50% |
+| StatQA column-set accuracy | 19.50% | 23.00% | 22.00% |
+| Trilingual English method accuracy | 16.67% | 10.00% | 43.33% |
+| Trilingual Traditional Chinese method accuracy | 16.67% | 20.00% | 26.67% |
+| Trilingual Simplified Chinese method accuracy | 30.00% | 30.00% | 40.00% |
+| Clarification accuracy | 43.33% | 40.00% | 0% |
+| Retention accuracy | 100% | 100% | 100% |
 
-No measured language or domain lost a correct answer in this confirmation, but one additional
-answer in 62 tasks is not statistically persuasive. This result is evidence for further study, not
-proof that Charlie alpha is broadly stronger.
+The adapter passed the final-regret, invalid-selection, trilingual, retention, category, and
+DGP-Regret ablation gates. P-Bench and StatQA failed their improvement gates. On P-Bench, all base
+and hard-label cases returned `needs_clarification`; DGP-Regret did so on 88 of 90 cases, and no
+variant produced a scoreable p value. The complete capability gate therefore failed.
 
-## Release status and limitations
+The public aggregate is `reports/stats/evaluation.json`. Generated task text, per-item predictions,
+and model answers remain outside the release tree.
 
-**Experimental v0.2.0.** Both frozen suites observed a positive one-answer difference, but both
-missed the predeclared +2-point threshold. The test sets are small, and benchmark accuracy is a
-limited proxy for real use. Auto-routing can misclassify cross-domain English prompts. Generated
-proofs, calculations, explanations, and programs can be wrong; run code in an isolated environment
-and independently verify important answers.
+## Runtime and isolation
 
-Dynamic sparse routing cannot be faithfully collapsed into one fused GGUF. GGUF is therefore not
-published without a separate behavioral-parity pass. The fused always-on MLX export is a specialist
-artifact and does not reproduce the canonical route.
+The planner can call a checked-in Python or R implementation at most four times per analysis. Each
+call has a 20-second timeout, 2 GiB memory limit, 32 MiB write limit, and 64 KiB output limit. The
+macOS sandbox blocks networking, reads outside the runtime and temporary input directory, writes
+outside the temporary directory, and unapproved child processes. Release tests exercised each
+escape class in Python and R.
 
-## MLX usage
+The adapter, fused MLX export, and dynamic router loaded in a clean Python 3.12 environment. Router
+tests measured eight LoRA modules, a nonzero adapter effect, zero restoration error, and zero error
+between the bypass and an independently loaded base.
 
-Clone the source repository, install its pinned environment, and pass either a local adapter
-directory or the public Hugging Face adapter repository. The latter is downloaded at its immutable
-Hub revision and applied to the pinned 4-bit base:
+## Limitations
 
-```bash
-make setup
-uv run charlie-alpha chat --config configs/pipeline.v2.yaml \
-  --adapter-path f0909172434/Charlie-Alpha-4B-MLX-4bit
-```
+- The model's gains are confined to the declared DGP selection task and trilingual variants of it.
+- P-Bench and StatQA provide no evidence of improved end-to-end statistical analysis.
+- The adapter failed all held-out clarification cases, so it may choose a method when it should ask
+  for design information.
+- The finite emulator does not establish optimality on unseen statistical problems.
+- Generated plans, code outputs, and prose can contain errors even when the selected method is
+  valid.
 
-The same `--adapter-path` option works with `charlie-alpha serve`. `/route auto` is the canonical
-policy; `/route base` and `/route adapter` are explicit overrides.
+GGUF is withheld. The pinned llama.cpp path lacks a verified upstream resolution for the relevant
+Qwen3.5 hybrid-tensor and 4B block-count issues. The project will not publish an unverified GGUF.
 
 ## License and provenance
 
-Project code and derivative artifacts use Apache-2.0. Upstream datasets retain their own licenses;
-see `THIRD_PARTY_NOTICES.md` and `DATA_SOURCES.md`. The release excludes training corpora, caches,
-credentials, and machine-specific paths.
+Project code and derivative model artifacts use Apache-2.0. Upstream datasets retain their own
+licenses. `configs/sources.lock.json`, `DATA_SOURCES.md`, and `THIRD_PARTY_NOTICES.md` record pinned
+revisions and terms. The release excludes corpora, caches, credentials, evaluation question text,
+and machine paths. The v0.2 FORGE release remains available at Git tag `v0.2.0`.

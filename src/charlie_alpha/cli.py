@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -46,6 +47,34 @@ from .mixer import mix_data
 from .orchestrator import run_overnight
 from .release import check_release, publish_github, publish_hugging_face
 from .routed_inference import generate_routed, load_routed_model, verify_dynamic_router
+from .stats_agent import StatsAgent, classify_stats_route, resolve_stats_runtime
+from .stats_data import (
+    build_stats_data,
+    distill_stats_explanations,
+    prepare_stats_blueprints,
+    simulate_stats_surface,
+)
+from .stats_eval import (
+    build_stats_evaluation_lock,
+    compare_stats_evaluation,
+    freeze_stats_recipe,
+    run_stats_evaluation,
+)
+from .stats_orchestrator import run_stats_pipeline
+from .stats_release import (
+    check_stats_release,
+    export_stats,
+    publish_stats_github,
+    publish_stats_hugging_face,
+)
+from .stats_sandbox import sandbox_self_test as stats_sandbox_self_test
+from .stats_training import (
+    calibrate_stats_adapter,
+    run_stats_pilot_candidate,
+    run_stats_pilots,
+    run_stats_training,
+    score_stats_selector,
+)
 from .training import _base_snapshot, run_pilot, run_training
 
 app = typer.Typer(no_args_is_help=True, help="Charlie alpha overnight training pipeline.")
@@ -55,12 +84,14 @@ eval_app = typer.Typer(no_args_is_help=True)
 export_app = typer.Typer(no_args_is_help=True)
 release_app = typer.Typer(no_args_is_help=True)
 forge_app = typer.Typer(no_args_is_help=True, help="Forge v0.2 efficient research pipeline.")
+stats_app = typer.Typer(no_args_is_help=True, help="Charlie alpha v0.3 statistics pipeline.")
 app.add_typer(data_app, name="data")
 app.add_typer(train_app, name="train")
 app.add_typer(eval_app, name="eval")
 app.add_typer(export_app, name="export")
 app.add_typer(release_app, name="release")
 app.add_typer(forge_app, name="forge")
+app.add_typer(stats_app, name="stats")
 console = Console()
 
 ConfigOption = Annotated[
@@ -288,6 +319,275 @@ def forge_router_verify(
     config: ConfigOption = Path("configs/pipeline.v2.yaml"),
 ) -> None:
     _show(verify_dynamic_router(load_config(config)))
+
+
+StatsConfigOption = Annotated[
+    Path,
+    typer.Option("--config", exists=True, dir_okay=False, resolve_path=True),
+]
+
+
+@stats_app.command("setup")
+def stats_setup(config: StatsConfigOption = Path("configs/pipeline.stats.yaml")) -> None:
+    project = load_config(config)
+    pixi = shutil.which("pixi") or str(Path.home() / ".pixi" / "bin" / "pixi")
+    if not Path(pixi).exists():
+        raise typer.BadParameter("Pixi is missing; install the pinned user-level Pixi runtime")
+    subprocess.run([pixi, "install", "--locked"], cwd=project.root, check=True)
+    runtime = resolve_stats_runtime(project)
+    _show(
+        {
+            "pixi": subprocess.run(
+                [pixi, "--version"], text=True, capture_output=True, check=True
+            ).stdout.strip(),
+            "isolation": stats_sandbox_self_test(
+                python_executable=runtime.python,
+                r_executable=runtime.rscript,
+            ),
+        }
+    )
+
+
+@stats_app.command("simulate")
+def stats_simulate(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"), force: bool = False
+) -> None:
+    project = load_config(config)
+    _show(
+        {
+            "blueprints": prepare_stats_blueprints(project, force=force),
+            "surface": simulate_stats_surface(project, force=force),
+        }
+    )
+
+
+@stats_app.command("data")
+def stats_data(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"), force: bool = False
+) -> None:
+    _show(build_stats_data(load_config(config), force=force))
+
+
+@stats_app.command("distill")
+def stats_distill(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"), force: bool = False
+) -> None:
+    _show(distill_stats_explanations(load_config(config), force=force))
+
+
+@stats_app.command("lock-eval")
+def stats_lock_eval(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"), force: bool = False
+) -> None:
+    _show(build_stats_evaluation_lock(load_config(config), force=force))
+
+
+@stats_app.command("baseline")
+def stats_baseline(config: StatsConfigOption = Path("configs/pipeline.stats.yaml")) -> None:
+    _show(score_stats_selector(load_config(config), adapter_path=None, split="dev"))
+
+
+@stats_app.command("pilot")
+def stats_pilot(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"), force: bool = False
+) -> None:
+    _show(run_stats_pilots(load_config(config), force=force))
+
+
+@stats_app.command("pilot-one", hidden=True)
+def stats_pilot_one(
+    variant: Annotated[str, typer.Option("--variant")],
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"),
+    force: bool = False,
+) -> None:
+    _show(run_stats_pilot_candidate(load_config(config), variant=variant, force=force))
+
+
+@stats_app.command("train")
+def stats_train(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"), force: bool = False
+) -> None:
+    project = load_config(config)
+    trained = run_stats_training(project, force=force)
+    calibrated = calibrate_stats_adapter(project, force=force)
+    _show({"trained": trained, "calibrated": calibrated})
+
+
+@stats_app.command("freeze")
+def stats_freeze(config: StatsConfigOption = Path("configs/pipeline.stats.yaml")) -> None:
+    _show(freeze_stats_recipe(load_config(config)))
+
+
+@stats_app.command("eval")
+def stats_eval(
+    variant: Annotated[str, typer.Option("--variant")] = "all",
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"),
+    force: bool = False,
+) -> None:
+    project = load_config(config)
+    if variant == "all":
+        freeze_stats_recipe(project)
+        selected = json.loads(
+            (project.path_for("artifact_dir") / "selected.json").read_text(encoding="utf-8")
+        )
+        variants = ["base", "hard-label", "dgp-regret"]
+        if selected.get("variant") != "dgp-regret":
+            variants.append("selected")
+        reports = {
+            name: run_stats_evaluation(project, variant=name, force=force)
+            for name in variants
+        }
+        _show({"reports": reports, "comparison": compare_stats_evaluation(project)})
+        return
+    _show(run_stats_evaluation(project, variant=variant, force=force))
+
+
+@stats_app.command("compare")
+def stats_compare(config: StatsConfigOption = Path("configs/pipeline.stats.yaml")) -> None:
+    _show(compare_stats_evaluation(load_config(config)))
+
+
+@stats_app.command("export")
+def stats_export(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"),
+    gguf: Annotated[bool, typer.Option("--gguf")] = False,
+) -> None:
+    _show(export_stats(load_config(config), include_gguf=gguf))
+
+
+@stats_app.command("release-check")
+def stats_release_check(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"),
+) -> None:
+    _show(check_stats_release(load_config(config)))
+
+
+@stats_app.command("publish-hf")
+def stats_publish_hf(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"),
+    gguf: Annotated[bool, typer.Option("--gguf")] = False,
+) -> None:
+    _show(publish_stats_hugging_face(load_config(config), include_gguf=gguf))
+
+
+@stats_app.command("publish-github")
+def stats_publish_github(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"),
+) -> None:
+    _show(publish_stats_github(load_config(config)))
+
+
+@stats_app.command("analyze")
+def stats_analyze(
+    data: Annotated[list[Path], typer.Option("--data", exists=True, dir_okay=False)],
+    question: Annotated[str, typer.Option("--question")],
+    language: Annotated[str, typer.Option("--language")] = "auto",
+    route: Annotated[str, typer.Option("--route")] = "stats",
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"),
+    adapter_path: Annotated[str | None, typer.Option("--adapter-path")] = None,
+) -> None:
+    project = load_config(config)
+    selected_route = classify_stats_route(question, has_files=True, override=route)
+    agent = StatsAgent(project, adapter_path=adapter_path)
+    _show(
+        agent.analyze(
+            data_paths=data,
+            question=question,
+            language=language,
+            route=selected_route,
+        )
+    )
+
+
+@stats_app.command("chat")
+def stats_chat(
+    data: Annotated[list[Path] | None, typer.Option("--data", exists=True, dir_okay=False)] = None,
+    language: Annotated[str, typer.Option("--language")] = "auto",
+    route: Annotated[str, typer.Option("--route")] = "auto",
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"),
+    adapter_path: Annotated[str | None, typer.Option("--adapter-path")] = None,
+) -> None:
+    project = load_config(config)
+    agent = StatsAgent(project, adapter_path=adapter_path)
+    files = data or []
+    active_route = route
+    history: list[dict[str, str]] = []
+    console.print("Charlie alpha statistics — /quit exits; /route auto|base|stats changes routing")
+    while True:
+        question = console.input("[bold cyan]You> [/bold cyan]")
+        if question.strip() in {"/quit", "/exit"}:
+            break
+        if question.startswith("/route "):
+            active_route = question.split(maxsplit=1)[1].strip().lower()
+            classify_stats_route("", has_files=bool(files), override=active_route)
+            console.print(f"route override: {active_route}")
+            continue
+        selected_route = classify_stats_route(
+            question,
+            has_files=bool(files),
+            override=active_route,
+        )
+        messages = [*history, {"role": "user", "content": question}]
+        if files and selected_route == "stats":
+            result = agent.analyze(
+                data_paths=files,
+                question=question,
+                language=language,
+                route=selected_route,
+                conversation=history,
+            )
+            answer = str(result["answer"])
+            console.print(
+                f"[dim]route={selected_route}; tool_calls={result['tool_calls']}[/dim]\n"
+                f"[bold green]Charlie alpha>[/bold green] {answer}"
+            )
+        else:
+            answer = agent.answer_without_tools(
+                messages,
+                route=selected_route,
+            )
+            console.print(
+                f"[dim]route={selected_route}[/dim]\n"
+                f"[bold green]Charlie alpha>[/bold green] {answer}"
+            )
+        history.extend(
+            [
+                {"role": "user", "content": question},
+                {"role": "assistant", "content": answer},
+            ]
+        )
+        history = history[-8:]
+
+
+@stats_app.command("serve")
+def stats_serve(
+    config: StatsConfigOption = Path("configs/pipeline.stats.yaml"),
+    host: str = "127.0.0.1",
+    port: int = 8080,
+    adapter_path: Annotated[str | None, typer.Option("--adapter-path")] = None,
+) -> None:
+    project = load_config(config)
+    command = [
+        "/usr/bin/caffeinate",
+        "-dimsu",
+        sys.executable,
+        "-m",
+        "charlie_alpha.stats_server",
+        "--config",
+        str(project.path),
+        "--host",
+        host,
+        "--port",
+        str(port),
+    ]
+    if adapter_path:
+        command.extend(["--adapter-path", adapter_path])
+    raise typer.Exit(subprocess.call(command, cwd=project.root))
+
+
+@stats_app.command("overnight")
+def stats_overnight(config: StatsConfigOption = Path("configs/pipeline.stats.yaml")) -> None:
+    _show(run_stats_pipeline(load_config(config)))
 
 
 def _adapter(config: ProjectConfig) -> str:
