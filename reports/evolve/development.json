@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "method": "DGP-Evolve",
+  "release_status": "development-only",
+  "champion_changed": false,
+  "champion": {
+    "node_id": "v0.3.0-parent",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "invariants": {
+    "base_model_frozen": true,
+    "trainable_parameters": 2129920,
+    "sealed_final_surface_opened": false,
+    "generated_code_execution_allowed": false,
+    "promotion_requires_all_gates": true
+  },
+  "cycles": [
+    {
+      "cycle": 1,
+      "planned_microsteps": 160,
+      "elapsed_seconds": 1064.3,
+      "selected_adapter_sha256": "a22e2584daab870c62d635c0d1e419252baff21ad890b88a39f27ff961ee4b9b",
+      "selected_checkpoint": "parent",
+      "promoted": false,
+      "rejection_reason": "numerically_identical_to_parent",
+      "promotion_shard": {
+        "count": 60,
+        "sha256": "df5cd102ce5744442605123b5a4db6529cb8f571e4eaeac014d86ce0b076db97",
+        "opened_for_scoring": false
+      }
+    },
+    {
+      "cycle": 2,
+      "planned_microsteps": 160,
+      "elapsed_seconds": 1305.68,
+      "selected_adapter_sha256": "a4fa62463ce6a72ee957d4bb17848fc1356a8eb6177a81a6a10d2adf0cd8f10f",
+      "selected_checkpoint": "last",
+      "validation": {
+        "parent": {
+          "normalized_regret": 0.3780125023955661,
+          "accuracy": 0.43333333333333335,
+          "invalid_selection_rate": 0.3333333333333333
+        },
+        "candidate": {
+          "normalized_regret": 0.2856191529321865,
+          "accuracy": 0.5333333333333333,
+          "invalid_selection_rate": 0.23333333333333334
+        },
+        "relative_regret_improvement": 0.24441876625206393
+      },
+      "promotion": {
+        "parent": {
+          "normalized_regret": 0.44457501499475166,
+          "accuracy": 0.4166666666666667,
+          "invalid_selection_rate": 0.35
+        },
+        "candidate": {
+          "normalized_regret": 0.3580614226844434,
+          "accuracy": 0.5166666666666667,
+          "invalid_selection_rate": 0.25
+        },
+        "relative_regret_improvement": 0.19459841284902069,
+        "paired_bootstrap": {
+          "mean_improvement": 0.08651359231030824,
+          "ci95_lower": -0.05362241619266029,
+          "ci95_upper": 0.23154899082123692
+        },
+        "retention_accuracy": {
+          "parent": 1.0,
+          "candidate": 1.0
+        },
+        "gates": {
+          "nonzero_update": true,
+          "relative_regret": true,
+          "paired_noninferiority": false,
+          "accuracy": true,
+          "invalidity": true,
+          "retention": true
+        }
+      },
+      "promoted": false,
+      "rejection_reason": "paired_bootstrap_lower_bound_below_frozen_floor",
+      "promotion_shard": {
+        "count": 60,
+        "sha256": "28957cf440d174274e5070ae1a98293864a01daaca93f853871b93175cd7769a",
+        "opened_for_scoring": true
+      }
+    },
+    {
+      "cycle": 3,
+      "planned_microsteps": 160,
+      "elapsed_seconds": 1578.99,
+      "selected_adapter_sha256": "a22e2584daab870c62d635c0d1e419252baff21ad890b88a39f27ff961ee4b9b",
+      "selected_checkpoint": "parent",
+      "checkpoint_candidates": {
+        "parent": {
+          "normalized_regret": 0.3780125023955661,
+          "accuracy": 0.43333333333333335,
+          "invalid_selection_rate": 0.3333333333333333
+        },
+        "microstep_80": {
+          "normalized_regret": 0.39435989539032684,
+          "accuracy": 0.4,
+          "invalid_selection_rate": 0.3333333333333333
+        },
+        "last": {
+          "normalized_regret": 0.45078157079190145,
+          "accuracy": 0.4,
+          "invalid_selection_rate": 0.43333333333333335
+        }
+      },
+      "promoted": false,
+      "rejection_reason": "no_checkpoint_passed_validation_selection",
+      "promotion_shard": {
+        "count": 144,
+        "sha256": "b89b9752a1989198b369ea3e4cb7d64aa15edabc1dc520ce92597dc2eb7a5828",
+        "opened_for_scoring": false
+      }
+    }
+  ],
+  "post_cycle_revision": {
+    "status": "implemented-and-tested-not-yet-trained",
+    "changes": [
+      "promotion shards are immutable after preparation",
+      "future curriculum signals come only from reusable validation data",
+      "family learnability is shrunk to the interval 0.25 to 0.75",
+      "cross-file column ambiguity is rejected by the constrained compiler"
+    ]
+  },
+  "verification": {
+    "pytest_passed": 73,
+    "ruff_passed": true,
+    "sandbox_escape_classes_passed": true
+  },
+  "claim_boundary": "No DGP-Evolve candidate was promoted. The v0.3 adapter remains the selected model."
+}

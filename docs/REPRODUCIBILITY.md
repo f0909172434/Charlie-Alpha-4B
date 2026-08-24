@@ -1,5 +1,24 @@
 # Reproducibility
 
+## v0.4 development profile
+
+`configs/pipeline.evolve.yaml` continues training from the frozen v0.3 adapter without changing its
+release artifacts. Generated records and candidates live under `data/evolve/` and
+`artifacts/evolve/`. The archive retains rejected candidates and changes the champion pointer only
+after every promotion gate passes.
+
+```bash
+make evolve-prepare
+make evolve
+make evolve-status
+```
+
+Task generation uses the v0.3 dev surface as a discovery set. Each cycle receives a deterministic
+144-DGP promotion shard with a new seed. The program fingerprints that shard before training and
+does not use it for proposal scoring, training, or replay. Parent and candidate are scored as a
+pair after training. The sealed v0.3 final surface remains unopened. See
+[`DGP_EVOLVE.md`](DGP_EVOLVE.md) for the objective, archive format, and promotion gates.
+
 ## v0.3 statistics profile
 
 `configs/pipeline.stats.yaml` is the complete v0.3 recipe. Model, teacher, dataset, and conversion

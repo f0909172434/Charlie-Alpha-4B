@@ -11,6 +11,33 @@ request <- fromJSON(args[[1]], simplifyVector = FALSE)
 frame <- read.csv(request$data_path, check.names = FALSE)
 variables <- request$variables
 method <- request$method_id
+options <- request$analysis_options
+
+if (!is.null(options$row_filters)) {
+  for (filter_spec in options$row_filters) {
+    column <- filter_spec$column
+    values <- unlist(filter_spec$values)
+    if (!(column %in% names(frame))) stop(paste("filter column does not exist:", column))
+    if (filter_spec$operation == "include") {
+      frame <- frame[frame[[column]] %in% values, , drop = FALSE]
+    } else if (filter_spec$operation == "exclude") {
+      frame <- frame[!(frame[[column]] %in% values), , drop = FALSE]
+    } else {
+      stop(paste("unsupported row filter operation:", filter_spec$operation))
+    }
+  }
+}
+if (!is.null(options$binary_recodes)) {
+  for (recode in options$binary_recodes) {
+    column <- recode$column
+    positive <- unlist(recode$positive_values)
+    if (!(column %in% names(frame))) stop(paste("recode column does not exist:", column))
+    missing <- is.na(frame[[column]])
+    frame[[column]] <- as.integer(frame[[column]] %in% positive)
+    frame[[column]][missing] <- NA_integer_
+  }
+}
+if (nrow(frame) == 0) stop("declared preprocessing removed every row")
 
 require_column <- function(name) {
   value <- variables[[name]]

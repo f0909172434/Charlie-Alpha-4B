@@ -60,6 +60,7 @@ from .stats_eval import (
     freeze_stats_recipe,
     run_stats_evaluation,
 )
+from .stats_evolve import evolution_status, run_evolution
 from .stats_orchestrator import run_stats_pipeline
 from .stats_release import (
     check_stats_release,
@@ -588,6 +589,31 @@ def stats_serve(
 @stats_app.command("overnight")
 def stats_overnight(config: StatsConfigOption = Path("configs/pipeline.stats.yaml")) -> None:
     _show(run_stats_pipeline(load_config(config)))
+
+
+@stats_app.command("iterate")
+def stats_iterate(
+    cycles: Annotated[int, typer.Option("--cycles", min=1, max=2)] = 1,
+    prepare_only: Annotated[bool, typer.Option("--prepare-only")] = False,
+    force: bool = False,
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Run verified DGP generation, short adapter training, and gated promotion."""
+    _show(
+        run_evolution(
+            load_config(config),
+            cycles=cycles,
+            prepare_only=prepare_only,
+            force=force,
+        )
+    )
+
+
+@stats_app.command("evolve-status")
+def stats_evolve_status(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    _show(evolution_status(load_config(config)))
 
 
 def _adapter(config: ProjectConfig) -> str:

@@ -1,0 +1,136 @@
+project:
+  display_name: "Charlie alpha"
+  model_id: "Charlie-Alpha-4B"
+  version: "0.4.0-dev"
+  profile: "stats-dgp-evolve"
+  seed: 42
+  license: "Apache-2.0"
+
+paths:
+  source_lock: "configs/sources.lock.json"
+  stats_dir: "data/stats"
+  simulation_dir: "data/stats/simulations"
+  final_dir: "data/stats/final"
+  teacher_dir: "data/stats/teacher"
+  eval_lock: "configs/evaluation.stats.lock.json"
+  artifact_dir: "artifacts/evolve"
+  report_dir: "reports/evolve/generated"
+  evolution_dir: "data/evolve"
+  parent_artifact_dir: "artifacts/stats"
+  pixi_manifest: "pixi.toml"
+
+# These sections retain the frozen v0.3 data and adapter contract. Evolution
+# writes to separate paths and never opens the v0.3 final set for promotion.
+stats_data:
+  schema_version: 1
+  dgp_families: 12
+  procedure_count: 28
+  train_semantic_groups: 240
+  valid_semantic_groups: 30
+  dev_dgps: 60
+  final_dgps: 120
+  split_seed: 42
+  languages:
+    en: 0.70
+    zh_Hant: 0.15
+    zh_Hans: 0.15
+  domain_mix:
+    inference_and_design: 0.60
+    probability_and_bayes: 0.20
+    prediction_and_analysis: 0.20
+  examples_per_train_group:
+    en_boundary_a: 1.4
+    en_boundary_b: 1.4
+    zh_Hant: 0.6
+    zh_Hans: 0.6
+  max_candidates: 6
+  initial_repetitions: 128
+  escalation_repetitions: [256, 512]
+  ranking_uncertainty_margin: 0.035
+  regret_temperature: 0.15
+  latin_hypercube_rounds: 1
+  active_failure_rounds: 2
+  decontamination_ngram: 8
+  teacher_refinement_limit: 120
+
+stats_training:
+  batch_size: 1
+  grad_accumulation_steps: 4
+  num_layers: 4
+  max_seq_length: 640
+  oom_seq_length: 512
+  rank: 32
+  oom_rank: 16
+  scale: 20.0
+  dropout: 0.05
+  pilot_microsteps: 160
+  full_epochs: 2
+  max_seconds: 10800
+  validation_every: 160
+  checkpoint_every: 100
+  early_stop_evaluations: 2
+  warmup_fraction: 0.03
+  weight_decay: 0.01
+  learning_rate_a: 2.0e-6
+  learning_rate_b: 8.0e-6
+  component_weights:
+    method: 0.45
+    plan_tool: 0.35
+    report: 0.20
+  targets:
+    - "linear_attn.in_proj_qkv"
+    - "linear_attn.out_proj"
+    - "self_attn.q_proj"
+    - "self_attn.v_proj"
+
+stats_tools:
+  max_calls: 4
+  timeout_seconds: 20
+  memory_bytes: 2147483648
+  max_write_bytes: 33554432
+  max_output_bytes: 65536
+  max_files: 3
+  max_file_bytes: 26214400
+  max_total_bytes: 52428800
+  allowed_extensions: [".csv", ".tsv", ".json", ".parquet"]
+
+evolution:
+  archive_schema_version: 1
+  proposal_pool: 72
+  tasks_per_cycle: 32
+  train_groups_per_cycle: 32
+  validation_records: 24
+  replay_fraction: 0.20
+  frontier_target_regret: 0.65
+  frontier_sigma: 0.25
+  novelty_floor: 0.10
+  learning_progress_prior: 0.50
+  mutations_per_parent: 3
+  microsteps: 160
+  max_seconds: 3600
+  validation_every: 80
+  checkpoint_every: 80
+  early_stop_evaluations: 2
+  learning_rate_a: 1.0e-6
+  learning_rate_b: 4.0e-6
+  warmup_fraction: 0.03
+  weight_decay: 0.0
+  component_weights:
+    method: 0.80
+    plan_tool: 0.15
+    report: 0.05
+  max_cycles_per_run: 2
+  promotion_shard:
+    count: 144
+    seed_base: 42000000
+  promotion:
+    minimum_relative_regret_improvement: 0.01
+    bootstrap_ci_lower_floor: -0.01
+    maximum_accuracy_regression: 0.03
+    maximum_invalidity_increase: 0.02
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+    bootstrap_repetitions: 5000

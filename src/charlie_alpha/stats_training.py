@@ -144,6 +144,7 @@ def _tokenize_stats_record(tokenizer: Any, row: dict[str, Any]) -> dict[str, Any
         "loss_weight": float(row["metadata"]["loss_weight"]),
         "group_id": str(row["metadata"]["semantic_group_id"]),
         "boundary_round": int(row["metadata"]["boundary_round"]),
+        "evolution_source": str(row["metadata"].get("evolution_source", "original")),
         "metadata": row["metadata"],
     }
 
@@ -195,7 +196,31 @@ def _group_order(dataset: StatsDataset, seed: int, epoch: int) -> list[int]:
         groups.setdefault(item["group_id"], []).append(index)
         boundary[item["group_id"]] = int(item["boundary_round"])
     rng = np.random.default_rng(seed + epoch)
-    if dataset.curriculum == "active-boundary":
+    if dataset.curriculum == "evolve-interleave":
+        source = {
+            group_id: str(dataset.items[indices[0]]["evolution_source"])
+            for group_id, indices in groups.items()
+        }
+
+        def ordered(group_ids: list[str]) -> list[str]:
+            result: list[str] = []
+            for round_index in (2, 1, 0):
+                tier = [key for key in group_ids if boundary[key] == round_index]
+                rng.shuffle(tier)
+                result.extend(tier)
+            return result
+
+        fresh = ordered([key for key in groups if source[key] == "new"])
+        replay = ordered([key for key in groups if source[key] == "replay"])
+        other = ordered([key for key in groups if source[key] not in {"new", "replay"}])
+        ordered_groups = []
+        while fresh or replay:
+            ordered_groups.extend(fresh[:4])
+            del fresh[:4]
+            if replay:
+                ordered_groups.append(replay.pop(0))
+        ordered_groups.extend(other)
+    elif dataset.curriculum == "active-boundary":
         ordered_groups: list[str] = []
         for round_index in (2, 1, 0):
             tier = [key for key in groups if boundary[key] == round_index]
@@ -269,6 +294,8 @@ def stats_loss(
     plan_mask: mx.array,
     report_mask: mx.array,
     sample_weights: mx.array,
+    *,
+    component_weights: dict[str, float] | None = None,
 ) -> tuple[mx.array, mx.array]:
     inputs = batch[:, :-1]
     targets = batch[:, 1:]
@@ -287,7 +314,14 @@ def stats_loss(
     report_tokens = mx.maximum(report_float.sum(axis=-1), mx.array(1.0))
     plan_loss = (cross_entropy * plan_float).sum(axis=-1) / plan_tokens
     report_loss = (cross_entropy * report_float).sum(axis=-1) / report_tokens
-    component_loss = 0.45 * method_loss + 0.35 * plan_loss + 0.20 * report_loss
+    weights = component_weights or {"method": 0.45, "plan_tool": 0.35, "report": 0.20}
+    if not math.isclose(sum(float(value) for value in weights.values()), 1.0, abs_tol=1e-9):
+        raise ValueError("Stats component weights must sum to one")
+    component_loss = (
+        float(weights["method"]) * method_loss
+        + float(weights["plan_tool"]) * plan_loss
+        + float(weights["report"]) * report_loss
+    )
     loss = (component_loss * sample_weights).astype(mx.float32).mean()
     token_count = plan_float.sum() + report_float.sum() + batch.shape[0]
     return loss, token_count

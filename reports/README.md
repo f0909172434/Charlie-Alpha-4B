@@ -1,5 +1,13 @@
 # Reports
 
+## v0.4 development
+
+- `evolve/development.json`: three gated DGP-Evolve cycles. No candidate was promoted; cycle 2
+  reduced regret on its promotion shard but failed the frozen paired-bootstrap lower bound.
+
+The selected model therefore remains the Experimental v0.3 adapter. The v0.4 report contains only
+aggregate metrics and hashes; generated DGPs, predictions, local paths, and weights remain ignored.
+
 ## Experimental v0.2.0
 
 - `v2/development.json`: sealed-development calibration result, 22/34 versus 21/34.

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "charlie-alpha"
-version = "0.3.0"
+version = "0.4.0.dev0"
 description = "Reproducible Apple Silicon pipeline for the Charlie alpha trilingual statistical model."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"

@@ -71,6 +71,8 @@ def inspect_frame(frame: pd.DataFrame, output_csv: Path | None = None) -> dict[s
     for name in frame.columns:
         series = frame[name]
         example = [serializable(value) for value in series.dropna().head(3).tolist()]
+        numeric = pd.to_numeric(series, errors="coerce")
+        finite_numeric = numeric.dropna()
         columns.append(
             {
                 "name": str(name),
@@ -78,6 +80,20 @@ def inspect_frame(frame: pd.DataFrame, output_csv: Path | None = None) -> dict[s
                 "missing": int(series.isna().sum()),
                 "unique": int(series.nunique(dropna=True)),
                 "examples": example,
+                "levels": (
+                    [serializable(value) for value in series.dropna().drop_duplicates().head(20)]
+                    if series.nunique(dropna=True) <= 20
+                    else []
+                ),
+                "minimum": (
+                    serializable(finite_numeric.min()) if not finite_numeric.empty else None
+                ),
+                "maximum": (
+                    serializable(finite_numeric.max()) if not finite_numeric.empty else None
+                ),
+                "zero_fraction": (
+                    float((finite_numeric == 0).mean()) if not finite_numeric.empty else None
+                ),
             }
         )
     return {
@@ -85,6 +101,44 @@ def inspect_frame(frame: pd.DataFrame, output_csv: Path | None = None) -> dict[s
         "columns": columns,
         "duplicate_rows": int(frame.duplicated().sum()),
     }
+
+
+def apply_declared_preprocessing(frame: pd.DataFrame, request: dict[str, Any]) -> pd.DataFrame:
+    """Apply only bounded transformations explicitly compiled from the user request."""
+    options = dict(request.get("analysis_options") or {})
+    transformed = frame.copy()
+    for filter_spec in options.get("row_filters", []):
+        if not isinstance(filter_spec, dict):
+            raise ValueError("row_filters entries must be objects")
+        column = str(filter_spec.get("column", ""))
+        operation = str(filter_spec.get("operation", ""))
+        values = filter_spec.get("values", [])
+        if column not in transformed.columns:
+            raise ValueError(f"filter column does not exist: {column}")
+        if not isinstance(values, list) or not values:
+            raise ValueError("row filter values must be a non-empty list")
+        if operation == "include":
+            transformed = transformed.loc[transformed[column].isin(values)]
+        elif operation == "exclude":
+            transformed = transformed.loc[~transformed[column].isin(values)]
+        else:
+            raise ValueError(f"unsupported row filter operation: {operation}")
+    for recode in options.get("binary_recodes", []):
+        if not isinstance(recode, dict):
+            raise ValueError("binary_recodes entries must be objects")
+        column = str(recode.get("column", ""))
+        positive = recode.get("positive_values", [])
+        if column not in transformed.columns:
+            raise ValueError(f"recode column does not exist: {column}")
+        if not isinstance(positive, list) or not positive:
+            raise ValueError("binary recode positive_values must be a non-empty list")
+        missing = transformed[column].isna()
+        recoded = transformed[column].isin(positive).astype("Int64")
+        recoded.loc[missing] = pd.NA
+        transformed[column] = recoded
+    if transformed.empty:
+        raise ValueError("declared preprocessing removed every row")
+    return transformed
 
 
 def groups(
@@ -96,6 +150,8 @@ def groups(
         raise ValueError("group must have exactly two observed levels")
     left = clean.loc[clean[group] == levels[0], outcome].astype(float).to_numpy()
     right = clean.loc[clean[group] == levels[1], outcome].astype(float).to_numpy()
+    if len(left) < 2 or len(right) < 2:
+        raise ValueError("each group requires at least two complete observations")
     return left, right, levels
 
 
@@ -120,6 +176,8 @@ def result_for_method(frame: pd.DataFrame, request: dict[str, Any]) -> dict[str,
     if method == "inspect":
         output = Path(request["output_csv"]) if request.get("output_csv") else None
         return inspect_frame(frame, output)
+
+    frame = apply_declared_preprocessing(frame, request)
 
     if method == "binomial_test":
         require_columns(frame, variables, ["outcome"])
@@ -447,7 +505,30 @@ def result_for_method(frame: pd.DataFrame, request: dict[str, Any]) -> dict[str,
         require_columns(frame, variables, ["outcome", "treatment"])
         left, right, levels = groups(frame, variables["outcome"], variables["treatment"])
         observed = float(np.mean(right) - np.mean(left))
-        result = {"levels": levels, "difference_in_means": observed, "n": [len(left), len(right)]}
+        left_variance = float(np.var(left, ddof=1))
+        right_variance = float(np.var(right, ddof=1))
+        standard_error = math.sqrt(left_variance / len(left) + right_variance / len(right))
+        statistic = observed / standard_error if standard_error > 0 else math.nan
+        left_term = left_variance / len(left)
+        right_term = right_variance / len(right)
+        degrees = (left_term + right_term) ** 2 / (
+            left_term**2 / max(1, len(left) - 1) + right_term**2 / max(1, len(right) - 1)
+        )
+        p_value = 2 * st.t.sf(abs(statistic), degrees)
+        critical = st.t.ppf(1 - alpha / 2, degrees)
+        result = {
+            "levels": levels,
+            "difference_in_means": observed,
+            "n": [len(left), len(right)],
+            "standard_error": standard_error,
+            "statistic": statistic,
+            "degrees_of_freedom": degrees,
+            "p_value": p_value,
+            "confidence_interval": [
+                observed - critical * standard_error,
+                observed + critical * standard_error,
+            ],
+        }
         if method == "randomization_inference":
             rng = np.random.default_rng(int(request.get("seed", 42)))
             clean = frame[[variables["outcome"], variables["treatment"]]].dropna()

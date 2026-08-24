@@ -12,6 +12,9 @@ Charlie alpha（模型标识：`Charlie-Alpha-4B`）是支持简体中文、繁�
 [繁體中文](README.md) · [English](README.en.md) · [模型卡](MODEL_CARD.md) ·
 [DGP-Regret 技术报告](docs/DGP_REGRET.md)
 
+`main` 另含尚未发布的 v0.4 开发流程：受约束统计编译器与有升级／回退门槛的
+[DGP-Evolve 自我迭代](docs/DGP_EVOLVE.md)。它不改写上述 v0.3 公开结果。
+
 ## 功能
 
 运行时只加载一份 4-bit 底模和一个包含 2,129,920 个参数的 adapter：

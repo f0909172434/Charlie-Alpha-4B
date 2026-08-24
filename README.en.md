@@ -12,6 +12,10 @@ analysis interface for English, Traditional Chinese, and Simplified Chinese. It 
 [繁體中文](README.md) · [简体中文](README.zh-Hans.md) · [Model card](MODEL_CARD.md) ·
 [DGP-Regret report](docs/DGP_REGRET.md)
 
+`main` also contains the unreleased v0.4 development path: a constrained statistics compiler and
+[DGP-Evolve](docs/DGP_EVOLVE.md), with explicit promotion and rollback gates. It does not revise the
+published v0.3 results above.
+
 ## What it does
 
 The runtime holds one 4-bit base and a 2,129,920-parameter adapter:

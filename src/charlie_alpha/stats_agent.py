@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import random
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -12,6 +13,13 @@ from mlx_lm.sample_utils import make_sampler
 from .config import ProjectConfig
 from .routed_inference import DynamicLoraRouter, resolve_adapter_path
 from .stats_catalog import AGENT_PROCEDURE_BY_ID, AGENT_PROCEDURES
+from .stats_compiler import (
+    REQUIRED_VARIABLES,
+    CompiledScaffold,
+    compile_analysis_scaffold,
+    next_repair_plan,
+    plan_from_scaffold,
+)
 from .stats_sandbox import SandboxLimits, StatsToolSession
 from .stats_training import _stats_snapshot
 
@@ -27,6 +35,7 @@ _STATISTICS_RE = re.compile(
     flags=re.IGNORECASE,
 )
 _PLAN_RE = re.compile(r"<analysis_plan>\s*(\{.*?\})\s*</analysis_plan>", re.DOTALL)
+_METHOD_RE = re.compile(r"<method>\s*([A-F])\s*</method>", re.IGNORECASE)
 _FINAL_RE = re.compile(r"<final_report>\s*(.*?)\s*</final_report>", re.DOTALL)
 _THINK_RE = re.compile(r"<think>.*?(?:</think>|$)", re.DOTALL | re.IGNORECASE)
 
@@ -43,44 +52,6 @@ _REQUIRED_PLAN_FIELDS = (
     "diagnostics",
     "tool",
 )
-
-_REQUIRED_VARIABLES: dict[str, tuple[str, ...]] = {
-    "independent_t": ("outcome", "group"),
-    "welch_t": ("outcome", "group"),
-    "mann_whitney": ("outcome", "group"),
-    "paired_t": ("before", "after"),
-    "wilcoxon_signed_rank": ("before", "after"),
-    "chi_square": ("outcome", "group"),
-    "fisher_exact": ("outcome", "group"),
-    "two_proportion": ("outcome", "group"),
-    "ols": ("outcome", "predictors"),
-    "hc3_ols": ("outcome", "predictors"),
-    "huber_regression": ("outcome", "predictors"),
-    "logistic_glm": ("outcome", "predictors"),
-    "firth_logistic": ("outcome", "predictors"),
-    "poisson_glm": ("outcome", "predictors"),
-    "negative_binomial_glm": ("outcome", "predictors"),
-    "gee": ("outcome", "predictors", "cluster"),
-    "mixed_effects": ("outcome", "predictors", "cluster"),
-    "cox_ph": ("time", "event", "predictors"),
-    "logrank": ("time", "event", "group"),
-    "multiple_imputation": ("outcome", "predictors"),
-    "ipw": ("outcome", "treatment", "predictors"),
-    "difference_in_means": ("outcome", "treatment"),
-    "ancova": ("outcome", "predictors"),
-    "randomization_inference": ("outcome", "treatment"),
-    "conjugate_bayes": ("outcome",),
-    "posterior_predictive": ("outcome",),
-    "calibrated_logistic": ("outcome", "predictors"),
-    "blocked_time_series_cv": ("outcome", "predictors", "time"),
-    "binomial_test": ("outcome",),
-    "spearman_correlation": ("x", "y"),
-    "kruskal_wallis": ("outcome", "group"),
-    "probit_glm": ("outcome", "predictors"),
-    "regression_f_test": ("outcome", "predictors"),
-    "iv_2sls": ("outcome", "exposure", "instruments"),
-    "tobit_regression": ("outcome", "predictors"),
-}
 
 _R_METHODS = {
     "wilcoxon_signed_rank",
@@ -117,8 +88,12 @@ def classify_stats_route(text: str, *, has_files: bool, override: str = "auto") 
     return "stats" if has_files or _STATISTICS_RE.search(text) else "base"
 
 
-def _compact_catalog() -> str:
-    return "\n".join(f"- {item.method_id}: {item.name}" for item in AGENT_PROCEDURES)
+def _compact_catalog(method_ids: set[str] | None = None) -> str:
+    return "\n".join(
+        f"- {item.method_id}: {item.name}"
+        for item in AGENT_PROCEDURES
+        if method_ids is None or item.method_id in method_ids
+    )
 
 
 def _extract_plan(text: str) -> dict[str, Any] | None:
@@ -186,7 +161,7 @@ def _validate_plan(plan: dict[str, Any], summaries: list[dict[str, Any]]) -> dic
             "Column roles were not mapped.",
             questions=["Which columns are the outcome, predictors, groups, and sampling units?"],
         )
-    required = _REQUIRED_VARIABLES[method_id]
+    required = REQUIRED_VARIABLES[method_id]
     absent_roles = [name for name in required if not variables.get(name)]
     available = {
         str(column["name"])
@@ -320,17 +295,29 @@ class StatsAgent:
         summaries: list[dict[str, Any]],
         language: str,
         conversation: list[dict[str, Any]] | None = None,
-    ) -> dict[str, Any]:
+    ) -> tuple[dict[str, Any], CompiledScaffold]:
+        scaffold = compile_analysis_scaffold(question, summaries)
+        candidates = [*scaffold.candidate_method_ids, "needs_clarification"]
+        if len(candidates) > 6:
+            candidates = candidates[:5] + ["needs_clarification"]
+        rng = random.Random(int(scaffold.fingerprint[:16], 16))
+        rng.shuffle(candidates)
+        labels = [chr(ord("A") + index) for index in range(len(candidates))]
+        method_by_label = dict(zip(labels, candidates, strict=True))
+        menu = "\n".join(
+            f"{label}. {method_id} — "
+            + (
+                "Ask for missing design information"
+                if method_id == "needs_clarification"
+                else AGENT_PROCEDURE_BY_ID[method_id].name
+            )
+            for label, method_id in zip(labels, candidates, strict=True)
+        )
         system = (
-            "You are Charlie alpha's statistical planner. Return an <analysis_plan> containing one "
-            "JSON object and no hidden reasoning. It must include status, estimand, sampling_unit, "
-            "study_design, outcome_type, dependence, missingness, method_id, uncertainty, "
-            "diagnostics, tool, variables, analysis_options, questions, and data_file_index. "
-            "Put declared null probabilities, censoring thresholds, and restrictions in "
-            "analysis_options. If design facts or "
-            "column roles are missing, set status=needs_clarification and "
-            "method_id=needs_clarification. Never infer clustering, pairing, missingness "
-            "mechanism, assignment mechanism, or estimand from column names alone."
+            "You are Charlie alpha's bounded statistical selector. Choose exactly one item from "
+            "the supplied menu. Return <method>LETTER</method> and no reasoning. The compiler has "
+            "already restricted methods and columns to auditable choices. Select clarification "
+            "only when the supplied design evidence is genuinely insufficient."
         )
         prior = [
             {"role": str(message.get("role", "")), "content": str(message.get("content", ""))}
@@ -341,16 +328,34 @@ class StatsAgent:
             f"Requested language: {language}\nQuestion: {question}\n"
             f"Prior conversation: {json.dumps(prior, ensure_ascii=False)}\n"
             f"Data summaries: {json.dumps(summaries, ensure_ascii=False)}\n"
-            f"Audited methods:\n{_compact_catalog()}"
+            f"Compiler evidence: {json.dumps(scaffold.to_dict(), ensure_ascii=False)}\n"
+            f"Candidate menu:\n{menu}"
         )
         generated = self._generate(
             [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
-            max_tokens=900,
+            max_tokens=48,
         )
-        plan = _extract_plan(generated)
+        method_match = _METHOD_RE.search(generated)
+        selected = method_by_label.get(method_match.group(1).upper()) if method_match else None
+        if selected == "needs_clarification" and scaffold.auto_ready:
+            selected = None
+        if selected is None:
+            legacy = _extract_plan(generated)
+            selected = str(legacy.get("method_id")) if legacy else None
+        plan = plan_from_scaffold(scaffold, selected)
         if plan is None:
-            return _safe_clarification("The model did not produce a valid structured plan.")
-        return _validate_plan(plan, summaries)
+            clarification = _safe_clarification(
+                "The bounded compiler could not identify a complete analysis plan.",
+                questions=list(scaffold.questions) or None,
+            )
+            clarification["compiler"] = {
+                "fingerprint": scaffold.fingerprint,
+                "candidate_method_ids": list(scaffold.candidate_method_ids),
+                "evidence": list(scaffold.evidence),
+                "confidence": scaffold.confidence,
+            }
+            return clarification, scaffold
+        return _validate_plan(plan, summaries), scaffold
 
     def _run_method(
         self,
@@ -469,7 +474,7 @@ class StatsAgent:
                 max_total_bytes=int(settings["max_total_bytes"]),
             )
             summaries, normalized, calls = self._inspect_files(session, copied)
-            plan = self._plan(question, summaries, language, conversation)
+            plan, scaffold = self._plan(question, summaries, language, conversation)
             if plan["status"] == "needs_clarification":
                 questions = [str(value) for value in plan.get("questions", [])]
                 answer = "\n".join(f"- {question}" for question in questions)
@@ -485,13 +490,37 @@ class StatsAgent:
                     },
                     "route": route,
                 }
-            tool_payload, sandbox = self._run_method(session, plan, copied, normalized)
-            calls.append({"kind": "analysis", "sandbox": sandbox, "result": tool_payload})
+            attempted: list[str] = []
+            tool_payload: dict[str, Any] = {"status": "error", "error": "not executed"}
+            while session.calls < int(settings["max_calls"]):
+                attempted.append(str(plan["method_id"]))
+                tool_payload, sandbox = self._run_method(session, plan, copied, normalized)
+                calls.append(
+                    {
+                        "kind": "analysis" if len(attempted) == 1 else "repair",
+                        "method_id": plan["method_id"],
+                        "sandbox": sandbox,
+                        "result": tool_payload,
+                    }
+                )
+                if tool_payload.get("status") == "ok":
+                    break
+                repaired = next_repair_plan(scaffold, attempted)
+                if repaired is None:
+                    break
+                plan = _validate_plan(repaired, summaries)
+                if plan["status"] != "ready":
+                    break
             if tool_payload.get("status") != "ok":
                 plan = _safe_clarification(
-                    f"The audited tool could not execute the plan: {tool_payload.get('error')}",
+                    f"The audited candidates could not execute safely: {tool_payload.get('error')}",
                     questions=["Please verify the column roles and required design assumptions."],
                 )
+                plan["compiler"] = {
+                    "fingerprint": scaffold.fingerprint,
+                    "attempted_method_ids": attempted,
+                    "candidate_method_ids": list(scaffold.candidate_method_ids),
+                }
                 answer = str(plan["diagnostics"][0])
             else:
                 answer = self._report(question, plan, tool_payload, language)

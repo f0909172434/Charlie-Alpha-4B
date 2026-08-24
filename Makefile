@@ -1,7 +1,7 @@
 UV ?= uv
 CLI := $(UV) run charlie-alpha
 
-.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github stats-setup stats-simulate stats-data stats-distill stats-lock stats-baseline stats-pilot stats-train stats-eval stats-export stats-chat stats-serve stats-release-check stats-publish-hf stats-publish-github forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-calibrate forge-dev forge-freeze forge-final forge-router-lock forge-router-freeze forge-router-eval forge-router-verify forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
+.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github stats-setup stats-simulate stats-data stats-distill stats-lock stats-baseline stats-pilot stats-train stats-eval stats-export stats-chat stats-serve stats-release-check stats-publish-hf stats-publish-github evolve evolve-prepare evolve-status forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-calibrate forge-dev forge-freeze forge-final forge-router-lock forge-router-freeze forge-router-eval forge-router-verify forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
 
 setup:
 	$(UV) sync --extra eval --group dev
@@ -110,6 +110,15 @@ stats-publish-hf:
 
 stats-publish-github:
 	$(CLI) stats publish-github --config configs/pipeline.stats.yaml
+
+evolve:
+	$(CLI) stats iterate --config configs/pipeline.evolve.yaml
+
+evolve-prepare:
+	$(CLI) stats iterate --prepare-only --config configs/pipeline.evolve.yaml
+
+evolve-status:
+	$(CLI) stats evolve-status --config configs/pipeline.evolve.yaml
 
 forge:
 	$(CLI) forge overnight --config configs/pipeline.v2.yaml
