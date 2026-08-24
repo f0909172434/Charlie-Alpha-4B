@@ -109,6 +109,21 @@ Dynamic sparse routing cannot be faithfully collapsed into one fused GGUF. GGUF 
 published without a separate behavioral-parity pass. The fused always-on MLX export is a specialist
 artifact and does not reproduce the canonical route.
 
+## MLX usage
+
+Clone the source repository, install its pinned environment, and pass either a local adapter
+directory or the public Hugging Face adapter repository. The latter is downloaded at its immutable
+Hub revision and applied to the pinned 4-bit base:
+
+```bash
+make setup
+uv run charlie-alpha chat --config configs/pipeline.v2.yaml \
+  --adapter-path <HF_ACCOUNT>/Charlie-Alpha-4B-MLX-4bit
+```
+
+The same `--adapter-path` option works with `charlie-alpha serve`. `/route auto` is the canonical
+policy; `/route base` and `/route adapter` are explicit overrides.
+
 ## License and provenance
 
 Project code and derivative artifacts use Apache-2.0. Upstream datasets retain their own licenses;

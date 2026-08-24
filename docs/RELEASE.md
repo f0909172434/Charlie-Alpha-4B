@@ -14,8 +14,9 @@ percentage-point normal-release threshold.
    GitHub release includes the adapter archive, frozen configurations, both compact evaluations,
    public data manifest, release gate, and SHA-256 file.
 6. Hugging Face authentication is interactive and user-owned. Run `hf auth login` personally,
-   then publish only after reviewing the model card. The project does not read, copy, or print a
-   token.
+   then run `uv run charlie-alpha release publish-hf --config configs/pipeline.v2.yaml`. The
+   publisher uploads the dynamic MLX adapter, downloads it again at the returned Hub revision, and
+   verifies its SHA-256. The project does not read, copy, or print a token.
 
 The canonical artifact is the MLX adapter plus dynamic routing code. A fused MLX export is tested
 for recoverability but behaves as an always-on specialist. One fused GGUF cannot reproduce dynamic

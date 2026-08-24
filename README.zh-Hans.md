@@ -1,7 +1,7 @@
 # Charlie alpha
 
-Charlie alpha（模型标识：`Charlie-Alpha-4B`）是在 Apple Silicon 笔记本上一晚完成的
-繁体中文、简体中文、英文数学与编程实验模型。它基于 Apache-2.0 许可的
+Charlie alpha（模型标识：`Charlie-Alpha-4B`）是支持繁体中文、简体中文、英文的数学与
+编程实验模型。它基于 Apache-2.0 许可的
 [`Qwen3.5-4B`](https://huggingface.co/Qwen/Qwen3.5-4B)，使用 MLX 4-bit QLoRA；这是衍生
 微调模型，并非从零预训练。
 
@@ -12,7 +12,7 @@ Charlie alpha（模型标识：`Charlie-Alpha-4B`）是在 Apple Silicon 笔记�
 [繁體中文](README.md) · [English](README.en.md) · [模型卡](MODEL_CARD.md) ·
 [FORGE 方法](docs/FORGE.zh-Hans.md)
 
-## 极其高效的推理形态
+## 推理架构
 
 正式运行时不会同时加载两个模型，也不会生成两次再挑答案。它只加载一份 4B 底模和一个
 8.52 MB adapter，在生成前切换最后 4 层的 8 个 LoRA 模块：
@@ -27,7 +27,7 @@ Charlie alpha（模型标识：`Charlie-Alpha-4B`）是在 Apple Silicon 笔记�
 alpha 为 43/62，底模为 42/62；编程领域从 11/16 提升至 12/16，其他语言和领域都没有少答
 对。完整证据见 [`reports/v3/evaluation.json`](reports/v3/evaluation.json)。
 
-## 一晚训练结果
+## 方法与训练结果
 
 FORGE（Focused One-pass Relative-Gap Gradient Equivalence）把计算集中在高价值更新上：
 
@@ -36,7 +36,7 @@ FORGE（Focused One-pass Relative-Gap Gradient Equivalence）把计算集中在�
 - 52 个语义组固定为数学 26、Python 13、C++ 13。每次梯度累积包含同一题的英文、简中、
   繁中版本与 3 条英文 replay；语言梯度质量精确为 70%／15%／15%。
 - 四组等参数短跑比较标准 LoRA、LoRA+ 与选择性 loss。胜出配方只训练最后 4 层 rank-32；
-  正式训练用时 2,896 秒，峰值内存 16.05 GB，最佳 validation loss 从 0.8640 降至 0.6867。
+  最佳 validation loss 从 0.8640 降至 0.6867。
 - 只在封存 dev 上进行 LoRA-B 增量线搜索，选出 0.22，无需重新训练或提前查看 final。
 
 第一组冻结 final 上，直接 adapter 为 44/62，底模为 43/62。它改善了编程和中文，却损害了
@@ -51,6 +51,13 @@ FORGE（Focused One-pass Relative-Gap Gradient Equivalence）把计算集中在�
 make setup
 make forge-router-verify
 make forge-chat
+```
+
+`make forge-chat` 使用本机训练结果。若只使用公开 adapter、无需重新训练：
+
+```bash
+uv run charlie-alpha chat --config configs/pipeline.v2.yaml \
+  --adapter-path <HF_ACCOUNT>/Charlie-Alpha-4B-MLX-4bit
 ```
 
 聊天中可用 `/route auto`、`/route base` 或 `/route adapter` 覆盖自动路由。本地非流式

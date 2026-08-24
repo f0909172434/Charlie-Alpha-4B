@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 import mlx.core as mx
+from huggingface_hub import snapshot_download
 from mlx_lm import generate, load
 from mlx_lm.sample_utils import make_sampler
 
@@ -88,7 +89,34 @@ class DynamicLoraRouter:
         return changed
 
 
-def _selected_adapter(config: ProjectConfig) -> Path:
+def resolve_adapter_path(
+    config: ProjectConfig, adapter_path: str | Path | None = None
+) -> Path:
+    if adapter_path is not None:
+        candidate = Path(adapter_path).expanduser()
+        if candidate.exists():
+            resolved = candidate.resolve()
+        elif isinstance(adapter_path, str) and adapter_path.count("/") == 1:
+            resolved = Path(
+                snapshot_download(
+                    repo_id=adapter_path,
+                    allow_patterns=[
+                        "adapter_config.json",
+                        "adapters.safetensors",
+                        "README.md",
+                        "router.yaml",
+                        "*.json",
+                    ],
+                )
+            )
+        else:
+            raise FileNotFoundError(f"Adapter path does not exist: {candidate}")
+        if not (resolved / "adapter_config.json").exists() or not (
+            resolved / "adapters.safetensors"
+        ).exists():
+            raise RuntimeError(f"Adapter repository is incomplete: {resolved}")
+        return resolved
+
     selected_path = config.path_for("artifact_dir") / "selected.json"
     if not selected_path.exists():
         raise RuntimeError("No selected adapter; run Forge training and calibration first")
@@ -99,12 +127,14 @@ def _selected_adapter(config: ProjectConfig) -> Path:
     return adapter_path
 
 
-def load_routed_model(config: ProjectConfig) -> tuple[Any, Any, DynamicLoraRouter]:
+def load_routed_model(
+    config: ProjectConfig, adapter_path: str | Path | None = None
+) -> tuple[Any, Any, DynamicLoraRouter]:
     if config.section("project").get("profile") != "forge-overnight":
         raise ValueError("Dynamic sparse routing is available only for the Forge profile")
     model, tokenizer = load(
         _base_snapshot(config),
-        adapter_path=str(_selected_adapter(config)),
+        adapter_path=str(resolve_adapter_path(config, adapter_path)),
         tokenizer_config={"trust_remote_code": True},
     )
     return model, tokenizer, DynamicLoraRouter(model)
@@ -148,7 +178,7 @@ def generate_routed(
 
 def verify_dynamic_router(config: ProjectConfig) -> dict[str, Any]:
     """Prove that bypass equals the pinned base and restore equals the adapter."""
-    adapter_path = _selected_adapter(config)
+    adapter_path = resolve_adapter_path(config)
     model_path = _base_snapshot(config)
     model, tokenizer = load(
         model_path,

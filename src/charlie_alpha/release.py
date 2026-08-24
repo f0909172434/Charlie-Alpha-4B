@@ -8,7 +8,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, hf_hub_download
 
 from .config import ProjectConfig
 from .io_utils import read_jsonl, sha256_file, write_json
@@ -397,22 +397,59 @@ def publish_hugging_face(config: ProjectConfig, include_gguf: bool = False) -> d
     if not account:
         raise RuntimeError("Could not determine the authenticated Hugging Face account name")
 
-    artifact_dir = config.path_for("artifact_dir") / "exports"
-    mlx_directory = artifact_dir / "Charlie-Alpha-4B-MLX-4bit"
-    if not (mlx_directory / "config.json").exists():
-        raise RuntimeError("Fused MLX export is missing; run `make export` first")
+    forge = config.section("project").get("profile") == "forge-overnight"
+    artifact_root = config.path_for("artifact_dir")
+    if forge:
+        mlx_directory = artifact_root / "release" / "Charlie-Alpha-4B-MLX-adapter"
+        required_file = mlx_directory / "adapters.safetensors"
+        artifact_type = "dynamic-mlx-adapter"
+    else:
+        mlx_directory = artifact_root / "exports" / "Charlie-Alpha-4B-MLX-4bit"
+        required_file = mlx_directory / "config.json"
+        artifact_type = "fused-mlx-model"
+    if not required_file.exists():
+        raise RuntimeError("MLX release artifact is missing; run the export command first")
     mlx_repo = f"{account}/{config.section('release')['hf_mlx_slug']}"
+    expected_files = {path.name for path in mlx_directory.iterdir() if path.is_file()}
+    if api.repo_exists(mlx_repo, repo_type="model"):
+        remote_files = set(api.list_repo_files(mlx_repo, repo_type="model"))
+        unexpected = sorted(remote_files - expected_files - {".gitattributes"})
+        if unexpected:
+            raise RuntimeError(
+                "The target Hugging Face repository contains unexpected files; refusing to "
+                f"overwrite them automatically: {unexpected[:10]}"
+            )
     api.create_repo(mlx_repo, repo_type="model", private=False, exist_ok=True)
-    api.upload_folder(
+    commit = api.upload_folder(
         repo_id=mlx_repo,
         repo_type="model",
         folder_path=mlx_directory,
         commit_message=f"Release {config.section('release')['tag']}",
     )
+    revision = commit.oid
+    remote_adapter_sha: str | None = None
+    if forge:
+        remote_adapter = hf_hub_download(
+            repo_id=mlx_repo,
+            repo_type="model",
+            filename="adapters.safetensors",
+            revision=revision,
+        )
+        remote_adapter_sha = sha256_file(Path(remote_adapter))
+        local_adapter_sha = sha256_file(required_file)
+        if remote_adapter_sha != local_adapter_sha:
+            raise RuntimeError("Uploaded Hugging Face adapter failed SHA-256 verification")
 
-    result: dict[str, Any] = {"mlx_repo": mlx_repo, "gguf_repo": None}
+    result: dict[str, Any] = {
+        "mlx_repo": mlx_repo,
+        "mlx_url": f"https://huggingface.co/{mlx_repo}",
+        "artifact_type": artifact_type,
+        "revision": revision,
+        "adapter_sha256": remote_adapter_sha,
+        "gguf_repo": None,
+    }
     if include_gguf:
-        gguf_directory = artifact_dir / "Charlie-Alpha-4B-GGUF"
+        gguf_directory = artifact_root / "exports" / "Charlie-Alpha-4B-GGUF"
         gguf_repo = f"{account}/{config.section('release')['hf_gguf_slug']}"
         api.create_repo(gguf_repo, repo_type="model", private=False, exist_ok=True)
         api.upload_folder(
@@ -422,7 +459,6 @@ def publish_hugging_face(config: ProjectConfig, include_gguf: bool = False) -> d
             commit_message=f"Release {config.section('release')['tag']}",
         )
         result["gguf_repo"] = gguf_repo
-    forge = config.section("project").get("profile") == "forge-overnight"
     reports_dir = config.path_for("report_dir") if forge else config.root / "reports"
     write_json(reports_dir / "huggingface-release.json", result)
     return result

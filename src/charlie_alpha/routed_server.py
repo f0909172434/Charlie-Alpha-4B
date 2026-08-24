@@ -20,9 +20,9 @@ def _json(handler: BaseHTTPRequestHandler, status: int, payload: dict[str, Any])
     handler.wfile.write(body)
 
 
-def serve(config_path: str, host: str, port: int) -> None:
+def serve(config_path: str, host: str, port: int, adapter_path: str | None = None) -> None:
     config = load_config(config_path)
-    model, tokenizer, router = load_routed_model(config)
+    model, tokenizer, router = load_routed_model(config, adapter_path=adapter_path)
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, format: str, *args: object) -> None:
@@ -137,8 +137,9 @@ def main() -> None:
     parser.add_argument("--config", required=True)
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8080)
+    parser.add_argument("--adapter-path")
     args = parser.parse_args()
-    serve(args.config, args.host, args.port)
+    serve(args.config, args.host, args.port, args.adapter_path)
 
 
 if __name__ == "__main__":

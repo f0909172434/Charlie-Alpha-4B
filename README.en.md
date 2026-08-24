@@ -1,8 +1,7 @@
 # Charlie alpha
 
 Charlie alpha (`Charlie-Alpha-4B`) is an experimental English, Traditional Chinese, and
-Simplified Chinese math-and-code model completed in one night on an Apple Silicon laptop. It is a
-4-bit MLX QLoRA derivative of the Apache-2.0-licensed
+Simplified Chinese math-and-code model. It is a 4-bit MLX QLoRA derivative of the Apache-2.0-licensed
 [`Qwen3.5-4B`](https://huggingface.co/Qwen/Qwen3.5-4B), not a model pretrained from scratch.
 
 > Release status: **Experimental v0.2.0**. Charlie alpha answered one additional task correctly on
@@ -13,7 +12,7 @@ Simplified Chinese math-and-code model completed in one night on an Apple Silico
 [繁體中文](README.md) · [简体中文](README.zh-Hans.md) · [Model card](MODEL_CARD.md) ·
 [FORGE method](docs/FORGE.en.md)
 
-## Efficient by construction
+## Inference architecture
 
 The canonical runtime does not load two models or generate two candidate answers. It holds one 4B
 base plus an 8.52 MB adapter and switches eight LoRA modules in the last four layers before
@@ -30,7 +29,7 @@ fully disjoint confirmation suite. Routed Charlie alpha scored 43/62 versus 42/6
 code rose from 11/16 to 12/16, while no other language or domain lost a correct answer. See
 [`reports/v3/evaluation.json`](reports/v3/evaluation.json).
 
-## One-night result
+## Method and training result
 
 FORGE (Focused One-pass Relative-Gap Gradient Equivalence) concentrates the compute budget on
 high-value updates:
@@ -41,8 +40,8 @@ high-value updates:
   couples the same task in English, Simplified Chinese, and Traditional Chinese with three English
   replays. Gradient mass is exactly 70%/15%/15% by language.
 - Four equal-parameter pilots compare standard LoRA, LoRA+, and selective loss. The winning
-  rank-32 recipe trains only the final four layers. Full training took 2,896 seconds, peaked at
-  16.05 GB, and reduced best validation loss from 0.8640 to 0.6867.
+  rank-32 recipe trains only the final four layers and reduced best validation loss from 0.8640
+  to 0.6867.
 - A sealed-development LoRA-B delta line search selected 0.22 without retraining or opening final.
 
 The direct adapter scored 44/62 against 43/62 on the first frozen final suite. It improved code and
@@ -58,6 +57,13 @@ An Apple Silicon Mac, Python 3.12, and `uv` are required:
 make setup
 make forge-router-verify
 make forge-chat
+```
+
+`make forge-chat` uses the locally trained artifact. To use the public adapter without retraining:
+
+```bash
+uv run charlie-alpha chat --config configs/pipeline.v2.yaml \
+  --adapter-path <HF_ACCOUNT>/Charlie-Alpha-4B-MLX-4bit
 ```
 
 Use `/route auto`, `/route base`, or `/route adapter` in chat. The local, non-streaming

@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 import charlie_alpha.forge_training as forge_training
+import charlie_alpha.routed_inference as routed_inference
 from charlie_alpha.config import ProjectConfig
 from charlie_alpha.forge_data import (
     _allocate,
@@ -17,7 +18,11 @@ from charlie_alpha.forge_data import (
 )
 from charlie_alpha.forge_router import route_uses_adapter
 from charlie_alpha.forge_training import ForgeDataset, forge_iterate_batches
-from charlie_alpha.routed_inference import DynamicLoraRouter, classify_prompt
+from charlie_alpha.routed_inference import (
+    DynamicLoraRouter,
+    classify_prompt,
+    resolve_adapter_path,
+)
 
 
 class FakeTokenizer:
@@ -208,6 +213,26 @@ def test_dynamic_lora_router_changes_only_adapter_scales() -> None:
     assert not router.set_route("base")
     assert router.set_route("adapter")
     assert (first.scale, second.scale) == (20.0, 10.0)
+
+
+def test_adapter_resolver_accepts_local_and_hub_paths(tmp_path, monkeypatch) -> None:
+    adapter = tmp_path / "adapter"
+    adapter.mkdir()
+    (adapter / "adapter_config.json").write_text("{}", encoding="utf-8")
+    (adapter / "adapters.safetensors").write_bytes(b"adapter")
+    config = ProjectConfig(
+        path=tmp_path / "pipeline.yaml",
+        root=tmp_path,
+        values={},
+        sources={},
+    )
+    assert resolve_adapter_path(config, adapter) == adapter.resolve()
+    monkeypatch.setattr(
+        routed_inference,
+        "snapshot_download",
+        lambda **kwargs: str(adapter),
+    )
+    assert resolve_adapter_path(config, "owner/model") == adapter
 
 
 def test_full_training_runs_every_requested_epoch(tmp_path, monkeypatch) -> None:

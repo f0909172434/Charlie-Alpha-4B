@@ -306,10 +306,11 @@ def overnight(config: ConfigOption = Path("configs/pipeline.yaml")) -> None:
 def chat(
     config: ConfigOption = Path("configs/pipeline.yaml"),
     route: Annotated[str, typer.Option("--route")] = "auto",
+    adapter_path: Annotated[str | None, typer.Option("--adapter-path")] = None,
 ) -> None:
     project = load_config(config)
     if project.section("project").get("profile") == "forge-overnight":
-        model, tokenizer, router = load_routed_model(project)
+        model, tokenizer, router = load_routed_model(project, adapter_path=adapter_path)
         console.print(
             "Charlie alpha — FORGE dynamic sparse LoRA; type /quit to exit "
             "([dim]/route auto|base|adapter[/dim])"
@@ -370,6 +371,7 @@ def serve(
     config: ConfigOption = Path("configs/pipeline.yaml"),
     host: str = "127.0.0.1",
     port: int = 8080,
+    adapter_path: Annotated[str | None, typer.Option("--adapter-path")] = None,
 ) -> None:
     project = load_config(config)
     if project.section("project").get("profile") == "forge-overnight":
@@ -386,6 +388,8 @@ def serve(
             "--port",
             str(port),
         ]
+        if adapter_path is not None:
+            command.extend(["--adapter-path", adapter_path])
         raise typer.Exit(subprocess.call(command, cwd=project.root))
     command = [
         "/usr/bin/caffeinate",
