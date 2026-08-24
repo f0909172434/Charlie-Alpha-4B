@@ -57,7 +57,7 @@ make forge-chat
 
 ```bash
 uv run charlie-alpha chat --config configs/pipeline.v2.yaml \
-  --adapter-path <HF_ACCOUNT>/Charlie-Alpha-4B-MLX-4bit
+  --adapter-path f0909172434/Charlie-Alpha-4B-MLX-4bit
 ```
 
 聊天中可用 `/route auto`、`/route base` 或 `/route adapter` 覆盖自动路由。本地非流式

@@ -118,7 +118,7 @@ Hub revision and applied to the pinned 4-bit base:
 ```bash
 make setup
 uv run charlie-alpha chat --config configs/pipeline.v2.yaml \
-  --adapter-path <HF_ACCOUNT>/Charlie-Alpha-4B-MLX-4bit
+  --adapter-path f0909172434/Charlie-Alpha-4B-MLX-4bit
 ```
 
 The same `--adapter-path` option works with `charlie-alpha serve`. `/route auto` is the canonical
