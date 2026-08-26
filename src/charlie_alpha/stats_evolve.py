@@ -280,21 +280,67 @@ def _score_proposals(
     return result
 
 
-def _select_diverse(proposals: list[dict[str, Any]], count: int) -> list[dict[str, Any]]:
+def _proposal_method_id(proposal: dict[str, Any]) -> str:
+    simulation = proposal.get("simulation")
+    if not isinstance(simulation, dict) or not simulation.get("selected_method_id"):
+        return "unknown"
+    return str(simulation["selected_method_id"])
+
+
+def _select_diverse(
+    proposals: list[dict[str, Any]],
+    count: int,
+    *,
+    max_per_family: int | None = None,
+    max_per_method: int | None = None,
+) -> list[dict[str, Any]]:
+    if count < 0:
+        raise ValueError("Selection count must be non-negative")
+    if max_per_family is not None and max_per_family <= 0:
+        raise ValueError("max_per_family must be positive")
+    if max_per_method is not None and max_per_method <= 0:
+        raise ValueError("max_per_method must be positive")
     ranked = sorted(
         proposals,
         key=lambda item: (-float(item["task_reward"]), str(item["blueprint_id"])),
     )
-    by_family: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for item in ranked:
-        by_family[str(item["family_id"])].append(item)
     selected: list[dict[str, Any]] = []
-    for family_id in sorted(by_family):
-        if by_family[family_id] and len(selected) < count:
-            selected.append(by_family[family_id].pop(0))
-    used = {str(item["blueprint_id"]) for item in selected}
-    selected.extend(item for item in ranked if str(item["blueprint_id"]) not in used)
-    return selected[:count]
+    used: set[str] = set()
+    family_counts: dict[str, int] = defaultdict(int)
+    method_counts: dict[str, int] = defaultdict(int)
+
+    def allowed(item: dict[str, Any]) -> bool:
+        family_id = str(item["family_id"])
+        method_id = _proposal_method_id(item)
+        return bool(
+            str(item["blueprint_id"]) not in used
+            and (max_per_family is None or family_counts[family_id] < max_per_family)
+            and (max_per_method is None or method_counts[method_id] < max_per_method)
+        )
+
+    def add(item: dict[str, Any]) -> None:
+        selected.append(item)
+        used.add(str(item["blueprint_id"]))
+        family_counts[str(item["family_id"])] += 1
+        method_counts[_proposal_method_id(item)] += 1
+
+    # Preserve one stepping stone per represented DGP family before filling by
+    # reward. Within each family, choose the highest-reward item that also
+    # respects the method ceiling.
+    for family_id in sorted({str(item["family_id"]) for item in ranked}):
+        candidate = next(
+            (item for item in ranked if str(item["family_id"]) == family_id and allowed(item)),
+            None,
+        )
+        if candidate is not None and len(selected) < count:
+            add(candidate)
+
+    for item in ranked:
+        if len(selected) >= count:
+            break
+        if allowed(item):
+            add(item)
+    return selected
 
 
 def _cycle_paths(config: ProjectConfig, cycle: int) -> tuple[Path, Path]:
@@ -611,7 +657,12 @@ def prepare_evolution_cycle(config: ProjectConfig, *, force: bool = False) -> di
     eligible = [
         item for item in proposals if float(item["novelty"]) >= float(settings["novelty_floor"])
     ]
-    selected = _select_diverse(eligible, int(settings["tasks_per_cycle"]))
+    selected = _select_diverse(
+        eligible,
+        int(settings["tasks_per_cycle"]),
+        max_per_family=int(settings["max_tasks_per_family"]),
+        max_per_method=int(settings["max_tasks_per_method"]),
+    )
     if len(selected) < int(settings["tasks_per_cycle"]):
         raise RuntimeError(f"Only {len(selected)} valid novel tasks were available for evolution")
     write_jsonl(data_dir / "proposals.jsonl", proposals)
@@ -620,8 +671,7 @@ def prepare_evolution_cycle(config: ProjectConfig, *, force: bool = False) -> di
     promotion = _ensure_promotion_shard(config, cycle, data_dir)
     selected_ids = {str(item["blueprint_id"]) for item in selected}
     promotion_ids = {
-        str(item["scenario"]["blueprint_id"])
-        for item in read_jsonl(data_dir / "promotion.jsonl")
+        str(item["scenario"]["blueprint_id"]) for item in read_jsonl(data_dir / "promotion.jsonl")
     }
     if selected_ids & promotion_ids:
         raise RuntimeError("Evolution task selection overlaps the promotion shard")
@@ -634,7 +684,14 @@ def prepare_evolution_cycle(config: ProjectConfig, *, force: bool = False) -> di
         "proposal_count": len(proposals),
         "eligible_count": len(eligible),
         "selected_count": len(selected),
-        "selection_formula": "validity * novelty * frontier * learning_progress",
+        "selection_formula": (
+            "validity * novelty * frontier * learning_progress, subject to family and "
+            "oracle-method ceilings"
+        ),
+        "selection_constraints": {
+            "max_tasks_per_family": int(settings["max_tasks_per_family"]),
+            "max_tasks_per_method": int(settings["max_tasks_per_method"]),
+        },
         "task_reward_summary": {
             "minimum": min(float(item["task_reward"]) for item in selected),
             "mean": float(np.mean([float(item["task_reward"]) for item in selected])),
@@ -649,12 +706,143 @@ def prepare_evolution_cycle(config: ProjectConfig, *, force: bool = False) -> di
     return manifest
 
 
+def prepare_evolution_ablation(
+    config: ProjectConfig,
+    cycle_manifest: dict[str, Any],
+    *,
+    force: bool = False,
+) -> dict[str, Any]:
+    """Prepare an equal-compute random-DGP control without reading promotion outcomes."""
+    cycle = int(cycle_manifest["cycle"])
+    cycle_data_dir, _ = _cycle_paths(config, cycle)
+    control_dir = cycle_data_dir / "ablation" / "random-control"
+    manifest_path = control_dir / "manifest.json"
+    settings = _evolution_settings(config)
+    ablation = dict(settings["ablation"])
+    seed = int(ablation["random_control_seed_base"]) + cycle * 1_000_003
+    fingerprint = canonical_hash(
+        {
+            "cycle": cycle,
+            "parent": cycle_manifest["parent"]["adapter_sha256"],
+            "proposal_pool": int(settings["proposal_pool"]),
+            "tasks_per_cycle": int(settings["tasks_per_cycle"]),
+            "seed": seed,
+            "stats_data": config.section("stats_data"),
+            "selection_constraints": {
+                "max_tasks_per_family": int(settings["max_tasks_per_family"]),
+                "max_tasks_per_method": int(settings["max_tasks_per_method"]),
+            },
+            "control_generator_version": 2,
+        }
+    )
+    if manifest_path.exists() and not force:
+        existing = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if (
+            existing.get("fingerprint") == fingerprint
+            and existing.get("complete")
+            and _training_records_are_current(
+                config,
+                control_dir,
+                dict(existing.get("data", {})),
+            )
+        ):
+            if existing["data"]["valid_sha256"] != cycle_manifest["data"]["valid_sha256"]:
+                raise RuntimeError("Ablation arms do not share the same validation records")
+            return existing
+
+    control_dir.mkdir(parents=True, exist_ok=True)
+    split = f"evolve-random-control-{cycle:04d}"
+    scenarios = build_blueprints(
+        {split: int(settings["proposal_pool"])},
+        seed=seed,
+        active_search=False,
+    )
+    simulations = [_simulate(config, scenario) for scenario in scenarios]
+    parent_adapter = Path(str(cycle_manifest["parent"]["adapter_path"]))
+    parent_scores = _score_proposals(config, parent_adapter, simulations)
+    prediction_by_id = {str(row["blueprint_id"]): row for row in parent_scores["predictions"]}
+    references = _existing_references(config)
+    rng = random.Random(seed)
+    proposals: list[dict[str, Any]] = []
+    for simulation in simulations:
+        scenario = _scenario(simulation["scenario"])
+        validity = float(
+            bool(simulation["valid_method_ids"])
+            and math.isclose(
+                sum(float(row["soft_target"]) for row in simulation["candidates"]),
+                1.0,
+                abs_tol=1e-7,
+            )
+        )
+        proposals.append(
+            {
+                "blueprint_id": scenario.blueprint_id,
+                "family_id": scenario.family_id,
+                "parent_normalized_regret": float(
+                    prediction_by_id[scenario.blueprint_id]["normalized_regret"]
+                ),
+                "validity": validity,
+                "novelty": _novelty(scenario, references),
+                "task_reward": rng.random() if validity else 0.0,
+                "selection_rule": "uniform-random-after-validity-and-novelty",
+                "simulation": simulation,
+            }
+        )
+    eligible = [
+        item
+        for item in proposals
+        if float(item["validity"]) == 1.0
+        and float(item["novelty"]) >= float(settings["novelty_floor"])
+    ]
+    selected = _select_diverse(
+        eligible,
+        int(settings["tasks_per_cycle"]),
+        max_per_family=int(settings["max_tasks_per_family"]),
+        max_per_method=int(settings["max_tasks_per_method"]),
+    )
+    if len(selected) < int(settings["tasks_per_cycle"]):
+        raise RuntimeError(f"Only {len(selected)} valid novel random-control tasks were available")
+    write_jsonl(control_dir / "proposals.jsonl", proposals)
+    write_jsonl(control_dir / "selected.jsonl", selected)
+    data = _write_training_records(config, cycle, selected, control_dir)
+    if data["valid_sha256"] != cycle_manifest["data"]["valid_sha256"]:
+        raise RuntimeError("Ablation arms do not share the same validation records")
+    adaptive_ids = {
+        str(row["blueprint_id"]) for row in read_jsonl(cycle_data_dir / "selected.jsonl")
+    }
+    control_ids = {str(row["blueprint_id"]) for row in selected}
+    if adaptive_ids & control_ids:
+        raise RuntimeError("Random-control and adaptive training tasks overlap")
+    result = {
+        "schema_version": 1,
+        "complete": True,
+        "fingerprint": fingerprint,
+        "cycle": cycle,
+        "arm": "random-control",
+        "selection_rule": "uniform-random-after-validity-and-novelty",
+        "selection_constraints": {
+            "max_tasks_per_family": int(settings["max_tasks_per_family"]),
+            "max_tasks_per_method": int(settings["max_tasks_per_method"]),
+        },
+        "proposal_count": len(proposals),
+        "eligible_count": len(eligible),
+        "selected_count": len(selected),
+        "data": data,
+        "proposal_parent_scoring_compute_matched": True,
+        "total_selection_parent_scoring_compute_matched": False,
+        "promotion_shard_read": False,
+    }
+    write_json(manifest_path, result)
+    return result
+
+
 def _adapter_config_for_child(
     config: ProjectConfig,
     parent: Path,
     destination: Path,
     *,
     cycle: int,
+    arm: str,
 ) -> dict[str, Any]:
     value = json.loads((parent / "adapter_config.json").read_text(encoding="utf-8"))
     evolution = _evolution_settings(config)
@@ -663,6 +851,7 @@ def _adapter_config_for_child(
         {
             "method": "DGP-Evolve",
             "cycle": cycle,
+            "ablation_arm": arm,
             "parent_adapter_sha256": sha256_file(parent / "adapters.safetensors"),
             "learning_rate_a": float(evolution["learning_rate_a"]),
             "learning_rate_b": float(evolution["learning_rate_b"]),
@@ -730,10 +919,8 @@ def _choose_checkpoint(
         )
         if (
             relative >= minimum_improvement
-            and metrics["invalid_selection_rate"]
-            <= parent_metrics["invalid_selection_rate"]
-            and metrics["accuracy"]
-            >= parent_metrics["accuracy"] - maximum_accuracy_regression
+            and metrics["invalid_selection_rate"] <= parent_metrics["invalid_selection_rate"]
+            and metrics["accuracy"] >= parent_metrics["accuracy"] - maximum_accuracy_regression
         ):
             eligible.append({**item, "relative_regret_improvement": relative})
     if not eligible:
@@ -765,23 +952,34 @@ def _weight_file_max_abs_delta(left: Path, right: Path) -> float:
     return maximum
 
 
-def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> dict[str, Any]:
-    manifest = prepare_evolution_cycle(config, force=False)
+def _train_evolution_arm(
+    config: ProjectConfig,
+    manifest: dict[str, Any],
+    *,
+    arm: str,
+    data_dir: Path,
+    candidate_dir: Path,
+    force: bool,
+    training_seed: int | None = None,
+    run_settings: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     cycle = int(manifest["cycle"])
-    data_dir, artifact_dir = _cycle_paths(config, cycle)
-    candidate_dir = artifact_dir / "candidate"
     status_path = candidate_dir / "status.json"
     parent = Path(str(manifest["parent"]["adapter_path"]))
     settings = _evolution_settings(config)
     training_settings = config.section("stats_training")
+    arm_settings = dict(run_settings or {})
     fingerprint = canonical_hash(
         {
             "cycle": cycle,
+            "arm": arm,
             "parent": sha256_file(parent / "adapters.safetensors"),
             "train": sha256_file(data_dir / "train.jsonl"),
             "valid": sha256_file(data_dir / "valid.jsonl"),
             "settings": settings,
-            "trainer_version": 3,
+            "training_seed": training_seed,
+            "run_settings": arm_settings,
+            "trainer_version": 6 if arm_settings else 5,
         }
     )
     if status_path.exists() and not force:
@@ -801,7 +999,11 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
     for path in managed_checkpoints:
         if path.exists():
             path.unlink()
-    seed = int(config.section("project")["seed"]) + cycle
+    seed = (
+        int(training_seed)
+        if training_seed is not None
+        else int(config.section("project")["seed"]) + cycle
+    )
     mx.random.seed(seed)
     np.random.seed(seed)
     model_path = _stats_snapshot(config)
@@ -824,18 +1026,32 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
         raise RuntimeError("The parent LoRA did not expose trainable adapter matrices")
     write_json(
         candidate_dir / "adapter_config.json",
-        _adapter_config_for_child(config, parent, candidate_dir, cycle=cycle),
+        _adapter_config_for_child(
+            config,
+            parent,
+            candidate_dir,
+            cycle=cycle,
+            arm=arm,
+        ),
     )
     max_length = int(training_settings["max_seq_length"])
     train_rows = list(read_jsonl(data_dir / "train.jsonl"))
     valid_rows = list(read_jsonl(data_dir / "valid.jsonl"))
+    component_weights = dict(settings["component_weights"])
+    selector_only = (
+        float(component_weights["method"]) == 1.0
+        and float(component_weights["plan_tool"]) == 0.0
+        and float(component_weights["report"]) == 0.0
+    )
+    curriculum = str(arm_settings.get("curriculum", "evolve-interleave"))
     train_dataset = StatsDataset(
         train_rows,
         tokenizer,
         seed=seed,
         grouped=True,
-        curriculum="evolve-interleave",
+        curriculum=curriculum,
         max_seq_length=max_length,
+        selector_only=selector_only,
     )
     valid_dataset = StatsDataset(
         valid_rows,
@@ -844,21 +1060,29 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
         grouped=False,
         curriculum="random",
         max_seq_length=max_length,
+        selector_only=selector_only,
     )
-    microsteps = int(settings["microsteps"])
+    microsteps = int(arm_settings.get("microsteps", settings["microsteps"]))
     group_size = int(training_settings["grad_accumulation_steps"])
+    clear_cache_threshold = int(float(settings["clear_cache_threshold_gb"]) * 1024**3)
     args = TrainingArgs(
         batch_size=1,
         iters=microsteps,
         val_batches=-1,
         steps_per_report=group_size,
-        steps_per_eval=min(int(settings["validation_every"]), microsteps),
-        steps_per_save=min(int(settings["checkpoint_every"]), microsteps),
+        steps_per_eval=min(
+            int(arm_settings.get("validation_every", settings["validation_every"])),
+            microsteps,
+        ),
+        steps_per_save=min(
+            int(arm_settings.get("checkpoint_every", settings["checkpoint_every"])),
+            microsteps,
+        ),
         max_seq_length=max_length,
         adapter_file=str(candidate_dir / "adapters.safetensors"),
         grad_checkpoint=False,
         grad_accumulation_steps=group_size,
-        clear_cache_threshold=12 * 1024**3,
+        clear_cache_threshold=clear_cache_threshold,
     )
     optimizer_settings = {
         "grad_accumulation_steps": group_size,
@@ -870,7 +1094,7 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
     optimizer = _optimizer(optimizer_settings, microsteps)
     evolution_loss = partial(
         stats_loss,
-        component_weights=dict(settings["component_weights"]),
+        component_weights=component_weights,
     )
     _enable_gradient_checkpointing_once(model)
     started = time.monotonic()
@@ -878,7 +1102,9 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
         model=model,
         best_path=candidate_dir / "best_adapters.safetensors",
         deadline=started + int(settings["max_seconds"]),
-        patience=int(settings["early_stop_evaluations"]),
+        patience=int(
+            arm_settings.get("early_stop_evaluations", settings["early_stop_evaluations"])
+        ),
     )
     stopped = False
     caffeinate = _start_caffeinate()
@@ -917,7 +1143,7 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
             max_seq_length=max_length,
             loss=evolution_loss,
             iterate_batches=stats_iterate_batches,
-            clear_cache_threshold=12 * 1024**3,
+            clear_cache_threshold=clear_cache_threshold,
         )
     )
     best_path = candidate_dir / "best_adapters.safetensors"
@@ -966,13 +1192,27 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
         dict(settings["promotion"]),
     )
     model.load_weights(str(selected_checkpoint["path"]), strict=False)
+    selected_validation_loss = (
+        final_loss
+        if selected_checkpoint["name"] == "last"
+        else float(
+            evaluate(
+                model=model,
+                dataset=valid_dataset,
+                batch_size=1,
+                num_batches=-1,
+                max_seq_length=max_length,
+                loss=evolution_loss,
+                iterate_batches=stats_iterate_batches,
+                clear_cache_threshold=clear_cache_threshold,
+            )
+        )
+    )
     mx.save_safetensors(
         str(active_path),
         dict(tree_flatten(model.trainable_parameters())),
     )
-    adapter_config = json.loads(
-        (candidate_dir / "adapter_config.json").read_text(encoding="utf-8")
-    )
+    adapter_config = json.loads((candidate_dir / "adapter_config.json").read_text(encoding="utf-8"))
     adapter_config.setdefault("stats", {}).update(
         {
             "checkpoint_selection_surface": "frozen-v0.3-valid",
@@ -985,10 +1225,15 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
         "fingerprint": fingerprint,
         "complete": active_path.exists(),
         "cycle": cycle,
+        "arm": arm,
+        "training_seed": seed,
+        "curriculum": curriculum,
         "parent_adapter_path": str(parent),
         "parent_adapter_sha256": sha256_file(parent / "adapters.safetensors"),
         "adapter_path": str(candidate_dir),
         "adapter_sha256": sha256_file(active_path),
+        "train_sha256": sha256_file(data_dir / "train.jsonl"),
+        "valid_sha256": sha256_file(data_dir / "valid.jsonl"),
         "planned_microsteps": microsteps,
         "stopped": stopped,
         "stop_reason": callback.stop_reason or "completed",
@@ -997,6 +1242,7 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
             callback.validation_history[0]["loss"] if callback.validation_history else None
         ),
         "final_validation_loss": final_loss,
+        "selected_validation_loss": selected_validation_loss,
         "best_validation_loss": callback.best_loss,
         "best_validation_iteration": callback.best_iteration,
         "checkpoint_selection": {
@@ -1006,9 +1252,7 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
             "selected_relative_regret_improvement": selected_checkpoint[
                 "relative_regret_improvement"
             ],
-            "family_learning_progress": selected_checkpoint[
-                "family_learning_progress"
-            ],
+            "family_learning_progress": selected_checkpoint["family_learning_progress"],
             "candidates": checkpoint_candidates,
         },
         "validation_history": callback.validation_history,
@@ -1021,6 +1265,161 @@ def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> 
     gc.collect()
     mx.clear_cache()
     return status
+
+
+def train_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> dict[str, Any]:
+    manifest = prepare_evolution_cycle(config, force=False)
+    cycle = int(manifest["cycle"])
+    data_dir, artifact_dir = _cycle_paths(config, cycle)
+    return _train_evolution_arm(
+        config,
+        manifest,
+        arm="adaptive",
+        data_dir=data_dir,
+        candidate_dir=artifact_dir / "candidate",
+        force=force,
+    )
+
+
+def _selected_validation_metrics(status: dict[str, Any]) -> dict[str, float]:
+    selection = dict(status["checkpoint_selection"])
+    selected_name = str(selection["selected"])
+    selected = next(item for item in selection["candidates"] if str(item["name"]) == selected_name)
+    return {key: float(value) for key, value in selected["selector"].items()}
+
+
+def _choose_ablation_winner(statuses: list[dict[str, Any]]) -> dict[str, Any]:
+    if not statuses:
+        raise ValueError("At least one ablation arm is required")
+    invariants = {
+        (
+            str(status["parent_adapter_sha256"]),
+            str(status["valid_sha256"]),
+            int(status["planned_microsteps"]),
+            int(status["trainable_parameters"]),
+        )
+        for status in statuses
+    }
+    if len(invariants) != 1:
+        raise RuntimeError("Ablation arms do not have equal parent, validation, or compute")
+
+    def key(status: dict[str, Any]) -> tuple[float, float, float, float, int, str]:
+        metrics = _selected_validation_metrics(status)
+        return (
+            metrics["normalized_regret"],
+            metrics["invalid_selection_rate"],
+            -metrics["accuracy"],
+            float(status["selected_validation_loss"]),
+            0 if status["arm"] == "random-control" else 1,
+            str(status["arm"]),
+        )
+
+    return min(statuses, key=key)
+
+
+def train_evolution_ablation(config: ProjectConfig, *, force: bool = False) -> dict[str, Any]:
+    cycle_manifest = prepare_evolution_cycle(config, force=False)
+    control_manifest = prepare_evolution_ablation(
+        config,
+        cycle_manifest,
+        force=force,
+    )
+    cycle = int(cycle_manifest["cycle"])
+    data_dir, artifact_dir = _cycle_paths(config, cycle)
+    ablation_settings = dict(_evolution_settings(config)["ablation"])
+    arms = [str(value) for value in ablation_settings["arms"]]
+    if set(arms) != {"random-control", "adaptive"} or len(arms) != 2:
+        raise ValueError("The equal-compute ablation requires random-control and adaptive arms")
+    data_paths = {
+        "random-control": data_dir / "ablation" / "random-control",
+        "adaptive": data_dir,
+    }
+    statuses: dict[str, dict[str, Any]] = {}
+    for arm in arms:
+        statuses[arm] = _train_evolution_arm(
+            config,
+            cycle_manifest,
+            arm=arm,
+            data_dir=data_paths[arm],
+            candidate_dir=artifact_dir / "ablation" / arm,
+            force=force,
+        )
+    winner = _choose_ablation_winner(list(statuses.values()))
+    control_metrics = _selected_validation_metrics(statuses["random-control"])
+    adaptive_metrics = _selected_validation_metrics(statuses["adaptive"])
+    adaptive_relative_improvement = (
+        (control_metrics["normalized_regret"] - adaptive_metrics["normalized_regret"])
+        / control_metrics["normalized_regret"]
+        if control_metrics["normalized_regret"]
+        else 0.0
+    )
+    minimum_ablation_improvement = float(
+        ablation_settings["minimum_adaptive_relative_regret_improvement_over_control"]
+    )
+    report = {
+        "schema_version": 1,
+        "complete": True,
+        "cycle": cycle,
+        "fingerprint": canonical_hash(
+            {
+                "cycle_manifest": cycle_manifest["fingerprint"],
+                "control_manifest": control_manifest["fingerprint"],
+                "arms": {
+                    arm: {
+                        "training": status["fingerprint"],
+                        "adapter": status["adapter_sha256"],
+                    }
+                    for arm, status in sorted(statuses.items())
+                },
+                "settings": ablation_settings,
+                "ablation_evaluator_version": 1,
+            }
+        ),
+        "compute_equal": True,
+        "compute_equal_scope": "training-only",
+        "training_compute_equal": True,
+        "total_pipeline_compute_equal": False,
+        "selection_compute": {
+            "random-control": {
+                "new_simulations": int(cycle_manifest["proposal_count"]),
+                "parent_scored_tasks": int(cycle_manifest["proposal_count"]),
+            },
+            "adaptive": {
+                "new_simulations": int(cycle_manifest["proposal_count"]),
+                "parent_scored_tasks": int(cycle_manifest["proposal_count"])
+                + len(_surface(config, "dev")),
+            },
+            "note": "Adaptive selection additionally scores the reusable dev surface; "
+            "promotion data remains sealed.",
+        },
+        "shared_parent_adapter_sha256": winner["parent_adapter_sha256"],
+        "shared_validation_sha256": winner["valid_sha256"],
+        "planned_microsteps_per_arm": winner["planned_microsteps"],
+        "trainable_parameters_per_arm": winner["trainable_parameters"],
+        "training_order": arms,
+        "arms": {
+            arm: {
+                "selected_checkpoint": status["checkpoint_selection"]["selected"],
+                "validation": _selected_validation_metrics(status),
+                "selected_validation_loss": status["selected_validation_loss"],
+                "adapter_sha256": status["adapter_sha256"],
+            }
+            for arm, status in sorted(statuses.items())
+        },
+        "winner_arm": winner["arm"],
+        "winner_status_path": str(Path(winner["adapter_path"]) / "status.json"),
+        "adaptive_relative_regret_improvement_over_control": adaptive_relative_improvement,
+        "adaptive_ablation_gate": adaptive_relative_improvement >= minimum_ablation_improvement,
+        "minimum_adaptive_relative_regret_improvement_over_control": (minimum_ablation_improvement),
+        "promotion_shard_opened": False,
+    }
+    write_json(artifact_dir / "ablation.json", report)
+    return {
+        "report": report,
+        "winner": winner,
+        "arms": statuses,
+        "control_manifest": control_manifest,
+    }
 
 
 def _paired_bootstrap(
@@ -1046,10 +1445,44 @@ def _paired_bootstrap(
 
 
 def _adapter_max_abs_delta(left: Path, right: Path) -> float:
-    return _weight_file_max_abs_delta(
+    raw_delta = _weight_file_max_abs_delta(
         left / "adapters.safetensors",
         right / "adapters.safetensors",
     )
+    if math.isfinite(raw_delta):
+        return raw_delta
+    left_weights = mx.load(str(left / "adapters.safetensors"))
+    right_weights = mx.load(str(right / "adapters.safetensors"))
+    if set(left_weights) != set(right_weights) or not all(
+        key.endswith((".lora_a", ".lora_b")) for key in left_weights
+    ):
+        return math.inf
+    left_config = json.loads((left / "adapter_config.json").read_text(encoding="utf-8"))
+    right_config = json.loads((right / "adapter_config.json").read_text(encoding="utf-8"))
+    left_scale = float(left_config["lora_parameters"]["scale"])
+    right_scale = float(right_config["lora_parameters"]["scale"])
+    prefixes = sorted(
+        key.removesuffix(".lora_a") for key in left_weights if key.endswith(".lora_a")
+    )
+    if {f"{prefix}.lora_b" for prefix in prefixes} != {
+        key for key in left_weights if key.endswith(".lora_b")
+    }:
+        return math.inf
+    maximum = 0.0
+    for prefix in prefixes:
+        left_effective = left_scale * (
+            left_weights[f"{prefix}.lora_a"] @ left_weights[f"{prefix}.lora_b"]
+        )
+        right_effective = right_scale * (
+            right_weights[f"{prefix}.lora_a"] @ right_weights[f"{prefix}.lora_b"]
+        )
+        maximum = max(
+            maximum,
+            float(mx.max(mx.abs(left_effective - right_effective)).item()),
+        )
+        del left_effective, right_effective
+        mx.clear_cache()
+    return maximum
 
 
 def _score_adapter(
@@ -1057,29 +1490,52 @@ def _score_adapter(
     adapter_path: Path,
     surface: list[dict[str, Any]],
 ) -> dict[str, Any]:
+    return _score_adapter_surfaces(
+        config,
+        adapter_path,
+        {"surface": surface},
+    )["surface"]
+
+
+def _score_adapter_surfaces(
+    config: ProjectConfig,
+    adapter_path: Path,
+    surfaces: dict[str, list[dict[str, Any]]],
+    *,
+    include_retention: bool = True,
+) -> dict[str, dict[str, Any]]:
+    if not surfaces:
+        raise ValueError("Adapter scoring requires at least one surface")
     model, tokenizer = load(
         _stats_snapshot(config),
         adapter_path=str(adapter_path),
         tokenizer_config={"trust_remote_code": True},
     )
-    languages = {
-        language: _score_loaded_selector(
-            model,
-            tokenizer,
-            _proposal_records(surface, language=language, view=view),
-        )
-        for language, view in (
-            ("en", "boundary_a"),
-            ("zh_Hant", "standard"),
-            ("zh_Hans", "standard"),
-        )
+    scored = {
+        name: {
+            "languages": {
+                language: _score_loaded_selector(
+                    model,
+                    tokenizer,
+                    _proposal_records(surface, language=language, view=view),
+                )
+                for language, view in (
+                    ("en", "boundary_a"),
+                    ("zh_Hant", "standard"),
+                    ("zh_Hans", "standard"),
+                )
+            }
+        }
+        for name, surface in surfaces.items()
     }
-    selector = languages["en"]
-    retention = _retention_score(model, tokenizer, config)
+    retention = _retention_score(model, tokenizer, config) if include_retention else None
+    for value in scored.values():
+        value["selector"] = value["languages"]["en"]
+        value["retention"] = retention
     del model, tokenizer
     gc.collect()
     mx.clear_cache()
-    return {"selector": selector, "languages": languages, "retention": retention}
+    return scored
 
 
 def _group_regret(
@@ -1102,22 +1558,26 @@ def _noninferior_mapping(
     if set(parent) != set(candidate):
         return False
     if higher_is_better:
-        return all(
-            candidate[key] >= parent[key] - maximum_regression for key in parent
-        )
+        return all(candidate[key] >= parent[key] - maximum_regression for key in parent)
     return all(candidate[key] <= parent[key] + maximum_regression for key in parent)
 
 
-def evaluate_evolution_candidate(config: ProjectConfig, *, force: bool = False) -> dict[str, Any]:
-    training = train_evolution_candidate(config, force=False)
+def evaluate_evolution_candidate(
+    config: ProjectConfig,
+    *,
+    training: dict[str, Any] | None = None,
+    cycle_manifest: dict[str, Any] | None = None,
+    ablation_report: dict[str, Any] | None = None,
+    force: bool = False,
+) -> dict[str, Any]:
+    training = training or train_evolution_candidate(config, force=False)
     cycle = int(training["cycle"])
     data_dir, artifact_dir = _cycle_paths(config, cycle)
-    manifest = prepare_evolution_cycle(config, force=False)
+    manifest = cycle_manifest or prepare_evolution_cycle(config, force=False)
+    if int(manifest["cycle"]) != cycle:
+        raise RuntimeError("Training status and promotion manifest belong to different cycles")
     promotion_manifest = dict(manifest["promotion_shard"])
     promotion_path = data_dir / "promotion.jsonl"
-    if sha256_file(promotion_path) != promotion_manifest["sha256"]:
-        raise RuntimeError("The cycle promotion shard changed after preparation")
-    promotion_surface = list(read_jsonl(promotion_path))
     report_path = artifact_dir / "comparison.json"
     settings = _evolution_settings(config)
     gates = dict(settings["promotion"])
@@ -1128,9 +1588,11 @@ def evaluate_evolution_candidate(config: ProjectConfig, *, force: bool = False) 
             "cycle": cycle,
             "parent": training["parent_adapter_sha256"],
             "candidate": training["adapter_sha256"],
+            "training_arm": training.get("arm", "adaptive"),
+            "ablation": ablation_report.get("fingerprint") if ablation_report else None,
             "promotion_shard": promotion_manifest["sha256"],
             "gates": gates,
-            "evaluator_version": 3,
+            "evaluator_version": 4,
         }
     )
     if report_path.exists() and not force:
@@ -1144,6 +1606,20 @@ def evaluate_evolution_candidate(config: ProjectConfig, *, force: bool = False) 
             "fingerprint": fingerprint,
             "complete": True,
             "cycle": cycle,
+            "training_arm": training.get("arm", "adaptive"),
+            "training_status_path": str(Path(training["adapter_path"]) / "status.json"),
+            "ablation": (
+                {
+                    "fingerprint": ablation_report["fingerprint"],
+                    "winner_arm": ablation_report["winner_arm"],
+                    "adaptive_relative_regret_improvement_over_control": ablation_report[
+                        "adaptive_relative_regret_improvement_over_control"
+                    ],
+                    "adaptive_ablation_gate": ablation_report["adaptive_ablation_gate"],
+                }
+                if ablation_report
+                else None
+            ),
             "promoted": False,
             "rejection_reason": "numerically_identical_to_parent",
             "maximum_adapter_tensor_delta": maximum_adapter_delta,
@@ -1181,6 +1657,9 @@ def evaluate_evolution_candidate(config: ProjectConfig, *, force: bool = False) 
         }
         write_json(report_path, result)
         return result
+    if sha256_file(promotion_path) != promotion_manifest["sha256"]:
+        raise RuntimeError("The cycle promotion shard changed after preparation")
+    promotion_surface = list(read_jsonl(promotion_path))
     parent = _score_adapter(config, parent_path, promotion_surface)
     candidate = _score_adapter(config, candidate_path, promotion_surface)
     parent_predictions = parent["selector"]["predictions"]
@@ -1207,12 +1686,10 @@ def evaluate_evolution_candidate(config: ProjectConfig, *, force: bool = False) 
         key: float(value["accuracy"]) for key, value in candidate["languages"].items()
     }
     parent_language_regret = {
-        key: float(value["normalized_regret"])
-        for key, value in parent["languages"].items()
+        key: float(value["normalized_regret"]) for key, value in parent["languages"].items()
     }
     candidate_language_regret = {
-        key: float(value["normalized_regret"])
-        for key, value in candidate["languages"].items()
+        key: float(value["normalized_regret"]) for key, value in candidate["languages"].items()
     }
     parent_family_regret = _group_regret(parent_predictions, "family_id")
     candidate_family_regret = _group_regret(candidate_predictions, "family_id")
@@ -1242,14 +1719,8 @@ def evaluate_evolution_candidate(config: ProjectConfig, *, force: bool = False) 
             higher_is_better=False,
         ),
         "domain_accuracy": _noninferior_mapping(
-            {
-                key: float(value)
-                for key, value in parent["selector"]["domain_accuracy"].items()
-            },
-            {
-                key: float(value)
-                for key, value in candidate["selector"]["domain_accuracy"].items()
-            },
+            {key: float(value) for key, value in parent["selector"]["domain_accuracy"].items()},
+            {key: float(value) for key, value in candidate["selector"]["domain_accuracy"].items()},
             maximum_regression=float(gates["maximum_domain_accuracy_regression"]),
             higher_is_better=True,
         ),
@@ -1267,6 +1738,20 @@ def evaluate_evolution_candidate(config: ProjectConfig, *, force: bool = False) 
         "fingerprint": fingerprint,
         "complete": True,
         "cycle": cycle,
+        "training_arm": training.get("arm", "adaptive"),
+        "training_status_path": str(Path(training["adapter_path"]) / "status.json"),
+        "ablation": (
+            {
+                "fingerprint": ablation_report["fingerprint"],
+                "winner_arm": ablation_report["winner_arm"],
+                "adaptive_relative_regret_improvement_over_control": ablation_report[
+                    "adaptive_relative_regret_improvement_over_control"
+                ],
+                "adaptive_ablation_gate": ablation_report["adaptive_ablation_gate"],
+            }
+            if ablation_report
+            else None
+        ),
         "promoted": promoted,
         "rejection_reason": (
             None if promoted else f"promotion_gates_failed:{','.join(failed_gates)}"
@@ -1284,9 +1769,7 @@ def evaluate_evolution_candidate(config: ProjectConfig, *, force: bool = False) 
             "candidate_family_regret": candidate_family_regret,
         },
         "gates": gate_results,
-        "family_learning_progress": training["checkpoint_selection"][
-            "family_learning_progress"
-        ],
+        "family_learning_progress": training["checkpoint_selection"]["family_learning_progress"],
         "promotion_shard": {
             **promotion_manifest,
             "opened_for_scoring": True,
@@ -1304,19 +1787,26 @@ def _commit_cycle(config: ProjectConfig, comparison: dict[str, Any]) -> dict[str
     if any(int(item["cycle"]) == cycle for item in archive["cycles"]):
         return evolution_status(config)
     _, artifact_dir = _cycle_paths(config, cycle)
-    training = json.loads((artifact_dir / "candidate" / "status.json").read_text())
-    adapter_config_path = artifact_dir / "candidate" / "adapter_config.json"
+    training_status_path = Path(
+        str(
+            comparison.get(
+                "training_status_path",
+                artifact_dir / "candidate" / "status.json",
+            )
+        )
+    )
+    training = json.loads(training_status_path.read_text(encoding="utf-8"))
+    adapter_config_path = training_status_path.parent / "adapter_config.json"
     adapter_config = json.loads(adapter_config_path.read_text(encoding="utf-8"))
     adapter_config.setdefault("stats", {})["promotion_status"] = (
         "promoted" if comparison["promoted"] else "rejected"
     )
-    adapter_config["stats"]["promotion_comparison"] = str(
-        artifact_dir / "comparison.json"
-    )
+    adapter_config["stats"]["promotion_comparison"] = str(artifact_dir / "comparison.json")
     write_json(adapter_config_path, adapter_config)
     node = {
         "node_id": f"cycle-{cycle:04d}-{training['adapter_sha256'][:12]}",
         "cycle": cycle,
+        "ablation_arm": training.get("arm", "adaptive"),
         "adapter_path": training["adapter_path"],
         "adapter_sha256": training["adapter_sha256"],
         "parent_adapter_sha256": training["parent_adapter_sha256"],
@@ -1328,9 +1818,11 @@ def _commit_cycle(config: ProjectConfig, comparison: dict[str, Any]) -> dict[str
         {
             "cycle": cycle,
             "node_id": node["node_id"],
+            "ablation_arm": node["ablation_arm"],
             "promoted": node["promoted"],
             "relative_regret_improvement": comparison["relative_regret_improvement"],
             "gates": comparison["gates"],
+            "ablation": comparison.get("ablation"),
         }
     )
     archive["family_learning_progress"].update(comparison["family_learning_progress"])
@@ -1352,14 +1844,43 @@ def run_evolution_cycle(
     force: bool = False,
 ) -> dict[str, Any]:
     manifest = prepare_evolution_cycle(config, force=force)
+    ablation_enabled = bool(
+        dict(_evolution_settings(config).get("ablation", {})).get("enabled", False)
+    )
     if prepare_only:
-        return {"stage": "prepared", "manifest": manifest, "status": evolution_status(config)}
-    training = train_evolution_candidate(config, force=force)
-    comparison = evaluate_evolution_candidate(config, force=force)
+        control = (
+            prepare_evolution_ablation(config, manifest, force=force) if ablation_enabled else None
+        )
+        return {
+            "stage": "prepared",
+            "manifest": manifest,
+            "control_manifest": control,
+            "status": evolution_status(config),
+        }
+    if ablation_enabled:
+        ablation = train_evolution_ablation(config, force=force)
+        training = ablation["winner"]
+        comparison = evaluate_evolution_candidate(
+            config,
+            training=training,
+            cycle_manifest=manifest,
+            ablation_report=ablation["report"],
+            force=force,
+        )
+    else:
+        ablation = None
+        training = train_evolution_candidate(config, force=force)
+        comparison = evaluate_evolution_candidate(
+            config,
+            training=training,
+            cycle_manifest=manifest,
+            force=force,
+        )
     status = _commit_cycle(config, comparison)
     return {
         "stage": "complete",
         "manifest": manifest,
+        "ablation": ablation,
         "training": training,
         "comparison": comparison,
         "status": status,

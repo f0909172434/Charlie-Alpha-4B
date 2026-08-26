@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "fingerprint": "e891bdf37c30af0b5ef710c17326148ce9655b483c1d5e8c69823a250fa0ce47",
+  "complete": true,
+  "candidate_arm": "uniform-family",
+  "candidate_checkpoint": "update-04",
+  "selection_timing": "candidate fixed after matched valid ablation and before dev scoring",
+  "surface": "reusable-v0.3-dev",
+  "surface_sha256": "fa44de8180c41adac4d789f913f417b6110748e17ef2d2ccd80599d6c6a2100c",
+  "parent": {
+    "selector": {
+      "count": 60,
+      "normalized_regret": 0.4418133664669574,
+      "accuracy": 0.45,
+      "invalid_selection_rate": 0.35,
+      "domain_accuracy": {
+        "inference_and_design": 0.3333333333333333,
+        "prediction_and_analysis": 0.75,
+        "probability_and_bayes": 0.5
+      },
+      "family_accuracy": {
+        "bayesian_check": 0.6666666666666666,
+        "binary_count_glm": 0.4,
+        "categorical": 0.2,
+        "clustered_repeated": 0.0,
+        "experimental_causal": 0.0,
+        "group_comparison": 0.4,
+        "linear_robust": 0.2,
+        "missing_selection": 0.75,
+        "predictive_calibration": 0.5,
+        "probability_distribution": 0.3333333333333333,
+        "survival": 0.75,
+        "time_series_leakage": 1.0
+      }
+    },
+    "languages": {
+      "en": {
+        "count": 60,
+        "normalized_regret": 0.4418133664669574,
+        "accuracy": 0.45,
+        "invalid_selection_rate": 0.35,
+        "domain_accuracy": {
+          "inference_and_design": 0.3333333333333333,
+          "prediction_and_analysis": 0.75,
+          "probability_and_bayes": 0.5
+        },
+        "family_accuracy": {
+          "bayesian_check": 0.6666666666666666,
+          "binary_count_glm": 0.4,
+          "categorical": 0.2,
+          "clustered_repeated": 0.0,
+          "experimental_causal": 0.0,
+          "group_comparison": 0.4,
+          "linear_robust": 0.2,
+          "missing_selection": 0.75,
+          "predictive_calibration": 0.5,
+          "probability_distribution": 0.3333333333333333,
+          "survival": 0.75,
+          "time_series_leakage": 1.0
+        }
+      },
+      "zh_Hant": {
+        "count": 60,
+        "normalized_regret": 0.3556895712398399,
+        "accuracy": 0.5166666666666667,
+        "invalid_selection_rate": 0.3,
+        "domain_accuracy": {
+          "inference_and_design": 0.3888888888888889,
+          "prediction_and_analysis": 0.75,
+          "probability_and_bayes": 0.6666666666666666
+        },
+        "family_accuracy": {
+          "bayesian_check": 0.8333333333333334,
+          "binary_count_glm": 0.0,
+          "categorical": 0.2,
+          "clustered_repeated": 0.5,
+          "experimental_causal": 0.5,
+          "group_comparison": 0.4,
+          "linear_robust": 0.2,
+          "missing_selection": 0.75,
+          "predictive_calibration": 0.6666666666666666,
+          "probability_distribution": 0.5,
+          "survival": 0.75,
+          "time_series_leakage": 0.8333333333333334
+        }
+      },
+      "zh_Hans": {
+        "count": 60,
+        "normalized_regret": 0.3724353912950529,
+        "accuracy": 0.5,
+        "invalid_selection_rate": 0.31666666666666665,
+        "domain_accuracy": {
+          "inference_and_design": 0.3333333333333333,
+          "prediction_and_analysis": 0.8333333333333334,
+          "probability_and_bayes": 0.6666666666666666
+        },
+        "family_accuracy": {
+          "bayesian_check": 0.8333333333333334,
+          "binary_count_glm": 0.2,
+          "categorical": 0.2,
+          "clustered_repeated": 0.5,
+          "experimental_causal": 0.75,
+          "group_comparison": 0.2,
+          "linear_robust": 0.4,
+          "missing_selection": 0.0,
+          "predictive_calibration": 0.6666666666666666,
+          "probability_distribution": 0.5,
+          "survival": 0.5,
+          "time_series_leakage": 1.0
+        }
+      }
+    },
+    "retention": {
+      "accuracy": 1.0,
+      "worst_group_accuracy": 1.0,
+      "groups": {
+        "domain:code": 1.0,
+        "domain:general": 1.0,
+        "domain:math": 1.0,
+        "domain:stem": 1.0,
+        "language:en": 1.0,
+        "language:zh_Hans": 1.0,
+        "language:zh_Hant": 1.0
+      },
+      "count": 24
+    }
+  },
+  "candidate": {
+    "selector": {
+      "count": 60,
+      "normalized_regret": 0.4635886726847955,
+      "accuracy": 0.38333333333333336,
+      "invalid_selection_rate": 0.4,
+      "domain_accuracy": {
+        "inference_and_design": 0.3333333333333333,
+        "prediction_and_analysis": 0.5,
+        "probability_and_bayes": 0.4166666666666667
+      },
+      "family_accuracy": {
+        "bayesian_check": 0.5,
+        "binary_count_glm": 0.4,
+        "categorical": 0.2,
+        "clustered_repeated": 0.0,
+        "experimental_causal": 0.25,
+        "group_comparison": 0.2,
+        "linear_robust": 0.2,
+        "missing_selection": 0.5,
+        "predictive_calibration": 0.6666666666666666,
+        "probability_distribution": 0.3333333333333333,
+        "survival": 1.0,
+        "time_series_leakage": 0.3333333333333333
+      }
+    },
+    "languages": {
+      "en": {
+        "count": 60,
+        "normalized_regret": 0.4635886726847955,
+        "accuracy": 0.38333333333333336,
+        "invalid_selection_rate": 0.4,
+        "domain_accuracy": {
+          "inference_and_design": 0.3333333333333333,
+          "prediction_and_analysis": 0.5,
+          "probability_and_bayes": 0.4166666666666667
+        },
+        "family_accuracy": {
+          "bayesian_check": 0.5,
+          "binary_count_glm": 0.4,
+          "categorical": 0.2,
+          "clustered_repeated": 0.0,
+          "experimental_causal": 0.25,
+          "group_comparison": 0.2,
+          "linear_robust": 0.2,
+          "missing_selection": 0.5,
+          "predictive_calibration": 0.6666666666666666,
+          "probability_distribution": 0.3333333333333333,
+          "survival": 1.0,
+          "time_series_leakage": 0.3333333333333333
+        }
+      },
+      "zh_Hant": {
+        "count": 60,
+        "normalized_regret": 0.33978056409281976,
+        "accuracy": 0.5,
+        "invalid_selection_rate": 0.3,
+        "domain_accuracy": {
+          "inference_and_design": 0.3888888888888889,
+          "prediction_and_analysis": 0.75,
+          "probability_and_bayes": 0.5833333333333334
+        },
+        "family_accuracy": {
+          "bayesian_check": 0.6666666666666666,
+          "binary_count_glm": 0.0,
+          "categorical": 0.2,
+          "clustered_repeated": 0.25,
+          "experimental_causal": 0.5,
+          "group_comparison": 0.6,
+          "linear_robust": 0.2,
+          "missing_selection": 0.75,
+          "predictive_calibration": 0.8333333333333334,
+          "probability_distribution": 0.5,
+          "survival": 0.75,
+          "time_series_leakage": 0.6666666666666666
+        }
+      },
+      "zh_Hans": {
+        "count": 60,
+        "normalized_regret": 0.32917531379622156,
+        "accuracy": 0.5166666666666667,
+        "invalid_selection_rate": 0.25,
+        "domain_accuracy": {
+          "inference_and_design": 0.3611111111111111,
+          "prediction_and_analysis": 0.8333333333333334,
+          "probability_and_bayes": 0.6666666666666666
+        },
+        "family_accuracy": {
+          "bayesian_check": 0.8333333333333334,
+          "binary_count_glm": 0.6,
+          "categorical": 0.2,
+          "clustered_repeated": 0.75,
+          "experimental_causal": 0.5,
+          "group_comparison": 0.0,
+          "linear_robust": 0.4,
+          "missing_selection": 0.25,
+          "predictive_calibration": 0.8333333333333334,
+          "probability_distribution": 0.5,
+          "survival": 0.25,
+          "time_series_leakage": 0.8333333333333334
+        }
+      }
+    },
+    "retention": {
+      "accuracy": 1.0,
+      "worst_group_accuracy": 1.0,
+      "groups": {
+        "domain:code": 1.0,
+        "domain:general": 1.0,
+        "domain:math": 1.0,
+        "domain:stem": 1.0,
+        "language:en": 1.0,
+        "language:zh_Hans": 1.0,
+        "language:zh_Hant": 1.0
+      },
+      "count": 24
+    }
+  },
+  "parent_trilingual_regret": 0.3899794430006167,
+  "candidate_trilingual_regret": 0.377514850191279,
+  "trilingual_relative_regret_improvement": 0.031962179117523366,
+  "english_relative_regret_improvement": -0.04928620967710496,
+  "noninferiority_details": {
+    "parent_language_accuracy": {
+      "en": 0.45,
+      "zh_Hant": 0.5166666666666667,
+      "zh_Hans": 0.5
+    },
+    "candidate_language_accuracy": {
+      "en": 0.38333333333333336,
+      "zh_Hant": 0.5,
+      "zh_Hans": 0.5166666666666667
+    },
+    "parent_language_regret": {
+      "en": 0.4418133664669574,
+      "zh_Hant": 0.3556895712398399,
+      "zh_Hans": 0.3724353912950529
+    },
+    "candidate_language_regret": {
+      "en": 0.4635886726847955,
+      "zh_Hant": 0.33978056409281976,
+      "zh_Hans": 0.32917531379622156
+    },
+    "parent_family_regret": {
+      "bayesian_check": 0.3333333333333333,
+      "binary_count_glm": 0.5745811670416237,
+      "categorical": 0.8,
+      "clustered_repeated": 0.5975454542814626,
+      "experimental_causal": 0.8525247162711516,
+      "group_comparison": 0.19365692953075136,
+      "linear_robust": 0.5820528502879961,
+      "missing_selection": 0.25,
+      "predictive_calibration": 0.5,
+      "probability_distribution": 0.49284442858418914,
+      "survival": 0.25,
+      "time_series_leakage": 0.0
+    },
+    "candidate_family_regret": {
+      "bayesian_check": 0.5,
+      "binary_count_glm": 0.5745811670416237,
+      "categorical": 0.8,
+      "clustered_repeated": 0.5973668157973632,
+      "experimental_causal": 0.6662936736992285,
+      "group_comparison": 0.19394143734411143,
+      "linear_robust": 0.5820528502879961,
+      "missing_selection": 0.012921264442854193,
+      "predictive_calibration": 0.3333333333333333,
+      "probability_distribution": 0.49268601199354817,
+      "survival": 0.0,
+      "time_series_leakage": 0.6666666666666666
+    }
+  },
+  "gates": {
+    "trilingual_regret": false,
+    "english_regret": false,
+    "accuracy": false,
+    "invalidity": false,
+    "retention": true,
+    "language_accuracy": false,
+    "language_regret": true,
+    "domain_accuracy": false,
+    "family_regret": false,
+    "finite_metrics": true
+  },
+  "proceed_to_promotion": false,
+  "sealed_promotion_surface_opened": false,
+  "sealed_final_surface_opened": false,
+  "claim_boundary": "The dev surface is reusable and has informed earlier project decisions. This is a cross-surface confirmation, not a sealed promotion or final capability result."
+}

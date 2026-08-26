@@ -1,7 +1,7 @@
 UV ?= uv
 CLI := $(UV) run charlie-alpha
 
-.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github stats-setup stats-simulate stats-data stats-distill stats-lock stats-baseline stats-pilot stats-train stats-eval stats-export stats-chat stats-serve stats-release-check stats-publish-hf stats-publish-github evolve evolve-prepare evolve-status forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-calibrate forge-dev forge-freeze forge-final forge-router-lock forge-router-freeze forge-router-eval forge-router-verify forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
+.PHONY: setup export-setup data distill mix baseline pilot train eval export gguf clean-load overnight chat serve test lint release-check publish-hf publish-github stats-setup stats-simulate stats-data stats-distill stats-lock stats-baseline stats-pilot stats-train stats-eval stats-export stats-chat stats-serve stats-release-check stats-publish-hf stats-publish-github evolve evolve-prepare evolve-status evolve-bakeoff evolve-project-prepare evolve-project evolve-project-balanced evolve-diagnose evolve-cone evolve-cone-confirm evolve-calibrate evolve-block evolve-family-route-prepare evolve-family-route evolve-family-experts-train evolve-family-experts evolve-router-prepare evolve-router evolve-llm-router-prepare evolve-llm-router evolve-llm-router-promote evolve-llm-router-final evolve-robust-experts-prepare evolve-robust-experts-data evolve-robust-experts-train evolve-robust-experts-select evolve-robust-experts evolve-targeted-repair-prepare evolve-targeted-repair-data evolve-targeted-repair-train evolve-targeted-repair-select evolve-targeted-repair evolve-cone-promote forge forge-lock forge-prepare forge-score forge-select forge-distill forge-build forge-pilot forge-train forge-calibrate forge-dev forge-freeze forge-final forge-router-lock forge-router-freeze forge-router-eval forge-router-verify forge-chat forge-serve forge-export forge-clean-load forge-release-check forge-publish-github
 
 setup:
 	$(UV) sync --extra eval --group dev
@@ -119,6 +119,94 @@ evolve-prepare:
 
 evolve-status:
 	$(CLI) stats evolve-status --config configs/pipeline.evolve.yaml
+
+evolve-bakeoff:
+	$(CLI) stats base-bakeoff --config configs/pipeline.evolve.yaml
+
+evolve-project-prepare:
+	$(CLI) stats policy-project --prepare-only --config configs/pipeline.evolve.yaml
+
+evolve-project:
+	$(CLI) stats policy-project --config configs/pipeline.evolve.yaml
+
+evolve-project-balanced:
+	$(CLI) stats policy-project --balanced --config configs/pipeline.evolve.yaml
+
+evolve-diagnose:
+	$(CLI) stats policy-diagnose --config configs/pipeline.evolve.yaml
+
+evolve-cone:
+	$(CLI) stats policy-cone --config configs/pipeline.evolve.yaml
+
+evolve-cone-confirm:
+	$(CLI) stats policy-cone-confirm --config configs/pipeline.evolve.yaml
+
+evolve-calibrate:
+	$(CLI) stats policy-calibrate --config configs/pipeline.evolve.yaml
+
+evolve-block:
+	$(CLI) stats policy-block --config configs/pipeline.evolve.yaml
+
+evolve-family-route:
+	$(CLI) stats policy-family-route --config configs/pipeline.evolve.yaml
+
+evolve-family-route-prepare:
+	$(CLI) stats policy-family-route --selection-only --config configs/pipeline.evolve.yaml
+
+evolve-family-experts-train:
+	$(CLI) stats policy-family-experts --train-only --config configs/pipeline.evolve.yaml
+
+evolve-family-experts:
+	$(CLI) stats policy-family-experts --config configs/pipeline.evolve.yaml
+
+evolve-router-prepare:
+	$(CLI) stats policy-router-prepare --config configs/pipeline.evolve.yaml
+
+evolve-router:
+	$(CLI) stats policy-router --config configs/pipeline.evolve.yaml
+
+evolve-llm-router-prepare:
+	$(CLI) stats policy-llm-router --selection-only --config configs/pipeline.evolve.yaml
+
+evolve-llm-router:
+	$(CLI) stats policy-llm-router --config configs/pipeline.evolve.yaml
+
+evolve-llm-router-promote:
+	$(CLI) stats policy-llm-router-promote --config configs/pipeline.evolve.yaml
+
+evolve-llm-router-final:
+	$(CLI) stats policy-llm-router-final --config configs/pipeline.evolve.yaml
+
+evolve-robust-experts-prepare:
+	$(CLI) stats robust-experts-prepare --config configs/pipeline.evolve.yaml
+
+evolve-robust-experts-data:
+	$(CLI) stats robust-experts-data --config configs/pipeline.evolve.yaml
+
+evolve-robust-experts-train:
+	$(CLI) stats robust-experts-train --config configs/pipeline.evolve.yaml
+
+evolve-robust-experts-select:
+	$(CLI) stats robust-experts-select --config configs/pipeline.evolve.yaml
+
+evolve-robust-experts: evolve-robust-experts-train evolve-robust-experts-select
+
+evolve-targeted-repair-prepare:
+	$(CLI) stats targeted-repair-prepare --config configs/pipeline.evolve.yaml
+
+evolve-targeted-repair-data:
+	$(CLI) stats targeted-repair-data --config configs/pipeline.evolve.yaml
+
+evolve-targeted-repair-train:
+	$(CLI) stats targeted-repair-train --config configs/pipeline.evolve.yaml
+
+evolve-targeted-repair-select:
+	$(CLI) stats targeted-repair-select --config configs/pipeline.evolve.yaml
+
+evolve-targeted-repair: evolve-targeted-repair-train evolve-targeted-repair-select
+
+evolve-cone-promote:
+	$(CLI) stats policy-cone-promote --config configs/pipeline.evolve.yaml
 
 forge:
 	$(CLI) forge overnight --config configs/pipeline.v2.yaml

@@ -1,0 +1,39 @@
+{"task_id":"hold-group-en","language":"en","family_id":"group_comparison","text":"The same patients were measured before and after therapy. What procedure estimates the mean within-person change without treating the measurements as independent?"}
+{"task_id":"hold-group-zht","language":"zh_Hant","family_id":"group_comparison","text":"同一批病人在治療前後各量一次；要估計個人內平均變化，不能把兩次量測當成獨立。"}
+{"task_id":"hold-group-zhs","language":"zh_Hans","family_id":"group_comparison","text":"同一批患者在治疗前后各测一次；要估计个体内平均变化，不能把两次测量当成独立。"}
+{"task_id":"hold-categorical-en","language":"en","family_id":"categorical","text":"A survey records yes or no and region. Test whether the response proportions differ across regions, accounting for sparse cells."}
+{"task_id":"hold-categorical-zht","language":"zh_Hant","family_id":"categorical","text":"問卷記錄是或否以及地區；請比較各地區回應比例，並處理稀疏格數。"}
+{"task_id":"hold-categorical-zhs","language":"zh_Hans","family_id":"categorical","text":"问卷记录是或否以及地区；请比较各地区响应比例，并处理稀疏单元格。"}
+{"task_id":"hold-robust-en","language":"en","family_id":"linear_robust","text":"A continuous response is regressed on dose and age, but influence plots show outliers and the error spread increases with fitted value."}
+{"task_id":"hold-robust-zht","language":"zh_Hant","family_id":"linear_robust","text":"以劑量和年齡解釋連續結果，但影響圖顯示離群點，且誤差散布隨擬合值增加。"}
+{"task_id":"hold-robust-zhs","language":"zh_Hans","family_id":"linear_robust","text":"用剂量和年龄解释连续结局，但影响图显示异常点，且误差离散程度随拟合值增加。"}
+{"task_id":"hold-glm-en","language":"en","family_id":"binary_count_glm","text":"Predict whether a loan defaults from income and debt. Events are rare and one predictor nearly separates defaults from non-defaults."}
+{"task_id":"hold-glm-zht","language":"zh_Hant","family_id":"binary_count_glm","text":"用收入和負債預測貸款是否違約；事件很少，而且一個變數幾乎把違約與否完全分開。"}
+{"task_id":"hold-glm-zhs","language":"zh_Hans","family_id":"binary_count_glm","text":"用收入和负债预测贷款是否违约；事件很少，而且一个变量几乎把违约与否完全分开。"}
+{"task_id":"hold-cluster-en","language":"en","family_id":"clustered_repeated","text":"Households are sampled inside villages and all members share environmental exposure. Estimate an exposure effect with village-level correlation."}
+{"task_id":"hold-cluster-zht","language":"zh_Hant","family_id":"clustered_repeated","text":"家庭抽樣自不同村落，村內成員共享環境暴露；估計暴露效果時要處理村落內相關。"}
+{"task_id":"hold-cluster-zhs","language":"zh_Hans","family_id":"clustered_repeated","text":"家庭抽样自不同村庄，村内成员共享环境暴露；估计暴露效应时要处理村庄内相关。"}
+{"task_id":"hold-survival-en","language":"en","family_id":"survival","text":"Some participants leave the study before failure. Compare event-time curves between arms when follow-up lengths differ."}
+{"task_id":"hold-survival-zht","language":"zh_Hant","family_id":"survival","text":"部分受試者在事件發生前退出，追蹤長度不一；請比較兩組事件時間曲線。"}
+{"task_id":"hold-survival-zhs","language":"zh_Hans","family_id":"survival","text":"部分受试者在事件发生前退出，随访长度不一；请比较两组事件时间曲线。"}
+{"task_id":"hold-missing-en","language":"en","family_id":"missing_selection","text":"People with worse baseline scores are less likely to return the outcome questionnaire. How should the target mean be estimated and sensitivity assessed?"}
+{"task_id":"hold-missing-zht","language":"zh_Hant","family_id":"missing_selection","text":"基線分數較差的人較不會回覆結果問卷；該如何估計目標平均數並做敏感度分析？"}
+{"task_id":"hold-missing-zhs","language":"zh_Hans","family_id":"missing_selection","text":"基线分数较差的人更不容易回复结局问卷；该如何估计目标均值并做敏感性分析？"}
+{"task_id":"hold-causal-en","language":"en","family_id":"experimental_causal","text":"A policy began in selected counties while untreated counties followed different pre-policy trends. Define and estimate a causal policy effect."}
+{"task_id":"hold-causal-zht","language":"zh_Hant","family_id":"experimental_causal","text":"政策只在部分縣市實施，未實施地區在政策前已有不同趨勢；請定義並估計政策的因果效果。"}
+{"task_id":"hold-causal-zhs","language":"zh_Hans","family_id":"experimental_causal","text":"政策只在部分地区实施，未实施地区在政策前已有不同趋势；请定义并估计政策的因果效应。"}
+{"task_id":"hold-probability-en","language":"en","family_id":"probability_distribution","text":"Observed waiting times have a long right tail. Compare plausible sampling distributions and assess their tail predictions."}
+{"task_id":"hold-probability-zht","language":"zh_Hant","family_id":"probability_distribution","text":"觀察到的等待時間有很長的右尾；請比較可能的抽樣分布並檢查尾端預測。"}
+{"task_id":"hold-probability-zhs","language":"zh_Hans","family_id":"probability_distribution","text":"观测到的等待时间有很长的右尾；请比较可能的抽样分布并检查尾部预测。"}
+{"task_id":"hold-bayes-en","language":"en","family_id":"bayesian_check","text":"The prior may be too concentrated relative to new observations. Examine posterior estimates and whether replicated data resemble what was observed."}
+{"task_id":"hold-bayes-zht","language":"zh_Hant","family_id":"bayesian_check","text":"先驗相對新觀察可能過度集中；請檢查後驗估計，以及複製資料是否像實際觀察。"}
+{"task_id":"hold-bayes-zhs","language":"zh_Hans","family_id":"bayesian_check","text":"先验相对新观测可能过度集中；请检查后验估计，以及复制数据是否类似实际观测。"}
+{"task_id":"hold-calibration-en","language":"en","family_id":"predictive_calibration","text":"A classifier ranks cases well but reports risks that are systematically too high in an external cohort. Quantify and repair probability reliability."}
+{"task_id":"hold-calibration-zht","language":"zh_Hant","family_id":"predictive_calibration","text":"分類器排序表現不錯，但在外部隊列給出的風險普遍過高；請量化並修正機率可靠度。"}
+{"task_id":"hold-calibration-zhs","language":"zh_Hans","family_id":"predictive_calibration","text":"分类器排序表现不错，但在外部队列给出的风险普遍过高；请量化并修正概率可靠性。"}
+{"task_id":"hold-timeseries-en","language":"en","family_id":"time_series_leakage","text":"Tune a weekly sales forecast using rolling historical windows; random row splits would let later weeks inform earlier predictions."}
+{"task_id":"hold-timeseries-zht","language":"zh_Hant","family_id":"time_series_leakage","text":"用滾動歷史窗口調整每週銷售預測；隨機切列會讓較晚週次洩漏到較早預測。"}
+{"task_id":"hold-timeseries-zhs","language":"zh_Hans","family_id":"time_series_leakage","text":"用滚动历史窗口调整每周销售预测；随机切行会让较晚周次泄漏到较早预测。"}
+{"task_id":"hold-ambiguous-en","language":"en","family_id":null,"text":"Can you analyze these numbers for me? I have not yet decided the outcome, sampling unit, or scientific target."}
+{"task_id":"hold-ambiguous-zht","language":"zh_Hant","family_id":null,"text":"你能幫我分析這些數字嗎？我還沒決定結果變數、抽樣單位或科學目標。"}
+{"task_id":"hold-ambiguous-zhs","language":"zh_Hans","family_id":null,"text":"你能帮我分析这些数字吗？我还没决定结局变量、抽样单位或科学目标。"}

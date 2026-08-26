@@ -159,12 +159,19 @@ class StatsDataset:
         grouped: bool,
         curriculum: str,
         max_seq_length: int,
+        selector_only: bool = False,
     ) -> None:
         self.seed = seed
         self.grouped = grouped
         self.curriculum = curriculum
         self.max_seq_length = max_seq_length
         self.items = [_tokenize_stats_record(tokenizer, row) for row in rows]
+        if selector_only:
+            for item in self.items:
+                selector_length = int(item["method_position"]) + 2
+                item["tokens"] = item["tokens"][:selector_length]
+                item["plan_mask"] = [False] * (selector_length - 1)
+                item["report_mask"] = [False] * (selector_length - 1)
         oversized = [
             len(item["tokens"]) for item in self.items if len(item["tokens"]) > max_seq_length
         ]
@@ -220,6 +227,55 @@ def _group_order(dataset: StatsDataset, seed: int, epoch: int) -> list[int]:
             if replay:
                 ordered_groups.append(replay.pop(0))
         ordered_groups.extend(other)
+    elif dataset.curriculum == "policy-balanced":
+        source = {
+            group_id: str(dataset.items[indices[0]]["evolution_source"])
+            for group_id, indices in groups.items()
+        }
+        family = {
+            group_id: str(dataset.items[indices[0]]["metadata"]["family_id"])
+            for group_id, indices in groups.items()
+        }
+        method = {
+            group_id: str(dataset.items[indices[0]]["metadata"]["selected_method_id"])
+            for group_id, indices in groups.items()
+        }
+        shuffled = list(groups)
+        rng.shuffle(shuffled)
+        tie_order = {group_id: index for index, group_id in enumerate(shuffled)}
+        pools = {
+            name: [group_id for group_id in shuffled if source[group_id] == name]
+            for name in ("new", "replay")
+        }
+        pools["other"] = [
+            group_id for group_id in shuffled if source[group_id] not in {"new", "replay"}
+        ]
+        family_count: dict[str, int] = {}
+        method_count: dict[str, int] = {}
+        ordered_groups = []
+        while any(pools.values()):
+            if len(ordered_groups) % 5 == 4 and pools["replay"]:
+                pool_name = "replay"
+            elif pools["new"]:
+                pool_name = "new"
+            elif pools["replay"]:
+                pool_name = "replay"
+            else:
+                pool_name = "other"
+            pool = pools[pool_name]
+            selected = min(
+                pool,
+                key=lambda group_id: (
+                    family_count.get(family[group_id], 0),
+                    method_count.get(method[group_id], 0),
+                    -boundary[group_id],
+                    tie_order[group_id],
+                ),
+            )
+            pool.remove(selected)
+            ordered_groups.append(selected)
+            family_count[family[selected]] = family_count.get(family[selected], 0) + 1
+            method_count[method[selected]] = method_count.get(method[selected], 0) + 1
     elif dataset.curriculum == "active-boundary":
         ordered_groups: list[str] = []
         for round_index in (2, 1, 0):
@@ -230,6 +286,53 @@ def _group_order(dataset: StatsDataset, seed: int, epoch: int) -> list[int]:
         ordered_groups = list(groups)
         rng.shuffle(ordered_groups)
     return [index for group_id in ordered_groups for index in groups[group_id]]
+
+
+def _collate_stats_items(
+    items: list[dict[str, Any]],
+    max_seq_length: int,
+) -> tuple[mx.array, ...]:
+    if not items:
+        raise ValueError("At least one statistics item is required")
+    longest = max(len(item["tokens"]) for item in items)
+    if longest > max_seq_length:
+        raise RuntimeError("Stats batches cannot be truncated")
+    padded_length = min(
+        max_seq_length,
+        1 + 32 * ((longest + 31) // 32),
+    )
+    batch_size = len(items)
+    batch = np.zeros((batch_size, padded_length), dtype=np.int32)
+    plan_mask = np.zeros((batch_size, padded_length - 1), dtype=np.bool_)
+    report_mask = np.zeros((batch_size, padded_length - 1), dtype=np.bool_)
+    candidate_ids = np.zeros((batch_size, 6), dtype=np.int32)
+    candidate_probs = np.zeros((batch_size, 6), dtype=np.float32)
+    candidate_mask = np.zeros((batch_size, 6), dtype=np.bool_)
+    method_positions = np.zeros(batch_size, dtype=np.int32)
+    sample_weights = np.zeros(batch_size, dtype=np.float32)
+    for row_index, item in enumerate(items):
+        tokens = item["tokens"]
+        batch[row_index, : len(tokens)] = tokens
+        plan_mask[row_index, : len(item["plan_mask"])] = item["plan_mask"]
+        report_mask[row_index, : len(item["report_mask"])] = item["report_mask"]
+        count = len(item["candidate_token_ids"])
+        if count > candidate_ids.shape[1]:
+            raise RuntimeError("Statistics method menus support at most six candidates")
+        candidate_ids[row_index, :count] = item["candidate_token_ids"]
+        candidate_probs[row_index, :count] = item["candidate_probabilities"]
+        candidate_mask[row_index, :count] = True
+        method_positions[row_index] = int(item["method_position"])
+        sample_weights[row_index] = float(item["loss_weight"])
+    return (
+        mx.array(batch),
+        mx.array(method_positions),
+        mx.array(candidate_ids),
+        mx.array(candidate_probs),
+        mx.array(candidate_mask),
+        mx.array(plan_mask),
+        mx.array(report_mask),
+        mx.array(sample_weights),
+    )
 
 
 def stats_iterate_batches(
@@ -249,36 +352,7 @@ def stats_iterate_batches(
     while True:
         for index in _group_order(dataset, random_seed, epoch):
             item = dataset[index]
-            tokens = item["tokens"]
-            if len(tokens) > max_seq_length:
-                raise RuntimeError("Stats batches cannot be truncated")
-            padded_length = min(
-                max_seq_length,
-                1 + 32 * ((len(tokens) + 31) // 32),
-            )
-            batch = np.zeros((1, padded_length), dtype=np.int32)
-            batch[0, : len(tokens)] = tokens
-            plan_mask = np.zeros((1, padded_length - 1), dtype=np.bool_)
-            report_mask = np.zeros((1, padded_length - 1), dtype=np.bool_)
-            plan_mask[0, : len(item["plan_mask"])] = item["plan_mask"]
-            report_mask[0, : len(item["report_mask"])] = item["report_mask"]
-            candidate_ids = np.zeros((1, 6), dtype=np.int32)
-            candidate_probs = np.zeros((1, 6), dtype=np.float32)
-            candidate_mask = np.zeros((1, 6), dtype=np.bool_)
-            count = len(item["candidate_token_ids"])
-            candidate_ids[0, :count] = item["candidate_token_ids"]
-            candidate_probs[0, :count] = item["candidate_probabilities"]
-            candidate_mask[0, :count] = True
-            yield (
-                mx.array(batch),
-                mx.array([item["method_position"]], dtype=mx.int32),
-                mx.array(candidate_ids),
-                mx.array(candidate_probs),
-                mx.array(candidate_mask),
-                mx.array(plan_mask),
-                mx.array(report_mask),
-                mx.array([item["loss_weight"]], dtype=mx.float32),
-            )
+            yield _collate_stats_items([item], max_seq_length)
         if not loop:
             break
         epoch += 1
@@ -307,23 +381,27 @@ def stats_loss(
     menu_log_probs = menu_logits - mx.logsumexp(menu_logits, axis=-1, keepdims=True)
     method_loss = -(candidate_probs * menu_log_probs).sum(axis=-1)
 
-    cross_entropy = nn.losses.cross_entropy(logits, targets)
-    plan_float = plan_mask.astype(cross_entropy.dtype)
-    report_float = report_mask.astype(cross_entropy.dtype)
-    plan_tokens = mx.maximum(plan_float.sum(axis=-1), mx.array(1.0))
-    report_tokens = mx.maximum(report_float.sum(axis=-1), mx.array(1.0))
-    plan_loss = (cross_entropy * plan_float).sum(axis=-1) / plan_tokens
-    report_loss = (cross_entropy * report_float).sum(axis=-1) / report_tokens
     weights = component_weights or {"method": 0.45, "plan_tool": 0.35, "report": 0.20}
     if not math.isclose(sum(float(value) for value in weights.values()), 1.0, abs_tol=1e-9):
         raise ValueError("Stats component weights must sum to one")
-    component_loss = (
-        float(weights["method"]) * method_loss
-        + float(weights["plan_tool"]) * plan_loss
-        + float(weights["report"]) * report_loss
-    )
+    component_loss = float(weights["method"]) * method_loss
+    text_token_count = mx.array(0.0)
+    if float(weights["plan_tool"]) or float(weights["report"]):
+        cross_entropy = nn.losses.cross_entropy(logits, targets)
+        plan_float = plan_mask.astype(cross_entropy.dtype)
+        report_float = report_mask.astype(cross_entropy.dtype)
+        plan_tokens = mx.maximum(plan_float.sum(axis=-1), mx.array(1.0))
+        report_tokens = mx.maximum(report_float.sum(axis=-1), mx.array(1.0))
+        plan_loss = (cross_entropy * plan_float).sum(axis=-1) / plan_tokens
+        report_loss = (cross_entropy * report_float).sum(axis=-1) / report_tokens
+        component_loss = (
+            component_loss
+            + float(weights["plan_tool"]) * plan_loss
+            + float(weights["report"]) * report_loss
+        )
+        text_token_count = plan_float.sum() + report_float.sum()
     loss = (component_loss * sample_weights).astype(mx.float32).mean()
-    token_count = plan_float.sum() + report_float.sum() + batch.shape[0]
+    token_count = text_token_count + batch.shape[0]
     return loss, token_count
 
 
@@ -487,10 +565,7 @@ def _normalize_training_progress(
         validation_history = [
             item for item in validation_history if int(item.get("iteration", 0)) < planned
         ]
-        observed = [
-            int(item.get("iteration", 0))
-            for item in normalized.get("train_history", [])
-        ]
+        observed = [int(item.get("iteration", 0)) for item in normalized.get("train_history", [])]
         observed.extend(
             int(item.get("iteration", 0)) + 1
             for item in validation_history
@@ -659,18 +734,14 @@ def _train_stats_variant(
     if not callback.validation_history:
         raise RuntimeError("Stats trainer did not run its required initial validation")
     initial_loss = float(callback.validation_history[0]["loss"])
-    observed_train_steps = [
-        int(item.get("iteration", 0)) for item in callback.train_history
-    ]
+    observed_train_steps = [int(item.get("iteration", 0)) for item in callback.train_history]
     observed_validation_steps = [
         int(item.get("iteration", 0)) + 1
         for item in callback.validation_history
         if int(item.get("iteration", 0)) > 0
     ]
     completed_microsteps = (
-        max(observed_train_steps + observed_validation_steps, default=0)
-        if stopped
-        else microsteps
+        max(observed_train_steps + observed_validation_steps, default=0) if stopped else microsteps
     )
     if max(observed_validation_steps, default=0) < completed_microsteps:
         callback.consider_validation(completed_microsteps, final_loss)
@@ -740,6 +811,23 @@ def _evaluation_rows(
     return rows
 
 
+def _selector_menu_probabilities(
+    model: Any,
+    tokenizer: Any,
+    record: dict[str, Any],
+) -> list[float]:
+    item = _tokenize_stats_record(tokenizer, record)
+    selector_input = item["tokens"][: int(item["method_position"]) + 1]
+    tokens = mx.array([selector_input], dtype=mx.int32)
+    logits = model(tokens)
+    selector = logits[0, -1, :]
+    candidate_ids = mx.array(item["candidate_token_ids"], dtype=mx.int32)
+    menu_logits = mx.take(selector, candidate_ids).astype(mx.float32)
+    probabilities = mx.softmax(menu_logits).tolist()
+    del tokens, logits, selector, candidate_ids, menu_logits
+    return [float(value) for value in probabilities]
+
+
 def _score_loaded_selector(
     model: Any,
     tokenizer: Any,
@@ -752,13 +840,8 @@ def _score_loaded_selector(
     domain_correct: dict[str, list[bool]] = {}
     family_correct: dict[str, list[bool]] = {}
     for record, simulation in rows:
-        item = _tokenize_stats_record(tokenizer, record)
-        tokens = mx.array([item["tokens"]], dtype=mx.int32)
-        logits = model(tokens[:, :-1])
-        selector = logits[0, int(item["method_position"]), :]
-        candidate_ids = mx.array(item["candidate_token_ids"], dtype=mx.int32)
-        menu_logits = mx.take(selector, candidate_ids)
-        predicted_index = int(mx.argmax(menu_logits).item())
+        probabilities = _selector_menu_probabilities(model, tokenizer, record)
+        predicted_index = int(np.argmax(probabilities))
         method_id = str(record["metadata"]["candidate_method_ids"][predicted_index])
         selected = str(simulation["selected_method_id"])
         if method_id == "needs_clarification":
@@ -790,7 +873,6 @@ def _score_loaded_selector(
                 "valid": is_valid,
             }
         )
-        del logits, selector, menu_logits
     count = len(rows)
     return {
         "count": count,
@@ -1012,9 +1094,7 @@ def _scale_adapter(source: Path, destination: Path, scale: float) -> dict[str, A
 
 def _normalize_answer(value: str) -> str:
     compatible = unicodedata.normalize("NFKC", value)
-    return "".join(
-        character.lower() for character in compatible if character.isalnum()
-    )
+    return "".join(character.lower() for character in compatible if character.isalnum())
 
 
 def _retention_score(model: Any, tokenizer: Any, config: ProjectConfig) -> dict[str, Any]:
@@ -1043,9 +1123,7 @@ def _retention_score(model: Any, tokenizer: Any, config: ProjectConfig) -> dict[
         groups.setdefault(f"language:{row['language']}", []).append(ok)
         groups.setdefault(f"domain:{row['domain']}", []).append(ok)
         details.append({"task_id": row["task_id"], "passed": ok, "answer": answer})
-    group_scores = {
-        key: sum(values) / len(values) for key, values in sorted(groups.items())
-    }
+    group_scores = {key: sum(values) / len(values) for key, values in sorted(groups.items())}
     return {
         "accuracy": passed / len(rows),
         "worst_group_accuracy": min(group_scores.values()),

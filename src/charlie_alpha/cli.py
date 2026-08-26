@@ -48,6 +48,20 @@ from .orchestrator import run_overnight
 from .release import check_release, publish_github, publish_hugging_face
 from .routed_inference import generate_routed, load_routed_model, verify_dynamic_router
 from .stats_agent import StatsAgent, classify_stats_route, resolve_stats_runtime
+from .stats_bakeoff import run_base_bakeoff
+from .stats_calibrate import (
+    parse_layer_scales,
+    run_block_projection,
+    run_block_projection_arm,
+    run_delta_calibration,
+    run_delta_calibration_arm,
+)
+from .stats_cone import (
+    confirm_uniform_family_candidate,
+    promote_common_descent_candidate,
+    run_common_descent_arm,
+    run_common_descent_pilot,
+)
 from .stats_data import (
     build_stats_data,
     distill_stats_explanations,
@@ -61,14 +75,42 @@ from .stats_eval import (
     run_stats_evaluation,
 )
 from .stats_evolve import evolution_status, run_evolution
+from .stats_experts import run_family_expert_arm, run_family_expert_oracle
+from .stats_family_router import prepare_family_router, run_family_router
+from .stats_llm_router import (
+    evaluate_llm_family_router_final,
+    promote_llm_family_router,
+    run_llm_family_router,
+)
 from .stats_orchestrator import run_stats_pipeline
+from .stats_project import (
+    diagnose_policy_projection_gradients,
+    prepare_policy_projection_data,
+    run_policy_projection_arm,
+    run_policy_projection_pilot,
+)
 from .stats_release import (
     check_stats_release,
     export_stats,
     publish_stats_github,
     publish_stats_hugging_face,
 )
+from .stats_robust_experts import (
+    prepare_robust_expert_contract,
+    prepare_robust_expert_data,
+    run_robust_expert_arm,
+    run_robust_expert_training,
+    select_robust_expert_route,
+)
+from .stats_route import run_oracle_family_route
 from .stats_sandbox import sandbox_self_test as stats_sandbox_self_test
+from .stats_targeted_repair import (
+    prepare_targeted_repair_contract,
+    prepare_targeted_repair_data,
+    run_targeted_repair_arm,
+    run_targeted_repair_training,
+    select_targeted_repair_route,
+)
 from .stats_training import (
     calibrate_stats_adapter,
     run_stats_pilot_candidate,
@@ -232,11 +274,7 @@ def forge_pilot_one(
     config: ConfigOption = Path("configs/pipeline.v2.yaml"),
     force: bool = False,
 ) -> None:
-    _show(
-        run_forge_pilot_candidate(
-            load_config(config), candidate_name=candidate, force=force
-        )
-    )
+    _show(run_forge_pilot_candidate(load_config(config), candidate_name=candidate, force=force))
 
 
 @forge_app.command("train")
@@ -260,11 +298,7 @@ def forge_eval(
     config: ConfigOption = Path("configs/pipeline.v2.yaml"),
     force: bool = False,
 ) -> None:
-    _show(
-        run_forge_evaluation(
-            load_config(config), variant=variant, suite=suite, force=force
-        )
-    )
+    _show(run_forge_evaluation(load_config(config), variant=variant, suite=suite, force=force))
 
 
 @forge_app.command("compare")
@@ -435,8 +469,7 @@ def stats_eval(
         if selected.get("variant") != "dgp-regret":
             variants.append("selected")
         reports = {
-            name: run_stats_evaluation(project, variant=name, force=force)
-            for name in variants
+            name: run_stats_evaluation(project, variant=name, force=force) for name in variants
         }
         _show({"reports": reports, "comparison": compare_stats_evaluation(project)})
         return
@@ -614,6 +647,340 @@ def stats_evolve_status(
     config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
 ) -> None:
     _show(evolution_status(load_config(config)))
+
+
+@stats_app.command("base-bakeoff")
+def stats_base_bakeoff(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Compare the locked 4B and 9B bases on local quality and QLoRA cost."""
+    _show(run_base_bakeoff(load_config(config), force=force))
+
+
+@stats_app.command("policy-project")
+def stats_policy_project(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    prepare_only: Annotated[bool, typer.Option("--prepare-only")] = False,
+    balanced: Annotated[bool, typer.Option("--balanced")] = False,
+    force: bool = False,
+) -> None:
+    """Run the matched multi-seed DGP policy-projection pilot."""
+    loaded = load_config(config)
+    if prepare_only:
+        _show(prepare_policy_projection_data(loaded, force=force))
+    else:
+        _show(run_policy_projection_pilot(loaded, force=force, balanced=balanced))
+
+
+@stats_app.command("policy-diagnose")
+def stats_policy_diagnose(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Measure paired cross-family LoRA gradient conflict at the frozen parent."""
+    _show(diagnose_policy_projection_gradients(load_config(config), force=force))
+
+
+@stats_app.command("policy-cone")
+def stats_policy_cone(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Run deterministic common-descent and uniform-family matched arms."""
+    _show(run_common_descent_pilot(load_config(config), force=force))
+
+
+@stats_app.command("policy-cone-promote")
+def stats_policy_cone_promote(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Open a fresh promotion shard only after every cone pilot gate passes."""
+    _show(promote_common_descent_candidate(load_config(config), force=force))
+
+
+@stats_app.command("policy-cone-confirm")
+def stats_policy_cone_confirm(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Confirm the fixed uniform-family winner on reusable trilingual dev data."""
+    _show(confirm_uniform_family_candidate(load_config(config), force=force))
+
+
+@stats_app.command("policy-calibrate")
+def stats_policy_calibrate(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Calibrate the parent-to-uniform adapter delta on reusable surfaces."""
+    _show(run_delta_calibration(load_config(config), force=force))
+
+
+@stats_app.command("policy-calibrate-arm", hidden=True)
+def stats_policy_calibrate_arm(
+    scale: Annotated[float, typer.Option("--scale")],
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Score one isolated adapter-delta interpolation scale."""
+    _show(run_delta_calibration_arm(load_config(config), scale=scale, force=force))
+
+
+@stats_app.command("policy-block")
+def stats_policy_block(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Search pre-registered sparse layer supports on reusable surfaces."""
+    _show(run_block_projection(load_config(config), force=force))
+
+
+@stats_app.command("policy-block-arm", hidden=True)
+def stats_policy_block_arm(
+    layer_scales: Annotated[str, typer.Option("--layer-scales")],
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Score one isolated effective-weight block projection."""
+    _show(
+        run_block_projection_arm(
+            load_config(config),
+            layer_scales=parse_layer_scales(layer_scales),
+            force=force,
+        )
+    )
+
+
+@stats_app.command("policy-family-route")
+def stats_policy_family_route(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    selection_only: Annotated[bool, typer.Option("--selection-only")] = False,
+    force: bool = False,
+) -> None:
+    """Test the oracle DGP-family upper bound of routed block profiles."""
+    _show(
+        run_oracle_family_route(
+            load_config(config),
+            force=force,
+            selection_only=selection_only,
+        )
+    )
+
+
+@stats_app.command("policy-family-experts")
+def stats_policy_family_experts(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    train_only: Annotated[bool, typer.Option("--train-only")] = False,
+    force: bool = False,
+) -> None:
+    """Test compute-matched family-specific LoRAs as an oracle upper bound."""
+    _show(
+        run_family_expert_oracle(
+            load_config(config),
+            force=force,
+            train_only=train_only,
+        )
+    )
+
+
+@stats_app.command("policy-family-expert-arm", hidden=True)
+def stats_policy_family_expert_arm(
+    family: Annotated[str, typer.Option("--family")],
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Train one isolated DGP-family expert from the unchanged parent."""
+    _show(run_family_expert_arm(load_config(config), family_id=family, force=force))
+
+
+@stats_app.command("policy-router-prepare")
+def stats_policy_router_prepare(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Train and calibrate the lightweight trilingual family router."""
+    _show(prepare_family_router(load_config(config), force=force))
+
+
+@stats_app.command("policy-router")
+def stats_policy_router(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Select and confirm the deployable selective family-expert route."""
+    _show(run_family_router(load_config(config), force=force))
+
+
+@stats_app.command("policy-llm-router")
+def stats_policy_llm_router(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    selection_only: Annotated[bool, typer.Option("--selection-only")] = False,
+    force: bool = False,
+) -> None:
+    """Select and confirm the frozen-parent single-token family route."""
+    _show(
+        run_llm_family_router(
+            load_config(config),
+            force=force,
+            selection_only=selection_only,
+        )
+    )
+
+
+@stats_app.command("policy-llm-router-promote")
+def stats_policy_llm_router_promote(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Open the larger promotion shard only after real-router confirmation."""
+    _show(promote_llm_family_router(load_config(config), force=force))
+
+
+@stats_app.command("policy-llm-router-final")
+def stats_policy_llm_router_final(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Open the sealed v0.3 DGP final only after router promotion passes."""
+    _show(evaluate_llm_family_router_final(load_config(config), force=force))
+
+
+@stats_app.command("robust-experts-prepare")
+def stats_robust_experts_prepare(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Preregister every robust-expert shard and gate without simulating or scoring."""
+    _show(prepare_robust_expert_contract(load_config(config)))
+
+
+@stats_app.command("robust-experts-data")
+def stats_robust_experts_data(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Build only robust-expert training and cross-fit selection data."""
+    _show(prepare_robust_expert_data(load_config(config), force=force))
+
+
+@stats_app.command("robust-expert-arm", hidden=True)
+def stats_robust_expert_arm(
+    family: Annotated[str, typer.Option("--family")],
+    arm: Annotated[str, typer.Option("--arm")],
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Train one isolated robust DGP-family expert arm."""
+    _show(
+        run_robust_expert_arm(
+            load_config(config),
+            family_id=family,
+            arm=arm,
+            force=force,
+        )
+    )
+
+
+@stats_app.command("robust-experts-train")
+def stats_robust_experts_train(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Train all three compute-matched robust family-expert arms."""
+    _show(run_robust_expert_training(load_config(config), force=force))
+
+
+@stats_app.command("robust-experts-select")
+def stats_robust_experts_select(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Apply the registered three-fold stability and ablation gates."""
+    _show(select_robust_expert_route(load_config(config), force=force))
+
+
+@stats_app.command("targeted-repair-prepare")
+def stats_targeted_repair_prepare(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Preregister v0.6 discovery, fresh shards, compute, and gates."""
+    _show(prepare_targeted_repair_contract(load_config(config)))
+
+
+@stats_app.command("targeted-repair-data")
+def stats_targeted_repair_data(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Build fresh targeted training and cross-fit selection data."""
+    _show(prepare_targeted_repair_data(load_config(config), force=force))
+
+
+@stats_app.command("targeted-repair-arm", hidden=True)
+def stats_targeted_repair_arm(
+    family: Annotated[str, typer.Option("--family")],
+    arm: Annotated[str, typer.Option("--arm")],
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Train one isolated v0.6 family-expert ablation arm."""
+    _show(
+        run_targeted_repair_arm(
+            load_config(config),
+            family_id=family,
+            arm=arm,
+            force=force,
+        )
+    )
+
+
+@stats_app.command("targeted-repair-train")
+def stats_targeted_repair_train(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Train both compute-matched v0.6 targeted repair arms."""
+    _show(run_targeted_repair_training(load_config(config), force=force))
+
+
+@stats_app.command("targeted-repair-select")
+def stats_targeted_repair_select(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Apply fresh three-fold anchor and matched-control gates."""
+    _show(select_targeted_repair_route(load_config(config), force=force))
+
+
+@stats_app.command("policy-cone-arm", hidden=True)
+def stats_policy_cone_arm(
+    arm: Annotated[str, typer.Option("--arm")],
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Run one isolated deterministic common-descent arm."""
+    _show(run_common_descent_arm(load_config(config), arm=arm, force=force))
+
+
+@stats_app.command("policy-project-arm", hidden=True)
+def stats_policy_project_arm(
+    seed: Annotated[int, typer.Option("--seed")],
+    arm: Annotated[str, typer.Option("--arm")],
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    balanced: Annotated[bool, typer.Option("--balanced")] = False,
+    force: bool = False,
+) -> None:
+    """Run one isolated policy-projection pilot arm."""
+    _show(
+        run_policy_projection_arm(
+            load_config(config),
+            seed=seed,
+            arm=arm,
+            balanced=balanced,
+            force=force,
+        )
+    )
 
 
 def _adapter(config: ProjectConfig) -> str:

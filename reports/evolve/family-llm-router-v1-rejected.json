@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "method": "frozen-parent single-token A-M statistical family classifier v1",
+  "validation": {
+    "count": 720,
+    "family_accuracy": 0.5833333333333334,
+    "language_accuracy": {
+      "en": 0.65,
+      "zh_Hant": 0.55,
+      "zh_Hans": 0.55
+    },
+    "best_relative_regret_improvement": 0.07797072883089551,
+    "minimum_wrong_expert_rate": 0.1,
+    "maximum_wrong_expert_rate_gate": 0.05
+  },
+  "rejected": true,
+  "rejection_reason": "The menu definitions were ambiguous at five estimand and design boundaries; no confidence threshold passed family accuracy and wrong-expert gates.",
+  "confirmation_shard_opened": false,
+  "promotion_shard_opened": false,
+  "sealed_final_surface_opened": false
+}

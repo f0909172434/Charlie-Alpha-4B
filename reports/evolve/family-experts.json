@@ -1,0 +1,897 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "compute-matched DGP family-expert oracle route",
+  "oracle_route_upper_bound": true,
+  "mixture_of_lora_prior_art": true,
+  "training_compute": {
+    "shared_source_records": 160,
+    "updates": 4,
+    "expert_backward_record_exposures": 640,
+    "shared_control_backward_record_exposures": 640,
+    "matched": true
+  },
+  "selection": {
+    "schema_version": 1,
+    "complete": true,
+    "fingerprint": "5a8445c8a349d5a0a4004430880138270e0f3294223b0ad04a6d1b6ff90264ec",
+    "selection_surfaces": [
+      "valid",
+      "dev"
+    ],
+    "selection_rule": "per-family parent-safe checkpoint with at least the registered regret gain, then pooled trilingual and granular route gates",
+    "mapping": {
+      "bayesian_check": {
+        "slug": "parent",
+        "checkpoint_name": "parent",
+        "update": 0,
+        "metrics": {
+          "count": 99.0,
+          "normalized_regret": 0.29292929292929293,
+          "accuracy": 0.7070707070707071,
+          "invalid_selection_rate": 0.2222222222222222,
+          "languages": {
+            "en": {
+              "count": 33.0,
+              "normalized_regret": 0.2727272727272727,
+              "accuracy": 0.7272727272727273,
+              "invalid_selection_rate": 0.18181818181818182
+            },
+            "zh_Hant": {
+              "count": 33.0,
+              "normalized_regret": 0.3333333333333333,
+              "accuracy": 0.6666666666666666,
+              "invalid_selection_rate": 0.2727272727272727
+            },
+            "zh_Hans": {
+              "count": 33.0,
+              "normalized_regret": 0.2727272727272727,
+              "accuracy": 0.7272727272727273,
+              "invalid_selection_rate": 0.21212121212121213
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 99.0,
+          "normalized_regret": 0.29292929292929293,
+          "accuracy": 0.7070707070707071,
+          "invalid_selection_rate": 0.2222222222222222,
+          "languages": {
+            "en": {
+              "count": 33.0,
+              "normalized_regret": 0.2727272727272727,
+              "accuracy": 0.7272727272727273,
+              "invalid_selection_rate": 0.18181818181818182
+            },
+            "zh_Hant": {
+              "count": 33.0,
+              "normalized_regret": 0.3333333333333333,
+              "accuracy": 0.6666666666666666,
+              "invalid_selection_rate": 0.2727272727272727
+            },
+            "zh_Hans": {
+              "count": 33.0,
+              "normalized_regret": 0.2727272727272727,
+              "accuracy": 0.7272727272727273,
+              "invalid_selection_rate": 0.21212121212121213
+            }
+          }
+        },
+        "relative_regret_improvement": 0.0
+      },
+      "binary_count_glm": {
+        "slug": "parent",
+        "checkpoint_name": "parent",
+        "update": 0,
+        "metrics": {
+          "count": 75.0,
+          "normalized_regret": 0.6196590985211556,
+          "accuracy": 0.28,
+          "invalid_selection_rate": 0.64,
+          "languages": {
+            "en": {
+              "count": 25.0,
+              "normalized_regret": 0.5092859128706483,
+              "accuracy": 0.44,
+              "invalid_selection_rate": 0.52
+            },
+            "zh_Hant": {
+              "count": 25.0,
+              "normalized_regret": 0.6595447300470073,
+              "accuracy": 0.2,
+              "invalid_selection_rate": 0.68
+            },
+            "zh_Hans": {
+              "count": 25.0,
+              "normalized_regret": 0.6901466526458115,
+              "accuracy": 0.2,
+              "invalid_selection_rate": 0.72
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 75.0,
+          "normalized_regret": 0.6196590985211556,
+          "accuracy": 0.28,
+          "invalid_selection_rate": 0.64,
+          "languages": {
+            "en": {
+              "count": 25.0,
+              "normalized_regret": 0.5092859128706483,
+              "accuracy": 0.44,
+              "invalid_selection_rate": 0.52
+            },
+            "zh_Hant": {
+              "count": 25.0,
+              "normalized_regret": 0.6595447300470073,
+              "accuracy": 0.2,
+              "invalid_selection_rate": 0.68
+            },
+            "zh_Hans": {
+              "count": 25.0,
+              "normalized_regret": 0.6901466526458115,
+              "accuracy": 0.2,
+              "invalid_selection_rate": 0.72
+            }
+          }
+        },
+        "relative_regret_improvement": 0.0
+      },
+      "categorical": {
+        "slug": "expert-categorical-update-04",
+        "checkpoint_name": "update-04",
+        "update": 4,
+        "metrics": {
+          "count": 78.0,
+          "normalized_regret": 0.3189483015943531,
+          "accuracy": 0.3974358974358974,
+          "invalid_selection_rate": 0.10256410256410256,
+          "languages": {
+            "en": {
+              "count": 26.0,
+              "normalized_regret": 0.43045095872627204,
+              "accuracy": 0.38461538461538464,
+              "invalid_selection_rate": 0.11538461538461539
+            },
+            "zh_Hant": {
+              "count": 26.0,
+              "normalized_regret": 0.430830764674947,
+              "accuracy": 0.38461538461538464,
+              "invalid_selection_rate": 0.15384615384615385
+            },
+            "zh_Hans": {
+              "count": 26.0,
+              "normalized_regret": 0.09556318138184021,
+              "accuracy": 0.4230769230769231,
+              "invalid_selection_rate": 0.038461538461538464
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 78.0,
+          "normalized_regret": 0.4076603255977924,
+          "accuracy": 0.3333333333333333,
+          "invalid_selection_rate": 0.14102564102564102,
+          "languages": {
+            "en": {
+              "count": 26.0,
+              "normalized_regret": 0.4690070107057301,
+              "accuracy": 0.34615384615384615,
+              "invalid_selection_rate": 0.15384615384615385
+            },
+            "zh_Hant": {
+              "count": 26.0,
+              "normalized_regret": 0.507313974431069,
+              "accuracy": 0.3076923076923077,
+              "invalid_selection_rate": 0.15384615384615385
+            },
+            "zh_Hans": {
+              "count": 26.0,
+              "normalized_regret": 0.24665999165657826,
+              "accuracy": 0.34615384615384615,
+              "invalid_selection_rate": 0.11538461538461539
+            }
+          }
+        },
+        "relative_regret_improvement": 0.2176126015533941
+      },
+      "clustered_repeated": {
+        "slug": "expert-clustered_repeated-update-04",
+        "checkpoint_name": "update-04",
+        "update": 4,
+        "metrics": {
+          "count": 72.0,
+          "normalized_regret": 0.0869270651506845,
+          "accuracy": 0.6944444444444444,
+          "invalid_selection_rate": 0.06944444444444445,
+          "languages": {
+            "en": {
+              "count": 24.0,
+              "normalized_regret": 0.14598512601243244,
+              "accuracy": 0.375,
+              "invalid_selection_rate": 0.125
+            },
+            "zh_Hant": {
+              "count": 24.0,
+              "normalized_regret": 0.015873216290542554,
+              "accuracy": 0.9166666666666666,
+              "invalid_selection_rate": 0.0
+            },
+            "zh_Hans": {
+              "count": 24.0,
+              "normalized_regret": 0.0989228531490785,
+              "accuracy": 0.7916666666666666,
+              "invalid_selection_rate": 0.08333333333333333
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 72.0,
+          "normalized_regret": 0.19889192714907983,
+          "accuracy": 0.5277777777777778,
+          "invalid_selection_rate": 0.18055555555555555,
+          "languages": {
+            "en": {
+              "count": 24.0,
+              "normalized_regret": 0.18720783436942723,
+              "accuracy": 0.375,
+              "invalid_selection_rate": 0.16666666666666666
+            },
+            "zh_Hant": {
+              "count": 24.0,
+              "normalized_regret": 0.2669146886197023,
+              "accuracy": 0.5416666666666666,
+              "invalid_selection_rate": 0.25
+            },
+            "zh_Hans": {
+              "count": 24.0,
+              "normalized_regret": 0.14255325845810984,
+              "accuracy": 0.6666666666666666,
+              "invalid_selection_rate": 0.125
+            }
+          }
+        },
+        "relative_regret_improvement": 0.5629432204881389
+      },
+      "experimental_causal": {
+        "slug": "expert-experimental_causal-update-02",
+        "checkpoint_name": "update-02",
+        "update": 2,
+        "metrics": {
+          "count": 72.0,
+          "normalized_regret": 0.5151592959476602,
+          "accuracy": 0.2777777777777778,
+          "invalid_selection_rate": 0.375,
+          "languages": {
+            "en": {
+              "count": 24.0,
+              "normalized_regret": 0.532819598037451,
+              "accuracy": 0.25,
+              "invalid_selection_rate": 0.4166666666666667
+            },
+            "zh_Hant": {
+              "count": 24.0,
+              "normalized_regret": 0.4303353795146562,
+              "accuracy": 0.375,
+              "invalid_selection_rate": 0.2916666666666667
+            },
+            "zh_Hans": {
+              "count": 24.0,
+              "normalized_regret": 0.5823229102908731,
+              "accuracy": 0.20833333333333334,
+              "invalid_selection_rate": 0.4166666666666667
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 72.0,
+          "normalized_regret": 0.6143148065437878,
+          "accuracy": 0.20833333333333334,
+          "invalid_selection_rate": 0.4722222222222222,
+          "languages": {
+            "en": {
+              "count": 24.0,
+              "normalized_regret": 0.6813200592653308,
+              "accuracy": 0.08333333333333333,
+              "invalid_selection_rate": 0.5416666666666666
+            },
+            "zh_Hant": {
+              "count": 24.0,
+              "normalized_regret": 0.570504022382427,
+              "accuracy": 0.3333333333333333,
+              "invalid_selection_rate": 0.4583333333333333
+            },
+            "zh_Hans": {
+              "count": 24.0,
+              "normalized_regret": 0.5911203379836053,
+              "accuracy": 0.20833333333333334,
+              "invalid_selection_rate": 0.4166666666666667
+            }
+          }
+        },
+        "relative_regret_improvement": 0.1614083032671619
+      },
+      "group_comparison": {
+        "slug": "expert-group_comparison-update-04",
+        "checkpoint_name": "update-04",
+        "update": 4,
+        "metrics": {
+          "count": 78.0,
+          "normalized_regret": 0.5560943072059542,
+          "accuracy": 0.2692307692307692,
+          "invalid_selection_rate": 0.5769230769230769,
+          "languages": {
+            "en": {
+              "count": 26.0,
+              "normalized_regret": 0.521938848873089,
+              "accuracy": 0.34615384615384615,
+              "invalid_selection_rate": 0.5384615384615384
+            },
+            "zh_Hant": {
+              "count": 26.0,
+              "normalized_regret": 0.5212487947141837,
+              "accuracy": 0.23076923076923078,
+              "invalid_selection_rate": 0.5384615384615384
+            },
+            "zh_Hans": {
+              "count": 26.0,
+              "normalized_regret": 0.6250952780305904,
+              "accuracy": 0.23076923076923078,
+              "invalid_selection_rate": 0.6538461538461539
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 78.0,
+          "normalized_regret": 0.5912647841416057,
+          "accuracy": 0.21794871794871795,
+          "invalid_selection_rate": 0.6153846153846154,
+          "languages": {
+            "en": {
+              "count": 26.0,
+              "normalized_regret": 0.5555390155492187,
+              "accuracy": 0.3076923076923077,
+              "invalid_selection_rate": 0.5769230769230769
+            },
+            "zh_Hant": {
+              "count": 26.0,
+              "normalized_regret": 0.5596882105374745,
+              "accuracy": 0.19230769230769232,
+              "invalid_selection_rate": 0.5769230769230769
+            },
+            "zh_Hans": {
+              "count": 26.0,
+              "normalized_regret": 0.6585671263381239,
+              "accuracy": 0.15384615384615385,
+              "invalid_selection_rate": 0.6923076923076923
+            }
+          }
+        },
+        "relative_regret_improvement": 0.05948346304221673
+      },
+      "linear_robust": {
+        "slug": "parent",
+        "checkpoint_name": "parent",
+        "update": 0,
+        "metrics": {
+          "count": 75.0,
+          "normalized_regret": 0.4252020781957012,
+          "accuracy": 0.41333333333333333,
+          "invalid_selection_rate": 0.48,
+          "languages": {
+            "en": {
+              "count": 25.0,
+              "normalized_regret": 0.35157671384097955,
+              "accuracy": 0.44,
+              "invalid_selection_rate": 0.44
+            },
+            "zh_Hant": {
+              "count": 25.0,
+              "normalized_regret": 0.3379193228072572,
+              "accuracy": 0.48,
+              "invalid_selection_rate": 0.36
+            },
+            "zh_Hans": {
+              "count": 25.0,
+              "normalized_regret": 0.5861101979388671,
+              "accuracy": 0.32,
+              "invalid_selection_rate": 0.64
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 75.0,
+          "normalized_regret": 0.4252020781957012,
+          "accuracy": 0.41333333333333333,
+          "invalid_selection_rate": 0.48,
+          "languages": {
+            "en": {
+              "count": 25.0,
+              "normalized_regret": 0.35157671384097955,
+              "accuracy": 0.44,
+              "invalid_selection_rate": 0.44
+            },
+            "zh_Hant": {
+              "count": 25.0,
+              "normalized_regret": 0.3379193228072572,
+              "accuracy": 0.48,
+              "invalid_selection_rate": 0.36
+            },
+            "zh_Hans": {
+              "count": 25.0,
+              "normalized_regret": 0.5861101979388671,
+              "accuracy": 0.32,
+              "invalid_selection_rate": 0.64
+            }
+          }
+        },
+        "relative_regret_improvement": 0.0
+      },
+      "missing_selection": {
+        "slug": "parent",
+        "checkpoint_name": "parent",
+        "update": 0,
+        "metrics": {
+          "count": 72.0,
+          "normalized_regret": 0.370569221278408,
+          "accuracy": 0.4027777777777778,
+          "invalid_selection_rate": 0.4166666666666667,
+          "languages": {
+            "en": {
+              "count": 24.0,
+              "normalized_regret": 0.35882850447940245,
+              "accuracy": 0.5,
+              "invalid_selection_rate": 0.375
+            },
+            "zh_Hant": {
+              "count": 24.0,
+              "normalized_regret": 0.3366430706941945,
+              "accuracy": 0.4166666666666667,
+              "invalid_selection_rate": 0.4166666666666667
+            },
+            "zh_Hans": {
+              "count": 24.0,
+              "normalized_regret": 0.41623608866162704,
+              "accuracy": 0.2916666666666667,
+              "invalid_selection_rate": 0.4583333333333333
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 72.0,
+          "normalized_regret": 0.370569221278408,
+          "accuracy": 0.4027777777777778,
+          "invalid_selection_rate": 0.4166666666666667,
+          "languages": {
+            "en": {
+              "count": 24.0,
+              "normalized_regret": 0.35882850447940245,
+              "accuracy": 0.5,
+              "invalid_selection_rate": 0.375
+            },
+            "zh_Hant": {
+              "count": 24.0,
+              "normalized_regret": 0.3366430706941945,
+              "accuracy": 0.4166666666666667,
+              "invalid_selection_rate": 0.4166666666666667
+            },
+            "zh_Hans": {
+              "count": 24.0,
+              "normalized_regret": 0.41623608866162704,
+              "accuracy": 0.2916666666666667,
+              "invalid_selection_rate": 0.4583333333333333
+            }
+          }
+        },
+        "relative_regret_improvement": 0.0
+      },
+      "predictive_calibration": {
+        "slug": "expert-predictive_calibration-update-04",
+        "checkpoint_name": "update-04",
+        "update": 4,
+        "metrics": {
+          "count": 99.0,
+          "normalized_regret": 0.1111111111111111,
+          "accuracy": 0.8888888888888888,
+          "invalid_selection_rate": 0.09090909090909091,
+          "languages": {
+            "en": {
+              "count": 33.0,
+              "normalized_regret": 0.15151515151515152,
+              "accuracy": 0.8484848484848485,
+              "invalid_selection_rate": 0.12121212121212122
+            },
+            "zh_Hant": {
+              "count": 33.0,
+              "normalized_regret": 0.12121212121212122,
+              "accuracy": 0.8787878787878788,
+              "invalid_selection_rate": 0.12121212121212122
+            },
+            "zh_Hans": {
+              "count": 33.0,
+              "normalized_regret": 0.06060606060606061,
+              "accuracy": 0.9393939393939394,
+              "invalid_selection_rate": 0.030303030303030304
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 99.0,
+          "normalized_regret": 0.29292929292929293,
+          "accuracy": 0.7070707070707071,
+          "invalid_selection_rate": 0.2727272727272727,
+          "languages": {
+            "en": {
+              "count": 33.0,
+              "normalized_regret": 0.3939393939393939,
+              "accuracy": 0.6060606060606061,
+              "invalid_selection_rate": 0.3939393939393939
+            },
+            "zh_Hant": {
+              "count": 33.0,
+              "normalized_regret": 0.21212121212121213,
+              "accuracy": 0.7878787878787878,
+              "invalid_selection_rate": 0.18181818181818182
+            },
+            "zh_Hans": {
+              "count": 33.0,
+              "normalized_regret": 0.2727272727272727,
+              "accuracy": 0.7272727272727273,
+              "invalid_selection_rate": 0.24242424242424243
+            }
+          }
+        },
+        "relative_regret_improvement": 0.6206896551724138
+      },
+      "probability_distribution": {
+        "slug": "parent",
+        "checkpoint_name": "parent",
+        "update": 0,
+        "metrics": {
+          "count": 99.0,
+          "normalized_regret": 0.38141573891906105,
+          "accuracy": 0.45454545454545453,
+          "invalid_selection_rate": 0.1414141414141414,
+          "languages": {
+            "en": {
+              "count": 33.0,
+              "normalized_regret": 0.36492995480246915,
+              "accuracy": 0.48484848484848486,
+              "invalid_selection_rate": 0.15151515151515152
+            },
+            "zh_Hant": {
+              "count": 33.0,
+              "normalized_regret": 0.3452919293376739,
+              "accuracy": 0.48484848484848486,
+              "invalid_selection_rate": 0.12121212121212122
+            },
+            "zh_Hans": {
+              "count": 33.0,
+              "normalized_regret": 0.4340253326170404,
+              "accuracy": 0.3939393939393939,
+              "invalid_selection_rate": 0.15151515151515152
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 99.0,
+          "normalized_regret": 0.38141573891906105,
+          "accuracy": 0.45454545454545453,
+          "invalid_selection_rate": 0.1414141414141414,
+          "languages": {
+            "en": {
+              "count": 33.0,
+              "normalized_regret": 0.36492995480246915,
+              "accuracy": 0.48484848484848486,
+              "invalid_selection_rate": 0.15151515151515152
+            },
+            "zh_Hant": {
+              "count": 33.0,
+              "normalized_regret": 0.3452919293376739,
+              "accuracy": 0.48484848484848486,
+              "invalid_selection_rate": 0.12121212121212122
+            },
+            "zh_Hans": {
+              "count": 33.0,
+              "normalized_regret": 0.4340253326170404,
+              "accuracy": 0.3939393939393939,
+              "invalid_selection_rate": 0.15151515151515152
+            }
+          }
+        },
+        "relative_regret_improvement": 0.0
+      },
+      "survival": {
+        "slug": "parent",
+        "checkpoint_name": "parent",
+        "update": 0,
+        "metrics": {
+          "count": 72.0,
+          "normalized_regret": 0.4722222222222222,
+          "accuracy": 0.5277777777777778,
+          "invalid_selection_rate": 0.4027777777777778,
+          "languages": {
+            "en": {
+              "count": 24.0,
+              "normalized_regret": 0.375,
+              "accuracy": 0.625,
+              "invalid_selection_rate": 0.2916666666666667
+            },
+            "zh_Hant": {
+              "count": 24.0,
+              "normalized_regret": 0.5,
+              "accuracy": 0.5,
+              "invalid_selection_rate": 0.5
+            },
+            "zh_Hans": {
+              "count": 24.0,
+              "normalized_regret": 0.5416666666666666,
+              "accuracy": 0.4583333333333333,
+              "invalid_selection_rate": 0.4166666666666667
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 72.0,
+          "normalized_regret": 0.4722222222222222,
+          "accuracy": 0.5277777777777778,
+          "invalid_selection_rate": 0.4027777777777778,
+          "languages": {
+            "en": {
+              "count": 24.0,
+              "normalized_regret": 0.375,
+              "accuracy": 0.625,
+              "invalid_selection_rate": 0.2916666666666667
+            },
+            "zh_Hant": {
+              "count": 24.0,
+              "normalized_regret": 0.5,
+              "accuracy": 0.5,
+              "invalid_selection_rate": 0.5
+            },
+            "zh_Hans": {
+              "count": 24.0,
+              "normalized_regret": 0.5416666666666666,
+              "accuracy": 0.4583333333333333,
+              "invalid_selection_rate": 0.4166666666666667
+            }
+          }
+        },
+        "relative_regret_improvement": 0.0
+      },
+      "time_series_leakage": {
+        "slug": "expert-time_series_leakage-update-03",
+        "checkpoint_name": "update-03",
+        "update": 3,
+        "metrics": {
+          "count": 99.0,
+          "normalized_regret": 0.0,
+          "accuracy": 1.0,
+          "invalid_selection_rate": 0.0,
+          "languages": {
+            "en": {
+              "count": 33.0,
+              "normalized_regret": 0.0,
+              "accuracy": 1.0,
+              "invalid_selection_rate": 0.0
+            },
+            "zh_Hant": {
+              "count": 33.0,
+              "normalized_regret": 0.0,
+              "accuracy": 1.0,
+              "invalid_selection_rate": 0.0
+            },
+            "zh_Hans": {
+              "count": 33.0,
+              "normalized_regret": 0.0,
+              "accuracy": 1.0,
+              "invalid_selection_rate": 0.0
+            }
+          }
+        },
+        "parent_metrics": {
+          "count": 99.0,
+          "normalized_regret": 0.20202020202020202,
+          "accuracy": 0.797979797979798,
+          "invalid_selection_rate": 0.20202020202020202,
+          "languages": {
+            "en": {
+              "count": 33.0,
+              "normalized_regret": 0.15151515151515152,
+              "accuracy": 0.8484848484848485,
+              "invalid_selection_rate": 0.15151515151515152
+            },
+            "zh_Hant": {
+              "count": 33.0,
+              "normalized_regret": 0.2727272727272727,
+              "accuracy": 0.7272727272727273,
+              "invalid_selection_rate": 0.2727272727272727
+            },
+            "zh_Hans": {
+              "count": 33.0,
+              "normalized_regret": 0.18181818181818182,
+              "accuracy": 0.8181818181818182,
+              "invalid_selection_rate": 0.18181818181818182
+            }
+          }
+        },
+        "relative_regret_improvement": 1.0
+      }
+    },
+    "nonparent_families": [
+      "categorical",
+      "clustered_repeated",
+      "experimental_causal",
+      "group_comparison",
+      "predictive_calibration",
+      "time_series_leakage"
+    ],
+    "comparison": {
+      "parent_trilingual_regret": 0.3952250239639961,
+      "candidate_trilingual_regret": 0.3317265371962641,
+      "trilingual_relative_regret_improvement": 0.16066413541040495,
+      "parent_accuracy": 0.5,
+      "candidate_accuracy": 0.5575757575757576,
+      "parent_invalidity": 0.3181818181818182,
+      "candidate_invalidity": 0.25757575757575757,
+      "parent_language_accuracy": {
+        "en": 0.5,
+        "zh_Hans": 0.4636363636363636,
+        "zh_Hant": 0.48787878787878786
+      },
+      "candidate_language_accuracy": {
+        "en": 0.5575757575757576,
+        "zh_Hans": 0.5242424242424243,
+        "zh_Hant": 0.5636363636363636
+      },
+      "parent_language_regret": {
+        "en": 0.3807848618595173,
+        "zh_Hans": 0.4071605901555205,
+        "zh_Hant": 0.3977296198769507
+      },
+      "candidate_language_regret": {
+        "en": 0.32190783835926795,
+        "zh_Hans": 0.3494119443519405,
+        "zh_Hant": 0.32385982887758386
+      },
+      "parent_family_regret": {
+        "bayesian_check": 0.2727272727272727,
+        "binary_count_glm": 0.5092859128706483,
+        "categorical": 0.4690070107057301,
+        "clustered_repeated": 0.18720783436942723,
+        "experimental_causal": 0.6813200592653309,
+        "group_comparison": 0.5555390155492187,
+        "linear_robust": 0.35157671384097955,
+        "missing_selection": 0.35882850447940257,
+        "predictive_calibration": 0.3939393939393939,
+        "probability_distribution": 0.36492995480246915,
+        "survival": 0.375,
+        "time_series_leakage": 0.15151515151515152
+      },
+      "candidate_family_regret": {
+        "bayesian_check": 0.2727272727272727,
+        "binary_count_glm": 0.5092859128706483,
+        "categorical": 0.4304509587262719,
+        "clustered_repeated": 0.14598512601243244,
+        "experimental_causal": 0.532819598037451,
+        "group_comparison": 0.521938848873089,
+        "linear_robust": 0.35157671384097955,
+        "missing_selection": 0.35882850447940257,
+        "predictive_calibration": 0.15151515151515152,
+        "probability_distribution": 0.36492995480246915,
+        "survival": 0.375,
+        "time_series_leakage": 0.0
+      },
+      "gates": {
+        "trilingual_regret": true,
+        "accuracy": true,
+        "invalidity": true,
+        "retention": true,
+        "language_accuracy": true,
+        "language_regret": true,
+        "domain_accuracy": true,
+        "family_regret": true,
+        "finite_metrics": true
+      },
+      "all_gates_passed": true
+    },
+    "minimum_route_relative_improvement": 0.05,
+    "passed": true,
+    "confirmation_shard_opened": true,
+    "promotion_shard_opened": false,
+    "sealed_final_surface_opened": false
+  },
+  "promotion_shard_opened": false,
+  "sealed_final_surface_opened": false,
+  "claim_boundary": "This uses true DGP family IDs and is only an oracle upper bound. It cannot be promoted or deployed until a learned router reproduces the gain on new data.",
+  "fingerprint": "85723792267d0e9b45a6f0401408999b1971bccb074132bda8a616e4da90b840",
+  "confirmation": {
+    "manifest": {
+      "schema_version": 1,
+      "fingerprint": "6ea6f2f376ab644849b3155a34857c4073369f6f4b07ab64999228931e4ba5a1",
+      "purpose": "oracle-confirmation",
+      "split": "evolve-family-expert-confirmation-v1",
+      "seed": 56000042,
+      "count": 240,
+      "sha256": "117aecbbb6067b894a81faa45c3c1fd9f2ee7017220053ced8f5ea2932e28c14",
+      "used_for_expert_selection": false,
+      "used_for_training": false,
+      "single_use": true,
+      "immutable": true,
+      "promotion_surface_opened": false,
+      "final_surface_opened": false
+    },
+    "comparison": {
+      "parent_trilingual_regret": 0.4038429076308372,
+      "candidate_trilingual_regret": 0.35752251306008725,
+      "trilingual_relative_regret_improvement": 0.11469904186875693,
+      "parent_accuracy": 0.49583333333333335,
+      "candidate_accuracy": 0.5166666666666667,
+      "parent_invalidity": 0.30833333333333335,
+      "candidate_invalidity": 0.2916666666666667,
+      "parent_language_accuracy": {
+        "en": 0.49583333333333335,
+        "zh_Hant": 0.4791666666666667,
+        "zh_Hans": 0.45
+      },
+      "candidate_language_accuracy": {
+        "en": 0.5166666666666667,
+        "zh_Hans": 0.5166666666666667,
+        "zh_Hant": 0.5625
+      },
+      "parent_language_regret": {
+        "en": 0.35923585956024484,
+        "zh_Hant": 0.4276913609792223,
+        "zh_Hans": 0.42460150235304456
+      },
+      "candidate_language_regret": {
+        "en": 0.33780250931651684,
+        "zh_Hans": 0.3843785580407211,
+        "zh_Hant": 0.35038647182302385
+      },
+      "parent_family_regret": {
+        "bayesian_check": 0.20833333333333334,
+        "binary_count_glm": 0.60840056613243,
+        "categorical": 0.4548046934611006,
+        "clustered_repeated": 0.34170835904338337,
+        "experimental_causal": 0.641978732374054,
+        "group_comparison": 0.6455557991668592,
+        "linear_robust": 0.44741863809368543,
+        "missing_selection": 0.2633939761214252,
+        "predictive_calibration": 0.25,
+        "probability_distribution": 0.2899130223077446,
+        "survival": 0.16666666666666666,
+        "time_series_leakage": 0.16666666666666666
+      },
+      "candidate_family_regret": {
+        "bayesian_check": 0.20833333333333334,
+        "binary_count_glm": 0.60840056613243,
+        "categorical": 0.39675387688025565,
+        "clustered_repeated": 0.27103480528691226,
+        "experimental_causal": 0.654059609440973,
+        "group_comparison": 0.5319768447431056,
+        "linear_robust": 0.44741863809368543,
+        "missing_selection": 0.2633939761214252,
+        "predictive_calibration": 0.375,
+        "probability_distribution": 0.2899130223077446,
+        "survival": 0.16666666666666666,
+        "time_series_leakage": 0.0
+      },
+      "gates": {
+        "trilingual_regret": true,
+        "accuracy": true,
+        "invalidity": true,
+        "retention": true,
+        "language_accuracy": true,
+        "language_regret": true,
+        "domain_accuracy": true,
+        "family_regret": true,
+        "finite_metrics": true
+      },
+      "all_gates_passed": true
+    },
+    "minimum_relative_improvement": 0.05,
+    "passed": true
+  },
+  "proceed_to_router_implementation": true
+}

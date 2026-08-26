@@ -12,7 +12,7 @@ QLoRA 微調。這是衍生模型。
 [简体中文](README.zh-Hans.md) · [English](README.en.md) · [模型卡](MODEL_CARD.md) ·
 [DGP-Regret 技術報告](docs/DGP_REGRET.md)
 
-`main` 另含尚未發布的 v0.4 開發流程：受約束統計編譯器與有升級／回退門檻的
+`main` 另含尚未發布的後續開發流程：受約束統計編譯器與有升級／回退門檻的
 [DGP-Evolve 自我迭代](docs/DGP_EVOLVE.md)。它不改寫上列 v0.3 公開結果。
 
 ## 功能

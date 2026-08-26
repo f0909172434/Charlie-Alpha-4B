@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "method": "family-expert execution smoke test",
+  "family_id": "survival",
+  "records": 4,
+  "selection_dgps": 6,
+  "updates": 4,
+  "parent": {
+    "trilingual_regret": 0.5,
+    "accuracy": 0.5,
+    "invalidity": 0.5
+  },
+  "update_trilingual_regret": [0.5, 0.5555555555555556, 0.5, 0.5555555555555556],
+  "superseded": true,
+  "superseded_reason": "Six family-specific selection DGPs are insufficient for five-way checkpoint selection; a 240-DGP immutable development selection shard was registered before the oracle experiment.",
+  "used_for_expert_selection": false,
+  "confirmation_shard_opened": false,
+  "promotion_shard_opened": false,
+  "sealed_final_surface_opened": false
+}

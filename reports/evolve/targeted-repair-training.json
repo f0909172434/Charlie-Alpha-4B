@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "5e2015fb51450702372d5a3b08d4e3c14d00b52a11e2ba835b83248a2ae7d8dd",
+  "contract_fingerprint": "c62c43546783088072e779571149da7440edf17d0f28eab7965c446d9c57cdad",
+  "arms": [
+    "boltzmann-replay",
+    "triggered-repair"
+  ],
+  "families": [
+    "binary_count_glm",
+    "group_comparison",
+    "experimental_causal",
+    "linear_robust"
+  ],
+  "expert_fingerprints": {
+    "boltzmann-replay": {
+      "binary_count_glm": "98c720a51ed0ca676ccabeb0161b2b78cecd5a9da1b8afd80b5aaa51998c432e",
+      "experimental_causal": "a48be21d08176f9fa983986247287612c627cd547be397f8b0991caa5411499e",
+      "group_comparison": "86e5d6e60895f53af1de34a4e23a0bb8b6971982c825eff9dbfcea1ab2080ff6",
+      "linear_robust": "a4cada75bce8aadcd923bb189dd209844fa7d9ad5670bca522cba2acc8c2faa3"
+    },
+    "triggered-repair": {
+      "binary_count_glm": "cfa3ebc42fac714611b976d3ac2dfb088b1e04d588b27410d7d27f146a371f72",
+      "experimental_causal": "cd7b4adc9fca8aeddd62183edb183b0db223c4151b1ac71ba3437423c8c40198",
+      "group_comparison": "61462f3f3b2a27ececdd568e6db7f787fa44a267c9a1ea491b9960e29bf85919",
+      "linear_robust": "982095e8a78dc83f18fe5bf4ddf9ff07de9fec3aa31a9f429bb79a306de6dd4d"
+    }
+  },
+  "matched_backward_compute": true,
+  "backward_record_exposures": {
+    "boltzmann-replay": 2304,
+    "triggered-repair": 2304
+  },
+  "expected_backward_record_exposures": {
+    "boltzmann-replay": 2304,
+    "triggered-repair": 2304
+  },
+  "backward_calls": {
+    "boltzmann-replay": 1152,
+    "triggered-repair": 1152
+  },
+  "selection_opened": false,
+  "confirmation_opened": false,
+  "promotion_opened": false,
+  "final_simulations_opened": false,
+  "final_scores_opened": false
+}

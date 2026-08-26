@@ -1,0 +1,1387 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "d57222c083532cee6b044cab6df2eed2a9e32266052e5e368a2802c279c81ff0",
+  "method": "DGP-Regret triggered anchor repair hypothesis",
+  "matched_backward_compute": true,
+  "target_families": [
+    "binary_count_glm",
+    "group_comparison",
+    "experimental_causal",
+    "linear_robust"
+  ],
+  "anchor_mapping": {
+    "bayesian_check": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "binary_count_glm": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "categorical": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "clustered_repeated": {
+      "slug": "robust-boltzmann-mean-clustered_repeated-u05",
+      "arm": "boltzmann-mean",
+      "checkpoint_name": "update-05",
+      "update": 5,
+      "crossfit": {
+        "fold_relative_improvements": [
+          0.7063846852675891,
+          0.8913526351030759,
+          0.8044615345076404
+        ],
+        "improving_folds": 3,
+        "pooled_parent_regret": 0.23836352668275898,
+        "pooled_candidate_regret": 0.04705878085373231,
+        "pooled_relative_improvement": 0.8025755806325041,
+        "mean_relative_improvement": 0.8007329516261018,
+        "median_relative_improvement": 0.8044615345076404,
+        "worst_fold_relative_improvement": 0.7063846852675891,
+        "passed": true
+      },
+      "stage": "v0.5-anchor"
+    },
+    "experimental_causal": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "group_comparison": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "linear_robust": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "missing_selection": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "predictive_calibration": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "probability_distribution": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "survival": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "time_series_leakage": {
+      "slug": "robust-boltzmann-mean-time_series_leakage-u06",
+      "arm": "boltzmann-mean",
+      "checkpoint_name": "update-06",
+      "update": 6,
+      "crossfit": {
+        "fold_relative_improvements": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "improving_folds": 3,
+        "pooled_parent_regret": 0.24814814814814815,
+        "pooled_candidate_regret": 0.0,
+        "pooled_relative_improvement": 1.0,
+        "mean_relative_improvement": 1.0,
+        "median_relative_improvement": 1.0,
+        "worst_fold_relative_improvement": 1.0,
+        "passed": true
+      },
+      "stage": "v0.5-anchor"
+    }
+  },
+  "control_mapping": {
+    "bayesian_check": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "binary_count_glm": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "categorical": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "clustered_repeated": {
+      "slug": "robust-boltzmann-mean-clustered_repeated-u05",
+      "arm": "boltzmann-mean",
+      "checkpoint_name": "update-05",
+      "update": 5,
+      "crossfit": {
+        "fold_relative_improvements": [
+          0.7063846852675891,
+          0.8913526351030759,
+          0.8044615345076404
+        ],
+        "improving_folds": 3,
+        "pooled_parent_regret": 0.23836352668275898,
+        "pooled_candidate_regret": 0.04705878085373231,
+        "pooled_relative_improvement": 0.8025755806325041,
+        "mean_relative_improvement": 0.8007329516261018,
+        "median_relative_improvement": 0.8044615345076404,
+        "worst_fold_relative_improvement": 0.7063846852675891,
+        "passed": true
+      },
+      "stage": "v0.5-anchor"
+    },
+    "experimental_causal": {
+      "slug": "targeted-boltzmann-replay-experimental_causal-u06",
+      "stage": "v0.6",
+      "arm": "boltzmann-replay",
+      "checkpoint_name": "update-06",
+      "update": 6,
+      "crossfit": {
+        "fold_relative_improvements": [
+          0.3727438355659678,
+          0.1901418591213022,
+          0.3497227006456377
+        ],
+        "improving_folds": 3,
+        "pooled_parent_regret": 0.5647383233040624,
+        "pooled_candidate_regret": 0.3893788917875843,
+        "pooled_relative_improvement": 0.31051448835722506,
+        "mean_relative_improvement": 0.3042027984443026,
+        "median_relative_improvement": 0.3497227006456377,
+        "worst_fold_relative_improvement": 0.1901418591213022,
+        "passed": true
+      }
+    },
+    "group_comparison": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "linear_robust": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "missing_selection": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "predictive_calibration": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "probability_distribution": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "survival": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "time_series_leakage": {
+      "slug": "robust-boltzmann-mean-time_series_leakage-u06",
+      "arm": "boltzmann-mean",
+      "checkpoint_name": "update-06",
+      "update": 6,
+      "crossfit": {
+        "fold_relative_improvements": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "improving_folds": 3,
+        "pooled_parent_regret": 0.24814814814814815,
+        "pooled_candidate_regret": 0.0,
+        "pooled_relative_improvement": 1.0,
+        "mean_relative_improvement": 1.0,
+        "median_relative_improvement": 1.0,
+        "worst_fold_relative_improvement": 1.0,
+        "passed": true
+      },
+      "stage": "v0.5-anchor"
+    }
+  },
+  "candidate_mapping": {
+    "bayesian_check": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "binary_count_glm": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "categorical": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "clustered_repeated": {
+      "slug": "robust-boltzmann-mean-clustered_repeated-u05",
+      "arm": "boltzmann-mean",
+      "checkpoint_name": "update-05",
+      "update": 5,
+      "crossfit": {
+        "fold_relative_improvements": [
+          0.7063846852675891,
+          0.8913526351030759,
+          0.8044615345076404
+        ],
+        "improving_folds": 3,
+        "pooled_parent_regret": 0.23836352668275898,
+        "pooled_candidate_regret": 0.04705878085373231,
+        "pooled_relative_improvement": 0.8025755806325041,
+        "mean_relative_improvement": 0.8007329516261018,
+        "median_relative_improvement": 0.8044615345076404,
+        "worst_fold_relative_improvement": 0.7063846852675891,
+        "passed": true
+      },
+      "stage": "v0.5-anchor"
+    },
+    "experimental_causal": {
+      "slug": "targeted-triggered-repair-experimental_causal-u06",
+      "stage": "v0.6",
+      "arm": "triggered-repair",
+      "checkpoint_name": "update-06",
+      "update": 6,
+      "crossfit": {
+        "fold_relative_improvements": [
+          0.3343299279085687,
+          0.226407422515418,
+          0.3755474940995855
+        ],
+        "improving_folds": 3,
+        "pooled_parent_regret": 0.5647383233040624,
+        "pooled_candidate_regret": 0.3859980241510086,
+        "pooled_relative_improvement": 0.3165010975478243,
+        "mean_relative_improvement": 0.3120949481745241,
+        "median_relative_improvement": 0.3343299279085687,
+        "worst_fold_relative_improvement": 0.226407422515418,
+        "passed": true
+      }
+    },
+    "group_comparison": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "linear_robust": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "missing_selection": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "predictive_calibration": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "probability_distribution": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "survival": {
+      "slug": "parent",
+      "arm": "parent",
+      "checkpoint_name": "parent",
+      "update": 0,
+      "crossfit": null,
+      "stage": "v0.5-anchor"
+    },
+    "time_series_leakage": {
+      "slug": "robust-boltzmann-mean-time_series_leakage-u06",
+      "arm": "boltzmann-mean",
+      "checkpoint_name": "update-06",
+      "update": 6,
+      "crossfit": {
+        "fold_relative_improvements": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "improving_folds": 3,
+        "pooled_parent_regret": 0.24814814814814815,
+        "pooled_candidate_regret": 0.0,
+        "pooled_relative_improvement": 1.0,
+        "mean_relative_improvement": 1.0,
+        "median_relative_improvement": 1.0,
+        "worst_fold_relative_improvement": 1.0,
+        "passed": true
+      },
+      "stage": "v0.5-anchor"
+    }
+  },
+  "mapping_audits": {
+    "boltzmann-replay": {
+      "binary_count_glm": {
+        "eligible_options_before_crossfit": 0,
+        "granular_rejections": 6,
+        "selected_stage": "v0.5-anchor",
+        "selected_arm": "parent",
+        "selected_checkpoint": "parent"
+      },
+      "group_comparison": {
+        "eligible_options_before_crossfit": 0,
+        "granular_rejections": 6,
+        "selected_stage": "v0.5-anchor",
+        "selected_arm": "parent",
+        "selected_checkpoint": "parent"
+      },
+      "experimental_causal": {
+        "eligible_options_before_crossfit": 2,
+        "granular_rejections": 4,
+        "selected_stage": "v0.6",
+        "selected_arm": "boltzmann-replay",
+        "selected_checkpoint": "update-06"
+      },
+      "linear_robust": {
+        "eligible_options_before_crossfit": 0,
+        "granular_rejections": 6,
+        "selected_stage": "v0.5-anchor",
+        "selected_arm": "parent",
+        "selected_checkpoint": "parent"
+      }
+    },
+    "triggered-repair": {
+      "binary_count_glm": {
+        "eligible_options_before_crossfit": 0,
+        "granular_rejections": 6,
+        "selected_stage": "v0.5-anchor",
+        "selected_arm": "parent",
+        "selected_checkpoint": "parent"
+      },
+      "group_comparison": {
+        "eligible_options_before_crossfit": 0,
+        "granular_rejections": 6,
+        "selected_stage": "v0.5-anchor",
+        "selected_arm": "parent",
+        "selected_checkpoint": "parent"
+      },
+      "experimental_causal": {
+        "eligible_options_before_crossfit": 1,
+        "granular_rejections": 5,
+        "selected_stage": "v0.6",
+        "selected_arm": "triggered-repair",
+        "selected_checkpoint": "update-06"
+      },
+      "linear_robust": {
+        "eligible_options_before_crossfit": 0,
+        "granular_rejections": 6,
+        "selected_stage": "v0.5-anchor",
+        "selected_arm": "parent",
+        "selected_checkpoint": "parent"
+      }
+    }
+  },
+  "control_nonanchor_families": [
+    "experimental_causal"
+  ],
+  "candidate_nonanchor_families": [
+    "experimental_causal"
+  ],
+  "control_vs_anchor": {
+    "fold_comparisons": {
+      "selection_fold_1": {
+        "parent_trilingual_regret": 0.3809714064151501,
+        "candidate_trilingual_regret": 0.3621773929905088,
+        "trilingual_relative_regret_improvement": 0.04933182151775772,
+        "parent_accuracy": 0.5333333333333333,
+        "candidate_accuracy": 0.5388888888888889,
+        "parent_invalidity": 0.26944444444444443,
+        "candidate_invalidity": 0.25277777777777777,
+        "parent_language_accuracy": {
+          "en": 0.5333333333333333,
+          "zh_Hans": 0.48055555555555557,
+          "zh_Hant": 0.5083333333333333
+        },
+        "candidate_language_accuracy": {
+          "en": 0.5388888888888889,
+          "zh_Hans": 0.5,
+          "zh_Hant": 0.525
+        },
+        "parent_language_regret": {
+          "en": 0.35988757764944634,
+          "zh_Hans": 0.40686815156969697,
+          "zh_Hant": 0.3761584900263069
+        },
+        "candidate_language_regret": {
+          "en": 0.34125319923692427,
+          "zh_Hans": 0.38415599284816027,
+          "zh_Hant": 0.3611229868864418
+        },
+        "parent_family_regret": {
+          "bayesian_check": 0.3,
+          "binary_count_glm": 0.6166623544237692,
+          "categorical": 0.4037695618061793,
+          "clustered_repeated": 0.06451246645827859,
+          "experimental_causal": 0.5847367849934385,
+          "group_comparison": 0.5069699167783085,
+          "linear_robust": 0.5255145950187798,
+          "missing_selection": 0.2723604571001791,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.2774581285477569,
+          "survival": 0.43333333333333335,
+          "time_series_leakage": 0.0
+        },
+        "candidate_family_regret": {
+          "bayesian_check": 0.3,
+          "binary_count_glm": 0.6166623544237692,
+          "categorical": 0.4037695618061793,
+          "clustered_repeated": 0.06451246645827859,
+          "experimental_causal": 0.36112424404317345,
+          "group_comparison": 0.5069699167783085,
+          "linear_robust": 0.5255145950187798,
+          "missing_selection": 0.2723604571001791,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.2774581285477569,
+          "survival": 0.43333333333333335,
+          "time_series_leakage": 0.0
+        },
+        "gates": {
+          "trilingual_regret": true,
+          "accuracy": true,
+          "invalidity": true,
+          "retention": true,
+          "language_accuracy": true,
+          "language_regret": true,
+          "domain_accuracy": true,
+          "family_regret": true,
+          "finite_metrics": true
+        },
+        "all_gates_passed": true
+      },
+      "selection_fold_2": {
+        "parent_trilingual_regret": 0.3820325782047577,
+        "candidate_trilingual_regret": 0.3740538383682202,
+        "trilingual_relative_regret_improvement": 0.020884972360292162,
+        "parent_accuracy": 0.5111111111111111,
+        "candidate_accuracy": 0.5194444444444445,
+        "parent_invalidity": 0.3,
+        "candidate_invalidity": 0.28888888888888886,
+        "parent_language_accuracy": {
+          "en": 0.5111111111111111,
+          "zh_Hans": 0.4861111111111111,
+          "zh_Hant": 0.49722222222222223
+        },
+        "candidate_language_accuracy": {
+          "en": 0.5194444444444445,
+          "zh_Hans": 0.49722222222222223,
+          "zh_Hant": 0.5027777777777778
+        },
+        "parent_language_regret": {
+          "en": 0.36126897913959904,
+          "zh_Hans": 0.4010816693700554,
+          "zh_Hant": 0.38374708610461866
+        },
+        "candidate_language_regret": {
+          "en": 0.3546635618212274,
+          "zh_Hans": 0.3920738128910748,
+          "zh_Hant": 0.37542414039235855
+        },
+        "parent_family_regret": {
+          "bayesian_check": 0.26666666666666666,
+          "binary_count_glm": 0.5855913373302367,
+          "categorical": 0.34732189221029114,
+          "clustered_repeated": 0.17979258136574067,
+          "experimental_causal": 0.5244021628124033,
+          "group_comparison": 0.5769497695268411,
+          "linear_robust": 0.6315833423168248,
+          "missing_selection": 0.393122322384945,
+          "predictive_calibration": 0.26666666666666666,
+          "probability_distribution": 0.2964643417279058,
+          "survival": 0.26666666666666666,
+          "time_series_leakage": 0.0
+        },
+        "candidate_family_regret": {
+          "bayesian_check": 0.26666666666666666,
+          "binary_count_glm": 0.5855913373302367,
+          "categorical": 0.34732189221029114,
+          "clustered_repeated": 0.17979258136574067,
+          "experimental_causal": 0.445137154991944,
+          "group_comparison": 0.5769497695268411,
+          "linear_robust": 0.6315833423168248,
+          "missing_selection": 0.393122322384945,
+          "predictive_calibration": 0.26666666666666666,
+          "probability_distribution": 0.2964643417279058,
+          "survival": 0.26666666666666666,
+          "time_series_leakage": 0.0
+        },
+        "gates": {
+          "trilingual_regret": true,
+          "accuracy": true,
+          "invalidity": true,
+          "retention": true,
+          "language_accuracy": true,
+          "language_regret": true,
+          "domain_accuracy": true,
+          "family_regret": true,
+          "finite_metrics": true
+        },
+        "all_gates_passed": true
+      },
+      "selection_fold_3": {
+        "parent_trilingual_regret": 0.40402043516750413,
+        "candidate_trilingual_regret": 0.3869533305495633,
+        "trilingual_relative_regret_improvement": 0.042243171712007345,
+        "parent_accuracy": 0.5138888888888888,
+        "candidate_accuracy": 0.5277777777777778,
+        "parent_invalidity": 0.29444444444444445,
+        "candidate_invalidity": 0.2777777777777778,
+        "parent_language_accuracy": {
+          "en": 0.5138888888888888,
+          "zh_Hans": 0.4527777777777778,
+          "zh_Hant": 0.4638888888888889
+        },
+        "candidate_language_accuracy": {
+          "en": 0.5277777777777778,
+          "zh_Hans": 0.475,
+          "zh_Hant": 0.4861111111111111
+        },
+        "parent_language_regret": {
+          "en": 0.37614157157375494,
+          "zh_Hans": 0.43390852904472754,
+          "zh_Hant": 0.40201120488403
+        },
+        "candidate_language_regret": {
+          "en": 0.3548781783392104,
+          "zh_Hans": 0.4203972189270579,
+          "zh_Hant": 0.3855845943824217
+        },
+        "parent_family_regret": {
+          "bayesian_check": 0.23333333333333334,
+          "binary_count_glm": 0.5636673475681726,
+          "categorical": 0.4711395395876385,
+          "clustered_repeated": 0.21617422001955677,
+          "experimental_causal": 0.5507616823110577,
+          "group_comparison": 0.45663548398009746,
+          "linear_robust": 0.4407006229860565,
+          "missing_selection": 0.3871352889802949,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.46081800678551854,
+          "survival": 0.4,
+          "time_series_leakage": 0.0
+        },
+        "candidate_family_regret": {
+          "bayesian_check": 0.23333333333333334,
+          "binary_count_glm": 0.5636673475681726,
+          "categorical": 0.4711395395876385,
+          "clustered_repeated": 0.21617422001955677,
+          "experimental_causal": 0.2956009634965235,
+          "group_comparison": 0.45663548398009746,
+          "linear_robust": 0.4407006229860565,
+          "missing_selection": 0.3871352889802949,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.46081800678551854,
+          "survival": 0.4,
+          "time_series_leakage": 0.0
+        },
+        "gates": {
+          "trilingual_regret": true,
+          "accuracy": true,
+          "invalidity": true,
+          "retention": true,
+          "language_accuracy": true,
+          "language_regret": true,
+          "domain_accuracy": true,
+          "family_regret": true,
+          "finite_metrics": true
+        },
+        "all_gates_passed": true
+      }
+    },
+    "fold_relative_improvements": [
+      0.04933182151775772,
+      0.020884972360292162,
+      0.042243171712007345
+    ],
+    "mean_relative_improvement": 0.03748665519668574,
+    "worst_fold_relative_improvement": 0.020884972360292162,
+    "pooled_comparison": {
+      "parent_trilingual_regret": 0.38900813992913735,
+      "candidate_trilingual_regret": 0.37439485396943084,
+      "trilingual_relative_regret_improvement": 0.03756550174597504,
+      "parent_accuracy": 0.5194444444444445,
+      "candidate_accuracy": 0.5287037037037037,
+      "parent_invalidity": 0.287962962962963,
+      "candidate_invalidity": 0.27314814814814814,
+      "parent_language_accuracy": {
+        "en": 0.5194444444444445,
+        "zh_Hans": 0.47314814814814815,
+        "zh_Hant": 0.4898148148148148
+      },
+      "candidate_language_accuracy": {
+        "en": 0.5287037037037037,
+        "zh_Hans": 0.49074074074074076,
+        "zh_Hant": 0.5046296296296297
+      },
+      "parent_language_regret": {
+        "en": 0.36576604278760017,
+        "zh_Hans": 0.41395278332816,
+        "zh_Hant": 0.38730559367165185
+      },
+      "candidate_language_regret": {
+        "en": 0.35026497979912075,
+        "zh_Hans": 0.39887567488876435,
+        "zh_Hant": 0.37404390722040737
+      },
+      "parent_family_regret": {
+        "bayesian_check": 0.26666666666666666,
+        "binary_count_glm": 0.5886403464407262,
+        "categorical": 0.4074103312013696,
+        "clustered_repeated": 0.153493089281192,
+        "experimental_causal": 0.5533002100389665,
+        "group_comparison": 0.5135183900950824,
+        "linear_robust": 0.5325995201072203,
+        "missing_selection": 0.350872689488473,
+        "predictive_calibration": 0.3111111111111111,
+        "probability_distribution": 0.34491349235372704,
+        "survival": 0.36666666666666664,
+        "time_series_leakage": 0.0
+      },
+      "candidate_family_regret": {
+        "bayesian_check": 0.26666666666666666,
+        "binary_count_glm": 0.5886403464407262,
+        "categorical": 0.4074103312013696,
+        "clustered_repeated": 0.153493089281192,
+        "experimental_causal": 0.3672874541772136,
+        "group_comparison": 0.5135183900950824,
+        "linear_robust": 0.5325995201072203,
+        "missing_selection": 0.350872689488473,
+        "predictive_calibration": 0.3111111111111111,
+        "probability_distribution": 0.34491349235372704,
+        "survival": 0.36666666666666664,
+        "time_series_leakage": 0.0
+      },
+      "gates": {
+        "trilingual_regret": true,
+        "accuracy": true,
+        "invalidity": true,
+        "retention": true,
+        "language_accuracy": true,
+        "language_regret": true,
+        "domain_accuracy": true,
+        "family_regret": true,
+        "finite_metrics": true
+      },
+      "all_gates_passed": true
+    },
+    "paired_bootstrap": {
+      "mean_regret_improvement": 0.01461328595970651,
+      "ci95_lower": 0.007340063695102578,
+      "ci95_upper": 0.022105156343058003
+    },
+    "gates": {
+      "every_fold_granular": true,
+      "pooled_granular": true,
+      "mean_relative_improvement": false,
+      "worst_fold_relative_improvement": true,
+      "paired_bootstrap": true
+    },
+    "passed": false
+  },
+  "candidate_vs_anchor": {
+    "fold_comparisons": {
+      "selection_fold_1": {
+        "parent_trilingual_regret": 0.3809714064151501,
+        "candidate_trilingual_regret": 0.3641142499612213,
+        "trilingual_relative_regret_improvement": 0.044247825873733104,
+        "parent_accuracy": 0.5333333333333333,
+        "candidate_accuracy": 0.5388888888888889,
+        "parent_invalidity": 0.26944444444444443,
+        "candidate_invalidity": 0.25555555555555554,
+        "parent_language_accuracy": {
+          "en": 0.5333333333333333,
+          "zh_Hans": 0.48055555555555557,
+          "zh_Hant": 0.5083333333333333
+        },
+        "candidate_language_accuracy": {
+          "en": 0.5388888888888889,
+          "zh_Hans": 0.5,
+          "zh_Hant": 0.5277777777777778
+        },
+        "parent_language_regret": {
+          "en": 0.35988757764944634,
+          "zh_Hans": 0.40686815156969697,
+          "zh_Hant": 0.3761584900263069
+        },
+        "candidate_language_regret": {
+          "en": 0.34921553373007125,
+          "zh_Hans": 0.3834206946236483,
+          "zh_Hant": 0.35970652152994453
+        },
+        "parent_family_regret": {
+          "bayesian_check": 0.3,
+          "binary_count_glm": 0.6166623544237692,
+          "categorical": 0.4037695618061793,
+          "clustered_repeated": 0.06451246645827859,
+          "experimental_causal": 0.5847367849934385,
+          "group_comparison": 0.5069699167783085,
+          "linear_robust": 0.5255145950187798,
+          "missing_selection": 0.2723604571001791,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.2774581285477569,
+          "survival": 0.43333333333333335,
+          "time_series_leakage": 0.0
+        },
+        "candidate_family_regret": {
+          "bayesian_check": 0.3,
+          "binary_count_glm": 0.6166623544237692,
+          "categorical": 0.4037695618061793,
+          "clustered_repeated": 0.06451246645827859,
+          "experimental_causal": 0.4566722579609371,
+          "group_comparison": 0.5069699167783085,
+          "linear_robust": 0.5255145950187798,
+          "missing_selection": 0.2723604571001791,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.2774581285477569,
+          "survival": 0.43333333333333335,
+          "time_series_leakage": 0.0
+        },
+        "gates": {
+          "trilingual_regret": true,
+          "accuracy": true,
+          "invalidity": true,
+          "retention": true,
+          "language_accuracy": true,
+          "language_regret": true,
+          "domain_accuracy": true,
+          "family_regret": true,
+          "finite_metrics": true
+        },
+        "all_gates_passed": true
+      },
+      "selection_fold_2": {
+        "parent_trilingual_regret": 0.3820325782047577,
+        "candidate_trilingual_regret": 0.3725320614344915,
+        "trilingual_relative_regret_improvement": 0.02486834189615686,
+        "parent_accuracy": 0.5111111111111111,
+        "candidate_accuracy": 0.5138888888888888,
+        "parent_invalidity": 0.3,
+        "candidate_invalidity": 0.28888888888888886,
+        "parent_language_accuracy": {
+          "en": 0.5111111111111111,
+          "zh_Hans": 0.4861111111111111,
+          "zh_Hant": 0.49722222222222223
+        },
+        "candidate_language_accuracy": {
+          "en": 0.5138888888888888,
+          "zh_Hans": 0.5,
+          "zh_Hant": 0.5083333333333333
+        },
+        "parent_language_regret": {
+          "en": 0.36126897913959904,
+          "zh_Hans": 0.4010816693700554,
+          "zh_Hant": 0.38374708610461866
+        },
+        "candidate_language_regret": {
+          "en": 0.3529491693818303,
+          "zh_Hans": 0.39143377972567617,
+          "zh_Hant": 0.37321323519596805
+        },
+        "parent_family_regret": {
+          "bayesian_check": 0.26666666666666666,
+          "binary_count_glm": 0.5855913373302367,
+          "categorical": 0.34732189221029114,
+          "clustered_repeated": 0.17979258136574067,
+          "experimental_causal": 0.5244021628124033,
+          "group_comparison": 0.5769497695268411,
+          "linear_robust": 0.6315833423168248,
+          "missing_selection": 0.393122322384945,
+          "predictive_calibration": 0.26666666666666666,
+          "probability_distribution": 0.2964643417279058,
+          "survival": 0.26666666666666666,
+          "time_series_leakage": 0.0
+        },
+        "candidate_family_regret": {
+          "bayesian_check": 0.26666666666666666,
+          "binary_count_glm": 0.5855913373302367,
+          "categorical": 0.34732189221029114,
+          "clustered_repeated": 0.17979258136574067,
+          "experimental_causal": 0.42456444571917906,
+          "group_comparison": 0.5769497695268411,
+          "linear_robust": 0.6315833423168248,
+          "missing_selection": 0.393122322384945,
+          "predictive_calibration": 0.26666666666666666,
+          "probability_distribution": 0.2964643417279058,
+          "survival": 0.26666666666666666,
+          "time_series_leakage": 0.0
+        },
+        "gates": {
+          "trilingual_regret": true,
+          "accuracy": true,
+          "invalidity": true,
+          "retention": true,
+          "language_accuracy": true,
+          "language_regret": true,
+          "domain_accuracy": true,
+          "family_regret": true,
+          "finite_metrics": true
+        },
+        "all_gates_passed": true
+      },
+      "selection_fold_3": {
+        "parent_trilingual_regret": 0.40402043516750413,
+        "candidate_trilingual_regret": 0.3856930336034356,
+        "trilingual_relative_regret_improvement": 0.04536256082311806,
+        "parent_accuracy": 0.5138888888888888,
+        "candidate_accuracy": 0.525,
+        "parent_invalidity": 0.29444444444444445,
+        "candidate_invalidity": 0.275,
+        "parent_language_accuracy": {
+          "en": 0.5138888888888888,
+          "zh_Hans": 0.4527777777777778,
+          "zh_Hant": 0.4638888888888889
+        },
+        "candidate_language_accuracy": {
+          "en": 0.525,
+          "zh_Hans": 0.48055555555555557,
+          "zh_Hant": 0.4888888888888889
+        },
+        "parent_language_regret": {
+          "en": 0.37614157157375494,
+          "zh_Hans": 0.43390852904472754,
+          "zh_Hant": 0.40201120488403
+        },
+        "candidate_language_regret": {
+          "en": 0.3577781410501318,
+          "zh_Hans": 0.4148519122490306,
+          "zh_Hant": 0.3844490475111445
+        },
+        "parent_family_regret": {
+          "bayesian_check": 0.23333333333333334,
+          "binary_count_glm": 0.5636673475681726,
+          "categorical": 0.4711395395876385,
+          "clustered_repeated": 0.21617422001955677,
+          "experimental_causal": 0.5507616823110577,
+          "group_comparison": 0.45663548398009746,
+          "linear_robust": 0.4407006229860565,
+          "missing_selection": 0.3871352889802949,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.46081800678551854,
+          "survival": 0.4,
+          "time_series_leakage": 0.0
+        },
+        "candidate_family_regret": {
+          "bayesian_check": 0.23333333333333334,
+          "binary_count_glm": 0.5636673475681726,
+          "categorical": 0.4711395395876385,
+          "clustered_repeated": 0.21617422001955677,
+          "experimental_causal": 0.3304005160275796,
+          "group_comparison": 0.45663548398009746,
+          "linear_robust": 0.4407006229860565,
+          "missing_selection": 0.3871352889802949,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.46081800678551854,
+          "survival": 0.4,
+          "time_series_leakage": 0.0
+        },
+        "gates": {
+          "trilingual_regret": true,
+          "accuracy": true,
+          "invalidity": true,
+          "retention": true,
+          "language_accuracy": true,
+          "language_regret": true,
+          "domain_accuracy": true,
+          "family_regret": true,
+          "finite_metrics": true
+        },
+        "all_gates_passed": true
+      }
+    },
+    "fold_relative_improvements": [
+      0.044247825873733104,
+      0.02486834189615686,
+      0.04536256082311806
+    ],
+    "mean_relative_improvement": 0.03815957619766935,
+    "worst_fold_relative_improvement": 0.02486834189615686,
+    "pooled_comparison": {
+      "parent_trilingual_regret": 0.38900813992913735,
+      "candidate_trilingual_regret": 0.37411311499971617,
+      "trilingual_relative_regret_improvement": 0.03828975129449604,
+      "parent_accuracy": 0.5194444444444445,
+      "candidate_accuracy": 0.5259259259259259,
+      "parent_invalidity": 0.287962962962963,
+      "candidate_invalidity": 0.27314814814814814,
+      "parent_language_accuracy": {
+        "en": 0.5194444444444445,
+        "zh_Hans": 0.47314814814814815,
+        "zh_Hant": 0.4898148148148148
+      },
+      "candidate_language_accuracy": {
+        "en": 0.5259259259259259,
+        "zh_Hans": 0.4935185185185185,
+        "zh_Hant": 0.5083333333333333
+      },
+      "parent_language_regret": {
+        "en": 0.36576604278760017,
+        "zh_Hans": 0.41395278332816,
+        "zh_Hant": 0.38730559367165185
+      },
+      "candidate_language_regret": {
+        "en": 0.3533142813873445,
+        "zh_Hans": 0.39656879553278507,
+        "zh_Hant": 0.37245626807901894
+      },
+      "parent_family_regret": {
+        "bayesian_check": 0.26666666666666666,
+        "binary_count_glm": 0.5886403464407262,
+        "categorical": 0.4074103312013696,
+        "clustered_repeated": 0.153493089281192,
+        "experimental_causal": 0.5533002100389665,
+        "group_comparison": 0.5135183900950824,
+        "linear_robust": 0.5325995201072203,
+        "missing_selection": 0.350872689488473,
+        "predictive_calibration": 0.3111111111111111,
+        "probability_distribution": 0.34491349235372704,
+        "survival": 0.36666666666666664,
+        "time_series_leakage": 0.0
+      },
+      "candidate_family_regret": {
+        "bayesian_check": 0.26666666666666666,
+        "binary_count_glm": 0.5886403464407262,
+        "categorical": 0.4074103312013696,
+        "clustered_repeated": 0.153493089281192,
+        "experimental_causal": 0.4038790732358985,
+        "group_comparison": 0.5135183900950824,
+        "linear_robust": 0.5325995201072203,
+        "missing_selection": 0.350872689488473,
+        "predictive_calibration": 0.3111111111111111,
+        "probability_distribution": 0.34491349235372704,
+        "survival": 0.36666666666666664,
+        "time_series_leakage": 0.0
+      },
+      "gates": {
+        "trilingual_regret": true,
+        "accuracy": true,
+        "invalidity": true,
+        "retention": true,
+        "language_accuracy": true,
+        "language_regret": true,
+        "domain_accuracy": true,
+        "family_regret": true,
+        "finite_metrics": true
+      },
+      "all_gates_passed": true
+    },
+    "paired_bootstrap": {
+      "mean_regret_improvement": 0.014895024929421153,
+      "ci95_lower": 0.007334630098472726,
+      "ci95_upper": 0.023006763160282263
+    },
+    "gates": {
+      "every_fold_granular": true,
+      "pooled_granular": true,
+      "mean_relative_improvement": false,
+      "worst_fold_relative_improvement": true,
+      "paired_bootstrap": true
+    },
+    "passed": false
+  },
+  "candidate_vs_control": {
+    "fold_comparisons": {
+      "selection_fold_1": {
+        "parent_trilingual_regret": 0.3621773929905088,
+        "candidate_trilingual_regret": 0.3641142499612213,
+        "trilingual_relative_regret_improvement": -0.005347813000474356,
+        "parent_accuracy": 0.5388888888888889,
+        "candidate_accuracy": 0.5388888888888889,
+        "parent_invalidity": 0.25277777777777777,
+        "candidate_invalidity": 0.25555555555555554,
+        "parent_language_accuracy": {
+          "en": 0.5388888888888889,
+          "zh_Hans": 0.5,
+          "zh_Hant": 0.525
+        },
+        "candidate_language_accuracy": {
+          "en": 0.5388888888888889,
+          "zh_Hans": 0.5,
+          "zh_Hant": 0.5277777777777778
+        },
+        "parent_language_regret": {
+          "en": 0.34125319923692427,
+          "zh_Hans": 0.38415599284816027,
+          "zh_Hant": 0.3611229868864418
+        },
+        "candidate_language_regret": {
+          "en": 0.34921553373007125,
+          "zh_Hans": 0.3834206946236483,
+          "zh_Hant": 0.35970652152994453
+        },
+        "parent_family_regret": {
+          "bayesian_check": 0.3,
+          "binary_count_glm": 0.6166623544237692,
+          "categorical": 0.4037695618061793,
+          "clustered_repeated": 0.06451246645827859,
+          "experimental_causal": 0.36112424404317345,
+          "group_comparison": 0.5069699167783085,
+          "linear_robust": 0.5255145950187798,
+          "missing_selection": 0.2723604571001791,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.2774581285477569,
+          "survival": 0.43333333333333335,
+          "time_series_leakage": 0.0
+        },
+        "candidate_family_regret": {
+          "bayesian_check": 0.3,
+          "binary_count_glm": 0.6166623544237692,
+          "categorical": 0.4037695618061793,
+          "clustered_repeated": 0.06451246645827859,
+          "experimental_causal": 0.4566722579609371,
+          "group_comparison": 0.5069699167783085,
+          "linear_robust": 0.5255145950187798,
+          "missing_selection": 0.2723604571001791,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.2774581285477569,
+          "survival": 0.43333333333333335,
+          "time_series_leakage": 0.0
+        },
+        "gates": {
+          "trilingual_regret": false,
+          "accuracy": true,
+          "invalidity": false,
+          "retention": true,
+          "language_accuracy": true,
+          "language_regret": true,
+          "domain_accuracy": true,
+          "family_regret": false,
+          "finite_metrics": true
+        },
+        "all_gates_passed": false
+      },
+      "selection_fold_2": {
+        "parent_trilingual_regret": 0.3740538383682202,
+        "candidate_trilingual_regret": 0.3725320614344915,
+        "trilingual_relative_regret_improvement": 0.0040683366340185404,
+        "parent_accuracy": 0.5194444444444445,
+        "candidate_accuracy": 0.5138888888888888,
+        "parent_invalidity": 0.28888888888888886,
+        "candidate_invalidity": 0.28888888888888886,
+        "parent_language_accuracy": {
+          "en": 0.5194444444444445,
+          "zh_Hans": 0.49722222222222223,
+          "zh_Hant": 0.5027777777777778
+        },
+        "candidate_language_accuracy": {
+          "en": 0.5138888888888888,
+          "zh_Hans": 0.5,
+          "zh_Hant": 0.5083333333333333
+        },
+        "parent_language_regret": {
+          "en": 0.3546635618212274,
+          "zh_Hans": 0.3920738128910748,
+          "zh_Hant": 0.37542414039235855
+        },
+        "candidate_language_regret": {
+          "en": 0.3529491693818303,
+          "zh_Hans": 0.39143377972567617,
+          "zh_Hant": 0.37321323519596805
+        },
+        "parent_family_regret": {
+          "bayesian_check": 0.26666666666666666,
+          "binary_count_glm": 0.5855913373302367,
+          "categorical": 0.34732189221029114,
+          "clustered_repeated": 0.17979258136574067,
+          "experimental_causal": 0.445137154991944,
+          "group_comparison": 0.5769497695268411,
+          "linear_robust": 0.6315833423168248,
+          "missing_selection": 0.393122322384945,
+          "predictive_calibration": 0.26666666666666666,
+          "probability_distribution": 0.2964643417279058,
+          "survival": 0.26666666666666666,
+          "time_series_leakage": 0.0
+        },
+        "candidate_family_regret": {
+          "bayesian_check": 0.26666666666666666,
+          "binary_count_glm": 0.5855913373302367,
+          "categorical": 0.34732189221029114,
+          "clustered_repeated": 0.17979258136574067,
+          "experimental_causal": 0.42456444571917906,
+          "group_comparison": 0.5769497695268411,
+          "linear_robust": 0.6315833423168248,
+          "missing_selection": 0.393122322384945,
+          "predictive_calibration": 0.26666666666666666,
+          "probability_distribution": 0.2964643417279058,
+          "survival": 0.26666666666666666,
+          "time_series_leakage": 0.0
+        },
+        "gates": {
+          "trilingual_regret": true,
+          "accuracy": true,
+          "invalidity": true,
+          "retention": true,
+          "language_accuracy": true,
+          "language_regret": true,
+          "domain_accuracy": true,
+          "family_regret": true,
+          "finite_metrics": true
+        },
+        "all_gates_passed": true
+      },
+      "selection_fold_3": {
+        "parent_trilingual_regret": 0.3869533305495633,
+        "candidate_trilingual_regret": 0.3856930336034356,
+        "trilingual_relative_regret_improvement": 0.0032569740240711,
+        "parent_accuracy": 0.5277777777777778,
+        "candidate_accuracy": 0.525,
+        "parent_invalidity": 0.2777777777777778,
+        "candidate_invalidity": 0.275,
+        "parent_language_accuracy": {
+          "en": 0.5277777777777778,
+          "zh_Hans": 0.475,
+          "zh_Hant": 0.4861111111111111
+        },
+        "candidate_language_accuracy": {
+          "en": 0.525,
+          "zh_Hans": 0.48055555555555557,
+          "zh_Hant": 0.4888888888888889
+        },
+        "parent_language_regret": {
+          "en": 0.3548781783392104,
+          "zh_Hans": 0.4203972189270579,
+          "zh_Hant": 0.3855845943824217
+        },
+        "candidate_language_regret": {
+          "en": 0.3577781410501318,
+          "zh_Hans": 0.4148519122490306,
+          "zh_Hant": 0.3844490475111445
+        },
+        "parent_family_regret": {
+          "bayesian_check": 0.23333333333333334,
+          "binary_count_glm": 0.5636673475681726,
+          "categorical": 0.4711395395876385,
+          "clustered_repeated": 0.21617422001955677,
+          "experimental_causal": 0.2956009634965235,
+          "group_comparison": 0.45663548398009746,
+          "linear_robust": 0.4407006229860565,
+          "missing_selection": 0.3871352889802949,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.46081800678551854,
+          "survival": 0.4,
+          "time_series_leakage": 0.0
+        },
+        "candidate_family_regret": {
+          "bayesian_check": 0.23333333333333334,
+          "binary_count_glm": 0.5636673475681726,
+          "categorical": 0.4711395395876385,
+          "clustered_repeated": 0.21617422001955677,
+          "experimental_causal": 0.3304005160275796,
+          "group_comparison": 0.45663548398009746,
+          "linear_robust": 0.4407006229860565,
+          "missing_selection": 0.3871352889802949,
+          "predictive_calibration": 0.3333333333333333,
+          "probability_distribution": 0.46081800678551854,
+          "survival": 0.4,
+          "time_series_leakage": 0.0
+        },
+        "gates": {
+          "trilingual_regret": true,
+          "accuracy": true,
+          "invalidity": true,
+          "retention": true,
+          "language_accuracy": true,
+          "language_regret": true,
+          "domain_accuracy": true,
+          "family_regret": true,
+          "finite_metrics": true
+        },
+        "all_gates_passed": true
+      }
+    },
+    "comparison": {
+      "parent_trilingual_regret": 0.37439485396943084,
+      "candidate_trilingual_regret": 0.37411311499971617,
+      "trilingual_relative_regret_improvement": 0.000752518275098079,
+      "parent_accuracy": 0.5287037037037037,
+      "candidate_accuracy": 0.5259259259259259,
+      "parent_invalidity": 0.27314814814814814,
+      "candidate_invalidity": 0.27314814814814814,
+      "parent_language_accuracy": {
+        "en": 0.5287037037037037,
+        "zh_Hans": 0.49074074074074076,
+        "zh_Hant": 0.5046296296296297
+      },
+      "candidate_language_accuracy": {
+        "en": 0.5259259259259259,
+        "zh_Hans": 0.4935185185185185,
+        "zh_Hant": 0.5083333333333333
+      },
+      "parent_language_regret": {
+        "en": 0.35026497979912075,
+        "zh_Hans": 0.39887567488876435,
+        "zh_Hant": 0.37404390722040737
+      },
+      "candidate_language_regret": {
+        "en": 0.3533142813873445,
+        "zh_Hans": 0.39656879553278507,
+        "zh_Hant": 0.37245626807901894
+      },
+      "parent_family_regret": {
+        "bayesian_check": 0.26666666666666666,
+        "binary_count_glm": 0.5886403464407262,
+        "categorical": 0.4074103312013696,
+        "clustered_repeated": 0.153493089281192,
+        "experimental_causal": 0.3672874541772136,
+        "group_comparison": 0.5135183900950824,
+        "linear_robust": 0.5325995201072203,
+        "missing_selection": 0.350872689488473,
+        "predictive_calibration": 0.3111111111111111,
+        "probability_distribution": 0.34491349235372704,
+        "survival": 0.36666666666666664,
+        "time_series_leakage": 0.0
+      },
+      "candidate_family_regret": {
+        "bayesian_check": 0.26666666666666666,
+        "binary_count_glm": 0.5886403464407262,
+        "categorical": 0.4074103312013696,
+        "clustered_repeated": 0.153493089281192,
+        "experimental_causal": 0.4038790732358985,
+        "group_comparison": 0.5135183900950824,
+        "linear_robust": 0.5325995201072203,
+        "missing_selection": 0.350872689488473,
+        "predictive_calibration": 0.3111111111111111,
+        "probability_distribution": 0.34491349235372704,
+        "survival": 0.36666666666666664,
+        "time_series_leakage": 0.0
+      },
+      "gates": {
+        "trilingual_regret": true,
+        "accuracy": true,
+        "invalidity": true,
+        "retention": true,
+        "language_accuracy": true,
+        "language_regret": true,
+        "domain_accuracy": true,
+        "family_regret": true,
+        "finite_metrics": true
+      },
+      "all_gates_passed": true
+    },
+    "relative_regret_improvement": 0.000752518275098079,
+    "paired_bootstrap": {
+      "mean_regret_improvement": 0.0002817389697146399,
+      "ci95_lower": -0.0025588919179024144,
+      "ci95_upper": 0.0030963523552305916
+    },
+    "gates": {
+      "every_fold_granular": false,
+      "pooled_granular": true,
+      "relative_improvement": false,
+      "paired_bootstrap": false
+    },
+    "passed": false
+  },
+  "selected": null,
+  "passed": false,
+  "confirmation_opened": false,
+  "promotion_opened": false,
+  "final_simulations_opened": false,
+  "final_scores_opened": false,
+  "claim_boundary": "The v0.5 folds chose unresolved families only. All v0.6 training and selection blueprints are new. Selection evidence remains development evidence."
+}

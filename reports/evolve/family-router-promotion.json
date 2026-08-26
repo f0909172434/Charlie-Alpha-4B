@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "4746d1ce27d8db34e168218472ca8d3452a486dd62c7156c702a8cfc598d71c8",
+  "method": "DGP-Regret selective parent-letter family router promotion",
+  "lock": {
+    "schema_version": 1,
+    "router_fingerprint": "be9bae3835595b940049ccfe7e50e32ca8f471aab72fbce8cfef460d806f720e",
+    "router_confirmation_fingerprint": "7da6b2fb3571b812f8ddf2f2b4908b57920a0f746c3aa56734113f4ad1500aff",
+    "prompt_sha256": "fc9c213a217c51ad1f2a5f36f4501f1a1f1fd6b11b5ce2fbc25079f90f2d2fe8",
+    "prompt_version": 2,
+    "threshold": 0.6,
+    "expert_selection_fingerprint": "5a8445c8a349d5a0a4004430880138270e0f3294223b0ad04a6d1b6ff90264ec",
+    "promotion_settings": {
+      "prompt_version": 2,
+      "promotion_shard": {
+        "split": "evolve-llm-family-router-v2-promotion-v1",
+        "count": 720,
+        "seed": 63000042,
+        "view": "scoring"
+      },
+      "promotion_canary_path": "configs/family_router_promotion_canary.jsonl",
+      "gates": {
+        "minimum_surface_trilingual_relative_improvement": 0.0,
+        "minimum_promotion_relative_improvement": 0.075,
+        "minimum_router_family_accuracy": 0.85,
+        "minimum_language_router_accuracy": 0.8,
+        "maximum_wrong_expert_rate": 0.05,
+        "minimum_expert_coverage": 0.1,
+        "minimum_canary_route_accuracy": 0.75,
+        "minimum_language_canary_route_accuracy": 0.66,
+        "bootstrap_ci_lower_floor": 0.0,
+        "bootstrap_repetitions": 5000,
+        "maximum_invalidity_increase": 0.0,
+        "maximum_accuracy_regression": 0.03,
+        "maximum_retention_regression": 0.01,
+        "maximum_language_accuracy_regression": 0.03,
+        "maximum_language_regret_increase": 0.05,
+        "maximum_domain_accuracy_regression": 0.1,
+        "maximum_family_regret_increase": 0.15
+      }
+    },
+    "promotion_canary_sha256": "2557da7364c900e4604e861b41203b1491fd617d83d2cf08af8fade0701df4ce",
+    "fingerprint": "04dcb869d0b87bc8826df023be09e041b304d3c5bc9ff90cbf3d08a9676a6b76"
+  },
+  "manifest": {
+    "schema_version": 1,
+    "fingerprint": "17db1fe89f54f68406ccac897600dd97d977ebfde1263d910946c60aa53ec7a7",
+    "split": "evolve-llm-family-router-v2-promotion-v1",
+    "seed": 63000042,
+    "count": 720,
+    "view": "scoring",
+    "sha256": "13546dc58140522a8ccfb2cad04e5dd014614b56088e1ec043dab889de22e06d",
+    "used_for_router_training": false,
+    "used_for_temperature_calibration": false,
+    "used_for_threshold_selection": false,
+    "used_for_confirmation": false,
+    "used_for_promotion": true,
+    "used_for_expert_training": false,
+    "promotion_surface_opened": false,
+    "final_surface_opened": false,
+    "immutable": true
+  },
+  "comparison": {
+    "parent_trilingual_regret": 0.4163052937085563,
+    "candidate_trilingual_regret": 0.3709888604905867,
+    "trilingual_relative_regret_improvement": 0.10885384813216992,
+    "parent_accuracy": 0.46805555555555556,
+    "candidate_accuracy": 0.5013888888888889,
+    "parent_invalidity": 0.32222222222222224,
+    "candidate_invalidity": 0.2875,
+    "parent_language_accuracy": {
+      "en": 0.46805555555555556,
+      "zh_Hant": 0.4861111111111111,
+      "zh_Hans": 0.4388888888888889
+    },
+    "candidate_language_accuracy": {
+      "en": 0.5013888888888889,
+      "zh_Hans": 0.5277777777777778,
+      "zh_Hant": 0.5180555555555556
+    },
+    "parent_language_regret": {
+      "en": 0.400628791408637,
+      "zh_Hant": 0.40190595807158097,
+      "zh_Hans": 0.4463811316454509
+    },
+    "candidate_language_regret": {
+      "en": 0.3597255037671502,
+      "zh_Hans": 0.37516546165723746,
+      "zh_Hant": 0.37807561604737255
+    },
+    "parent_family_regret": {
+      "bayesian_check": 0.1388888888888889,
+      "binary_count_glm": 0.7250647607734264,
+      "categorical": 0.40240841071440764,
+      "clustered_repeated": 0.3543402559693387,
+      "experimental_causal": 0.5357751699806858,
+      "group_comparison": 0.5754389154666192,
+      "linear_robust": 0.5211543789478467,
+      "missing_selection": 0.4658781488566106,
+      "predictive_calibration": 0.3888888888888889,
+      "probability_distribution": 0.3629095502213352,
+      "survival": 0.37037037037037035,
+      "time_series_leakage": 0.1527777777777778
+    },
+    "candidate_family_regret": {
+      "bayesian_check": 0.1388888888888889,
+      "binary_count_glm": 0.7250647607734265,
+      "categorical": 0.34691430464369355,
+      "clustered_repeated": 0.19978378659218718,
+      "experimental_causal": 0.6339103338099364,
+      "group_comparison": 0.47531049186540986,
+      "linear_robust": 0.5211543789478467,
+      "missing_selection": 0.46587814885661066,
+      "predictive_calibration": 0.2916666666666667,
+      "probability_distribution": 0.3629095502213352,
+      "survival": 0.37037037037037035,
+      "time_series_leakage": 0.0
+    },
+    "gates": {
+      "trilingual_regret": true,
+      "accuracy": true,
+      "invalidity": true,
+      "retention": true,
+      "language_accuracy": true,
+      "language_regret": true,
+      "domain_accuracy": true,
+      "family_regret": true,
+      "finite_metrics": true
+    },
+    "all_gates_passed": true
+  },
+  "route_metrics": {
+    "count": 2160,
+    "family_accuracy": 0.8888888888888888,
+    "language_family_accuracy": {
+      "en": 0.8833333333333333,
+      "zh_Hans": 0.9,
+      "zh_Hant": 0.8833333333333333
+    },
+    "expert_coverage": 0.5,
+    "wrong_expert_rate": 0.011111111111111112,
+    "wrong_expert_count": 24
+  },
+  "promotion_canary": {
+    "count": 39,
+    "route_accuracy": 1.0,
+    "language_route_accuracy": {
+      "en": 1.0,
+      "zh_Hans": 1.0,
+      "zh_Hant": 1.0
+    },
+    "family_accuracy": 0.9722222222222222,
+    "language_family_accuracy": {
+      "en": 1.0,
+      "zh_Hans": 1.0,
+      "zh_Hant": 0.9166666666666666
+    },
+    "wrong_expert_rate": 0.0
+  },
+  "paired_bootstrap": {
+    "mean_regret_improvement": 0.045316433217969555,
+    "ci95_lower": 0.029870850511257065,
+    "ci95_upper": 0.06111051426822849
+  },
+  "gates": {
+    "model_trilingual_regret": true,
+    "model_accuracy": true,
+    "model_invalidity": true,
+    "model_retention": true,
+    "model_language_accuracy": true,
+    "model_language_regret": true,
+    "model_domain_accuracy": true,
+    "model_family_regret": true,
+    "model_finite_metrics": true,
+    "relative_regret": true,
+    "router_family_accuracy": true,
+    "router_language_accuracy": true,
+    "wrong_expert_rate": true,
+    "expert_coverage": true,
+    "canary_route_accuracy": true,
+    "canary_language_route_accuracy": true,
+    "paired_bootstrap": true
+  },
+  "passed": true,
+  "proceed_to_final_evaluation": true,
+  "promotion_shard_opened": true,
+  "sealed_final_surface_opened": false,
+  "claim_boundary": "Promotion is a larger synthetic DGP and manual-canary gate. It does not replace the sealed v0.3 final surface or external statistical benchmarks."
+}

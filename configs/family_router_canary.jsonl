@@ -1,0 +1,39 @@
+{"task_id":"group-en","language":"en","family_id":"group_comparison","text":"Two independent groups received different programs. The outcome is continuous, and I need the difference in mean outcome with a valid interval."}
+{"task_id":"group-zht","language":"zh_Hant","family_id":"group_comparison","text":"兩組互相獨立的受試者接受不同方案，結果是連續值；我要估計兩組平均數差異與可信的區間。"}
+{"task_id":"group-zhs","language":"zh_Hans","family_id":"group_comparison","text":"两组相互独立的受试者接受不同方案，结局是连续值；我要估计两组均值差异及可靠区间。"}
+{"task_id":"categorical-en","language":"en","family_id":"categorical","text":"Compare the proportion who recovered in treatment and control groups and report an uncertainty interval for the risk difference."}
+{"task_id":"categorical-zht","language":"zh_Hant","family_id":"categorical","text":"比較治療組與對照組的康復比例，並估計風險差及其不確定性區間。"}
+{"task_id":"categorical-zhs","language":"zh_Hans","family_id":"categorical","text":"比较治疗组与对照组的康复比例，并估计风险差及其不确定性区间。"}
+{"task_id":"robust-en","language":"en","family_id":"linear_robust","text":"Estimate the adjusted slope of x on a continuous response, but residual variance changes with x and several observations have high leverage."}
+{"task_id":"robust-zht","language":"zh_Hant","family_id":"linear_robust","text":"估計 x 對連續結果的調整後斜率，但殘差變異隨 x 改變，而且有幾個高槓桿離群點。"}
+{"task_id":"robust-zhs","language":"zh_Hans","family_id":"linear_robust","text":"估计 x 对连续结局的调整后斜率，但残差方差随 x 改变，而且有几个高杠杆异常点。"}
+{"task_id":"glm-en","language":"en","family_id":"binary_count_glm","text":"Model a count outcome using two predictors. The variance is much larger than the mean, so ordinary Poisson assumptions may fail."}
+{"task_id":"glm-zht","language":"zh_Hant","family_id":"binary_count_glm","text":"用兩個預測變數分析計數結果，但變異遠大於平均數，普通 Poisson 假設可能失效。"}
+{"task_id":"glm-zhs","language":"zh_Hans","family_id":"binary_count_glm","text":"用两个预测变量分析计数结局，但方差远大于均值，普通 Poisson 假设可能失效。"}
+{"task_id":"cluster-en","language":"en","family_id":"clustered_repeated","text":"Students are measured repeatedly and nested within schools. Estimate the population-average association while respecting within-school dependence."}
+{"task_id":"cluster-zht","language":"zh_Hant","family_id":"clustered_repeated","text":"學生接受重複量測且巢狀於學校；請在保留校內相依性的情況下估計群體平均關聯。"}
+{"task_id":"cluster-zhs","language":"zh_Hans","family_id":"clustered_repeated","text":"学生被重复测量且嵌套在学校内；请在考虑校内依赖的情况下估计总体平均关联。"}
+{"task_id":"survival-en","language":"en","family_id":"survival","text":"Follow-up times are right censored. Estimate the exposure hazard ratio and check whether proportional hazards is defensible."}
+{"task_id":"survival-zht","language":"zh_Hant","family_id":"survival","text":"追蹤時間有右設限；請估計暴露的風險比，並檢查比例風險假設是否合理。"}
+{"task_id":"survival-zhs","language":"zh_Hans","family_id":"survival","text":"随访时间存在右删失；请估计暴露的风险比，并检查比例风险假设是否合理。"}
+{"task_id":"missing-en","language":"en","family_id":"missing_selection","text":"Many outcomes are missing, and observation depends on recorded covariates. I need a population estimate without pretending data are complete."}
+{"task_id":"missing-zht","language":"zh_Hant","family_id":"missing_selection","text":"許多結果值缺失，而且是否被觀察與已記錄共變數有關；我要估計母體效果，不能假裝資料完整。"}
+{"task_id":"missing-zhs","language":"zh_Hans","family_id":"missing_selection","text":"许多结局值缺失，而且是否被观测与已记录协变量有关；我要估计总体效应，不能假装数据完整。"}
+{"task_id":"causal-en","language":"en","family_id":"experimental_causal","text":"Treatment was not randomized and baseline severity affects both assignment and outcome. Estimate the average treatment effect under stated causal assumptions."}
+{"task_id":"causal-zht","language":"zh_Hant","family_id":"experimental_causal","text":"治療並非隨機分派，基線嚴重度同時影響治療與結果；請在明確因果假設下估計平均治療效果。"}
+{"task_id":"causal-zhs","language":"zh_Hans","family_id":"experimental_causal","text":"治疗并非随机分配，基线严重程度同时影响治疗与结局；请在明确因果假设下估计平均处理效应。"}
+{"task_id":"probability-en","language":"en","family_id":"probability_distribution","text":"A positive continuous variable is strongly skewed with heavy tails. I need a defensible distributional model and predictive adequacy check."}
+{"task_id":"probability-zht","language":"zh_Hant","family_id":"probability_distribution","text":"一個正的連續變數高度偏斜且有厚尾；我需要合理的機率分布模型與預測適配度檢查。"}
+{"task_id":"probability-zhs","language":"zh_Hans","family_id":"probability_distribution","text":"一个正的连续变量高度偏斜且有厚尾；我需要合理的概率分布模型和预测适配度检查。"}
+{"task_id":"bayes-en","language":"en","family_id":"bayesian_check","text":"Combine an informative prior with observed data to estimate a posterior location, then perform prior and posterior predictive checks."}
+{"task_id":"bayes-zht","language":"zh_Hant","family_id":"bayesian_check","text":"把資訊性先驗與觀察資料結合以估計後驗位置，並進行先驗與後驗預測檢查。"}
+{"task_id":"bayes-zhs","language":"zh_Hans","family_id":"bayesian_check","text":"将信息性先验与观测数据结合以估计后验位置，并进行先验和后验预测检查。"}
+{"task_id":"calibration-en","language":"en","family_id":"predictive_calibration","text":"A binary risk model will be used on a shifted population. Evaluate held-out discrimination and calibration of predicted event probabilities."}
+{"task_id":"calibration-zht","language":"zh_Hant","family_id":"predictive_calibration","text":"二元風險模型將用於分布已改變的人群；請以保留資料評估預測事件機率的判別與校準。"}
+{"task_id":"calibration-zhs","language":"zh_Hans","family_id":"predictive_calibration","text":"二元风险模型将用于分布已变化的人群；请用留出数据评估预测事件概率的区分度和校准。"}
+{"task_id":"timeseries-en","language":"en","family_id":"time_series_leakage","text":"Forecast next month's demand from an ordered series. Validation must preserve chronology and prevent future information from leaking into features."}
+{"task_id":"timeseries-zht","language":"zh_Hant","family_id":"time_series_leakage","text":"用有時間順序的序列預測下月需求；驗證必須保留時序，並防止未來資訊洩漏到特徵。"}
+{"task_id":"timeseries-zhs","language":"zh_Hans","family_id":"time_series_leakage","text":"用有时间顺序的序列预测下月需求；验证必须保留时序，并防止未来信息泄漏到特征。"}
+{"task_id":"ambiguous-en","language":"en","family_id":null,"text":"I have a spreadsheet and want to know which statistical method I should use. What information do you need first?"}
+{"task_id":"ambiguous-zht","language":"zh_Hant","family_id":null,"text":"我有一份試算表，想知道該用哪種統計方法；你需要我先補充哪些資訊？"}
+{"task_id":"ambiguous-zhs","language":"zh_Hans","family_id":null,"text":"我有一份电子表格，想知道该用哪种统计方法；你需要我先补充哪些信息？"}

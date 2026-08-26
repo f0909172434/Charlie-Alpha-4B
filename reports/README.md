@@ -1,12 +1,16 @@
 # Reports
 
-## v0.4 development
+## Post-v0.3 development
 
-- `evolve/development.json`: three gated DGP-Evolve cycles. No candidate was promoted; cycle 2
-  reduced regret on its promotion shard but failed the frozen paired-bootstrap lower bound.
+- `evolve/development.json`: gated DGP-Evolve cycles; no candidate was promoted.
+- `evolve/robust-family-experts-*.json`: the v0.5 matched Boltzmann, direct-regret, and CVaR
+  ablation. The new direct objectives failed selection.
+- `evolve/targeted-repair-*.json`: the v0.6 matched targeted-repair ablation. It improved only
+  0.075% over its control and did not open a downstream shard.
 
-The selected model therefore remains the Experimental v0.3 adapter. The v0.4 report contains only
-aggregate metrics and hashes; generated DGPs, predictions, local paths, and weights remain ignored.
+The selected model therefore remains the Experimental v0.3 adapter. Public development reports
+contain aggregate metrics and hashes; generated DGPs, predictions, local paths, and weights remain
+ignored.
 
 ## Experimental v0.2.0
 

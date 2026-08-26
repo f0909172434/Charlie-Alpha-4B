@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "fingerprint": "6eb10fd4458dded1cc94e13c053830765cec8417a89687810f31322cc7a40ea0",
+  "method": "DGP Common-Descent Cone",
+  "complete": true,
+  "deterministic_full_surface_updates": true,
+  "dropout_disabled": true,
+  "same_parent": true,
+  "same_records": true,
+  "matched_compute": true,
+  "arms": {
+    "uniform-family": {
+      "selected_checkpoint": "update-04",
+      "validation": {
+        "normalized_regret": 0.3160647720827764,
+        "accuracy": 0.5,
+        "invalid_selection_rate": 0.26666666666666666
+      },
+      "elapsed_seconds": 1305.68,
+      "peak_memory_gb": 9.5601
+    },
+    "common-cone": {
+      "selected_checkpoint": "parent",
+      "validation": {
+        "normalized_regret": 0.36074121255061764,
+        "accuracy": 0.4666666666666667,
+        "invalid_selection_rate": 0.3
+      },
+      "elapsed_seconds": 1381.08,
+      "peak_memory_gb": 9.5601
+    }
+  },
+  "parent_validation": {
+    "normalized_regret": 0.36074121255061764,
+    "accuracy": 0.4666666666666667,
+    "invalid_selection_rate": 0.3
+  },
+  "relative_regret_improvement_over_control": -0.14135216706827622,
+  "relative_regret_improvement_over_parent": 0.0,
+  "minimum_observed_family_alignment": 0.01448569387189913,
+  "gates": {
+    "relative_regret_over_control": false,
+    "relative_regret_over_parent": false,
+    "invalidity_vs_control": false,
+    "invalidity_vs_parent": true,
+    "accuracy_vs_parent": true,
+    "common_descent": true,
+    "nonzero_candidate": false,
+    "matched_compute": true
+  },
+  "proceed_to_promotion": false,
+  "sealed_promotion_surface_opened": false,
+  "sealed_final_surface_opened": false,
+  "claim_boundary": "This matched reusable-dev pilot tests a deterministic multi-objective optimizer. It is not a sealed-final capability result or evidence of general self-improvement."
+}

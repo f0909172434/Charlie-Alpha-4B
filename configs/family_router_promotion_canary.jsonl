@@ -1,0 +1,39 @@
+{"task_id":"promo-group-en","language":"en","family_id":"group_comparison","text":"Compare average reaction time between two unrelated cohorts; the spreads differ and the target is only the descriptive group contrast."}
+{"task_id":"promo-group-zht","language":"zh_Hant","family_id":"group_comparison","text":"比較兩個互不相關隊列的平均反應時間；變異不同，目標只是描述性的組間差異。"}
+{"task_id":"promo-group-zhs","language":"zh_Hans","family_id":"group_comparison","text":"比较两个互不相关队列的平均反应时间；方差不同，目标只是描述性的组间差异。"}
+{"task_id":"promo-cat-en","language":"en","family_id":"categorical","text":"A small trial records success or failure in two arms. Estimate and compare success risks when some table counts are very small."}
+{"task_id":"promo-cat-zht","language":"zh_Hant","family_id":"categorical","text":"小型試驗記錄兩組成功或失敗；部分列聯表格數很小，請估計並比較成功風險。"}
+{"task_id":"promo-cat-zhs","language":"zh_Hans","family_id":"categorical","text":"小型试验记录两组成功或失败；部分列联表计数很小，请估计并比较成功风险。"}
+{"task_id":"promo-robust-en","language":"en","family_id":"linear_robust","text":"Relate a continuous biomarker to age after adjustment, while allowing nonconstant residual variance and influential observations."}
+{"task_id":"promo-robust-zht","language":"zh_Hant","family_id":"linear_robust","text":"調整其他變數後估計連續生物標記與年齡的關聯，同時容許殘差變異不固定與高影響觀察。"}
+{"task_id":"promo-robust-zhs","language":"zh_Hans","family_id":"linear_robust","text":"调整其他变量后估计连续生物标志物与年龄的关联，同时允许残差方差不恒定和高影响观测。"}
+{"task_id":"promo-glm-en","language":"en","family_id":"binary_count_glm","text":"Explain the number of emergency visits using exposure and age; counts are overdispersed and include many zeros."}
+{"task_id":"promo-glm-zht","language":"zh_Hant","family_id":"binary_count_glm","text":"用暴露與年齡解釋急診次數；計數過度離散且包含許多零。"}
+{"task_id":"promo-glm-zhs","language":"zh_Hans","family_id":"binary_count_glm","text":"用暴露和年龄解释急诊次数；计数过度离散且包含许多零。"}
+{"task_id":"promo-cluster-en","language":"en","family_id":"clustered_repeated","text":"Daily measurements are repeated within workers, who are grouped by factory. Standard errors must reflect both levels of dependence."}
+{"task_id":"promo-cluster-zht","language":"zh_Hant","family_id":"clustered_repeated","text":"每日量測重複出現在同一工人，而工人又分屬不同工廠；標準誤必須反映兩層相依。"}
+{"task_id":"promo-cluster-zhs","language":"zh_Hans","family_id":"clustered_repeated","text":"每日测量重复出现在同一工人，而工人又属于不同工厂；标准误必须反映两层依赖。"}
+{"task_id":"promo-survival-en","language":"en","family_id":"survival","text":"Estimate time until device failure when devices enter at different dates and some remain working at study end."}
+{"task_id":"promo-survival-zht","language":"zh_Hant","family_id":"survival","text":"裝置在不同日期開始追蹤，研究結束時部分仍未故障；請估計故障時間。"}
+{"task_id":"promo-survival-zhs","language":"zh_Hans","family_id":"survival","text":"设备在不同日期开始随访，研究结束时部分仍未故障；请估计故障时间。"}
+{"task_id":"promo-missing-en","language":"en","family_id":"missing_selection","text":"Income is absent more often for high-debt respondents. Estimate a population association and state assumptions about the response process."}
+{"task_id":"promo-missing-zht","language":"zh_Hant","family_id":"missing_selection","text":"高負債受訪者較常缺少收入資料；請估計母體關聯並說明回覆機制假設。"}
+{"task_id":"promo-missing-zhs","language":"zh_Hans","family_id":"missing_selection","text":"高负债受访者更常缺少收入数据；请估计总体关联并说明响应机制假设。"}
+{"task_id":"promo-causal-en","language":"en","family_id":"experimental_causal","text":"Hospitals adopted a program at different times without random assignment. Target the effect the program would have caused, not a raw association."}
+{"task_id":"promo-causal-zht","language":"zh_Hant","family_id":"experimental_causal","text":"醫院在不同時間非隨機採用方案；目標是方案造成的效果，而不是原始關聯。"}
+{"task_id":"promo-causal-zhs","language":"zh_Hans","family_id":"experimental_causal","text":"医院在不同时间非随机采用方案；目标是方案造成的效应，而不是原始关联。"}
+{"task_id":"promo-prob-en","language":"en","family_id":"probability_distribution","text":"Choose a sampling distribution for one set of nonnegative loss amounts and verify whether it reproduces extreme quantiles."}
+{"task_id":"promo-prob-zht","language":"zh_Hant","family_id":"probability_distribution","text":"為一組非負損失金額選擇抽樣分布，並檢查它能否重現極端分位數。"}
+{"task_id":"promo-prob-zhs","language":"zh_Hans","family_id":"probability_distribution","text":"为一组非负损失金额选择抽样分布，并检查它能否重现极端分位数。"}
+{"task_id":"promo-bayes-en","language":"en","family_id":"bayesian_check","text":"Update a weakly informative prior with observations, summarize posterior uncertainty, and test replicated outcomes against the data."}
+{"task_id":"promo-bayes-zht","language":"zh_Hant","family_id":"bayesian_check","text":"以觀察資料更新弱資訊先驗，摘要後驗不確定性，並把複製結果與資料比較。"}
+{"task_id":"promo-bayes-zhs","language":"zh_Hans","family_id":"bayesian_check","text":"用观测数据更新弱信息先验，汇总后验不确定性，并将复制结果与数据比较。"}
+{"task_id":"promo-cal-en","language":"en","family_id":"predictive_calibration","text":"Validate whether predicted readmission probabilities agree with observed frequencies in a new hospital, beyond ranking performance."}
+{"task_id":"promo-cal-zht","language":"zh_Hant","family_id":"predictive_calibration","text":"在新醫院驗證再入院預測機率是否符合實際頻率，而不只看排序表現。"}
+{"task_id":"promo-cal-zhs","language":"zh_Hans","family_id":"predictive_calibration","text":"在新医院验证再入院预测概率是否符合实际频率，而不只看排序表现。"}
+{"task_id":"promo-ts-en","language":"en","family_id":"time_series_leakage","text":"Evaluate a multistep electricity forecast with expanding windows so that every prediction uses only earlier timestamps."}
+{"task_id":"promo-ts-zht","language":"zh_Hant","family_id":"time_series_leakage","text":"用擴展時間窗口評估多步電力預測，確保每次預測只使用更早的時間點。"}
+{"task_id":"promo-ts-zhs","language":"zh_Hans","family_id":"time_series_leakage","text":"用扩展时间窗口评估多步电力预测，确保每次预测只使用更早的时间点。"}
+{"task_id":"promo-amb-en","language":"en","family_id":null,"text":"Please run statistics on my file, but I have not said what question the analysis should answer or how rows were sampled."}
+{"task_id":"promo-amb-zht","language":"zh_Hant","family_id":null,"text":"請對我的檔案做統計，但我尚未說明分析問題或資料列如何抽樣。"}
+{"task_id":"promo-amb-zhs","language":"zh_Hans","family_id":null,"text":"请对我的文件做统计，但我尚未说明分析问题或数据行如何抽样。"}

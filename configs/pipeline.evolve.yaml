@@ -99,6 +99,8 @@ evolution:
   proposal_pool: 72
   tasks_per_cycle: 32
   train_groups_per_cycle: 32
+  max_tasks_per_family: 4
+  max_tasks_per_method: 4
   validation_records: 24
   replay_fraction: 0.20
   frontier_target_regret: 0.65
@@ -108,18 +110,25 @@ evolution:
   mutations_per_parent: 3
   microsteps: 160
   max_seconds: 3600
-  validation_every: 80
-  checkpoint_every: 80
+  validation_every: 40
+  checkpoint_every: 40
   early_stop_evaluations: 2
-  learning_rate_a: 1.0e-6
-  learning_rate_b: 4.0e-6
+  learning_rate_a: 5.0e-7
+  learning_rate_b: 2.0e-6
   warmup_fraction: 0.03
   weight_decay: 0.0
   component_weights:
-    method: 0.80
-    plan_tool: 0.15
-    report: 0.05
+    method: 1.00
+    plan_tool: 0.00
+    report: 0.00
+  clear_cache_threshold_gb: 4.0
   max_cycles_per_run: 2
+  ablation:
+    enabled: true
+    arms: ["random-control", "adaptive"]
+    random_control_seed_base: 73000000
+    minimum_adaptive_relative_regret_improvement_over_control: 0.03
+    winner_rule: "validation regret, invalidity, accuracy, validation loss"
   promotion_shard:
     count: 144
     seed_base: 42000000
@@ -134,3 +143,526 @@ evolution:
     maximum_domain_accuracy_regression: 0.10
     maximum_family_regret_increase: 0.15
     bootstrap_repetitions: 5000
+
+policy_projection:
+  source_cycle: 5
+  source_arm: "random-control"
+  seeds: [42, 314, 2718]
+  oracle_temperature: 0.15
+  projection_temperature: 0.15
+  step_size: 0.50
+  exploration_mass: 0.05
+  minimum_seed_wins: 2
+  minimum_mean_relative_regret_improvement: 0.05
+  maximum_mean_invalidity_increase: 0.00
+
+balanced_policy_projection:
+  seeds: [42, 314, 2718]
+  curriculum: "policy-balanced"
+  microsteps: 144
+  validation_every: 48
+  checkpoint_every: 48
+  early_stop_evaluations: 2
+  minimum_seed_wins: 2
+  minimum_mean_relative_regret_improvement: 0.05
+  maximum_mean_invalidity_increase: 0.00
+
+gradient_diagnostic:
+  groups_per_family: 2
+  records_per_backward: 2
+  cache_limit_gb: 4.0
+
+common_descent:
+  updates: 4
+  records_per_backward: 2
+  cache_limit_gb: 4.0
+  # Four fixed steps match the approximate L2 trust region reached by the
+  # short policy-projection pilots without selecting a step on validation.
+  step_l2: 0.012
+  solver_max_iterations: 10000
+  solver_tolerance: 1.0e-12
+  gates:
+    minimum_relative_regret_improvement_over_control: 0.05
+    minimum_relative_regret_improvement_over_parent: 0.01
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    minimum_family_alignment: 1.0e-6
+  confirmation:
+    candidate_arm: "uniform-family"
+    surface: "dev"
+    minimum_trilingual_relative_regret_improvement_over_parent: 0.05
+    minimum_english_relative_regret_improvement_over_parent: 0.01
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+delta_calibration:
+  scales: [0.25, 0.50, 0.75, 1.00]
+  surfaces: ["valid", "dev"]
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_worst_surface_trilingual_relative_improvement: 0.01
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Exhaustive nonempty supports over the four adapted transformer layers at two
+# frozen amplitudes (2 * (2^4 - 1) = 30 profiles). The effective LoRA weight
+# update is represented exactly at rank 64; no A/B factor interpolation is used.
+block_projection:
+  layers: [28, 29, 30, 31]
+  amplitudes: [0.25, 0.50]
+  selection_surface: "valid"
+  confirmation_shard:
+    split: "evolve-block-confirmation-v1"
+    count: 60
+    seed: 53000042
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_selection_relative_improvement: 0.01
+    minimum_confirmation_relative_improvement: 0.01
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Cheap upper-bound test for a DGP-family Mixture-of-LoRA route. Profiles are
+# selected per family on valid, fixed, then evaluated on a new immutable shard.
+# Oracle family IDs are diagnostic only and cannot be promoted as a user route.
+family_route:
+  selection_surface: "valid"
+  confirmation_shard:
+    split: "evolve-family-route-confirmation-v1"
+    count: 120
+    seed: 54000042
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_confirmation_relative_improvement: 0.05
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Oracle upper bound for eliminating the measured cross-family interference.
+# Each of the 12 experts starts from the same v0.3 adapter and takes four
+# family-only normalized-gradient steps. Summed across experts, backward record
+# exposure exactly matches the four-sweep shared-adapter control. Checkpoints are
+# selected on reusable valid+dev; only a passing fixed route opens confirmation.
+family_experts:
+  updates: 4
+  records_per_backward: 2
+  step_l2: 0.012
+  cache_limit_gb: 4.0
+  selection_surfaces: ["valid", "dev"]
+  selection_shard:
+    split: "evolve-family-expert-selection-v1"
+    count: 240
+    seed: 55000042
+  selection:
+    minimum_family_relative_improvement: 0.02
+    minimum_route_relative_improvement: 0.05
+  confirmation_shard:
+    split: "evolve-family-expert-confirmation-v1"
+    count: 240
+    seed: 56000042
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_confirmation_relative_improvement: 0.05
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Deployable selective router for the confirmed family experts. The tiny
+# character n-gram model predicts all 12 families; only the six families with a
+# selected expert can leave the parent. Temperature is calibrated separately,
+# then one confidence threshold is selected by downstream DGP regret.
+family_router:
+  ngram_min: 2
+  ngram_max: 5
+  vocabulary_size: 12000
+  minimum_document_frequency: 2
+  alpha: 0.25
+  uniform_class_prior: true
+  temperature_grid: [0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0]
+  confidence_thresholds: [0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 0.98]
+  train_shard:
+    split: "evolve-family-router-train-v1"
+    count: 720
+    seed: 57000042
+    view: "boundary_a"
+  calibration_shard:
+    split: "evolve-family-router-calibration-v1"
+    count: 240
+    seed: 58000042
+    view: "standard"
+  validation_shard:
+    split: "evolve-family-router-validation-v1"
+    count: 240
+    seed: 59000042
+    view: "boundary_b"
+  confirmation_shard:
+    split: "evolve-family-router-confirmation-v1"
+    count: 360
+    seed: 60000042
+    view: "standard"
+  canary_path: "configs/family_router_canary.jsonl"
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_validation_relative_improvement: 0.05
+    minimum_confirmation_relative_improvement: 0.05
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_canary_route_accuracy: 0.75
+    minimum_language_canary_route_accuracy: 0.66
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Parent-model single-token router, registered after the n-gram router failed
+# the manual Chinese canary and before any adapter-regret validation. A-M are
+# verified single tokens in the locked tokenizer; M and low confidence fall
+# back to the v0.3 parent.
+llm_family_router:
+  prompt_version: 2
+  confidence_thresholds: [0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95]
+  validation_shard:
+    split: "evolve-llm-family-router-v2-validation-v1"
+    count: 240
+    seed: 61000042
+    view: "scoring"
+  confirmation_shard:
+    split: "evolve-llm-family-router-v2-confirmation-v1"
+    count: 360
+    seed: 62000042
+    view: "scoring"
+  development_canary_path: "configs/family_router_canary.jsonl"
+  confirmation_canary_path: "configs/family_router_confirmation_canary.jsonl"
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_validation_relative_improvement: 0.05
+    minimum_confirmation_relative_improvement: 0.05
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_canary_route_accuracy: 0.75
+    minimum_language_canary_route_accuracy: 0.66
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Registered only after the v2 router passed its independent confirmation.
+# This stage cannot alter the prompt, expert mapping, or confidence threshold.
+llm_family_router_promotion:
+  prompt_version: 2
+  promotion_shard:
+    split: "evolve-llm-family-router-v2-promotion-v1"
+    count: 720
+    seed: 63000042
+    view: "scoring"
+  promotion_canary_path: "configs/family_router_promotion_canary.jsonl"
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_promotion_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_canary_route_accuracy: 0.75
+    minimum_language_canary_route_accuracy: 0.66
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Registered only after the fixed v2 router passed the larger promotion gate.
+# No setting in this section may be changed after final/lock.json is written.
+llm_family_router_final:
+  prompt_version: 2
+  view: "scoring"
+  expected_final_count: 120
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_parent_relative_improvement: 0.05
+    minimum_base_relative_improvement: 0.15
+    minimum_base_invalid_selection_relative_reduction: 0.20
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# v0.5 development hypothesis, registered after the v0.4 final was closed as
+# inconclusive. All selection/confirmation/promotion/final seeds are new. The
+# final blueprint contract is prepared before training, but its simulations and
+# scores remain unopened until every preceding gate passes.
+robust_family_experts:
+  method_version: 1
+  arms: ["boltzmann-mean", "direct-mean", "direct-cvar"]
+  training_pool:
+    split: "robust-expert-train-pool-v1"
+    pool_count: 480
+    seed: 71000042
+    selected_per_family: 24
+  selection_folds:
+    - split: "robust-expert-selection-a-v1"
+      pool_count: 480
+      seed: 72000042
+      selected_per_family: 30
+    - split: "robust-expert-selection-b-v1"
+      pool_count: 480
+      seed: 73000042
+      selected_per_family: 30
+    - split: "robust-expert-selection-c-v1"
+      pool_count: 480
+      seed: 74000042
+      selected_per_family: 30
+  confirmation_shard:
+    split: "robust-expert-confirmation-v1"
+    pool_count: 960
+    seed: 75000042
+    selected_per_family: 60
+  promotion_shard:
+    split: "robust-expert-promotion-v1"
+    pool_count: 1920
+    seed: 76000042
+    selected_per_family: 120
+  final_shard:
+    split: "robust-expert-final-v1"
+    pool_count: 1920
+    seed: 77000042
+    selected_per_family: 120
+  updates: 6
+  records_per_backward: 2
+  step_l2: 0.006
+  direct_trust_beta: 0.10
+  cvar_tail_fraction: 0.35
+  cvar_uniform_floor: 0.25
+  cache_limit_gb: 4.0
+  selection:
+    minimum_family_pooled_relative_improvement: 0.05
+    minimum_fold_relative_improvement: 0.02
+    minimum_improving_folds: 2
+    maximum_fold_relative_regression: 0.02
+    minimum_route_mean_relative_improvement: 0.075
+    minimum_route_worst_fold_relative_improvement: 0.03
+    minimum_candidate_relative_improvement_over_control: 0.05
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.08
+  confirmation_gates:
+    minimum_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+  promotion_gates:
+    minimum_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+  final_gates:
+    minimum_parent_relative_improvement: 0.075
+    minimum_base_relative_improvement: 0.15
+    minimum_base_invalid_selection_relative_reduction: 0.20
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+
+# v0.6 development hypothesis. The v0.5 selection folds are used only to
+# choose four unresolved families; every v0.6 train/selection/downstream DGP is
+# generated from a new split and seed. The candidate preserves the anchor
+# policy on low-regret groups and changes only simulator-verified failures.
+targeted_repair:
+  method_version: 1
+  source_selection_fingerprint: "622962b683b3e0a3212dcdacc6704662953bdaba9321cb8064257fca73a60e06"
+  arms: ["boltzmann-replay", "triggered-repair"]
+  discovery:
+    family_count: 4
+    exclude_existing_anchor_experts: true
+    ranking_metric: "v0.5 boltzmann control pooled parent family regret"
+  training_pool:
+    split: "targeted-repair-train-pool-v1"
+    pool_count: 960
+    seed: 78000042
+    selected_per_family: 24
+    repair_groups_per_family: 18
+    anchor_groups_per_family: 6
+  selection_folds:
+    - split: "targeted-repair-selection-a-v1"
+      pool_count: 480
+      seed: 79000042
+      selected_per_family: 30
+    - split: "targeted-repair-selection-b-v1"
+      pool_count: 480
+      seed: 80000042
+      selected_per_family: 30
+    - split: "targeted-repair-selection-c-v1"
+      pool_count: 480
+      seed: 81000042
+      selected_per_family: 30
+  confirmation_shard:
+    split: "targeted-repair-confirmation-v1"
+    pool_count: 960
+    seed: 82000042
+    selected_per_family: 60
+  promotion_shard:
+    split: "targeted-repair-promotion-v1"
+    pool_count: 1920
+    seed: 83000042
+    selected_per_family: 120
+  final_shard:
+    split: "targeted-repair-final-v1"
+    pool_count: 1920
+    seed: 84000042
+    selected_per_family: 120
+  updates: 6
+  records_per_backward: 2
+  step_l2: 0.006
+  cache_limit_gb: 4.0
+  trigger:
+    expected_regret_threshold: 0.35
+    repair_lambda_floor: 0.25
+    repair_lambda_ceiling: 1.00
+    invalid_argmax_lambda: 1.00
+  selection:
+    minimum_family_pooled_relative_improvement: 0.03
+    minimum_fold_relative_improvement: 0.01
+    minimum_improving_folds: 2
+    maximum_fold_relative_regression: 0.01
+    minimum_route_mean_relative_improvement: 0.05
+    minimum_route_worst_fold_relative_improvement: 0.02
+    minimum_candidate_relative_improvement_over_control: 0.05
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.08
+  confirmation_gates:
+    minimum_relative_improvement_over_anchor: 0.05
+    minimum_relative_improvement_over_control: 0.05
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+  promotion_gates:
+    minimum_relative_improvement_over_anchor: 0.05
+    minimum_relative_improvement_over_control: 0.05
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+  final_gates:
+    minimum_parent_relative_improvement: 0.075
+    minimum_base_relative_improvement: 0.15
+    minimum_base_invalid_selection_relative_reduction: 0.20
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+
+base_bakeoff:
+  candidates:
+    - name: "qwen3.5-4b"
+      parameter_scale: "4B"
+      source_key: "research_base_mlx_4bit"
+    - name: "qwen3.5-9b"
+      parameter_scale: "9B"
+      source_key: "teacher_mlx_4bit"
+  smoke_groups: 8
+  smoke_microsteps: 32
+  max_seq_length: 640
+  cache_limit_gb: 4.0
+  clear_cache_threshold_gb: 4.0
+  num_layers: 4
+  rank: 32
+  scale: 20.0
+  dropout: 0.05
+  grad_accumulation_steps: 4
+  learning_rate_a: 5.0e-7
+  learning_rate_b: 2.0e-6
+  warmup_fraction: 0.03
+  weight_decay: 0.0
+  targets:
+    - "linear_attn.in_proj_qkv"
+    - "linear_attn.out_proj"
+    - "self_attn.q_proj"
+    - "self_attn.v_proj"
+  gates:
+    minimum_relative_regret_improvement: 0.10
+    maximum_language_accuracy_regression: 0.03
+    maximum_peak_memory_gb: 18.0
+    maximum_training_time_ratio: 2.5
