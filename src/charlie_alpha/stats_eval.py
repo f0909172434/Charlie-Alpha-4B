@@ -609,12 +609,18 @@ def _run_pbench(
                 filename=row["dataset_path"],
             )
         )
-        result = agent.analyze(
-            data_paths=[data_path],
-            question=str(row["question"]),
-            language="en",
-            route="base" if route == "base" else "stats",
-        )
+        try:
+            result = agent.analyze(
+                data_paths=[data_path],
+                question=str(row["question"]),
+                language="en",
+                route="base" if route == "base" else "stats",
+            )
+        except Exception as error:
+            raise RuntimeError(
+                "P-Bench task execution failed: "
+                f"task_id={row['task_id']!r}, dataset_path={row['dataset_path']!r}"
+            ) from error
         plan_variables = result.get("analysis_plan", {}).get("variables", {})
         target_terms: list[str] = []
         for role in ("target", "exposure", "treatment", "predictor", "predictors", "group"):

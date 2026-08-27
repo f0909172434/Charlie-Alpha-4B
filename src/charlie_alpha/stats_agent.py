@@ -282,8 +282,10 @@ class StatsAgent:
                 {"kind": "inspect", "sandbox": _sandbox_metadata(result), "result": payload}
             )
             if payload.get("status") != "ok":
+                sandbox = _sandbox_metadata(result)
                 raise RuntimeError(
-                    f"Data inspection failed: {payload.get('error', 'unknown error')}"
+                    "Data inspection failed: "
+                    f"{payload.get('error', 'unknown error')}; sandbox={sandbox}"
                 )
             summaries.append(dict(payload["result"]))
             normalized.append(normalized_path)

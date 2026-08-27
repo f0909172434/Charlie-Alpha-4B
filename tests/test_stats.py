@@ -680,9 +680,17 @@ def test_evolution_uses_cycle_specific_promotion_shards() -> None:
     first = _promotion_scenarios(config, 1)
     repeated = _promotion_scenarios(config, 1)
     second = _promotion_scenarios(config, 2)
+    stats_data = config.section("stats_data")
     discovery_ids = {
-        row["scenario"]["blueprint_id"]
-        for row in map(json.loads, (root / "data/stats/surface/dev.jsonl").read_text().splitlines())
+        scenario.blueprint_id
+        for scenario in build_blueprints(
+            {
+                "train": 0,
+                "valid": 0,
+                "dev": int(stats_data["dev_dgps"]),
+            },
+            seed=int(stats_data["split_seed"]),
+        )
     }
     assert first == repeated
     assert len(first) == int(config.section("evolution")["promotion_shard"]["count"])
@@ -1792,6 +1800,8 @@ def test_stats_input_keeps_declared_extension_for_content_addressed_symlink(
 def test_stats_python_and_r_sandboxes_block_all_escape_classes() -> None:
     root = Path(__file__).resolve().parents[1]
     config = load_config(root / "configs" / "pipeline.stats.yaml")
+    if not (root / ".pixi" / "envs" / "default" / "bin" / "python").exists():
+        pytest.skip("locked Pixi statistics runtime is not installed")
     runtime = resolve_stats_runtime(config)
     result = sandbox_self_test(
         python_executable=runtime.python,
@@ -1804,6 +1814,8 @@ def test_stats_python_and_r_sandboxes_block_all_escape_classes() -> None:
 def test_audited_python_runtime_executes_auxiliary_procedure(tmp_path: Path) -> None:
     root = Path(__file__).resolve().parents[1]
     config = load_config(root / "configs" / "pipeline.stats.yaml")
+    if not (root / ".pixi" / "envs" / "default" / "bin" / "python").exists():
+        pytest.skip("locked Pixi statistics runtime is not installed")
     runtime = resolve_stats_runtime(config)
     data = tmp_path / "binary.csv"
     data.write_text("event\n1\n1\n1\n0\n", encoding="utf-8")

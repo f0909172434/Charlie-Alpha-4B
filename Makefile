@@ -177,6 +177,42 @@ evolve-llm-router-promote:
 evolve-llm-router-final:
 	$(CLI) stats policy-llm-router-final --config configs/pipeline.evolve.yaml
 
+evolve-llm-router-replication-prepare:
+	$(CLI) stats policy-llm-router-replication-prepare --config configs/pipeline.evolve.yaml
+
+evolve-llm-router-replicate:
+	$(CLI) stats policy-llm-router-replicate --config configs/pipeline.evolve.yaml
+
+evolve-llm-router-replication-diagnose:
+	$(CLI) stats policy-llm-router-replication-diagnose --config configs/pipeline.evolve.yaml
+
+evolve-llm-router-reduced-prepare:
+	$(CLI) stats policy-llm-router-reduced-prepare --config configs/pipeline.evolve.yaml
+
+evolve-llm-router-reduced-confirm:
+	$(CLI) stats policy-llm-router-reduced-confirm --config configs/pipeline.evolve.yaml
+
+evolve-sufficiency-guard-prepare:
+	$(CLI) stats policy-sufficiency-guard-prepare --config configs/pipeline.evolve.yaml
+
+evolve-sufficiency-guard-confirm:
+	$(CLI) stats policy-sufficiency-guard-confirm --config configs/pipeline.evolve.yaml
+
+evolve-sufficiency-guard-diagnose:
+	$(CLI) stats policy-sufficiency-guard-diagnose --config configs/pipeline.evolve.yaml
+
+evolve-sufficiency-guard-thresholded-prepare:
+	$(CLI) stats policy-sufficiency-guard-thresholded-prepare --config configs/pipeline.evolve.yaml
+
+evolve-sufficiency-guard-thresholded-confirm:
+	$(CLI) stats policy-sufficiency-guard-thresholded-confirm --config configs/pipeline.evolve.yaml
+
+evolve-router-historical-external-prepare:
+	$(CLI) stats policy-router-historical-external-prepare --config configs/pipeline.evolve.yaml
+
+evolve-router-historical-external:
+	$(CLI) stats policy-router-historical-external --config configs/pipeline.evolve.yaml
+
 evolve-robust-experts-prepare:
 	$(CLI) stats robust-experts-prepare --config configs/pipeline.evolve.yaml
 

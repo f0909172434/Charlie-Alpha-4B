@@ -143,6 +143,18 @@ make evolve-targeted-repair-prepare # freeze the v0.6 discovery and gate contrac
 make evolve-targeted-repair-data    # build fresh training and three selection folds
 make evolve-targeted-repair-train   # train the two compute-matched targeted arms
 make evolve-targeted-repair-select  # select or stop without opening downstream shards
+make evolve-llm-router-replication-prepare # freeze the powered family-router replication
+make evolve-llm-router-replicate    # score the frozen route on its fresh replication surface
+make evolve-llm-router-replication-diagnose # post-rejection mechanism diagnosis only
+make evolve-llm-router-reduced-prepare # freeze the causal-expert exclusion before fresh scoring
+make evolve-llm-router-reduced-confirm # confirm the reduced route on a new surface
+make evolve-sufficiency-guard-prepare # freeze the argmax sufficiency guard
+make evolve-sufficiency-guard-confirm # confirm or reject the argmax guard
+make evolve-sufficiency-guard-diagnose # retired-surface probability-margin diagnosis
+make evolve-sufficiency-guard-thresholded-prepare # freeze the 0.90 guard
+make evolve-sufficiency-guard-thresholded-confirm # score it on a fourth fresh surface
+make evolve-router-historical-external-prepare # freeze the opened-suite falsification gate
+make evolve-router-historical-external # run routed adapters on historical P-Bench and StatQA
 ```
 
 The equivalent CLI supports at most two cycles per invocation:
@@ -366,6 +378,64 @@ The machine-readable contract, data, training, and selection reports are
 [`targeted-repair-data.json`](../reports/evolve/targeted-repair-data.json),
 [`targeted-repair-training.json`](../reports/evolve/targeted-repair-training.json), and
 [`targeted-repair-selection.json`](../reports/evolve/targeted-repair-selection.json).
+
+## Champion Replacement Study — H4
+
+This finite study asked whether a frozen policy composed of a high-confidence sufficiency guard,
+a reduced family router, and the existing frozen experts should replace the v0.3 champion. Its
+terminal rule was binary: failure of any historical-external or sealed-final gate retains v0.3 and
+ends the study without tuning the failed candidate. A new sealed final could be designed only after
+the historical falsification gate passed.
+
+The original routed-expert candidate was first independently replicated on 900 new blueprints
+(2,700 language views). It lowered trilingual normalized regret by `12.10%`; the paired absolute
+improvement was `0.05094`, with 95% interval `[0.03692, 0.06530]`. Router family accuracy was
+`88.96%`, expert coverage `50.00%`, and wrong-expert routing `1.04%`. The candidate nevertheless
+failed its preregistered family-safety gate: experimental/causal regret increased by `0.15035`
+against a ceiling of `0.15`. It was rejected without relaxing that ceiling.
+
+A post-rejection leave-one-expert-out diagnosis localized the failure to the
+`experimental_causal` expert. Falling only that family back to the parent restored every granular
+gate while retaining an `11.92%` aggregate gain, but this was diagnostic evidence on a retired
+surface. The exclusion was therefore frozen prospectively and scored on another disjoint
+900-blueprint confirmation. The reduced route passed every gate, improving trilingual regret by
+`10.62%`; its paired absolute improvement was `0.04467`, with 95% interval
+`[0.03221, 0.05775]`.
+
+The first binary sufficiency guard intercepted whenever the parent preferred `insufficient` over
+`sufficient`. On a third paired complete/incomplete surface it found every incomplete prompt, but
+complete specificity was only `94.19%`; English specificity was `82.56%`, and the
+missing-selection and time-series families were each `66.67%`. Its false positives erased the
+router gain and the paired interval crossed zero, so that guard was rejected. A single permitted
+post-rejection margin diagnosis found that requiring `P(insufficient) >= 0.90` separated the
+retired complete and incomplete views. The threshold and prompt were then frozen before a fourth
+disjoint 900-blueprint paired confirmation. That thresholded guard achieved `100%` complete
+specificity and `100%` incomplete sensitivity in every language and family cell while the full
+policy retained a `10.72%` trilingual regret improvement. The paired absolute improvement was
+`0.04431`, with 95% interval `[0.03180, 0.05699]`.
+
+H4 therefore survived synthetic confirmation but failed the preregistered historical-external
+falsification gate. Across the previously opened 90-task P-Bench suite, routed adapters improved
+raw accuracy from `0%` to `61.11%` and strict accuracy from `0%` to `36.67%`. Across the 200-task
+StatQA suite, exact accuracy remained `1.0%`, method-set accuracy remained `5.5%`, and column-set
+accuracy remained `22.0%`. The required StatQA exact improvement was five points; the observed
+improvement was zero. Every other historical gate passed, but the conjunction failed.
+
+Historical evaluator v1 initially stopped before scoring one 351-column P-Bench task because its
+complete 86,215-byte inspection JSON exceeded the 65,536-byte sandbox transport ceiling. Evaluator
+v2 raised only this bounded transport ceiling to 131,072 bytes and recomputed all 290 tasks under a
+new fingerprint. It did not alter a model, prompt, adapter, data source, or decision gate.
+
+The study is closed as `external-rejected`. No untouched external final was selected, generated,
+opened, or scored; the H4 policy was not modified after the external result; and no H5 was started.
+The official champion remains `v0.3.0-parent`. Machine-readable evidence is in
+[`family-router-replication.json`](../reports/evolve/family-router-replication.json),
+[`family-router-replication-failure.json`](../reports/evolve/family-router-replication-failure.json),
+[`family-router-reduced.json`](../reports/evolve/family-router-reduced.json),
+[`sufficiency-guard.json`](../reports/evolve/sufficiency-guard.json),
+[`sufficiency-guard-margin.json`](../reports/evolve/sufficiency-guard-margin.json),
+[`sufficiency-guard-thresholded.json`](../reports/evolve/sufficiency-guard-thresholded.json), and
+[`router-historical-external.json`](../reports/evolve/router-historical-external.json).
 
 ## Development cycles
 

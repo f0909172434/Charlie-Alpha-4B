@@ -103,7 +103,29 @@ from .stats_robust_experts import (
     select_robust_expert_route,
 )
 from .stats_route import run_oracle_family_route
+from .stats_router_external import (
+    prepare_historical_external_contract,
+    run_historical_external_evaluation,
+)
+from .stats_router_failure import diagnose_family_router_replication_failure
+from .stats_router_reduced import (
+    prepare_reduced_family_router_contract,
+    run_reduced_family_router_confirmation,
+)
+from .stats_router_replication import (
+    prepare_family_router_replication_contract,
+    run_family_router_replication,
+)
 from .stats_sandbox import sandbox_self_test as stats_sandbox_self_test
+from .stats_sufficiency_guard import (
+    diagnose_sufficiency_guard_margin,
+    prepare_sufficiency_guard_contract,
+    run_sufficiency_guard_confirmation,
+)
+from .stats_sufficiency_thresholded import (
+    prepare_thresholded_sufficiency_guard_contract,
+    run_thresholded_sufficiency_guard_confirmation,
+)
 from .stats_targeted_repair import (
     prepare_targeted_repair_contract,
     prepare_targeted_repair_data,
@@ -845,6 +867,107 @@ def stats_policy_llm_router_final(
 ) -> None:
     """Open the sealed v0.3 DGP final only after router promotion passes."""
     _show(evaluate_llm_family_router_final(load_config(config), force=force))
+
+
+@stats_app.command("policy-llm-router-replication-prepare")
+def stats_policy_llm_router_replication_prepare(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Freeze the powered fresh-surface replication contract before opening it."""
+    _show(prepare_family_router_replication_contract(load_config(config)))
+
+
+@stats_app.command("policy-llm-router-replicate")
+def stats_policy_llm_router_replicate(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Run the preregistered independent frozen-router replication."""
+    _show(run_family_router_replication(load_config(config), force=force))
+
+
+@stats_app.command("policy-llm-router-replication-diagnose")
+def stats_policy_llm_router_replication_diagnose(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Diagnose an isolated granular failure without rescuing the rejected route."""
+    _show(diagnose_family_router_replication_failure(load_config(config)))
+
+
+@stats_app.command("policy-llm-router-reduced-prepare")
+def stats_policy_llm_router_reduced_prepare(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Preregister the prospective reduced family route before fresh confirmation."""
+    _show(prepare_reduced_family_router_contract(load_config(config)))
+
+
+@stats_app.command("policy-llm-router-reduced-confirm")
+def stats_policy_llm_router_reduced_confirm(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Confirm the prospective reduced family route on its fresh powered surface."""
+    _show(run_reduced_family_router_confirmation(load_config(config), force=force))
+
+
+@stats_app.command("policy-sufficiency-guard-prepare")
+def stats_policy_sufficiency_guard_prepare(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Preregister the binary sufficiency guard before fresh paired confirmation."""
+    _show(prepare_sufficiency_guard_contract(load_config(config)))
+
+
+@stats_app.command("policy-sufficiency-guard-confirm")
+def stats_policy_sufficiency_guard_confirm(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Confirm guard safety and reduced-route efficacy on a fresh paired surface."""
+    _show(run_sufficiency_guard_confirmation(load_config(config), force=force))
+
+
+@stats_app.command("policy-sufficiency-guard-diagnose")
+def stats_policy_sufficiency_guard_diagnose(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Test whether a rejected guard has a prospective probability margin."""
+    _show(diagnose_sufficiency_guard_margin(load_config(config)))
+
+
+@stats_app.command("policy-sufficiency-guard-thresholded-prepare")
+def stats_policy_sufficiency_guard_thresholded_prepare(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Preregister the calibrated guard before its disjoint confirmation."""
+    _show(prepare_thresholded_sufficiency_guard_contract(load_config(config)))
+
+
+@stats_app.command("policy-sufficiency-guard-thresholded-confirm")
+def stats_policy_sufficiency_guard_thresholded_confirm(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Confirm the calibrated guard and reduced route on a fresh paired surface."""
+    _show(run_thresholded_sufficiency_guard_confirmation(load_config(config), force=force))
+
+
+@stats_app.command("policy-router-historical-external-prepare")
+def stats_policy_router_historical_external_prepare(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+) -> None:
+    """Freeze the historical external falsification contract."""
+    _show(prepare_historical_external_contract(load_config(config)))
+
+
+@stats_app.command("policy-router-historical-external")
+def stats_policy_router_historical_external(
+    config: StatsConfigOption = Path("configs/pipeline.evolve.yaml"),
+    force: bool = False,
+) -> None:
+    """Run routed adapters on the previously opened P-Bench and StatQA suites."""
+    _show(run_historical_external_evaluation(load_config(config), force=force))
 
 
 @stats_app.command("robust-experts-prepare")

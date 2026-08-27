@@ -1,0 +1,408 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "fb13c11f33452aff3d5179cdce8fc36899b1c6a665fa34d0d36d6179da93cc4d",
+  "method": "preregistered independent frozen family-router replication",
+  "contract_fingerprint": "c42079581ce09c5c0b151c16f55c324995db2259a75d4fca894536a7d3023b4c",
+  "manifest": {
+    "schema_version": 1,
+    "fingerprint": "47a1ff461ebbe965223fc10104cba3cf2656bbdb0147ffb185a995f5a0a1e90f",
+    "split": "evolve-llm-family-router-v2-independent-replication-v1",
+    "seed": 85000042,
+    "count": 900,
+    "view": "scoring",
+    "sha256": "c9c1b43ac3f88f879b06599af4a4d367cd5a467967d5913bfd1c4fb9516b4024",
+    "used_for_router_training": false,
+    "used_for_temperature_calibration": false,
+    "used_for_threshold_selection": false,
+    "used_for_confirmation": false,
+    "used_for_promotion": false,
+    "used_for_expert_training": false,
+    "promotion_surface_opened": false,
+    "final_surface_opened": false,
+    "immutable": true
+  },
+  "integrity_audit": {
+    "method": "Exact blueprint IDs, semantic parameter hashes, and within-family normalized L-infinity nearest-neighbor distance",
+    "historical_source_manifest_fingerprint": "6ec67d851d6bac1e0cfe7baed546f4a9f069aeeed0bc65925e32536889cdfef2",
+    "historical_source_files": [
+      {
+        "path": "data/evolve/cycles/cycle-0001/promotion.jsonl",
+        "sha256": "df5cd102ce5744442605123b5a4db6529cb8f571e4eaeac014d86ce0b076db97",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0002/promotion.jsonl",
+        "sha256": "28957cf440d174274e5070ae1a98293864a01daaca93f853871b93175cd7769a",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0003/promotion.jsonl",
+        "sha256": "b89b9752a1989198b369ea3e4cb7d64aa15edabc1dc520ce92597dc2eb7a5828",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0004/promotion.jsonl",
+        "sha256": "9552d9d709043698f5f772ad507190b3662511bb59e36db6c4b236b3366ad4bb",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0005/promotion.jsonl",
+        "sha256": "93288ac55b67250ad4f6af558c33717b182020182fea2f5f242d2b4688b0fc93",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/selection_fold_1.jsonl",
+        "sha256": "c54f54e8d65a760509a409ea8655c7d0e054da997cb484c5a711a4d209f26b04",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/selection_fold_2.jsonl",
+        "sha256": "78090345b1b2b98f674bfbed4311de619d5cac7eaba8acfe3a59c71d51ed8bc7",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/selection_fold_3.jsonl",
+        "sha256": "647f6d5f37a37bb3635875153c4717011f282db77d72691700e70aa3f2b99a77",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/training_pool.jsonl",
+        "sha256": "8abf7cb76a5463988fc61c54eaee08c96d0c319d4c49f6a8285e21f0ddb8f3fa",
+        "scenario_rows": 288
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/selection_fold_1.jsonl",
+        "sha256": "b9fc094c108a229d7c14ca68eb0548664fca3ffb5a8900004b65c992f7197a93",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/selection_fold_2.jsonl",
+        "sha256": "eed4171dd7887c0cc9d9abea58846e24771dc3fc43f641ba076507f28cb39ba4",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/selection_fold_3.jsonl",
+        "sha256": "5297da07c80b2f0266fbfb9895ce89546470dfafffb81e02f912a6bf9977e0f4",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/training_pool.jsonl",
+        "sha256": "9c0aeff980f4d5e2fcc70eb26a205bc9257a5fdce34cf598b1b02d8ea0ca9a0b",
+        "scenario_rows": 288
+      },
+      {
+        "path": "data/stats/blueprints/dev.jsonl",
+        "sha256": "6ccec8ea2c631f748f1aa087e8b3682bd0410cc407089defb34c11f5575ca158",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/stats/blueprints/final.jsonl",
+        "sha256": "340b776c266360c06eb1ec5e0bafffe6bfaddffb308da9fea22ba8487ac94f7f",
+        "scenario_rows": 120
+      },
+      {
+        "path": "data/stats/blueprints/random/train.jsonl",
+        "sha256": "60d5d5f3b6c26706d94c652b36f51ccde65ddb00d1097d4890a098645b822af5",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/blueprints/train.jsonl",
+        "sha256": "bd7185d1df41f56c34c7a4a9d26c0e129cf1193325f97ab4f24ff2558e2ea2a6",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/blueprints/valid.jsonl",
+        "sha256": "cead11ab6a7f9c9f6b9408686f48071a301922f8e766bada2dd30a43800d4a4a",
+        "scenario_rows": 30
+      },
+      {
+        "path": "data/stats/surface/dev.jsonl",
+        "sha256": "fa44de8180c41adac4d789f913f417b6110748e17ef2d2ccd80599d6c6a2100c",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/stats/surface/final.jsonl",
+        "sha256": "435e635921f8c5999118e783e1ad3dd9b91802dd60d9b1b79fcfc223ffe8d8bc",
+        "scenario_rows": 120
+      },
+      {
+        "path": "data/stats/surface/random/train.jsonl",
+        "sha256": "4a40be6376b66bf1a3be90c4a8397f7dcdabaf2935879de6cdd66d3995aaf8e5",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/surface/train.jsonl",
+        "sha256": "16c7a2e0afeff7da0a6cb4fee2cba40d77e8abf0b0a183f9dffa1663e02a1b9e",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/surface/valid.jsonl",
+        "sha256": "e798aeb8a46b786cec6e75c2d15b41f5eacbbab66e25ec7cdb1bc28999cf7648",
+        "scenario_rows": 30
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-experts/confirmation.jsonl",
+        "sha256": "117aecbbb6067b894a81faa45c3c1fd9f2ee7017220053ced8f5ea2932e28c14",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-experts/selection-surface.jsonl",
+        "sha256": "66ebbf1adf4d95899a73e7c4cc4816f1cdd70c09c22bdf0a49df7563e8e5a7f6",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router/validation.jsonl",
+        "sha256": "b92dfd8787972eebde51f333a0a8a4586f917a0aa01886b277536bd2fffb657d",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/confirmation.jsonl",
+        "sha256": "dc59b1b8d5dc912b7b8a890bc2985f814b36d13ed3b0d72fe447d40b92370d22",
+        "scenario_rows": 360
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/promotion/promotion.jsonl",
+        "sha256": "13546dc58140522a8ccfb2cad04e5dd014614b56088e1ec043dab889de22e06d",
+        "scenario_rows": 720
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/validation.jsonl",
+        "sha256": "b06f0aadedefdb8f4510e9fb2dfb220358918ef82c99cda5e6d464458e9d386e",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-route/confirmation.jsonl",
+        "sha256": "4ad3e678fb5cf222fca64b00967eb75a8fa060ff2d1d8e7b5d2192f6f27e6fbe",
+        "scenario_rows": 120
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-router/calibration.jsonl",
+        "sha256": "b6bb3b41949defe4ed5916adf642c0e0b8c30080ecbe0531bf4c833195c06f38",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-router/train.jsonl",
+        "sha256": "d23cb242235bc0110d3cd985db88563bae98c74fcdad2deb32c3b812af8b34ce",
+        "scenario_rows": 720
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-router/validation.jsonl",
+        "sha256": "b92dfd8787972eebde51f333a0a8a4586f917a0aa01886b277536bd2fffb657d",
+        "scenario_rows": 240
+      }
+    ],
+    "historical_unique_blueprints": 7098,
+    "historical_unique_semantic_points": 7018,
+    "new_blueprints": 900,
+    "blueprint_id_overlap_count": 0,
+    "semantic_overlap_count": 0,
+    "minimum_normalized_linf_distance": 0.020540440888530354,
+    "minimum_distance_family": "survival",
+    "registered_minimum_normalized_distance": 1e-06,
+    "passed": true
+  },
+  "absolute_metrics": {
+    "v0.3-parent": {
+      "count": 900,
+      "normalized_regret": 0.40868727452200576,
+      "accuracy": 0.4666666666666667,
+      "invalid_selection_rate": 0.33,
+      "domain_accuracy": {
+        "inference_and_design": 0.3296296296296296,
+        "prediction_and_analysis": 0.7111111111111111,
+        "probability_and_bayes": 0.6333333333333333
+      },
+      "languages": {
+        "en": {
+          "count": 900,
+          "normalized_regret": 0.40868727452200576,
+          "accuracy": 0.4666666666666667,
+          "invalid_selection_rate": 0.33
+        },
+        "zh_Hans": {
+          "count": 900,
+          "normalized_regret": 0.42200302641073223,
+          "accuracy": 0.4633333333333333,
+          "invalid_selection_rate": 0.3388888888888889
+        },
+        "zh_Hant": {
+          "count": 900,
+          "normalized_regret": 0.4321976193602719,
+          "accuracy": 0.45555555555555555,
+          "invalid_selection_rate": 0.3388888888888889
+        }
+      },
+      "retention": {
+        "count": 24,
+        "accuracy": 1.0,
+        "groups": {
+          "domain:code": 1.0,
+          "domain:general": 1.0,
+          "domain:math": 1.0,
+          "domain:stem": 1.0,
+          "language:en": 1.0,
+          "language:zh_Hans": 1.0,
+          "language:zh_Hant": 1.0
+        }
+      }
+    },
+    "routed-experts": {
+      "count": 900,
+      "normalized_regret": 0.3637491791632475,
+      "accuracy": 0.5011111111111111,
+      "invalid_selection_rate": 0.2788888888888889,
+      "domain_accuracy": {
+        "inference_and_design": 0.3314814814814815,
+        "prediction_and_analysis": 0.8777777777777778,
+        "probability_and_bayes": 0.6333333333333333
+      },
+      "languages": {
+        "en": {
+          "count": 900,
+          "normalized_regret": 0.3637491791632475,
+          "accuracy": 0.5011111111111111,
+          "invalid_selection_rate": 0.2788888888888889
+        },
+        "zh_Hans": {
+          "count": 900,
+          "normalized_regret": 0.35279491950210196,
+          "accuracy": 0.5244444444444445,
+          "invalid_selection_rate": 0.2788888888888889
+        },
+        "zh_Hant": {
+          "count": 900,
+          "normalized_regret": 0.393522506119841,
+          "accuracy": 0.4955555555555556,
+          "invalid_selection_rate": 0.31222222222222223
+        }
+      },
+      "retention": {
+        "count": 24,
+        "accuracy": 1.0,
+        "groups": {
+          "domain:code": 1.0,
+          "domain:general": 1.0,
+          "domain:math": 1.0,
+          "domain:stem": 1.0,
+          "language:en": 1.0,
+          "language:zh_Hans": 1.0,
+          "language:zh_Hant": 1.0
+        }
+      }
+    }
+  },
+  "comparison": {
+    "parent_trilingual_regret": 0.42096264009767,
+    "candidate_trilingual_regret": 0.37002220159506355,
+    "trilingual_relative_regret_improvement": 0.12100940475569862,
+    "parent_accuracy": 0.4666666666666667,
+    "candidate_accuracy": 0.5011111111111111,
+    "parent_invalidity": 0.33,
+    "candidate_invalidity": 0.2788888888888889,
+    "parent_language_accuracy": {
+      "en": 0.4666666666666667,
+      "zh_Hans": 0.4633333333333333,
+      "zh_Hant": 0.45555555555555555
+    },
+    "candidate_language_accuracy": {
+      "en": 0.5011111111111111,
+      "zh_Hans": 0.5244444444444445,
+      "zh_Hant": 0.4955555555555556
+    },
+    "parent_language_regret": {
+      "en": 0.40868727452200576,
+      "zh_Hans": 0.42200302641073223,
+      "zh_Hant": 0.4321976193602719
+    },
+    "candidate_language_regret": {
+      "en": 0.3637491791632475,
+      "zh_Hans": 0.35279491950210196,
+      "zh_Hant": 0.393522506119841
+    },
+    "parent_family_regret": {
+      "bayesian_check": 0.2,
+      "binary_count_glm": 0.6415939190091638,
+      "categorical": 0.36264842757062876,
+      "clustered_repeated": 0.44966246318789577,
+      "experimental_causal": 0.5265056644970355,
+      "group_comparison": 0.6224779593349894,
+      "linear_robust": 0.5053651382753926,
+      "missing_selection": 0.42855567240757825,
+      "predictive_calibration": 0.36666666666666664,
+      "probability_distribution": 0.37466935842972354,
+      "survival": 0.373134328358209,
+      "time_series_leakage": 0.2111111111111111
+    },
+    "candidate_family_regret": {
+      "bayesian_check": 0.2,
+      "binary_count_glm": 0.6415939190091638,
+      "categorical": 0.39174050752274864,
+      "clustered_repeated": 0.1795546712689358,
+      "experimental_causal": 0.6768571725335742,
+      "group_comparison": 0.55778860287169,
+      "linear_robust": 0.5053651382753926,
+      "missing_selection": 0.42855567240757825,
+      "predictive_calibration": 0.24444444444444444,
+      "probability_distribution": 0.37466935842972354,
+      "survival": 0.373134328358209,
+      "time_series_leakage": 0.0
+    },
+    "gates": {
+      "trilingual_regret": true,
+      "accuracy": true,
+      "invalidity": true,
+      "retention": true,
+      "language_accuracy": true,
+      "language_regret": true,
+      "domain_accuracy": true,
+      "family_regret": false,
+      "finite_metrics": true
+    },
+    "all_gates_passed": false
+  },
+  "route_metrics": {
+    "count": 2700,
+    "family_accuracy": 0.8896296296296297,
+    "language_family_accuracy": {
+      "en": 0.8844444444444445,
+      "zh_Hans": 0.9,
+      "zh_Hant": 0.8844444444444445
+    },
+    "expert_coverage": 0.5,
+    "wrong_expert_rate": 0.01037037037037037,
+    "wrong_expert_count": 28
+  },
+  "paired_bootstrap": {
+    "mean_regret_improvement": 0.05094043850260648,
+    "ci95_lower": 0.036917689883276934,
+    "ci95_upper": 0.06529634427659885
+  },
+  "gates": {
+    "model_trilingual_regret": true,
+    "model_accuracy": true,
+    "model_invalidity": true,
+    "model_retention": true,
+    "model_language_accuracy": true,
+    "model_language_regret": true,
+    "model_domain_accuracy": true,
+    "model_family_regret": false,
+    "model_finite_metrics": true,
+    "relative_regret": true,
+    "router_family_accuracy": true,
+    "router_language_accuracy": true,
+    "wrong_expert_rate": true,
+    "expert_coverage": true,
+    "paired_bootstrap": true,
+    "fresh_surface_integrity": true
+  },
+  "passed": false,
+  "candidate_status": "replication-rejected",
+  "proceed_to_external_benchmark_design": false,
+  "automatic_champion_promotion": false,
+  "fresh_replication_surface_opened": true,
+  "fresh_replication_surface_retired": true,
+  "retired_v0_3_final_reused_for_scoring": false,
+  "interpretation": "The frozen router failed independent replication and is rejected as a champion candidate.",
+  "claim_boundary": "This is fresh synthetic DGP evidence for a frozen routing policy. It does not establish external benchmark validity, runtime acceptability, or weight-level superiority."
+}
