@@ -40,7 +40,8 @@
     "boltzmann-replay": 1152,
     "triggered-repair": 1152
   },
-  "selection_opened": false,
+  "open_state_semantics": "mutable lifecycle snapshot; downstream stages refresh opened-state fields",
+  "selection_opened": true,
   "confirmation_opened": false,
   "promotion_opened": false,
   "final_simulations_opened": false,

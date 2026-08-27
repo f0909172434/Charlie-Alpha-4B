@@ -9,6 +9,7 @@ import numpy as np
 
 from .config import ProjectConfig
 from .io_utils import canonical_hash, read_jsonl, sha256_file, write_json, write_jsonl
+from .provenance import creation_surface_open_state
 from .stats_calibrate import _surface_comparison
 from .stats_cone import _cone_paths
 from .stats_dgp import build_blueprints, simulate_scenario
@@ -204,8 +205,7 @@ def _ensure_route_confirmation_shard(
         "used_for_training": False,
         "single_use": True,
         "sealed_at_preparation": True,
-        "promotion_surface_opened": False,
-        "final_surface_opened": False,
+        **creation_surface_open_state(),
     }
     write_json(manifest_path, manifest)
     return manifest, simulations

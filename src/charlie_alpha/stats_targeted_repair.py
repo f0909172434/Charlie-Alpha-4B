@@ -18,6 +18,7 @@ from mlx_lm import load
 
 from .config import ProjectConfig
 from .io_utils import canonical_hash, read_jsonl, sha256_file, write_json, write_jsonl
+from .provenance import lifecycle_open_state, mark_lifecycle_opened
 from .stats_catalog import FAMILIES
 from .stats_cone import _apply_flat_update, _family_gradient_matrix
 from .stats_dgp import Scenario, build_blueprints, simulate_scenario
@@ -1368,11 +1369,7 @@ def run_targeted_repair_training(
         "backward_record_exposures": exposures,
         "expected_backward_record_exposures": expected_exposures,
         "backward_calls": backward_calls,
-        "selection_opened": False,
-        "confirmation_opened": False,
-        "promotion_opened": False,
-        "final_simulations_opened": False,
-        "final_scores_opened": False,
+        **lifecycle_open_state(),
     }
     write_json(training_path, result)
     write_json(
@@ -1739,6 +1736,12 @@ def select_targeted_repair_route(
     if selection_path.exists() and not force:
         existing = json.loads(selection_path.read_text(encoding="utf-8"))
         if existing.get("complete") and existing.get("fingerprint") == fingerprint:
+            training = mark_lifecycle_opened(training, "selection_opened")
+            write_json(training_path, training)
+            write_json(
+                config.root / "reports" / "evolve" / "targeted-repair-training.json",
+                training,
+            )
             return existing
         raise RuntimeError("Targeted repair selection fingerprint changed")
     result = {
@@ -1774,8 +1777,12 @@ def select_targeted_repair_route(
         ),
     }
     write_json(selection_path, result)
-    training["selection_opened"] = True
+    training = mark_lifecycle_opened(training, "selection_opened")
     write_json(training_path, training)
+    write_json(
+        config.root / "reports" / "evolve" / "targeted-repair-training.json",
+        training,
+    )
     write_json(
         config.root / "reports" / "evolve" / "targeted-repair-selection.json",
         _public_selection(result),

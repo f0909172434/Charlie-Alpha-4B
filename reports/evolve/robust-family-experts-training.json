@@ -82,7 +82,8 @@
     "direct-mean": 3456,
     "direct-cvar": 3456
   },
-  "selection_opened": false,
+  "open_state_semantics": "mutable lifecycle snapshot; downstream stages refresh opened-state fields",
+  "selection_opened": true,
   "confirmation_opened": false,
   "promotion_opened": false,
   "final_simulations_opened": false,

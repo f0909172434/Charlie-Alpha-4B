@@ -415,17 +415,21 @@ claim needs a fresh preregistered surface and must not silently reuse this one.
 The family-router promotion manifest records `used_for_promotion=true` but
 `promotion_surface_opened=false`; the promotion report records `promotion_shard_opened=true`.
 The manifest is a creation-time immutable provenance record and was intentionally not rewritten when
-scoring began. The runtime report is authoritative for whether it was actually opened. This schema is
-easy to misread and should be clarified in a future metadata-only maintenance change.
+scoring began. The runtime report is authoritative for whether it was actually opened. A later
+metadata-only maintenance change resolved the ambiguity for newly generated immutable surfaces by
+adding an explicit `open_state_semantics` field while preserving the legacy open-state booleans for
+backward compatibility. Historical manifests remain immutable and must still be interpreted using
+their runtime reports.
 
 ### v0.5/v0.6 public training snapshots
 
-The local ignored `training-status.json` files have `selection_opened=true`, while the committed
-`robust-family-experts-training.json` and `targeted-repair-training.json` still show
-`selection_opened=false`. Their fingerprints otherwise match. Selection later updated the local
-training status but did not regenerate the earlier public training snapshot. The dedicated committed
-selection reports are complete and authoritative: both selections opened, scored, and failed; all
-later surfaces remained closed.
+At recovery time the local ignored `training-status.json` files had `selection_opened=true`, while
+the committed `robust-family-experts-training.json` and `targeted-repair-training.json` still showed
+`selection_opened=false`. Their fingerprints otherwise matched. A later metadata-only maintenance
+change made those public training snapshots mutable lifecycle summaries, synchronized them after
+selection, and corrected the committed snapshots to `selection_opened=true`. The dedicated committed
+selection reports remain the authoritative outcome evidence: both selections opened, scored, and
+failed; all later surfaces remained closed.
 
 ### Uncommitted test change
 
