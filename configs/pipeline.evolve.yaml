@@ -437,6 +437,187 @@ llm_family_router_final:
     maximum_domain_accuracy_regression: 0.10
     maximum_family_regret_increase: 0.15
 
+# Preregistered after the 120-blueprint retired final was judged underpowered.
+# The old final contributes only the paired variance estimate below; its rows are
+# never rescored or used as replication outcomes. No setting may change after
+# independent-replication-v1/lock.json is written.
+llm_family_router_replication:
+  method_version: 1
+  prompt_version: 2
+  expected_selected_threshold: 0.60
+  replication_shard:
+    split: "evolve-llm-family-router-v2-independent-replication-v1"
+    count: 900
+    seed: 85000042
+    view: "scoring"
+  minimum_normalized_distance: 0.000001
+  bootstrap_seed: 85010042
+  power:
+    minimum_relative_improvement: 0.075
+    alpha_two_sided: 0.05
+    target_power: 0.90
+    safety_margin: 0.20
+    allocation_multiple: 12
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_replication_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Prospective candidate derived from the rejected replication's mechanism
+# diagnosis. The exclusion is fixed before this completely fresh confirmation.
+llm_family_router_reduced:
+  method_version: 1
+  prompt_version: 2
+  expected_selected_threshold: 0.60
+  excluded_family: "experimental_causal"
+  confirmation_shard:
+    split: "evolve-llm-family-router-v2-reduced-confirmation-v1"
+    count: 900
+    seed: 86000042
+    view: "scoring"
+  minimum_normalized_distance: 0.000001
+  bootstrap_seed: 86010042
+  power:
+    minimum_relative_improvement: 0.075
+    alpha_two_sided: 0.05
+    target_power: 0.90
+    safety_margin: 0.20
+    allocation_multiple: 12
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_replication_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# One mechanistically specified binary prompt was evaluated on the now-retired
+# reduced-route confirmation surface. This section freezes it before a third,
+# fully disjoint surface is generated in complete/incomplete paired views.
+sufficiency_guard:
+  method_version: 1
+  prompt_version: 1
+  excluded_family: "experimental_causal"
+  expected_selected_threshold: 0.60
+  confirmation_shard:
+    split: "evolve-sufficiency-guard-v1-confirmation"
+    count: 900
+    seed: 87000042
+    view: "scoring"
+  minimum_normalized_distance: 0.000001
+  bootstrap_seed: 87010042
+  power:
+    minimum_relative_improvement: 0.075
+    alpha_two_sided: 0.05
+    target_power: 0.90
+    safety_margin: 0.20
+    allocation_multiple: 12
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_replication_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_guard_specificity: 0.98
+    minimum_language_guard_specificity: 0.95
+    minimum_family_guard_specificity: 0.90
+    minimum_guard_sensitivity: 0.98
+    minimum_language_guard_sensitivity: 0.95
+    minimum_family_guard_sensitivity: 0.90
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Post-rejection diagnostic only; deliberately outside the frozen guard contract.
+sufficiency_guard_diagnosis:
+  thresholds: [0.50, 0.90, 0.95, 0.98, 0.99, 0.995, 0.999, 0.9995, 0.9999]
+
+# New candidate after the argmax guard was rejected. Threshold 0.90 was selected
+# only on the retired failed surface and is frozen before this fourth surface.
+sufficiency_guard_thresholded:
+  method_version: 1
+  prompt_version: 1
+  excluded_family: "experimental_causal"
+  expected_selected_threshold: 0.60
+  insufficient_probability_threshold: 0.90
+  confirmation_shard:
+    split: "evolve-sufficiency-guard-thresholded-v1-confirmation"
+    count: 900
+    seed: 88000042
+    view: "scoring"
+  minimum_normalized_distance: 0.000001
+  bootstrap_seed: 88010042
+  power:
+    minimum_relative_improvement: 0.075
+    alpha_two_sided: 0.05
+    target_power: 0.90
+    safety_margin: 0.20
+    allocation_multiple: 12
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_replication_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_guard_specificity: 0.98
+    minimum_language_guard_specificity: 0.95
+    minimum_family_guard_specificity: 0.90
+    minimum_guard_sensitivity: 0.98
+    minimum_language_guard_sensitivity: 0.95
+    minimum_family_guard_sensitivity: 0.90
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Previously opened v0.3 external suites are used only as a falsification gate.
+# They cannot authorize a fresh-final claim even if every gate passes.
+router_historical_external:
+  method_version: 1
+  excluded_family: "experimental_causal"
+  family_route_threshold: 0.60
+  gates:
+    p_bench_raw_points: 3.0
+    statqa_exact_points: 5.0
+    maximum_statqa_submetric_regression_points: 3.0
+    minimum_guard_specificity: 0.98
+    minimum_guard_sensitivity: 0.98
+    minimum_retention_accuracy: 1.0
+
 # v0.5 development hypothesis, registered after the v0.4 final was closed as
 # inconclusive. All selection/confirmation/promotion/final seeds are new. The
 # final blueprint contract is prepared before training, but its simulations and

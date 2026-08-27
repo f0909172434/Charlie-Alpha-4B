@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "post-rejection leave-one-expert-out mechanism diagnosis",
+  "replication_report_sha256": "1aa11676caca465906d03dec658542445c869d4aea39014ff059f77874949992",
+  "replication_fingerprint": "fb13c11f33452aff3d5179cdce8fc36899b1c6a665fa34d0d36d6179da93cc4d",
+  "culprit_family": "experimental_causal",
+  "culprit_expert_slug": "expert-experimental_causal-update-02",
+  "observed_family_regret_increase": 0.15035150803653874,
+  "registered_family_regret_ceiling": 0.15,
+  "leave_one_out_relative_regret_improvement": 0.11920725801308478,
+  "leave_one_out_comparison": {
+    "parent_trilingual_regret": 0.42096264009767,
+    "candidate_trilingual_regret": 0.3707808380456777,
+    "trilingual_relative_regret_improvement": 0.11920725801308478,
+    "parent_accuracy": 0.4666666666666667,
+    "candidate_accuracy": 0.5133333333333333,
+    "parent_invalidity": 0.33,
+    "candidate_invalidity": 0.2688888888888889,
+    "parent_language_accuracy": {
+      "en": 0.4666666666666667,
+      "zh_Hans": 0.4633333333333333,
+      "zh_Hant": 0.45555555555555555
+    },
+    "candidate_language_accuracy": {
+      "en": 0.5133333333333333,
+      "zh_Hans": 0.5244444444444445,
+      "zh_Hant": 0.4866666666666667
+    },
+    "parent_language_regret": {
+      "en": 0.40868727452200576,
+      "zh_Hans": 0.42200302641073223,
+      "zh_Hant": 0.4321976193602719
+    },
+    "candidate_language_regret": {
+      "en": 0.3545718368024693,
+      "zh_Hans": 0.3561540915828581,
+      "zh_Hant": 0.4016165857517058
+    },
+    "parent_family_regret": {
+      "bayesian_check": 0.2,
+      "binary_count_glm": 0.6415939190091638,
+      "categorical": 0.36264842757062876,
+      "clustered_repeated": 0.44966246318789577,
+      "experimental_causal": 0.5265056644970355,
+      "group_comparison": 0.6224779593349894,
+      "linear_robust": 0.5053651382753926,
+      "missing_selection": 0.42855567240757825,
+      "predictive_calibration": 0.36666666666666664,
+      "probability_distribution": 0.37466935842972354,
+      "survival": 0.373134328358209,
+      "time_series_leakage": 0.2111111111111111
+    },
+    "candidate_family_regret": {
+      "bayesian_check": 0.2,
+      "binary_count_glm": 0.6415939190091638,
+      "categorical": 0.39174050752274864,
+      "clustered_repeated": 0.1795546712689358,
+      "experimental_causal": 0.5535794393290914,
+      "group_comparison": 0.55778860287169,
+      "linear_robust": 0.5053651382753926,
+      "missing_selection": 0.42855567240757825,
+      "predictive_calibration": 0.24444444444444444,
+      "probability_distribution": 0.37466935842972354,
+      "survival": 0.373134328358209,
+      "time_series_leakage": 0.0
+    },
+    "gates": {
+      "trilingual_regret": true,
+      "accuracy": true,
+      "invalidity": true,
+      "retention": true,
+      "language_accuracy": true,
+      "language_regret": true,
+      "domain_accuracy": true,
+      "family_regret": true,
+      "finite_metrics": true
+    },
+    "all_gates_passed": true
+  },
+  "leave_one_out_vs_frozen_route": {
+    "mean_regret_improvement": -0.000758636450614269,
+    "ci95_lower": -0.006130029351711265,
+    "ci95_upper": 0.004416076119899342
+  },
+  "leave_one_out_vs_parent": {
+    "mean_regret_improvement": 0.050181802051992214,
+    "ci95_lower": 0.03705222478144206,
+    "ci95_upper": 0.06357227602863999
+  },
+  "routed_rows_for_culprit_expert": 173,
+  "interpretation": "The independent-replication rejection is concentrated in one family expert. Falling that family back to the frozen parent restores every aggregate and granular gate while retaining a large overall gain, but this post-outcome ablation is diagnostic only and cannot rescue the rejected candidate.",
+  "next_hypothesis": "A preregistered reduced router that excludes the culprit family expert may preserve the robust specialization gain without the family-level safety violation. It needs a completely fresh confirmation surface.",
+  "claim_boundary": "This analysis uses the retired replication outcome after rejection. It is suitable for mechanism diagnosis and prospective design only, not confirmatory evidence.",
+  "fingerprint": "39d2516227dc05209e0a15f65cb733261582412574755dfddc5fefcc4f19d663"
+}

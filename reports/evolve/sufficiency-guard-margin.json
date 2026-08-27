@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "post-rejection insufficiency-probability margin diagnosis",
+  "source_report_fingerprint": "1f61178235d72d9f5b63a52ca2f092d79aa3c90e84b0ca75dcdad9f673cf0b8b",
+  "source_report_sha256": "6fb0377141142be31a7e781e7cebc98743fcab767bb91123370873295030dd52",
+  "source_surface_sha256": "645b4ffb6c1b108bca0b585601fddad7d218b5da022dd86b65ee2bed5796515c",
+  "prompt_sha256": "3567713f3afc95446aa3bb2410b0c50fbdec8f66bd22406ca2f43c18a756a4e7",
+  "thresholds": [
+    {
+      "threshold": 0.5,
+      "complete_specificity": {
+        "accuracy": 0.9418518518518518,
+        "minimum_language_accuracy": 0.8255555555555556,
+        "minimum_family_accuracy": 0.6666666666666666
+      },
+      "incomplete_sensitivity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "gates": {
+        "specificity": false,
+        "language_specificity": false,
+        "family_specificity": false,
+        "sensitivity": true,
+        "language_sensitivity": true,
+        "family_sensitivity": true
+      },
+      "eligible": false
+    },
+    {
+      "threshold": 0.9,
+      "complete_specificity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "incomplete_sensitivity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "gates": {
+        "specificity": true,
+        "language_specificity": true,
+        "family_specificity": true,
+        "sensitivity": true,
+        "language_sensitivity": true,
+        "family_sensitivity": true
+      },
+      "eligible": true
+    },
+    {
+      "threshold": 0.95,
+      "complete_specificity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "incomplete_sensitivity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "gates": {
+        "specificity": true,
+        "language_specificity": true,
+        "family_specificity": true,
+        "sensitivity": true,
+        "language_sensitivity": true,
+        "family_sensitivity": true
+      },
+      "eligible": true
+    },
+    {
+      "threshold": 0.98,
+      "complete_specificity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "incomplete_sensitivity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "gates": {
+        "specificity": true,
+        "language_specificity": true,
+        "family_specificity": true,
+        "sensitivity": true,
+        "language_sensitivity": true,
+        "family_sensitivity": true
+      },
+      "eligible": true
+    },
+    {
+      "threshold": 0.99,
+      "complete_specificity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "incomplete_sensitivity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "gates": {
+        "specificity": true,
+        "language_specificity": true,
+        "family_specificity": true,
+        "sensitivity": true,
+        "language_sensitivity": true,
+        "family_sensitivity": true
+      },
+      "eligible": true
+    },
+    {
+      "threshold": 0.995,
+      "complete_specificity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "incomplete_sensitivity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "gates": {
+        "specificity": true,
+        "language_specificity": true,
+        "family_specificity": true,
+        "sensitivity": true,
+        "language_sensitivity": true,
+        "family_sensitivity": true
+      },
+      "eligible": true
+    },
+    {
+      "threshold": 0.999,
+      "complete_specificity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "incomplete_sensitivity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "gates": {
+        "specificity": true,
+        "language_specificity": true,
+        "family_specificity": true,
+        "sensitivity": true,
+        "language_sensitivity": true,
+        "family_sensitivity": true
+      },
+      "eligible": true
+    },
+    {
+      "threshold": 0.9995,
+      "complete_specificity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "incomplete_sensitivity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "gates": {
+        "specificity": true,
+        "language_specificity": true,
+        "family_specificity": true,
+        "sensitivity": true,
+        "language_sensitivity": true,
+        "family_sensitivity": true
+      },
+      "eligible": true
+    },
+    {
+      "threshold": 0.9999,
+      "complete_specificity": {
+        "accuracy": 1.0,
+        "minimum_language_accuracy": 1.0,
+        "minimum_family_accuracy": 1.0
+      },
+      "incomplete_sensitivity": {
+        "accuracy": 0.6585185185185185,
+        "minimum_language_accuracy": 0.37444444444444447,
+        "minimum_family_accuracy": 0.3333333333333333
+      },
+      "gates": {
+        "specificity": true,
+        "language_specificity": true,
+        "family_specificity": true,
+        "sensitivity": false,
+        "language_sensitivity": false,
+        "family_sensitivity": false
+      },
+      "eligible": false
+    }
+  ],
+  "selected_threshold": 0.9,
+  "prospective_threshold_exists": true,
+  "next_hypothesis": "A prospectively thresholded guard may separate incomplete prompts from complete English boundary views and requires a new fresh confirmation.",
+  "claim_boundary": "Threshold selection uses the retired failed confirmation and is development-only. It cannot alter or rescue that result.",
+  "fingerprint": "b9784ee4c1cb4672600f80c7aa8d97afb135827177f757a61bb828e8e11b9dff"
+}

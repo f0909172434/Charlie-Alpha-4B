@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "5cbcfbbaf33fcdf112ab10b939e81cd78f99c297c923924a91fa33269fe1ca35",
+  "evaluator_version": 2,
+  "method": "historical-external routed-adapter falsification",
+  "lock_fingerprint": "cbb56af8bab0ccdc08c5ef7cb5bfa8e75c281fee957f514be2c30fbefb7112ec",
+  "route_counts": {
+    "statqa": {
+      "parent": 158,
+      "expert-categorical-update-04": 34,
+      "expert-group_comparison-update-04": 7,
+      "expert-clustered_repeated-update-04": 1
+    },
+    "p_bench": {
+      "parent": 53,
+      "expert-group_comparison-update-04": 21,
+      "expert-categorical-update-04": 16
+    }
+  },
+  "absolute_metrics": {
+    "v0.3-parent": {
+      "p_bench_raw_accuracy": 0.0,
+      "p_bench_strict_accuracy": 0.0,
+      "statqa_exact_accuracy": 0.01,
+      "statqa_method_set_accuracy": 0.055,
+      "statqa_column_set_accuracy": 0.22
+    },
+    "guarded-reduced-route": {
+      "p_bench_raw_accuracy": 0.6111111111111112,
+      "p_bench_strict_accuracy": 0.36666666666666664,
+      "statqa_exact_accuracy": 0.01,
+      "statqa_method_set_accuracy": 0.055,
+      "statqa_column_set_accuracy": 0.22,
+      "statqa_column_recall": 0.30583333333333335
+    }
+  },
+  "deltas_points": {
+    "p_bench_raw": 61.111111111111114,
+    "statqa_exact": 0.0
+  },
+  "gates": {
+    "p_bench_raw_improvement": true,
+    "p_bench_strict_noninferiority": true,
+    "statqa_exact_improvement": false,
+    "statqa_method_set_noninferiority": true,
+    "statqa_column_set_noninferiority": true,
+    "fresh_guard_specificity": true,
+    "fresh_guard_sensitivity": true,
+    "retention_bypass": true,
+    "source_integrity": true
+  },
+  "passed": false,
+  "candidate_status": "external-rejected",
+  "proceed_to_new_external_final_design": false,
+  "automatic_champion_promotion": false,
+  "operational_compatibility": {
+    "minimum_inspection_output_bytes": 131072,
+    "reason": "The selected historical suite contains a 351-column input whose complete inspection JSON is 86,215 bytes. Evaluator v1 stopped at the 65,536-byte sandbox transport ceiling before producing a score. Evaluator v2 changes only that ceiling and recomputes every task under one fingerprint.",
+    "changes_model_prompt_adapter_source_or_gate": false
+  },
+  "interpretation": "Historical external evidence falsified the candidate as a champion replacement.",
+  "claim_boundary": "These P-Bench and StatQA tasks were previously opened for v0.3 and cannot support a fresh final or publication claim."
+}
