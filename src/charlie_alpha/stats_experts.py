@@ -18,6 +18,7 @@ from mlx_lm import load
 
 from .config import ProjectConfig
 from .io_utils import canonical_hash, read_jsonl, sha256_file, write_json, write_jsonl
+from .provenance import creation_surface_open_state
 from .stats_calibrate import _surface_comparison
 from .stats_catalog import FAMILIES
 from .stats_cone import (
@@ -128,8 +129,7 @@ def _ensure_expert_surface_shard(
         "used_for_training": False,
         "single_use": single_use,
         "immutable": True,
-        "promotion_surface_opened": False,
-        "final_surface_opened": False,
+        **creation_surface_open_state(),
     }
     write_json(manifest_path, manifest)
     return manifest, simulations

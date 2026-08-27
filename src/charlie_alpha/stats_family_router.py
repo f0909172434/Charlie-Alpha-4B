@@ -16,6 +16,7 @@ from mlx_lm import load
 
 from .config import ProjectConfig
 from .io_utils import canonical_hash, read_jsonl, sha256_file, write_json, write_jsonl
+from .provenance import creation_surface_open_state
 from .stats_calibrate import _surface_comparison
 from .stats_catalog import FAMILIES
 from .stats_cone import _cone_paths
@@ -327,8 +328,7 @@ def _ensure_router_shard(
         "used_for_confirmation": settings_key == "confirmation_shard",
         "used_for_promotion": settings_key == "promotion_shard",
         "used_for_expert_training": False,
-        "promotion_surface_opened": False,
-        "final_surface_opened": False,
+        **creation_surface_open_state(),
         "immutable": True,
     }
     write_json(manifest_path, manifest)

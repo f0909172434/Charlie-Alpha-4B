@@ -437,6 +437,20 @@ The official champion remains `v0.3.0-parent`. Machine-readable evidence is in
 [`sufficiency-guard-thresholded.json`](../reports/evolve/sufficiency-guard-thresholded.json), and
 [`router-historical-external.json`](../reports/evolve/router-historical-external.json).
 
+### Provenance open-state semantics
+
+Immutable surface manifests describe the state **when the surface was created**. New manifests retain
+the legacy `promotion_surface_opened` and `final_surface_opened` fields for compatibility, but also
+include `open_state_semantics` stating that these are creation-time snapshots; once a surface is
+scored, the dedicated runtime report is authoritative for whether it was actually opened. Historical
+immutable manifests are never rewritten just to make those flags look current.
+
+Training status reports are different: they are mutable lifecycle snapshots. When v0.5 or v0.6
+selection is opened, both the ignored local `training-status.json` and the tracked public training
+snapshot are refreshed to `selection_opened=true`. Selection reports remain authoritative for the
+selection outcome, and no later surface is implied to be open unless its own runtime evidence says
+so.
+
 ## Development cycles
 
 The completed cycles remain development evidence and do not change the v0.3 release.
