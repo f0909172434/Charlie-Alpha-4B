@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/readme-hero.svg" alt="Charlie Alpha 4B project header" width="100%" />
+</p>
+
 # Charlie alpha
 
 Charlie alpha（模型識別碼：`Charlie-Alpha-4B`）是繁體中文、簡體中文與英文的統計程序

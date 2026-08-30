@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/readme-hero.svg" alt="Charlie Alpha 4B project header" width="100%" />
+</p>
+
 # Charlie alpha
 
 Charlie alpha (`Charlie-Alpha-4B`) is a statistical procedure-selection model and local data

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+      <title id="title">Charlie Alpha 4B</title><desc id="desc">Trilingual statistical procedure selection on Apple Silicon.</desc>
+      <rect width="1200" height="360" fill="#eee9f4"/><path d="M0 306h1200M676 0v360" stroke="#201a2e" stroke-opacity=".28"/>
+      <g font-family="Arial, Helvetica, sans-serif"><text x="54" y="61" fill="#765bd4" font-size="15" font-weight="700" letter-spacing="3">CA / 04 / PUBLIC WORK</text>
+      <text x="54" y="166" fill="#201a2e" font-size="62" font-weight="750" letter-spacing="-3">Charlie Alpha 4B</text>
+      <text x="54" y="216" fill="#201a2e" fill-opacity=".68" font-size="19">Trilingual statistical procedure selection on Apple Silicon.</text>
+      <text x="54" y="329" fill="#201a2e" fill-opacity=".62" font-size="13" letter-spacing="2">CLAIM  /  EVIDENCE  /  BOUNDARY</text></g>
+      <g fill="none" stroke="#201a2e"><ellipse cx="940" cy="180" rx="198" ry="114" stroke-width="2"/><ellipse cx="940" cy="180" rx="146" ry="82" stroke-width="3"/><ellipse cx="940" cy="180" rx="88" ry="48" stroke="#765bd4" stroke-width="5"/><path d="M742 180h396M940 66v228" stroke-dasharray="7 9"/><circle cx="1018" cy="149" r="12" fill="#765bd4" stroke="none"/></g>
+    </svg>
