@@ -170091,6 +170091,16 @@
   "huggingface_path_prefix": "archive/2026-09-03",
   "huggingface_repo": "f0909172434/Charlie-Alpha-4B-MLX-4bit",
   "huggingface_repo_type": "model",
+  "huggingface_storage_layout": {
+    "individual_archive_files": 19975,
+    "reason": "Hugging Face repository hard limit of 20000 files",
+    "remainder_regular_files": 8367,
+    "remainder_symlinks": 9,
+    "remainder_tar": "archive/2026-09-03/REMAINDER-8367-files-plus-9-symlinks.tar",
+    "remainder_tar_sha256": "4e2c9e20e98b3266dbef27e8f1da1487db3ce1fd04d90d4f093550706f33637e",
+    "remainder_tar_size": 13392619520,
+    "repo_files_before_final_commit": 19993
+  },
   "schema_version": 1,
   "source_root_name": "Charlie-Alpha-4B",
   "symlinks": [
