@@ -1,0 +1,11 @@
+{
+  "fingerprint": "07f238acda31d50d473d986fd07588a7a68db23f6e76cc3c33999d88c8e5e8a8",
+  "passed": true,
+  "adapter_loaded": true,
+  "fused_loaded": true,
+  "versions": {
+    "mlx": "0.32.1",
+    "mlx_lm": "0.31.3",
+    "transformers": "5.15.1"
+  }
+}

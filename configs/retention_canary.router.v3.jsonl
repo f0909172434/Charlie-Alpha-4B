@@ -1,0 +1,6 @@
+{"task_id":"retention-v3-en-general-3","benchmark":"retention-v3","domain":"general","language":"en","prompt":"Which planet in our solar system is commonly called the Red Planet?","gold":"Mars"}
+{"task_id":"retention-v3-en-stem-3","benchmark":"retention-v3","domain":"stem","language":"en","prompt":"At standard atmospheric pressure, what is the boiling point of pure water in degrees Celsius?","gold":"100"}
+{"task_id":"retention-v3-zh-hans-general-3","benchmark":"retention-v3","domain":"general","language":"zh_Hans","prompt":"《西游记》的作者通常被认为是谁？只写姓名。","gold":"吴承恩"}
+{"task_id":"retention-v3-zh-hans-stem-3","benchmark":"retention-v3","domain":"stem","language":"zh_Hans","prompt":"DNA 的基本组成单位是什么？只写名称。","gold":"核苷酸"}
+{"task_id":"retention-v3-zh-hant-general-3","benchmark":"retention-v3","domain":"general","language":"zh_Hant","prompt":"臺灣最高的山是哪一座？只寫名稱。","gold":"玉山"}
+{"task_id":"retention-v3-zh-hant-stem-3","benchmark":"retention-v3","domain":"stem","language":"zh_Hant","prompt":"綠色植物進行光合作用時，主要從空氣吸收哪一種氣體？只寫名稱。","gold":"二氧化碳"}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "method": "post-H4 matched historical replay diagnostic",
+  "research_question": "How much of the H4 P-Bench and StatQA delta survives when the frozen v0.3 parent is recomputed under the same evaluator/runtime used for the H4 candidate?",
+  "reason": "The H4 candidate changed P-Bench correctness even on tasks routed to the unchanged parent adapter, while StatQA correctness was behaviorally unchanged. A matched replay is required before attributing historical-suite deltas to routing or experts.",
+  "h4_candidate": {
+    "report_fingerprint": "5cbcfbbaf33fcdf112ab10b939e81cd78f99c297c923924a91fa33269fe1ca35",
+    "report_sha256": "ae68fa7c3e9a906352f8680532f2032294193df4f53e6dec51f85987a39d006e",
+    "contract_fingerprint": "cbb56af8bab0ccdc08c5ef7cb5bfa8e75c281fee957f514be2c30fbefb7112ec",
+    "evaluator_version": 2,
+    "terminal_status": "external-rejected"
+  },
+  "legacy_control": {
+    "report_fingerprint": "6d359d3b46c6c98b6c6b00b106d93305dc3347855111630ae7dad0618a7e85f1",
+    "report_sha256": "366ca5efb630c74a8f5df2f93c4b0f58e65c5963fe2b442f1482d60debb5068b",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "matched_control": {
+    "name": "v0.3-parent",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16",
+    "route": "stats",
+    "runtime_policy": "identical historical runtime override used by H4 evaluator v2",
+    "p_bench_count": 90,
+    "statqa_count": 200
+  },
+  "evaluation": {
+    "lock_fingerprint": "566dacaac6cd82491d7adf080f57ae32886959bbe109ac8f5176af46282c4b38",
+    "lock_sha256": "04205b3e4d292bd823b7fdadb0e2d06eee249cc527b2e97c4d1110f61ed8dfc8",
+    "historical_and_previously_opened": true,
+    "formal_final_claim_allowed": false
+  },
+  "implementation_sha256": {
+    "stats_router_replay.py": "6155521c1c7a4f9944ef75cf0d0a43abf4e5e0bdd2763f0e62e384a7b18a616f",
+    "stats_router_external.py": "c4324e4755c918e0e329220da8fda3c150f3baa5a185d2411e0c0d389aa72d03",
+    "stats_eval.py": "1656a33a2887b9b62c3393aecc2e7e9965e4436afbce1b241b2bc07366f58123",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9"
+  },
+  "adaptation_policy": "none; no model, prompt, router, expert, threshold, or gate changes",
+  "stopping_rule": "replay every locked P-Bench and StatQA task exactly once, resumably",
+  "decision_policy": "Report legacy-control drift separately from matched candidate effect. Never use this diagnostic to rescue H4, promote a champion, or open a sealed final.",
+  "post_h4_boundary": "H4 remains external-rejected regardless of this replay. The result may only choose the mechanism class for a separately preregistered future study.",
+  "fingerprint": "6828f2641f60c3b4ccde1b2d153f4de0e148262c39d3797cbb847d49218406ef"
+}

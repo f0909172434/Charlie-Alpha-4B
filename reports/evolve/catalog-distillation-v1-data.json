@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "364529d7d568f6f8e6447ec58caca5b550236387b57ca59d151c5efba3037246",
+  "contract_fingerprint": "ead4f97631c434a812eaa79807a22fe48ae1936c15d80d3d549c3bea02d45d28",
+  "training_groups": 96,
+  "training_records_per_arm": 96,
+  "candidate_grounded_records": 48,
+  "selection_groups": 24,
+  "file_sha256": {
+    "canonical-menu-free-control": "3a750b64eea3e76836ecce5fb2c93b913cf8c7eefc7709b2ffd3a42302f75154",
+    "catalog-dropout-distill": "95c327e99cfb501aee682f0be96a464e3d6d682ce840c03ec36a98daff4771d5",
+    "selector": "ea8583d28dc2e1f08c13a70043207919d45e61a4f040f76971c7d37e2880d1c2",
+    "cases": "158e006c5a7e98ff2118d3d604e4d0fa9bb2582b4bc41dc0b1f7394b1d29abb0"
+  },
+  "confirmation_opened": false
+}

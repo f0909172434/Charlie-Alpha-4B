@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "E3 source qualification for H14 selector-head external transfer",
+  "source": {
+    "pmcid": "PMC12627256",
+    "doi": "10.7759/cureus.94949",
+    "bioc_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC12627256/unicode",
+    "license": "CC BY",
+    "case_count": 20,
+    "source_pairing_rule": "pair Appendix scenarios 1-20 with Table 1 statistical-test rows 1-20 in source order",
+    "content_fingerprint": "2253aa4d580fcbc71149e04d7ed5af99ab18282318c760a09d3560ff26316dbb",
+    "payload_sha256": "e2045721fc5d7a300b1ceb8cc69e191b8020efe3d2f643d07a9c2c51c1183419"
+  },
+  "case_count": 20,
+  "catalog_eligible_count": 10,
+  "head_eligible_count": 9,
+  "head_coverage_fraction": 0.45,
+  "head_ineligible_catalog_methods": [
+    "poisson_glm"
+  ],
+  "out_of_catalog_source_labels": [
+    "One-way ANOVA",
+    "Kruskal-Wallis H test",
+    "Repeated measures ANOVA",
+    "Friedman test",
+    "McNemar's test",
+    "Pearson's correlation",
+    "Spearman's correlation",
+    "Kappa agreement",
+    "Ordered logistic regression",
+    "Multinomial logistic regression"
+  ],
+  "qualification_gate": {
+    "passed": true,
+    "checks": {
+      "complete_source": true,
+      "cc_by_license": true,
+      "minimum_head_eligible_cases": true,
+      "minimum_head_coverage_fraction": true
+    }
+  },
+  "model_evaluation_started": false,
+  "claim_boundary": "Qualification only. No E3 model output has been opened; source content was inspected before lock, so E3 is source-qualified rather than source-blinded.",
+  "fingerprint": "ca847bb513da2b30464294992f46ecfc6c39178e54827c1b143cc0b4841d3fc4"
+}

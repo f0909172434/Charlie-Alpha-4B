@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "b381ffaf9bee3c43c0cce21c3faaa36af838ca2cd5a78983db25243b58358899",
+  "method": "H8 catalog-grounding distillation pilot",
+  "contract_fingerprint": "ead4f97631c434a812eaa79807a22fe48ae1936c15d80d3d549c3bea02d45d28",
+  "data_fingerprint": "364529d7d568f6f8e6447ec58caca5b550236387b57ca59d151c5efba3037246",
+  "fixed_endpoints": true,
+  "menu_free_evaluation": true,
+  "scores": {
+    "v0.3-parent": {
+      "selector": {
+        "normalized_regret": 0.36323157965598085,
+        "accuracy": 0.4583333333333333,
+        "invalid_selection_rate": 0.3333333333333333
+      },
+      "format_shift": {
+        "count": 24,
+        "exact_accuracy": 0.0,
+        "method_set_accuracy": 0.041666666666666664,
+        "column_set_accuracy": 0.9583333333333334,
+        "mean_column_recall": 1.0
+      }
+    },
+    "canonical-menu-free-control": {
+      "selector": {
+        "normalized_regret": 0.36263494650065703,
+        "accuracy": 0.5,
+        "invalid_selection_rate": 0.3333333333333333
+      },
+      "format_shift": {
+        "count": 24,
+        "exact_accuracy": 0.0,
+        "method_set_accuracy": 0.041666666666666664,
+        "column_set_accuracy": 0.7083333333333334,
+        "mean_column_recall": 0.8333333333333334
+      }
+    },
+    "catalog-dropout-distill": {
+      "selector": {
+        "normalized_regret": 0.36323157965598085,
+        "accuracy": 0.4583333333333333,
+        "invalid_selection_rate": 0.3333333333333333
+      },
+      "format_shift": {
+        "count": 24,
+        "exact_accuracy": 0.0,
+        "method_set_accuracy": 0.041666666666666664,
+        "column_set_accuracy": 0.7916666666666666,
+        "mean_column_recall": 0.9166666666666666
+      }
+    }
+  },
+  "selection_gate": {
+    "passed": false,
+    "checks": {
+      "exact_gain_over_parent": false,
+      "exact_gain_over_control": false,
+      "method_gain_over_control": false,
+      "column_gain_over_control": true,
+      "selector_regret_noninferior": true,
+      "selector_accuracy_noninferior": true,
+      "selector_invalidity_noninferior": true,
+      "h7_exact_effect_retained": false,
+      "h7_method_effect_retained": false
+    },
+    "effect_points": {
+      "exact_vs_parent": 0.0,
+      "exact_vs_control": 0.0,
+      "method_vs_control": 0.0,
+      "columns_vs_control": 8.333333333333325
+    },
+    "selector_relative_regret_increase": 0.0,
+    "h7_effect_retention_fraction": {
+      "exact": 0.0,
+      "method": 0.0
+    }
+  },
+  "selected_arm": null,
+  "confirmation_authorized": false,
+  "external_benchmark_authorized": false,
+  "result_fingerprint": "c5b2604147f3f0fb741b2ad7335f51dee6e1e034915eb30eea47a1b187621639"
+}

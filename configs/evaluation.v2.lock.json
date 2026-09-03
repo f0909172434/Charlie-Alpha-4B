@@ -1,0 +1,420 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-08-24T00:00:00+08:00",
+  "seed": 20260824,
+  "policy": "built before v0.2 training; dev may guide selection; final must not be generated until the training recipe and checkpoint are frozen",
+  "excluded_v1_task_ids_sha256": "a5c91cfc4a6740fd956a6314506ea9a8316c5277e41dfa95efeba5f92ccf4337",
+  "source_revisions": {
+    "math500_eval": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+    "gsm8k_eval": "740312add88f781978c0658806c59bc2815b9866",
+    "mgsm_eval": "29087245a1a9788d4e0413f4927e994d49633bbb"
+  },
+  "evalplus_artifacts": {
+    "humaneval_plus": {
+      "version": "v0.1.10",
+      "url": "https://github.com/evalplus/humanevalplus_release/releases/download/v0.1.10/HumanEvalPlus.jsonl.gz",
+      "content_sha256": "42526ec0e7d5f3ee0b06d6ced98f8c8bae3d76519151bfb3d36f79010645bd7f",
+      "license": "Apache-2.0 / original HumanEval terms"
+    },
+    "mbpp_plus": {
+      "version": "v0.2.0",
+      "url": "https://github.com/evalplus/mbppplus_release/releases/download/v0.2.0/MbppPlus.jsonl.gz",
+      "content_sha256": "b54e762755248ca411b523c917fa9f93c07b5ff2966bf60b3917b853926a3dad",
+      "license": "Apache-2.0 / original MBPP terms"
+    }
+  },
+  "verified_evalplus_sha256": {
+    "humaneval_plus": "42526ec0e7d5f3ee0b06d6ced98f8c8bae3d76519151bfb3d36f79010645bd7f",
+    "mbpp_plus": "b54e762755248ca411b523c917fa9f93c07b5ff2966bf60b3917b853926a3dad"
+  },
+  "suites": {
+    "dev": [
+      {
+        "task_id": "math500:test/intermediate_algebra/955.json",
+        "task_sha256": "f5086c1eb28e0e884bdeac3315cd5737d2008c51f1b17153857679179f270a4f"
+      },
+      {
+        "task_id": "math500:test/algebra/1332.json",
+        "task_sha256": "97b272b5bff79282a41742a79cdaa9c57cf1677530bf4b0f3c343017e17ef83d"
+      },
+      {
+        "task_id": "math500:test/prealgebra/1804.json",
+        "task_sha256": "a545458fd22e15bda3b6d7b7242079df5dc2f5bfe9755d90e9acce074ad3ec4a"
+      },
+      {
+        "task_id": "math500:test/intermediate_algebra/1779.json",
+        "task_sha256": "b73888f78c98b4913de1ff3b01ac61cc315ea61f761b6a0b2903249df480e8c7"
+      },
+      {
+        "task_id": "math500:test/counting_and_probability/14.json",
+        "task_sha256": "ee8a71512a3a662435ec6be63eee93366d9b96d8c85ca4c529e7cb6dae205a39"
+      },
+      {
+        "task_id": "math500:test/intermediate_algebra/128.json",
+        "task_sha256": "30700c27640424bf29cb4620761b39dc9920b4ce4d9d37e359c374f10de35963"
+      },
+      {
+        "task_id": "gsm8k:199",
+        "task_sha256": "7de7d0fce302e8f9fb96f6f1d47bc8abaca8ec931c4be876859c6f492879d584"
+      },
+      {
+        "task_id": "gsm8k:624",
+        "task_sha256": "a83cfefef5e5483c6ce6df29ce3169523fa06468a88118ee8fcdf4c99e5429ea"
+      },
+      {
+        "task_id": "gsm8k:455",
+        "task_sha256": "f5919b9df1d5605a42ae640c9385dd48ac40032e9339de4798794f6a1e137bd3"
+      },
+      {
+        "task_id": "gsm8k:17",
+        "task_sha256": "22d205ded43cb6109069408ee7037833d113c3b66bcc973b98cae1774f0c842e"
+      },
+      {
+        "task_id": "gsm8k:1035",
+        "task_sha256": "607f362ce020b1d99ede1480f7da29b8a2d8cad01aa26f1baa23c8ead94e5751"
+      },
+      {
+        "task_id": "gsm8k:1172",
+        "task_sha256": "a403bb3c453531daa8cb306224f8bee5d6fb3ec2684cb637c579ace6c6ea49fe"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/96",
+        "task_sha256": "16202ca1fa5ab3efd51e09ef9394a7d02191dc28cbaf08d75098e23cf9237f2c"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/0",
+        "task_sha256": "a4f1569cfa2729022756ffbc5ad068649ea674e8e1bedfb503b7835e891fe2df"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/32",
+        "task_sha256": "ad178460f522fb3b651f9448dbe94dd44239d33ff13e40b33940fdbbfa793b31"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/150",
+        "task_sha256": "44b24b9447f678c2f6f2c20cd75bc5ebc4a85c80bdd7664bc0a1ed7ea2b88895"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/615",
+        "task_sha256": "a17d2beca07441db4c595ebddf5602fcbab43f656a0101f62dd64ce60a243bc5"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/597",
+        "task_sha256": "61a0e7f292c01eb1a03ba8b6e68978e9f57c3818e598c5c06a3e8014d5d5e743"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/581",
+        "task_sha256": "ad11df0ee8f044d1c120ac9b47a10812eeaf960f279889a1702dbff2c7f86939"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/763",
+        "task_sha256": "eaed30af2b5e2a9ef517881fc59de1104074093025c3f8a4516a0c4567c8577d"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:114",
+        "task_sha256": "6dc785d8f0d56b5965b3b3e1cf0b1c3456f9667712b152e92418498251087ab9"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:53",
+        "task_sha256": "2fb97da34a100dffb6150732b780dcf648a6c2ece2db93d530ae4e2599d8dc02"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:211",
+        "task_sha256": "788f2a1edd4b9b6b5263b9e4f93c313611c5f752155e4066ed1250b122524e50"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:238",
+        "task_sha256": "2584c041951a4f67d54037373687561a5c06e536bac4a33896dbb6fb23449772"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:158",
+        "task_sha256": "ff9b31b558cff8110a4c4ca67d56009094a42e5752b00beae33c99e56eb18967"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:234",
+        "task_sha256": "12c2428cad27350226422573a85f419c770353d5e97e25598631025dd22c3579"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:233",
+        "task_sha256": "6f683f0e2199641726f6934d5bf1b61a96e914b348deb5af164cbd5909fe4419"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:85",
+        "task_sha256": "f24aa3c54bf810d2f693f484dc04125317e8999c672a12bad3fdd534b72638e1"
+      },
+      {
+        "task_id": "retention-v2-en-general-1",
+        "task_sha256": "48fce11ef5e5ae9ec263ddb94f735da752e1ead70256cf9ff3ef590aacbc7675"
+      },
+      {
+        "task_id": "retention-v2-en-stem-1",
+        "task_sha256": "01e3bdbbd3dd52c700fda890fb433fa5e565137b6135494c95106196499e7826"
+      },
+      {
+        "task_id": "retention-v2-zh-hans-general-1",
+        "task_sha256": "ad4a9809129be1d85b60739f6b923317b69e2d192533496a78158c252fd63588"
+      },
+      {
+        "task_id": "retention-v2-zh-hans-stem-1",
+        "task_sha256": "0a01136c26bc945a9310512e177478a63d1222d51943ffcaaa7e47aba9aedbf1"
+      },
+      {
+        "task_id": "retention-v2-zh-hant-general-1",
+        "task_sha256": "ef9f6667fed890e5aa78c74dfb977f4d3b278aba99fa1d2f289d57ea4adfe659"
+      },
+      {
+        "task_id": "retention-v2-zh-hant-stem-1",
+        "task_sha256": "d361dd7adf0d99d6a5490f90211bd4e35788c88963c2c8819c85ebe0c5745a20"
+      }
+    ],
+    "final": [
+      {
+        "task_id": "math500:test/algebra/2257.json",
+        "task_sha256": "79cfc4eafda0b0d7043f518e391d28a4d3cf8e01bc7445a53ba3096b2b098636"
+      },
+      {
+        "task_id": "math500:test/algebra/1787.json",
+        "task_sha256": "9af2f86f958c8b13bd4fd176a8b9b217ba73b21db66a1aec3eaaae68f7490fbc"
+      },
+      {
+        "task_id": "math500:test/intermediate_algebra/1405.json",
+        "task_sha256": "ec1dcf41fe1c628f0bfa4ba4935284556e05ba9d33654efe489e620c19acdf83"
+      },
+      {
+        "task_id": "math500:test/algebra/2080.json",
+        "task_sha256": "4984c6a9974af5742718ac9dc942bc8819c9cc209404beca70cec57ec74c341f"
+      },
+      {
+        "task_id": "math500:test/prealgebra/1388.json",
+        "task_sha256": "e1d031c46ad231acfb61e834a40de14dd04abb70f4e449eec079652e41e26c1c"
+      },
+      {
+        "task_id": "math500:test/intermediate_algebra/986.json",
+        "task_sha256": "17f8279856296e4373bba19fef555d5f10e1b948f60ed6fbd037853cc77e2aa4"
+      },
+      {
+        "task_id": "math500:test/prealgebra/1622.json",
+        "task_sha256": "c84a343cf2da2e1b5a3252b3c13e53cc435bb19b0d8bae0fd746257f6361e0a4"
+      },
+      {
+        "task_id": "math500:test/algebra/1098.json",
+        "task_sha256": "1dc6325d294eabcb0e2477af6fcce00e08275389f291d9fb541c0a44071fb399"
+      },
+      {
+        "task_id": "math500:test/counting_and_probability/765.json",
+        "task_sha256": "02a0bcdde88f67300424a82a6ba4f4cb44c32b0f5c53d51a939d31e8c7e7e293"
+      },
+      {
+        "task_id": "math500:test/algebra/2391.json",
+        "task_sha256": "86b94484fcc674297a5902ac66f46ff14f117c1c595d73b5edefe339bc750ef5"
+      },
+      {
+        "task_id": "math500:test/intermediate_algebra/279.json",
+        "task_sha256": "d21f564eed292119011b2134645ce77a75288aa854ca517a72bdffea45e4acf1"
+      },
+      {
+        "task_id": "math500:test/algebra/246.json",
+        "task_sha256": "450d51b439356d155390c34dc86859eb5b8d5e0eb91aa1f33c37136b042155f0"
+      },
+      {
+        "task_id": "gsm8k:716",
+        "task_sha256": "b27f9a763d88857f5194720eb5d345d7684e8481ce36f62b719b9dfd61bb3606"
+      },
+      {
+        "task_id": "gsm8k:155",
+        "task_sha256": "9ec2290bb6c3ac48bd63402101788c57b3517c3d9e275f29402ac5aa7fe290d3"
+      },
+      {
+        "task_id": "gsm8k:131",
+        "task_sha256": "1aead34222a21216cc91efa685522cda800a55728139f3f8e408dc1c5d8f7640"
+      },
+      {
+        "task_id": "gsm8k:490",
+        "task_sha256": "15567c592c7aa6b8c09c94e508e65d56f5328fcb42b9dc9c9dd110ff94143bad"
+      },
+      {
+        "task_id": "gsm8k:57",
+        "task_sha256": "ab27d6d61b81c899134dc4c79fd9adf86082c15cad746d6f4a943c8933f2be2b"
+      },
+      {
+        "task_id": "gsm8k:807",
+        "task_sha256": "08fa43cf6e9142c45ca2e5595d68ba063b591466ad2e29a0f519d24c03e8f58a"
+      },
+      {
+        "task_id": "gsm8k:287",
+        "task_sha256": "868350429f83872fb1793fb67a3a400dcf1ada7bd48f15a2c1548f7fec315909"
+      },
+      {
+        "task_id": "gsm8k:197",
+        "task_sha256": "5d33c45384f5891e552490e54b93f8f6bcede7776693e45419d81dfea574454a"
+      },
+      {
+        "task_id": "gsm8k:331",
+        "task_sha256": "46e97d556dad819088a7b42dc67703c93efbc648c9908812428b937116cf267e"
+      },
+      {
+        "task_id": "gsm8k:319",
+        "task_sha256": "85d81be2b5ffd43f7e6cd3bcbd9864d3eaf857cf1bfe139d3c7d2d0dc49725dc"
+      },
+      {
+        "task_id": "gsm8k:692",
+        "task_sha256": "adb5978595dbf2a58dc1dd054a4d7ecdb37ea46ac8f74c395f8cb772c9afbd50"
+      },
+      {
+        "task_id": "gsm8k:476",
+        "task_sha256": "8d85963dcd72714bf7850e59f0af1dd0537a7907f6223c2d784d74346965253d"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/36",
+        "task_sha256": "246c39e82f0ac40d931f5bafeeaac08be8255cb96460e20e0efb6ea9af7f6fc5"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/122",
+        "task_sha256": "e39257d6d1e52389e334a3e37ae8dd6e5e3d00bde16079aa32a9201283d46c3e"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/101",
+        "task_sha256": "061eae4ae4f9049f9bfda87f6fe6e1da71763403a9e2e1d4f600804ab8232986"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/37",
+        "task_sha256": "f085e3f06054d8f81681a17a031f83453b714cd65aa116de36e961ccc848da34"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/84",
+        "task_sha256": "b2ccc9b4d9cfa93a0dfd89eeb06cebc56216ebc77f668482196351b1c0a169a9"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/133",
+        "task_sha256": "82daaa8176026078207bef3346ee0468bbe5face266d2c7c1c39a79b6a2587dc"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/50",
+        "task_sha256": "710825dc273cbe98bb94b2239aa73abcfc33560ac1f5dc4b91454ea05a019818"
+      },
+      {
+        "task_id": "humaneval+:HumanEval/116",
+        "task_sha256": "fe38f5b40563582d14fe6f9a9a2b9d7a34ff5c193e13e5afed3ee0d5397076fa"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/735",
+        "task_sha256": "a6b57a4c912f3a77f6c4a3b8a42d95a30d5524083e49538c1edbe40873739903"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/271",
+        "task_sha256": "0413b68b55dfb2541a2223ec0e24a77f295ad54106e4dc7fd66ff9525b8ac321"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/790",
+        "task_sha256": "fcf348e29a9abe52b1d9b34fc16be33945e3d35c21e42ddda52ab1cbe792f516"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/424",
+        "task_sha256": "4fe2496e308d50603e91a235fc75d11aead3c21cf66b5d9bac8ef6a346a46f35"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/593",
+        "task_sha256": "b669d903c8b1e1bad0abeba78bf6b01eac37ca4953327a351e6b392f52e83c63"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/772",
+        "task_sha256": "9e6722eb984486bb4e7b4bdbd59e3861c0653b9ab6578caa1d3a592eb964bd29"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/555",
+        "task_sha256": "647af07a7bc44e2688464e45e7e05b7930abef831c0610b3204360569ee605d7"
+      },
+      {
+        "task_id": "mbpp+:Mbpp/94",
+        "task_sha256": "860f8201c35306e22be98b198da0fd9727973873fb35a8c411bb0ff6f176647a"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:177",
+        "task_sha256": "06d7d594f5aaad5893078c6f59c27ec7acd45b62bd910ef2926c73213f873d6f"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:231",
+        "task_sha256": "cd7367961ed449f356f340bc96d16ab0259c69204559de427be34b6ef912c574"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:28",
+        "task_sha256": "c42ad24b4aa2b8ea44ac59ded73e8d998c8b3bff77db4e205a9d87b205ec65ae"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:72",
+        "task_sha256": "fa2fc563d583df77a1029888e750cd1820dddd8d51a4745511747e2530a0c4c3"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:101",
+        "task_sha256": "046c9f093dcfb88005d271107c1a8843f183eef10f9563e6900a2261beb185d9"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:109",
+        "task_sha256": "521cb2d76da0160677e4c3a11f554418c159f0d6c2b9599a12098f477c360309"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:24",
+        "task_sha256": "cc0f0ed7580f73c98824ed5ead4bf3cef31d4e01d5fb53831bd9e8452cda6f58"
+      },
+      {
+        "task_id": "mgsm:zh_Hans:194",
+        "task_sha256": "5e6300ed5be843ab7d8cbbcbbeadeba4c3f5aa35a43dac53c22797870af40115"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:92",
+        "task_sha256": "eb2df39e587f82c78e49e27603f3ff69e62672af50970d0a08f05e2f35eb7eb0"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:64",
+        "task_sha256": "f1d2405e58f3b0e164adda8241c4d99d306fbc8b6297d1dc18a4e9884c9f4832"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:116",
+        "task_sha256": "e660d95023f3306629c29fb4b600a734286f38133656fc2aefd332804cc72b79"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:187",
+        "task_sha256": "c01deeec567c2085c873c4ec03845271e2d4a186d65d329c3409e9a388d26582"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:226",
+        "task_sha256": "97144ae0af57ab3407f3cb00be5d7bd7f18fbd6cb2b3c3cdf47de15d81e09b86"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:206",
+        "task_sha256": "1aa997c3e19a7b11f78b4e794885a4ce86c2d2ca7f15af10c503741fa0235873"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:83",
+        "task_sha256": "b71af2daa30f56c9dff75b7eda9760572d72db0fd7d165be9489356cdee47f33"
+      },
+      {
+        "task_id": "mgsm:zh_Hant:144",
+        "task_sha256": "19c6011e8b71a9b6e32d241e9f2c944b81f5b2c3e28341cd4dd06fce06b4eb9d"
+      },
+      {
+        "task_id": "retention-v2-en-general-2",
+        "task_sha256": "7fdd440a781438532314a9423bb4eb423932bd3e473e91736bccbcf227de1c29"
+      },
+      {
+        "task_id": "retention-v2-en-stem-2",
+        "task_sha256": "04f2b3311a2ec98fa71dbef50047786dc4e19a8f3f4b574893b1c0232cbc94b6"
+      },
+      {
+        "task_id": "retention-v2-zh-hans-general-2",
+        "task_sha256": "a4d22539042fa65cd90cd5187bac5102e04ffc2defb2f66900048893621dc7e1"
+      },
+      {
+        "task_id": "retention-v2-zh-hans-stem-2",
+        "task_sha256": "812c7b13646466c03e0c27fac017d8d1fae3db949de01cf1104fb238a4b9b1ba"
+      },
+      {
+        "task_id": "retention-v2-zh-hant-general-2",
+        "task_sha256": "d380c53927c38579f0e3be208ff64ffc2a5c63277f1dfdef52c64fb9e6ec9a34"
+      },
+      {
+        "task_id": "retention-v2-zh-hant-stem-2",
+        "task_sha256": "f6d8995bb86f8dcd42bbc8c1bb113400c60cc427f9e539f70255906174e05c7b"
+      }
+    ]
+  }
+}

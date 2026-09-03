@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "method": "H21_OPENED_SOURCE_RESIDUAL_REPAIR_DEV_V1",
+  "method_version": 1,
+  "evidence_status": "opened-source-development-only",
+  "causal_question": "After the exact frozen H20 guard, are there enough parser-invalid residuals across opened sources and gold methods to justify a separately preregistered H21 training study?",
+  "e5_master_contract_fingerprint": "35cd1762825de0724841875409ab9e3bd31454a92b43a9e9f86f37f34393f93f",
+  "e5_runtime_fingerprint": "646896488847430545d914685bf89753c38fa6582553849c5d57d3d6968d741b",
+  "e5_source_screen_result_fingerprint": "34ea53c6307c9eeca17a5940e59c22b3156cfa2dbe878c18a21cab618b0a02c2",
+  "parent_runtime_receipt": {
+    "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16",
+    "adapter_config_sha256": "f86475351b4e99c5d7431c55f0e7740b842dcfbab670240d0df21398f084d750"
+  },
+  "h20_runtime_receipt": {
+    "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/guarded-weight-bridge-v1/all-sources",
+    "adapter_sha256": "32f964f279157b2b8e3d0d87329d342e55fa88e512de5480f4a2dc96fdcd6b2d",
+    "adapter_config_sha256": "ac84f5e6805affec3fa8f0b08296720808f16d17f94eb8275a4d7945b6679250"
+  },
+  "h20_adapter_sha256": "32f964f279157b2b8e3d0d87329d342e55fa88e512de5480f4a2dc96fdcd6b2d",
+  "snapshot_seals": {
+    "PMC2996580": {
+      "title": "Choosing statistical test",
+      "doi": "10.4103/0974-7788.72494",
+      "license": "CC BY",
+      "snapshot_sha256": "eb7be3715e4a5f7e6d3bb609285d361551d44a74f6620a052c1dd8523325c2b9",
+      "status": "opened-development-only-not-fresh-e5"
+    },
+    "PMC6639881": {
+      "title": "Selection of Appropriate Statistical Methods for Data Analysis",
+      "doi": "10.4103/aca.ACA_248_18",
+      "license": "CC BY-NC-SA",
+      "snapshot_sha256": "b881306838e425ae7319ef17c0fa7e690e350bd5a53a430c50b8bc271ee980fd",
+      "status": "opened-development-only-not-fresh-e5"
+    },
+    "PMC8327789": {
+      "title": "An Introduction to Statistics: Choosing the Correct Statistical Test",
+      "doi": "10.5005/jp-journals-10071-23815",
+      "license": "CC BY-NC",
+      "snapshot_sha256": "b40dc53865028489d13c010811c56947b8ba9e3f3353a83e324a0fb09392196f",
+      "status": "opened-development-only-not-fresh-e5"
+    },
+    "PMC8483143": {
+      "title": "How to choose and interpret a statistical test? An update for budding researchers",
+      "doi": "10.4103/jfmpc.jfmpc_433_21",
+      "license": "CC BY-NC-SA",
+      "snapshot_sha256": "326ab7eae0719c13cf48e58b98973795f4765ba922e4b684513f9862b026d49f",
+      "status": "opened-development-only-not-fresh-e5"
+    }
+  },
+  "materialization_contract": {
+    "eligible_source_cell_count": 26,
+    "included_case_count": 24,
+    "ambiguity_exclusion_count": 2,
+    "source_count": 4,
+    "distinct_method_count": 10,
+    "partition_rule": "Every catalog-mapped source cell is assigned exactly once to included or ambiguity-excluded; ambiguous structure is never inferred or repaired.",
+    "question_rule": "Questions describe only data type, pairing, group count, and outcome/predictor structure and contain no source label, catalog display name, or catalog alias.",
+    "included_mapping_fingerprint": "29d8ee3c1a4eabf3899d0eb61601d5194838d0888a7edd51d062f007b7ec344c",
+    "ambiguity_exclusions": [
+      {
+        "source_id": "PMC2996580",
+        "table_id": "T0001",
+        "row_index": 5,
+        "column_index": 0,
+        "gold_method_id": "mann_whitney",
+        "reason": "source description explicitly permits both paired and unpaired data"
+      },
+      {
+        "source_id": "PMC6639881",
+        "table_id": "T2",
+        "row_index": 2,
+        "column_index": 1,
+        "gold_method_id": "two_proportion",
+        "reason": "source description does not specify group count or pairedness"
+      }
+    ],
+    "ambiguity_exclusion_fingerprint": "8ed0d62cb6051ac7eedf361f9349649bea818ec080b3b65f415a9a865272595a"
+  },
+  "opportunity_gates": {
+    "minimum_residual_invalid_cases": 6,
+    "minimum_residual_invalid_sources": 3,
+    "minimum_residual_invalid_gold_methods": 3
+  },
+  "runtime_policy": [
+    "Run the unchanged parent on all 24 included cases exactly once.",
+    "Release the parent before the lazily loaded frozen H20 adapter is first invoked.",
+    "Invoke H20 exactly once only for parser-invalid parent controls.",
+    "Authorize later H21 training only if H20 remains parser-invalid on at least six cases spanning at least three sources and three gold methods."
+  ],
+  "terminal_states": [
+    "OPPORTUNITY_QUALIFIED",
+    "INCONCLUSIVE_OPPORTUNITY"
+  ],
+  "fresh_external_evidence": false,
+  "training_authorized": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "claim_boundary": "This screen can authorize only a new development-only H21 training protocol. The four sources are already opened and cannot support a fresh E5 claim, model promotion, publication, or release.",
+  "implementation_sha256": "3127ce610ef83af278f42bf89d52758e3bd6d59ddbc929b81ce3b30fc9a1e0d1",
+  "fingerprint": "eb8df93c9a511efa8b8635c4db0cbe277b3f3ad38c7d062e43e28885a31fa150"
+}

@@ -1,0 +1,1559 @@
+project:
+  display_name: "Charlie alpha"
+  model_id: "Charlie-Alpha-4B"
+  version: "0.4.0-dev"
+  profile: "stats-dgp-evolve"
+  seed: 42
+  license: "Apache-2.0"
+
+paths:
+  source_lock: "configs/sources.lock.json"
+  stats_dir: "data/stats"
+  simulation_dir: "data/stats/simulations"
+  final_dir: "data/stats/final"
+  teacher_dir: "data/stats/teacher"
+  eval_lock: "configs/evaluation.stats.lock.json"
+  artifact_dir: "artifacts/evolve"
+  report_dir: "reports/evolve/generated"
+  evolution_dir: "data/evolve"
+  parent_artifact_dir: "artifacts/stats"
+  pixi_manifest: "pixi.toml"
+
+# These sections retain the frozen v0.3 data and adapter contract. Evolution
+# writes to separate paths and never opens the v0.3 final set for promotion.
+stats_data:
+  schema_version: 1
+  dgp_families: 12
+  procedure_count: 28
+  train_semantic_groups: 240
+  valid_semantic_groups: 30
+  dev_dgps: 60
+  final_dgps: 120
+  split_seed: 42
+  languages:
+    en: 0.70
+    zh_Hant: 0.15
+    zh_Hans: 0.15
+  domain_mix:
+    inference_and_design: 0.60
+    probability_and_bayes: 0.20
+    prediction_and_analysis: 0.20
+  examples_per_train_group:
+    en_boundary_a: 1.4
+    en_boundary_b: 1.4
+    zh_Hant: 0.6
+    zh_Hans: 0.6
+  max_candidates: 6
+  initial_repetitions: 128
+  escalation_repetitions: [256, 512]
+  ranking_uncertainty_margin: 0.035
+  regret_temperature: 0.15
+  latin_hypercube_rounds: 1
+  active_failure_rounds: 2
+  decontamination_ngram: 8
+  teacher_refinement_limit: 120
+
+stats_training:
+  batch_size: 1
+  grad_accumulation_steps: 4
+  num_layers: 4
+  max_seq_length: 640
+  oom_seq_length: 512
+  rank: 32
+  oom_rank: 16
+  scale: 20.0
+  dropout: 0.05
+  pilot_microsteps: 160
+  full_epochs: 2
+  max_seconds: 10800
+  validation_every: 160
+  checkpoint_every: 100
+  early_stop_evaluations: 2
+  warmup_fraction: 0.03
+  weight_decay: 0.01
+  learning_rate_a: 2.0e-6
+  learning_rate_b: 8.0e-6
+  component_weights:
+    method: 0.45
+    plan_tool: 0.35
+    report: 0.20
+  targets:
+    - "linear_attn.in_proj_qkv"
+    - "linear_attn.out_proj"
+    - "self_attn.q_proj"
+    - "self_attn.v_proj"
+
+stats_tools:
+  max_calls: 4
+  timeout_seconds: 20
+  memory_bytes: 2147483648
+  max_write_bytes: 33554432
+  max_output_bytes: 65536
+  max_files: 3
+  max_file_bytes: 26214400
+  max_total_bytes: 52428800
+  allowed_extensions: [".csv", ".tsv", ".json", ".parquet"]
+
+evolution:
+  archive_schema_version: 1
+  proposal_pool: 72
+  tasks_per_cycle: 32
+  train_groups_per_cycle: 32
+  max_tasks_per_family: 4
+  max_tasks_per_method: 4
+  validation_records: 24
+  replay_fraction: 0.20
+  frontier_target_regret: 0.65
+  frontier_sigma: 0.25
+  novelty_floor: 0.10
+  learning_progress_prior: 0.50
+  mutations_per_parent: 3
+  microsteps: 160
+  max_seconds: 3600
+  validation_every: 40
+  checkpoint_every: 40
+  early_stop_evaluations: 2
+  learning_rate_a: 5.0e-7
+  learning_rate_b: 2.0e-6
+  warmup_fraction: 0.03
+  weight_decay: 0.0
+  component_weights:
+    method: 1.00
+    plan_tool: 0.00
+    report: 0.00
+  clear_cache_threshold_gb: 4.0
+  max_cycles_per_run: 2
+  ablation:
+    enabled: true
+    arms: ["random-control", "adaptive"]
+    random_control_seed_base: 73000000
+    minimum_adaptive_relative_regret_improvement_over_control: 0.03
+    winner_rule: "validation regret, invalidity, accuracy, validation loss"
+  promotion_shard:
+    count: 144
+    seed_base: 42000000
+  promotion:
+    minimum_relative_regret_improvement: 0.01
+    bootstrap_ci_lower_floor: -0.01
+    maximum_accuracy_regression: 0.03
+    maximum_invalidity_increase: 0.02
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+    bootstrap_repetitions: 5000
+
+policy_projection:
+  source_cycle: 5
+  source_arm: "random-control"
+  seeds: [42, 314, 2718]
+  oracle_temperature: 0.15
+  projection_temperature: 0.15
+  step_size: 0.50
+  exploration_mass: 0.05
+  minimum_seed_wins: 2
+  minimum_mean_relative_regret_improvement: 0.05
+  maximum_mean_invalidity_increase: 0.00
+
+balanced_policy_projection:
+  seeds: [42, 314, 2718]
+  curriculum: "policy-balanced"
+  microsteps: 144
+  validation_every: 48
+  checkpoint_every: 48
+  early_stop_evaluations: 2
+  minimum_seed_wins: 2
+  minimum_mean_relative_regret_improvement: 0.05
+  maximum_mean_invalidity_increase: 0.00
+
+gradient_diagnostic:
+  groups_per_family: 2
+  records_per_backward: 2
+  cache_limit_gb: 4.0
+
+common_descent:
+  updates: 4
+  records_per_backward: 2
+  cache_limit_gb: 4.0
+  # Four fixed steps match the approximate L2 trust region reached by the
+  # short policy-projection pilots without selecting a step on validation.
+  step_l2: 0.012
+  solver_max_iterations: 10000
+  solver_tolerance: 1.0e-12
+  gates:
+    minimum_relative_regret_improvement_over_control: 0.05
+    minimum_relative_regret_improvement_over_parent: 0.01
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    minimum_family_alignment: 1.0e-6
+  confirmation:
+    candidate_arm: "uniform-family"
+    surface: "dev"
+    minimum_trilingual_relative_regret_improvement_over_parent: 0.05
+    minimum_english_relative_regret_improvement_over_parent: 0.01
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+delta_calibration:
+  scales: [0.25, 0.50, 0.75, 1.00]
+  surfaces: ["valid", "dev"]
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_worst_surface_trilingual_relative_improvement: 0.01
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Exhaustive nonempty supports over the four adapted transformer layers at two
+# frozen amplitudes (2 * (2^4 - 1) = 30 profiles). The effective LoRA weight
+# update is represented exactly at rank 64; no A/B factor interpolation is used.
+block_projection:
+  layers: [28, 29, 30, 31]
+  amplitudes: [0.25, 0.50]
+  selection_surface: "valid"
+  confirmation_shard:
+    split: "evolve-block-confirmation-v1"
+    count: 60
+    seed: 53000042
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_selection_relative_improvement: 0.01
+    minimum_confirmation_relative_improvement: 0.01
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Cheap upper-bound test for a DGP-family Mixture-of-LoRA route. Profiles are
+# selected per family on valid, fixed, then evaluated on a new immutable shard.
+# Oracle family IDs are diagnostic only and cannot be promoted as a user route.
+family_route:
+  selection_surface: "valid"
+  confirmation_shard:
+    split: "evolve-family-route-confirmation-v1"
+    count: 120
+    seed: 54000042
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_confirmation_relative_improvement: 0.05
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Oracle upper bound for eliminating the measured cross-family interference.
+# Each of the 12 experts starts from the same v0.3 adapter and takes four
+# family-only normalized-gradient steps. Summed across experts, backward record
+# exposure exactly matches the four-sweep shared-adapter control. Checkpoints are
+# selected on reusable valid+dev; only a passing fixed route opens confirmation.
+family_experts:
+  updates: 4
+  records_per_backward: 2
+  step_l2: 0.012
+  cache_limit_gb: 4.0
+  selection_surfaces: ["valid", "dev"]
+  selection_shard:
+    split: "evolve-family-expert-selection-v1"
+    count: 240
+    seed: 55000042
+  selection:
+    minimum_family_relative_improvement: 0.02
+    minimum_route_relative_improvement: 0.05
+  confirmation_shard:
+    split: "evolve-family-expert-confirmation-v1"
+    count: 240
+    seed: 56000042
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_confirmation_relative_improvement: 0.05
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Deployable selective router for the confirmed family experts. The tiny
+# character n-gram model predicts all 12 families; only the six families with a
+# selected expert can leave the parent. Temperature is calibrated separately,
+# then one confidence threshold is selected by downstream DGP regret.
+family_router:
+  ngram_min: 2
+  ngram_max: 5
+  vocabulary_size: 12000
+  minimum_document_frequency: 2
+  alpha: 0.25
+  uniform_class_prior: true
+  temperature_grid: [0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0]
+  confidence_thresholds: [0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 0.98]
+  train_shard:
+    split: "evolve-family-router-train-v1"
+    count: 720
+    seed: 57000042
+    view: "boundary_a"
+  calibration_shard:
+    split: "evolve-family-router-calibration-v1"
+    count: 240
+    seed: 58000042
+    view: "standard"
+  validation_shard:
+    split: "evolve-family-router-validation-v1"
+    count: 240
+    seed: 59000042
+    view: "boundary_b"
+  confirmation_shard:
+    split: "evolve-family-router-confirmation-v1"
+    count: 360
+    seed: 60000042
+    view: "standard"
+  canary_path: "configs/family_router_canary.jsonl"
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_validation_relative_improvement: 0.05
+    minimum_confirmation_relative_improvement: 0.05
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_canary_route_accuracy: 0.75
+    minimum_language_canary_route_accuracy: 0.66
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Parent-model single-token router, registered after the n-gram router failed
+# the manual Chinese canary and before any adapter-regret validation. A-M are
+# verified single tokens in the locked tokenizer; M and low confidence fall
+# back to the v0.3 parent.
+llm_family_router:
+  prompt_version: 2
+  confidence_thresholds: [0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95]
+  validation_shard:
+    split: "evolve-llm-family-router-v2-validation-v1"
+    count: 240
+    seed: 61000042
+    view: "scoring"
+  confirmation_shard:
+    split: "evolve-llm-family-router-v2-confirmation-v1"
+    count: 360
+    seed: 62000042
+    view: "scoring"
+  development_canary_path: "configs/family_router_canary.jsonl"
+  confirmation_canary_path: "configs/family_router_confirmation_canary.jsonl"
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_validation_relative_improvement: 0.05
+    minimum_confirmation_relative_improvement: 0.05
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_canary_route_accuracy: 0.75
+    minimum_language_canary_route_accuracy: 0.66
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Registered only after the v2 router passed its independent confirmation.
+# This stage cannot alter the prompt, expert mapping, or confidence threshold.
+llm_family_router_promotion:
+  prompt_version: 2
+  promotion_shard:
+    split: "evolve-llm-family-router-v2-promotion-v1"
+    count: 720
+    seed: 63000042
+    view: "scoring"
+  promotion_canary_path: "configs/family_router_promotion_canary.jsonl"
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_promotion_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_canary_route_accuracy: 0.75
+    minimum_language_canary_route_accuracy: 0.66
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Registered only after the fixed v2 router passed the larger promotion gate.
+# No setting in this section may be changed after final/lock.json is written.
+llm_family_router_final:
+  prompt_version: 2
+  view: "scoring"
+  expected_final_count: 120
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_parent_relative_improvement: 0.05
+    minimum_base_relative_improvement: 0.15
+    minimum_base_invalid_selection_relative_reduction: 0.20
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Preregistered after the 120-blueprint retired final was judged underpowered.
+# The old final contributes only the paired variance estimate below; its rows are
+# never rescored or used as replication outcomes. No setting may change after
+# independent-replication-v1/lock.json is written.
+llm_family_router_replication:
+  method_version: 1
+  prompt_version: 2
+  expected_selected_threshold: 0.60
+  replication_shard:
+    split: "evolve-llm-family-router-v2-independent-replication-v1"
+    count: 900
+    seed: 85000042
+    view: "scoring"
+  minimum_normalized_distance: 0.000001
+  bootstrap_seed: 85010042
+  power:
+    minimum_relative_improvement: 0.075
+    alpha_two_sided: 0.05
+    target_power: 0.90
+    safety_margin: 0.20
+    allocation_multiple: 12
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_replication_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Prospective candidate derived from the rejected replication's mechanism
+# diagnosis. The exclusion is fixed before this completely fresh confirmation.
+llm_family_router_reduced:
+  method_version: 1
+  prompt_version: 2
+  expected_selected_threshold: 0.60
+  excluded_family: "experimental_causal"
+  confirmation_shard:
+    split: "evolve-llm-family-router-v2-reduced-confirmation-v1"
+    count: 900
+    seed: 86000042
+    view: "scoring"
+  minimum_normalized_distance: 0.000001
+  bootstrap_seed: 86010042
+  power:
+    minimum_relative_improvement: 0.075
+    alpha_two_sided: 0.05
+    target_power: 0.90
+    safety_margin: 0.20
+    allocation_multiple: 12
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_replication_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# One mechanistically specified binary prompt was evaluated on the now-retired
+# reduced-route confirmation surface. This section freezes it before a third,
+# fully disjoint surface is generated in complete/incomplete paired views.
+sufficiency_guard:
+  method_version: 1
+  prompt_version: 1
+  excluded_family: "experimental_causal"
+  expected_selected_threshold: 0.60
+  confirmation_shard:
+    split: "evolve-sufficiency-guard-v1-confirmation"
+    count: 900
+    seed: 87000042
+    view: "scoring"
+  minimum_normalized_distance: 0.000001
+  bootstrap_seed: 87010042
+  power:
+    minimum_relative_improvement: 0.075
+    alpha_two_sided: 0.05
+    target_power: 0.90
+    safety_margin: 0.20
+    allocation_multiple: 12
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_replication_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_guard_specificity: 0.98
+    minimum_language_guard_specificity: 0.95
+    minimum_family_guard_specificity: 0.90
+    minimum_guard_sensitivity: 0.98
+    minimum_language_guard_sensitivity: 0.95
+    minimum_family_guard_sensitivity: 0.90
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Post-rejection diagnostic only; deliberately outside the frozen guard contract.
+sufficiency_guard_diagnosis:
+  thresholds: [0.50, 0.90, 0.95, 0.98, 0.99, 0.995, 0.999, 0.9995, 0.9999]
+
+# New candidate after the argmax guard was rejected. Threshold 0.90 was selected
+# only on the retired failed surface and is frozen before this fourth surface.
+sufficiency_guard_thresholded:
+  method_version: 1
+  prompt_version: 1
+  excluded_family: "experimental_causal"
+  expected_selected_threshold: 0.60
+  insufficient_probability_threshold: 0.90
+  confirmation_shard:
+    split: "evolve-sufficiency-guard-thresholded-v1-confirmation"
+    count: 900
+    seed: 88000042
+    view: "scoring"
+  minimum_normalized_distance: 0.000001
+  bootstrap_seed: 88010042
+  power:
+    minimum_relative_improvement: 0.075
+    alpha_two_sided: 0.05
+    target_power: 0.90
+    safety_margin: 0.20
+    allocation_multiple: 12
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    minimum_replication_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    minimum_guard_specificity: 0.98
+    minimum_language_guard_specificity: 0.95
+    minimum_family_guard_specificity: 0.90
+    minimum_guard_sensitivity: 0.98
+    minimum_language_guard_sensitivity: 0.95
+    minimum_family_guard_sensitivity: 0.90
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.15
+
+# Previously opened v0.3 external suites are used only as a falsification gate.
+# They cannot authorize a fresh-final claim even if every gate passes.
+router_historical_external:
+  method_version: 1
+  excluded_family: "experimental_causal"
+  family_route_threshold: 0.60
+  gates:
+    p_bench_raw_points: 3.0
+    statqa_exact_points: 5.0
+    maximum_statqa_submetric_regression_points: 3.0
+    minimum_guard_specificity: 0.98
+    minimum_guard_sensitivity: 0.98
+    minimum_retention_accuracy: 1.0
+
+# H5 begins only after the matched post-H4 replay showed that the apparent
+# P-Bench gain was evaluator/runtime drift and that the frozen router/experts
+# changed zero matched correctness outcomes on both P-Bench and StatQA.  This
+# pilot changes the training interface rather than adding another router.  Both
+# arms receive identical full-length records and optimizer compute; only the
+# assistant-token loss support differs.
+cross_format_repair:
+  method_version: 2
+  training_seed: 92010042
+  minimum_normalized_distance: 0.000001
+  training_pool:
+    split: "cross-format-repair-train-v2"
+    pool_count: 240
+    seed: 92000042
+    selected_per_family: 1
+  selection_shard:
+    split: "cross-format-repair-selection-v2"
+    pool_count: 480
+    seed: 93000042
+    selected_per_family: 2
+  confirmation_shard:
+    split: "cross-format-repair-confirmation-v2"
+    pool_count: 960
+    seed: 94000042
+    selected_per_family: 5
+  microsteps: 48
+  max_seconds: 1800
+  max_seq_length: 640
+  grad_accumulation_steps: 4
+  validation_every: 48
+  checkpoint_every: 48
+  learning_rate_a: 5.0e-7
+  learning_rate_b: 2.0e-6
+  warmup_fraction: 0.03
+  weight_decay: 0.0
+  clear_cache_threshold_gb: 4.0
+  arms:
+    selector-only-full-sequence:
+      method: 1.00
+      plan_tool: 0.00
+      report: 0.00
+    multi-token-representation:
+      method: 0.45
+      plan_tool: 0.35
+      report: 0.20
+  selection_gates:
+    minimum_exact_gain_over_parent_points: 5.0
+    minimum_exact_gain_over_control_points: 5.0
+    minimum_method_gain_over_control_points: 0.0
+    minimum_column_gain_over_control_points: 0.0
+    maximum_selector_relative_regret_increase: 0.02
+    maximum_selector_accuracy_regression_points: 3.0
+    maximum_invalidity_increase: 0.00
+  confirmation_gates:
+    minimum_exact_gain_over_parent_points: 5.0
+    minimum_exact_gain_over_control_points: 5.0
+    minimum_method_gain_over_control_points: 0.0
+    minimum_column_gain_over_control_points: 0.0
+    maximum_selector_relative_regret_increase: 0.02
+    maximum_selector_accuracy_regression_points: 3.0
+    maximum_invalidity_increase: 0.00
+
+# H6 follows the failed H5 cross-format pilot.  H5 showed that the base model
+# already extracts columns but usually emits generic human-readable procedure
+# names instead of DGP-specific repository method IDs.  H6 isolates that
+# interface mismatch: both arms learn the same fresh scenarios and JSON schema;
+# only the method lexical target differs (display name vs canonical ID).
+canonical_bottleneck:
+  method_version: 1
+  training_seed: 98010042
+  minimum_normalized_distance: 0.000001
+  training_pool:
+    split: "canonical-bottleneck-train-v1"
+    pool_count: 960
+    seed: 98000042
+    selected_per_family: 4
+  selection_shard:
+    split: "canonical-bottleneck-selection-v1"
+    pool_count: 480
+    seed: 99000042
+    selected_per_family: 2
+  confirmation_shard:
+    split: "canonical-bottleneck-confirmation-v1"
+    pool_count: 960
+    seed: 100000042
+    selected_per_family: 5
+  microsteps: 48
+  max_seconds: 1800
+  max_seq_length: 512
+  grad_accumulation_steps: 4
+  learning_rate_a: 5.0e-7
+  learning_rate_b: 2.0e-6
+  warmup_fraction: 0.03
+  weight_decay: 0.0
+  clear_cache_threshold_gb: 4.0
+  selection_gates:
+    minimum_exact_gain_over_parent_points: 20.0
+    minimum_exact_gain_over_control_points: 10.0
+    minimum_method_gain_over_control_points: 10.0
+    minimum_column_gain_over_control_points: -5.0
+    maximum_selector_relative_regret_increase: 0.10
+    maximum_selector_accuracy_regression_points: 5.0
+    maximum_invalidity_increase: 0.05
+  confirmation_gates:
+    minimum_exact_gain_over_parent_points: 15.0
+    minimum_exact_gain_over_control_points: 10.0
+    minimum_method_gain_over_control_points: 10.0
+    minimum_column_gain_over_control_points: -5.0
+    maximum_selector_relative_regret_increase: 0.10
+    maximum_selector_accuracy_regression_points: 5.0
+    maximum_invalidity_increase: 0.05
+
+# H7 is registered only after H6 failed.  It changes no weights: both arms use
+# the frozen v0.3 parent and the same menu-free extraction question.  The
+# candidate adds one repository-wide 28-method catalog built only from the
+# pre-existing method IDs and display names.  The catalog is identical for
+# every case and therefore provides no case-specific menu or oracle leakage.
+catalog_grounding:
+  method_version: 1
+  minimum_normalized_distance: 0.000001
+  selection_shard:
+    split: "catalog-grounding-selection-v1"
+    pool_count: 480
+    seed: 101000042
+    selected_per_family: 2
+  confirmation_shard:
+    split: "catalog-grounding-confirmation-v1"
+    pool_count: 960
+    seed: 102000042
+    selected_per_family: 5
+  selection_gates:
+    minimum_exact_gain_over_control_points: 20.0
+    minimum_method_gain_over_control_points: 20.0
+    minimum_column_gain_over_control_points: -5.0
+  confirmation_gates:
+    minimum_exact_gain_over_control_points: 15.0
+    minimum_method_gain_over_control_points: 15.0
+    minimum_column_gain_over_control_points: -5.0
+
+# H8 follows the independently confirmed H7 prompt-interface mechanism. Both
+# arms return to weight training from the unchanged v0.3 parent and use the
+# same fresh canonical JSON targets. The control never sees the catalog. The
+# candidate sees the fixed H7 catalog on exactly half of each family's rows,
+# with deterministic blueprint-level dropout on the other half. Selection and
+# confirmation are strictly menu-free, so any advantage must survive removal
+# of the catalog at inference time.
+catalog_distillation:
+  method_version: 1
+  training_seed: 103010042
+  minimum_normalized_distance: 0.000001
+  catalog_grounding_fraction: 0.50
+  training_pool:
+    split: "catalog-distillation-train-v1"
+    pool_count: 1920
+    seed: 103000042
+    selected_per_family: 8
+  selection_shard:
+    split: "catalog-distillation-selection-v1"
+    pool_count: 480
+    seed: 104000042
+    selected_per_family: 2
+  confirmation_shard:
+    split: "catalog-distillation-confirmation-v1"
+    pool_count: 960
+    seed: 105000042
+    selected_per_family: 5
+  microsteps: 96
+  max_seconds: 2400
+  max_seq_length: 768
+  grad_accumulation_steps: 4
+  learning_rate_a: 5.0e-7
+  learning_rate_b: 2.0e-6
+  warmup_fraction: 0.03
+  weight_decay: 0.0
+  clear_cache_threshold_gb: 4.0
+  selection_gates:
+    minimum_exact_gain_over_parent_points: 10.0
+    minimum_exact_gain_over_control_points: 10.0
+    minimum_method_gain_over_control_points: 10.0
+    minimum_column_gain_over_control_points: -5.0
+    maximum_selector_relative_regret_increase: 0.10
+    maximum_selector_accuracy_regression_points: 5.0
+    maximum_invalidity_increase: 0.05
+    minimum_h7_effect_retention_fraction: 0.40
+  confirmation_gates:
+    minimum_exact_gain_over_parent_points: 10.0
+    minimum_exact_gain_over_control_points: 10.0
+    minimum_method_gain_over_control_points: 10.0
+    minimum_column_gain_over_control_points: -5.0
+    maximum_selector_relative_regret_increase: 0.10
+    maximum_selector_accuracy_regression_points: 5.0
+    maximum_invalidity_increase: 0.05
+    minimum_h7_effect_retention_fraction: 0.40
+
+# H9 follows H8's failed weight-transfer attempt and returns to the unchanged
+# v0.3 parent. Both arms receive the same fixed 28-method catalog and the same
+# method-only prompt. The control decodes at temperature zero; the candidate
+# scores every canonical ID by length-normalized assistant NLL and chooses the
+# lowest-loss ID. This separates fine-grained discrimination from free lexical
+# generation without using a case-specific menu or changing weights.
+catalog_ranking:
+  method_version: 1
+  minimum_normalized_distance: 0.000001
+  ranking_batch_size: 4
+  max_seq_length: 640
+  generation_max_tokens: 40
+  selection_shard:
+    split: "catalog-ranking-selection-v1"
+    pool_count: 480
+    seed: 106000042
+    selected_per_family: 2
+  confirmation_shard:
+    split: "catalog-ranking-confirmation-v1"
+    pool_count: 960
+    seed: 107000042
+    selected_per_family: 5
+  selection_gates:
+    minimum_ranked_method_accuracy: 0.35
+    minimum_gain_over_free_control_points: 10.0
+    minimum_gain_over_h7_confirmed_points: 5.0
+  confirmation_gates:
+    minimum_ranked_method_accuracy: 0.35
+    minimum_gain_over_free_control_points: 10.0
+    minimum_gain_over_h7_confirmed_points: 5.0
+
+# H10 follows H9's failed ranking-vs-free comparison. H9 nevertheless showed
+# that a method-only fixed-catalog prompt reached 37.5% method accuracy on its
+# fresh selection shard. H10 isolates whether joint JSON generation itself is
+# suppressing that signal: control uses the H7 catalog-grounded JSON response;
+# candidate reuses the exact same generated columns but replaces only the
+# method with an independent method-only fixed-catalog generation.
+output_factorization:
+  method_version: 1
+  minimum_normalized_distance: 0.000001
+  joint_max_tokens: 160
+  method_max_tokens: 40
+  selection_shard:
+    split: "output-factorization-selection-v1"
+    pool_count: 480
+    seed: 108000042
+    selected_per_family: 2
+  confirmation_shard:
+    split: "output-factorization-confirmation-v1"
+    pool_count: 960
+    seed: 109000042
+    selected_per_family: 5
+  selection_gates:
+    minimum_factorized_method_accuracy: 0.35
+    minimum_factorized_exact_accuracy: 0.30
+    minimum_method_gain_over_joint_points: 8.0
+    minimum_exact_gain_over_joint_points: 8.0
+  confirmation_gates:
+    minimum_factorized_method_accuracy: 0.35
+    minimum_factorized_exact_accuracy: 0.30
+    minimum_method_gain_over_joint_points: 8.0
+    minimum_exact_gain_over_joint_points: 8.0
+
+# H11 follows H10's failed confirmation. The strongest reproduced mechanism is
+# still H7's fixed global catalog. H11 keeps the same frozen v0.3 parent, raw
+# questions, JSON contract, and deterministic decoding. The control uses H7's
+# method_id + display-name catalog. The candidate replaces those entries with
+# fixed repository metadata already present before H11: assumptions, strengths,
+# and uncertainty descriptions. No case-specific menu, family label, simulator
+# score, or newly authored method rule is added.
+semantic_catalog:
+  method_version: 1
+  minimum_normalized_distance: 0.000001
+  selection_shard:
+    split: "semantic-catalog-selection-v1"
+    pool_count: 480
+    seed: 110000042
+    selected_per_family: 2
+  confirmation_shard:
+    split: "semantic-catalog-confirmation-v1"
+    pool_count: 960
+    seed: 111000042
+    selected_per_family: 5
+  selection_gates:
+    minimum_semantic_method_accuracy: 0.40
+    minimum_semantic_exact_accuracy: 0.35
+    minimum_method_gain_over_flat_points: 10.0
+    minimum_exact_gain_over_flat_points: 10.0
+    minimum_column_gain_over_flat_points: -5.0
+  confirmation_gates:
+    minimum_semantic_method_accuracy: 0.40
+    minimum_semantic_exact_accuracy: 0.35
+    minimum_method_gain_over_flat_points: 10.0
+    minimum_exact_gain_over_flat_points: 10.0
+    minimum_column_gain_over_flat_points: -5.0
+
+# H12 is an independent stability replication of the only interface mechanism
+# that survived confirmation: H7's fixed flat catalog. It is preregistered only
+# after H11 failed confirmation. Three fully fresh 60-case folds are frozen at
+# once. No fold is used for tuning. Each fold compares the unchanged menu-free
+# canonical JSON prompt against the same prompt plus the fixed 28-method H7
+# method_id + display-name catalog on the unchanged v0.3 parent.
+catalog_interface_replication:
+  method_version: 1
+  minimum_normalized_distance: 0.000001
+  folds:
+    fold_1:
+      split: "catalog-interface-replication-fold1-v1"
+      pool_count: 960
+      seed: 112000042
+      selected_per_family: 5
+    fold_2:
+      split: "catalog-interface-replication-fold2-v1"
+      pool_count: 960
+      seed: 113000042
+      selected_per_family: 5
+    fold_3:
+      split: "catalog-interface-replication-fold3-v1"
+      pool_count: 960
+      seed: 114000042
+      selected_per_family: 5
+  gates:
+    minimum_pooled_exact_gain_points: 15.0
+    minimum_pooled_method_gain_points: 15.0
+    minimum_pooled_column_gain_points: -5.0
+    minimum_fold_exact_gain_points: 10.0
+    minimum_fold_method_gain_points: 10.0
+    minimum_qualifying_folds: 2
+
+# E1 follows H12's three-fold replication and is the first independent external
+# test of the fixed-catalog interface itself. The contract must exist before the
+# official PMC package, its 27 vignettes, or its answer key is opened. Every
+# source case is retained in source order. Only exact aliases frozen here can
+# map a published gold label into the existing 28-method repository taxonomy;
+# unmatched methods remain visible as out-of-catalog coverage, not retrofitted.
+external_catalog_interface:
+  method_version: 1
+  source:
+    citation_key: "mondal-2024-expert-statistical-test-vignettes"
+    doi: "10.4103/picr.picr_275_23"
+    pmcid: "PMC11584160"
+    expected_case_count: 27
+    oa_api_url: "https://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?id=PMC11584160"
+    article_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11584160/"
+  eligibility:
+    minimum_eligible_cases: 12
+    minimum_coverage_fraction: 0.40
+  generation_max_tokens: 64
+  gates:
+    minimum_flat_catalog_accuracy: 0.35
+    minimum_method_gain_points: 10.0
+    minimum_net_improvements: 2
+    maximum_validity_regression_points: 5.0
+
+# E2-v2 follows E1's source-unavailable closure and a bounded E2-v1
+# single-source qualification search. No single source simultaneously provided
+# >=12 exact-alias-eligible cases and >=40% coverage. E2-v2 therefore freezes a
+# direct-tabular pool of three independently authored, openly licensed sources
+# before the first E2 model answer: Haq & Nazir 2016 Tables 1-2, the complete
+# Conyso selector CSV, and the complete CrucibleBench parametric/non-parametric
+# README tables. Unmapped rows remain in the coverage denominator.
+external_catalog_interface_v2:
+  method_version: 1
+  sources:
+    haq_2016:
+      citation_key: "haq-nazir-2016-which-statistical-hypothesis-test"
+      doi: "10.4103/2008-7802.183653"
+      pmcid: "PMC4910310"
+      license: "CC BY-NC-SA 3.0"
+      license_source_url: "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/PMC4910310/unicode"
+      table_1_url: "https://cdn.ncbi.nlm.nih.gov/pmc/blobs/1363/4910310/55451c4d5354/IJPVM-7-81-g001.jpg"
+      table_1_sha256: "464cbfc93b739eb4d7fa52388f98c3bcdd5876b99a398e8521d9cd7f756bdeb4"
+      table_2_url: "https://cdn.ncbi.nlm.nih.gov/pmc/blobs/1363/4910310/a14e0f72696b/IJPVM-7-81-g002.jpg"
+      table_2_sha256: "b6776ab0b2950cc70a0c80768741ef35876dfe6ecb25b138bc1b58d5f436f8b5"
+    conyso_2026:
+      citation_key: "conyso-2026-hypothesis-test-selector"
+      license: "CC BY 4.0"
+      license_page_url: "https://conyso.com/reference-hypothesis-test-selector.html"
+      csv_url: "https://conyso.com/reference-hypothesis-test-selector.csv"
+      csv_sha256: "43836f94abf282db6e1df3162f143b76639c1d52005f47ddde672b29ade76efa"
+    crucible_bench:
+      citation_key: "north-shore-ai-crucible-bench"
+      repository: "North-Shore-AI/crucible_bench"
+      revision: "cfc785c66eccf3a2b1df25f6fd8179f034e39142"
+      license: "MIT"
+      readme_url: "https://raw.githubusercontent.com/North-Shore-AI/crucible_bench/cfc785c66eccf3a2b1df25f6fd8179f034e39142/README.md"
+      readme_sha256: "7dc2443e467854b985a3626b012115a0eda0709a4f9d53a32781029f2601f7dc"
+      license_url: "https://raw.githubusercontent.com/North-Shore-AI/crucible_bench/cfc785c66eccf3a2b1df25f6fd8179f034e39142/LICENSE"
+      license_sha256: "a706bdd005bbf349ad6b47025b7d128ad03d21f59bd0155643a39beb3a482878"
+  eligibility:
+    minimum_eligible_cases: 12
+    minimum_coverage_fraction: 0.40
+  generation_max_tokens: 64
+  gates:
+    minimum_flat_catalog_accuracy: 0.35
+    minimum_method_gain_points: 10.0
+    minimum_net_improvements: 2
+    maximum_validity_regression_points: 5.0
+    minimum_nonnegative_sources: 2
+    minimum_worst_source_net_improvement: -1
+
+# H13 follows H12's stable synthetic replication plus E2-v2's narrow positive
+# external interface result. It changes no model weights. The same frozen v0.3
+# parent is run to the final normalized hidden state immediately before the LM
+# head under menu-free and fixed-flat-catalog prompts. A deterministic ridge
+# linear probe tests whether canonical method information is already accessible
+# without generation. Training and selection are opened first; confirmation is
+# preregistered but remains unsimulated unless selection chooses one route.
+representation_probe:
+  method_version: 1
+  minimum_normalized_distance: 0.000001
+  training_shard:
+    split: "representation-probe-train-v1"
+    pool_count: 3840
+    seed: 115000042
+    selected_per_family: 20
+  selection_shard:
+    split: "representation-probe-selection-v1"
+    pool_count: 1440
+    seed: 116000042
+    selected_per_family: 6
+  confirmation_shard:
+    split: "representation-probe-confirmation-v1"
+    pool_count: 2400
+    seed: 117000042
+    selected_per_family: 10
+  ridge_lambdas: [0.001, 0.01, 0.1, 1.0, 10.0]
+  selection_gates:
+    minimum_menu_free_accuracy: 0.30
+    minimum_menu_free_top3_accuracy: 0.55
+    minimum_menu_free_gain_over_majority_points: 10.0
+    minimum_catalog_accuracy: 0.35
+    minimum_catalog_gain_over_menu_free_points: 10.0
+  confirmation_gates:
+    minimum_menu_free_accuracy: 0.28
+    minimum_menu_free_top3_accuracy: 0.50
+    minimum_menu_free_gain_over_majority_points: 8.0
+    minimum_catalog_accuracy: 0.33
+    minimum_catalog_gain_over_menu_free_points: 8.0
+
+# H14 is authorized only if H13 confirms that the menu-free final hidden state
+# is already strongly linearly decodable. The H13 training+selection ridge head
+# is frozen before any H14 model output. On fresh cases, the control is ordinary
+# menu-free JSON generation. The candidate keeps those exact generated columns
+# and replaces only the method field with the frozen hidden-state head argmax.
+# Thus any paired gain is attributable to the decision interface, not new model
+# weights, catalog context, or a different column generator.
+selector_head:
+  method_version: 1
+  minimum_normalized_distance: 0.000001
+  selection_shard:
+    split: "selector-head-selection-v1"
+    pool_count: 1440
+    seed: 118000042
+    selected_per_family: 6
+  confirmation_shard:
+    split: "selector-head-confirmation-v1"
+    pool_count: 2400
+    seed: 119000042
+    selected_per_family: 10
+  selection_gates:
+    minimum_head_method_accuracy: 0.65
+    minimum_head_exact_accuracy: 0.55
+    minimum_method_gain_points: 40.0
+    minimum_exact_gain_points: 40.0
+    minimum_column_gain_points: 0.0
+  confirmation_gates:
+    minimum_head_method_accuracy: 0.60
+    minimum_head_exact_accuracy: 0.50
+    minimum_method_gain_points: 35.0
+    minimum_exact_gain_points: 35.0
+    minimum_column_gain_points: 0.0
+
+# H15 follows the terminal-negative E3 external selector-head transfer result.
+# It changes no model weights and does not reuse the 20 E3 scenarios. Fresh DGP
+# semantic points are each rendered three ways before representation scoring:
+# the existing audit language, researcher-like natural prose, and a concise
+# applied-statistics vignette. The immutable H14 head is scored first. A fresh
+# audit-only ridge probe and a fresh style-diverse ridge probe then test whether
+# any failure is a movable linear decision boundary rather than absent signal.
+style_invariance:
+  method_version: 1
+  minimum_normalized_distance: 0.000001
+  training_shard:
+    split: "style-invariance-train-v1"
+    pool_count: 2880
+    seed: 120000042
+    selected_per_family: 12
+  selection_shard:
+    split: "style-invariance-selection-v1"
+    pool_count: 960
+    seed: 121000042
+    selected_per_family: 4
+  confirmation_shard:
+    split: "style-invariance-confirmation-v1"
+    pool_count: 1440
+    seed: 122000042
+    selected_per_family: 6
+  ridge_lambdas: [0.001, 0.01, 0.1, 1.0, 10.0]
+  data_gates:
+    minimum_training_eligible_semantic_points: 96
+    minimum_selection_eligible_semantic_points: 30
+    minimum_confirmation_eligible_semantic_points: 45
+    minimum_eligible_fraction: 0.70
+  selection_gates:
+    minimum_frozen_audit_accuracy: 0.55
+    minimum_frozen_all_style_accuracy: 0.55
+    maximum_stable_style_gap: 0.15
+    minimum_style_collapse: 0.15
+    minimum_style_diverse_natural_accuracy: 0.55
+    minimum_style_diverse_recovery: 0.15
+  confirmation_gates:
+    minimum_frozen_audit_accuracy: 0.50
+    minimum_frozen_all_style_accuracy: 0.50
+    maximum_stable_style_gap: 0.15
+    minimum_style_collapse: 0.12
+    minimum_style_diverse_natural_accuracy: 0.50
+    minimum_style_diverse_recovery: 0.12
+
+# H16 follows H15's confirmation that simple prose style does not explain E3.
+# It changes no model weights and never opens E3 during threshold selection.
+# Fresh DGP semantic points are rendered in three fully specified styles and
+# two deliberately condition-reduced styles. A one-class support score uses
+# only the fully specified H16 training representations. Selection chooses one
+# centered nearest-cosine threshold; confirmation is frozen and independent.
+selector_sufficiency:
+  method_version: 1
+  minimum_normalized_distance: 0.000001
+  training_shard:
+    split: "selector-sufficiency-train-v1"
+    pool_count: 2880
+    seed: 123000042
+    selected_per_family: 12
+  selection_shard:
+    split: "selector-sufficiency-selection-v1"
+    pool_count: 960
+    seed: 124000042
+    selected_per_family: 4
+  confirmation_shard:
+    split: "selector-sufficiency-confirmation-v1"
+    pool_count: 1440
+    seed: 125000042
+    selected_per_family: 6
+  thresholds: [0.70, 0.75, 0.80, 0.85, 0.88, 0.90, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97]
+  data_gates:
+    minimum_training_eligible_semantic_points: 96
+    minimum_selection_eligible_semantic_points: 30
+    minimum_confirmation_eligible_semantic_points: 45
+    minimum_eligible_fraction: 0.70
+  selection_gates:
+    minimum_full_acceptance: 0.85
+    minimum_full_style_acceptance: 0.80
+    minimum_reduced_rejection: 0.90
+    minimum_reduced_style_rejection: 0.85
+    minimum_accepted_head_accuracy: 0.65
+    maximum_accepted_head_accuracy_regression_points: 3.0
+  confirmation_gates:
+    minimum_full_acceptance: 0.80
+    minimum_full_style_acceptance: 0.75
+    minimum_reduced_rejection: 0.85
+    minimum_reduced_style_rejection: 0.80
+    minimum_accepted_head_accuracy: 0.60
+    maximum_accepted_head_accuracy_regression_points: 5.0
+
+# E4 is the first genuinely new external evaluation after H16. Source content
+# is explicitly opened for qualification before the lock, but model output is
+# not. Both sources are CC BY PMC articles with machine-readable table XML.
+# Every method-bearing table row whose exact source label appears in the frozen
+# source-specific alias map is included; no alias may be added after output.
+selective_external:
+  method_version: 1
+  sources:
+    - source_id: "genser-2007-immunology"
+      title: "A guide to modern statistical analysis of immunological data"
+      doi: "10.1186/1471-2172-8-27"
+      pmcid: "PMC2234437"
+      table_id: "T2"
+      bioc_url: "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC2234437/unicode"
+      bioc_sha256: "fb2cf2142e89f025fbe7ad9b3f554bb1adc9b8075bed2b741bb72f14f5a500b2"
+    - source_id: "turner-2025-medical-education"
+      title: "Uncovering Disparities in Medical Education: Advisory Guide to Assessing Data and Statistical Analysis"
+      doi: "10.1007/s40670-025-02435-3"
+      pmcid: "PMC12812112"
+      table_id: "Tab1"
+      bioc_url: "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC12812112/unicode"
+      bioc_sha256: "3a18b629e6f815ab151f7d6e412240f07c24cc678c5a5e605ba8aaa5dbd98136"
+  qualification_gates:
+    minimum_sources: 2
+    minimum_eligible_cases: 12
+    minimum_eligible_per_source: 4
+    minimum_distinct_methods: 7
+  evaluation_gates:
+    minimum_candidate_accuracy: 0.45
+    minimum_gain_over_control_points: 0.0
+    maximum_control_only_losses: 0
+    minimum_worst_source_net_improvement: 0
+    maximum_validity_regression_points: 0.0
+
+# H17 follows E4's narrow safety pass with zero external selector acceptance.
+# All six E2/E3/E4 sources are now explicitly historical development data.
+# A residual linear head and augmented H16 support bank are tuned only through
+# leave-one-source-out validation. Any control-only loss rejects the candidate.
+# Synthetic H16 confirmation representations are reused only for retention and
+# reduced-information rejection checks; no prior external row is fresh evidence.
+external_domain_bridge:
+  method_version: 1
+  minimum_historical_sources: 6
+  minimum_historical_cases: 38
+  ridge_lambdas: [0.01, 0.1, 1.0, 10.0]
+  residual_scales: [0.25, 0.5, 1.0, 2.0]
+  support_thresholds: [0.55, 0.60, 0.65, 0.70, 0.75]
+  gates:
+    minimum_historical_net_improvements: 1
+    maximum_historical_control_only_losses: 0
+    minimum_historical_accept_count: 4
+    minimum_historical_accepted_sources: 2
+    minimum_synthetic_full_accuracy: 0.65
+    maximum_synthetic_full_accuracy_regression_points: 5.0
+    minimum_synthetic_full_acceptance: 0.80
+    minimum_synthetic_reduced_rejection: 0.80
+    minimum_synthetic_accepted_head_accuracy: 0.60
+
+# H18 is registered only after H17 rejects every residual linear bridge.
+# It keeps H16/H14 as the first route, then uses source-held-out nearest
+# exemplars only for H16-rejected rows, and otherwise reuses the exact control.
+# Any historical control-only loss rejects the route. Previously opened rows
+# remain development-only; success can authorize only a new-source contract.
+external_exemplar_router:
+  method_version: 1
+  normalization_modes: ["unit", "h16-centered"]
+  neighbors: [1, 3, 5, 7]
+  temperatures: [0.05, 0.1, 0.2, 0.5]
+  support_thresholds: [0.50, 0.60, 0.70, 0.80, 0.90, 0.95]
+  margin_thresholds: [0.0, 0.1, 0.2, 0.3, 0.5]
+  gates:
+    minimum_historical_net_improvements: 1
+    maximum_control_only_losses: 0
+    minimum_external_exemplar_count: 2
+    minimum_external_exemplar_sources: 2
+    maximum_reduced_external_exemplar_acceptance: 0.20
+
+# H19 begins only after H17 and H18 reject frozen-representation adapters.
+# Six independent LoRA folds start from the unchanged v0.3 parent. Each fold
+# trains on the other five historical sources plus one balanced full-style H16
+# replay row per H16-observed method. The held-out source and a 12-family synthetic
+# retention set are evaluated at the fixed final microstep. No checkpoint or
+# hyperparameter selection is allowed, and one control-only loss rejects H19.
+external_weight_bridge:
+  method_version: 1
+  training_seed: 129000042
+  external_repeat: 4
+  microsteps: 96
+  max_seconds_per_fold: 1800
+  max_seq_length: 640
+  grad_accumulation_steps: 4
+  learning_rate_a: 0.0000005
+  learning_rate_b: 0.000002
+  warmup_fraction: 0.03
+  weight_decay: 0.0
+  clear_cache_threshold_gb: 4.0
+  gates:
+    minimum_candidate_accuracy: 0.65
+    minimum_net_improvements: 1
+    maximum_control_only_losses: 0
+    minimum_worst_source_net_improvement: 0
+    maximum_validity_regression: 0.0
+    maximum_synthetic_accuracy_regression: 0.0
+    maximum_synthetic_validity_regression: 0.0
+
+# H20 is a post-H19 historical development mechanism. Its report applies the
+# validity guard after evaluating all adapter outputs, so it does not demonstrate
+# the exact zero-call path for valid controls. E5 must implement that path directly.
+# The source-held-out readback is retrospective, and E5 remains unopened.
+guarded_weight_bridge:
+  method_version: 1
+  training_seed: 129000142
+  external_repeat: 4
+  microsteps: 96
+  max_seconds: 1800
+  max_seq_length: 640
+  grad_accumulation_steps: 4
+  learning_rate_a: 0.0000005
+  learning_rate_b: 0.000002
+  warmup_fraction: 0.03
+  weight_decay: 0.0
+  clear_cache_threshold_gb: 4.0
+  gates:
+    minimum_historical_net_improvements: 1
+    maximum_control_only_losses: 0
+    minimum_worst_source_net_improvement: 0
+    minimum_correct_invalid_control_repairs: 1
+    minimum_repair_source_count: 1
+    maximum_synthetic_accuracy_regression: 0.0
+    maximum_synthetic_validity_regression: 0.0
+
+# E5 is a future one-shot confirmation of the exact H20 two-stage runtime. A
+# single independent source must pass these gates before any model output is
+# opened. Sources inspected during the 2026-08-31 feasibility screen are
+# development-only and cannot satisfy the source-blind confirmation contract.
+guarded_external:
+  method_version: 1
+  source_gates:
+    minimum_eligible_cases: 150
+    minimum_distinct_methods: 8
+    minimum_coverage_fraction: 0.80
+    maximum_single_method_fraction: 0.40
+  opportunity_gates:
+    minimum_invalid_control_opportunities: 12
+    minimum_invalid_control_gold_methods: 3
+    minimum_valid_control_identity_cases: 50
+  evaluation_gates:
+    minimum_candidate_only_gains: 6
+    minimum_net_improvements: 6
+    minimum_accuracy_gain_points: 4.0
+    maximum_mcnemar_p: 0.05
+
+# v0.5 development hypothesis, registered after the v0.4 final was closed as
+# inconclusive. All selection/confirmation/promotion/final seeds are new. The
+# final blueprint contract is prepared before training, but its simulations and
+# scores remain unopened until every preceding gate passes.
+robust_family_experts:
+  method_version: 1
+  arms: ["boltzmann-mean", "direct-mean", "direct-cvar"]
+  training_pool:
+    split: "robust-expert-train-pool-v1"
+    pool_count: 480
+    seed: 71000042
+    selected_per_family: 24
+  selection_folds:
+    - split: "robust-expert-selection-a-v1"
+      pool_count: 480
+      seed: 72000042
+      selected_per_family: 30
+    - split: "robust-expert-selection-b-v1"
+      pool_count: 480
+      seed: 73000042
+      selected_per_family: 30
+    - split: "robust-expert-selection-c-v1"
+      pool_count: 480
+      seed: 74000042
+      selected_per_family: 30
+  confirmation_shard:
+    split: "robust-expert-confirmation-v1"
+    pool_count: 960
+    seed: 75000042
+    selected_per_family: 60
+  promotion_shard:
+    split: "robust-expert-promotion-v1"
+    pool_count: 1920
+    seed: 76000042
+    selected_per_family: 120
+  final_shard:
+    split: "robust-expert-final-v1"
+    pool_count: 1920
+    seed: 77000042
+    selected_per_family: 120
+  updates: 6
+  records_per_backward: 2
+  step_l2: 0.006
+  direct_trust_beta: 0.10
+  cvar_tail_fraction: 0.35
+  cvar_uniform_floor: 0.25
+  cache_limit_gb: 4.0
+  selection:
+    minimum_family_pooled_relative_improvement: 0.05
+    minimum_fold_relative_improvement: 0.02
+    minimum_improving_folds: 2
+    maximum_fold_relative_regression: 0.02
+    minimum_route_mean_relative_improvement: 0.075
+    minimum_route_worst_fold_relative_improvement: 0.03
+    minimum_candidate_relative_improvement_over_control: 0.05
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.08
+  confirmation_gates:
+    minimum_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+  promotion_gates:
+    minimum_relative_improvement: 0.075
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+  final_gates:
+    minimum_parent_relative_improvement: 0.075
+    minimum_base_relative_improvement: 0.15
+    minimum_base_invalid_selection_relative_reduction: 0.20
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+
+# v0.6 development hypothesis. The v0.5 selection folds are used only to
+# choose four unresolved families; every v0.6 train/selection/downstream DGP is
+# generated from a new split and seed. The candidate preserves the anchor
+# policy on low-regret groups and changes only simulator-verified failures.
+targeted_repair:
+  method_version: 1
+  source_selection_fingerprint: "622962b683b3e0a3212dcdacc6704662953bdaba9321cb8064257fca73a60e06"
+  arms: ["boltzmann-replay", "triggered-repair"]
+  discovery:
+    family_count: 4
+    exclude_existing_anchor_experts: true
+    ranking_metric: "v0.5 boltzmann control pooled parent family regret"
+  training_pool:
+    split: "targeted-repair-train-pool-v1"
+    pool_count: 960
+    seed: 78000042
+    selected_per_family: 24
+    repair_groups_per_family: 18
+    anchor_groups_per_family: 6
+  selection_folds:
+    - split: "targeted-repair-selection-a-v1"
+      pool_count: 480
+      seed: 79000042
+      selected_per_family: 30
+    - split: "targeted-repair-selection-b-v1"
+      pool_count: 480
+      seed: 80000042
+      selected_per_family: 30
+    - split: "targeted-repair-selection-c-v1"
+      pool_count: 480
+      seed: 81000042
+      selected_per_family: 30
+  confirmation_shard:
+    split: "targeted-repair-confirmation-v1"
+    pool_count: 960
+    seed: 82000042
+    selected_per_family: 60
+  promotion_shard:
+    split: "targeted-repair-promotion-v1"
+    pool_count: 1920
+    seed: 83000042
+    selected_per_family: 120
+  final_shard:
+    split: "targeted-repair-final-v1"
+    pool_count: 1920
+    seed: 84000042
+    selected_per_family: 120
+  updates: 6
+  records_per_backward: 2
+  step_l2: 0.006
+  cache_limit_gb: 4.0
+  trigger:
+    expected_regret_threshold: 0.35
+    repair_lambda_floor: 0.25
+    repair_lambda_ceiling: 1.00
+    invalid_argmax_lambda: 1.00
+  selection:
+    minimum_family_pooled_relative_improvement: 0.03
+    minimum_fold_relative_improvement: 0.01
+    minimum_improving_folds: 2
+    maximum_fold_relative_regression: 0.01
+    minimum_route_mean_relative_improvement: 0.05
+    minimum_route_worst_fold_relative_improvement: 0.02
+    minimum_candidate_relative_improvement_over_control: 0.05
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 5000
+  gates:
+    minimum_surface_trilingual_relative_improvement: 0.00
+    maximum_invalidity_increase: 0.00
+    maximum_accuracy_regression: 0.03
+    maximum_retention_regression: 0.01
+    maximum_language_accuracy_regression: 0.03
+    maximum_language_regret_increase: 0.05
+    maximum_domain_accuracy_regression: 0.10
+    maximum_family_regret_increase: 0.08
+  confirmation_gates:
+    minimum_relative_improvement_over_anchor: 0.05
+    minimum_relative_improvement_over_control: 0.05
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+  promotion_gates:
+    minimum_relative_improvement_over_anchor: 0.05
+    minimum_relative_improvement_over_control: 0.05
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 10000
+  final_gates:
+    minimum_parent_relative_improvement: 0.075
+    minimum_base_relative_improvement: 0.15
+    minimum_base_invalid_selection_relative_reduction: 0.20
+    minimum_router_family_accuracy: 0.85
+    minimum_language_router_accuracy: 0.80
+    maximum_wrong_expert_rate: 0.05
+    minimum_expert_coverage: 0.10
+    bootstrap_ci_lower_floor: 0.00
+    bootstrap_repetitions: 20000
+
+base_bakeoff:
+  candidates:
+    - name: "qwen3.5-4b"
+      parameter_scale: "4B"
+      source_key: "research_base_mlx_4bit"
+    - name: "qwen3.5-9b"
+      parameter_scale: "9B"
+      source_key: "teacher_mlx_4bit"
+  smoke_groups: 8
+  smoke_microsteps: 32
+  max_seq_length: 640
+  cache_limit_gb: 4.0
+  clear_cache_threshold_gb: 4.0
+  num_layers: 4
+  rank: 32
+  scale: 20.0
+  dropout: 0.05
+  grad_accumulation_steps: 4
+  learning_rate_a: 5.0e-7
+  learning_rate_b: 2.0e-6
+  warmup_fraction: 0.03
+  weight_decay: 0.0
+  targets:
+    - "linear_attn.in_proj_qkv"
+    - "linear_attn.out_proj"
+    - "self_attn.q_proj"
+    - "self_attn.v_proj"
+  gates:
+    minimum_relative_regret_improvement: 0.10
+    maximum_language_accuracy_regression: 0.03
+    maximum_peak_memory_gb: 18.0
+    maximum_training_time_ratio: 2.5

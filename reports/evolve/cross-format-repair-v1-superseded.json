@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "superseded-before-training",
+  "contract_fingerprint": "cead6cd7ccddcd76ae9ee18e0e5500ac83d1359d602b9d76496885a293127b6a",
+  "data_status_fingerprint": "1375bf393e6d5347a741d4666e8d4cd27255affe30b728be3b920e84acf2aab9",
+  "training_microsteps_completed": 0,
+  "control_arm_status_created": false,
+  "candidate_arm_status_created": false,
+  "confirmation_opened": false,
+  "research_decision_made": false,
+  "reason": "The first data preparation rendered prompts from in-memory Scenario parameter insertion order, while resumed preparation rendered the same frozen simulations after JSONL key sorting. This changed prompt bytes on re-entry before either arm trained. V1 is implementation-invalid rather than a research result.",
+  "registered_first_render_sha256": {
+    "train": "72c12fca56721cc53812f1aa6c4aa0f60aa9343201e6175b67cb0378de0543c2",
+    "selection": "0e2de2c4fb0ea33711b5d7cabf4c3b034b7cb9c295575f690544810c58208bc6",
+    "selection_format": "6c24be4f74068f685e377b6235f4b6e7ca11643288c4a37a66e7ce8491bd0ead"
+  },
+  "observed_reentry_sha256": {
+    "train": "1d910ead5cb7046cdbc0f5fc971bf066a37b3118252c61d60ac3e9d02804cf76",
+    "selection": "4092422ca44339cbed8f77a93ca8561d073674cda4673600fe7a35ec5cb54817",
+    "selection_format": "492d168f68ca3a818b37ce7f154bbb3d1358f52214aa6d7b54b345962c65777f"
+  },
+  "replacement_policy": "Use fresh v2 blueprint seeds and render only from canonical persisted simulation JSONL before any training begins."
+}

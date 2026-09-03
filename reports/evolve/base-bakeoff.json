@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "708473af3d344bd00f090bdd0306b27b59677301d6d4bf07ba940ae83d9a0377",
+  "surface": "reusable-v0.3-dev",
+  "sealed_final_surface_opened": false,
+  "candidates": {
+    "qwen3.5-4b": {
+      "schema_version": 1,
+      "name": "qwen3.5-4b",
+      "parameter_scale": "4B",
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "license": "Apache-2.0",
+      "load_seconds": 2.014,
+      "base_evaluation_seconds": 65.599,
+      "base_peak_memory_gb": 2.9848,
+      "base_languages": {
+        "en": {
+          "normalized_regret": 0.6294055101721779,
+          "accuracy": 0.3333333333333333,
+          "invalid_selection_rate": 0.5666666666666667,
+          "domain_accuracy": {
+            "inference_and_design": 0.2777777777777778,
+            "prediction_and_analysis": 0.5,
+            "probability_and_bayes": 0.3333333333333333
+          },
+          "family_accuracy": {
+            "bayesian_check": 0.6666666666666666,
+            "binary_count_glm": 0.0,
+            "categorical": 0.6,
+            "clustered_repeated": 0.5,
+            "experimental_causal": 0.0,
+            "group_comparison": 0.2,
+            "linear_robust": 0.6,
+            "missing_selection": 0.25,
+            "predictive_calibration": 0.3333333333333333,
+            "probability_distribution": 0.0,
+            "survival": 0.0,
+            "time_series_leakage": 0.6666666666666666
+          }
+        },
+        "zh_Hant": {
+          "normalized_regret": 0.6901019118699688,
+          "accuracy": 0.25,
+          "invalid_selection_rate": 0.65,
+          "domain_accuracy": {
+            "inference_and_design": 0.1111111111111111,
+            "prediction_and_analysis": 0.5,
+            "probability_and_bayes": 0.4166666666666667
+          },
+          "family_accuracy": {
+            "bayesian_check": 0.6666666666666666,
+            "binary_count_glm": 0.0,
+            "categorical": 0.0,
+            "clustered_repeated": 0.0,
+            "experimental_causal": 0.0,
+            "group_comparison": 0.2,
+            "linear_robust": 0.4,
+            "missing_selection": 0.0,
+            "predictive_calibration": 0.3333333333333333,
+            "probability_distribution": 0.16666666666666666,
+            "survival": 0.25,
+            "time_series_leakage": 0.6666666666666666
+          }
+        },
+        "zh_Hans": {
+          "normalized_regret": 0.6031128090463135,
+          "accuracy": 0.2833333333333333,
+          "invalid_selection_rate": 0.5333333333333333,
+          "domain_accuracy": {
+            "inference_and_design": 0.08333333333333333,
+            "prediction_and_analysis": 0.5833333333333334,
+            "probability_and_bayes": 0.5833333333333334
+          },
+          "family_accuracy": {
+            "bayesian_check": 0.8333333333333334,
+            "binary_count_glm": 0.0,
+            "categorical": 0.4,
+            "clustered_repeated": 0.0,
+            "experimental_causal": 0.0,
+            "group_comparison": 0.0,
+            "linear_robust": 0.2,
+            "missing_selection": 0.0,
+            "predictive_calibration": 0.3333333333333333,
+            "probability_distribution": 0.3333333333333333,
+            "survival": 0.0,
+            "time_series_leakage": 0.8333333333333334
+          }
+        }
+      },
+      "base_trilingual": {
+        "normalized_regret": 0.6408734103628201,
+        "accuracy": 0.28888888888888886,
+        "invalid_selection_rate": 0.5833333333333334
+      },
+      "smoke": {
+        "groups": 8,
+        "microsteps": 32,
+        "optimizer_updates": 8,
+        "trainable_parameters": 2129920,
+        "maximum_selector_tokens": 234,
+        "training_seconds": 209.58,
+        "microsteps_per_second": 0.1526860493116861,
+        "peak_memory_gb": 5.9182,
+        "post_smoke_english": {
+          "normalized_regret": 0.6127388435055112,
+          "accuracy": 0.35,
+          "invalid_selection_rate": 0.55,
+          "domain_accuracy": {
+            "inference_and_design": 0.3055555555555556,
+            "prediction_and_analysis": 0.5,
+            "probability_and_bayes": 0.3333333333333333
+          },
+          "family_accuracy": {
+            "bayesian_check": 0.6666666666666666,
+            "binary_count_glm": 0.0,
+            "categorical": 0.6,
+            "clustered_repeated": 0.5,
+            "experimental_causal": 0.25,
+            "group_comparison": 0.2,
+            "linear_robust": 0.6,
+            "missing_selection": 0.25,
+            "predictive_calibration": 0.3333333333333333,
+            "probability_distribution": 0.0,
+            "survival": 0.0,
+            "time_series_leakage": 0.6666666666666666
+          }
+        },
+        "post_smoke_evaluation_seconds": 23.784,
+        "adapter_sha256": "2cc9497f0c0e7c15070c9948672b9401db61a931f8004da3ffda615fbf3bbb1b"
+      }
+    },
+    "qwen3.5-9b": {
+      "schema_version": 1,
+      "name": "qwen3.5-9b",
+      "parameter_scale": "9B",
+      "repo_id": "mlx-community/Qwen3.5-9B-MLX-4bit",
+      "revision": "938d8919941c6e7efd3c7150eff7fe9d12afa631",
+      "license": "Apache-2.0",
+      "load_seconds": 3.519,
+      "base_evaluation_seconds": 107.959,
+      "base_peak_memory_gb": 7.5628,
+      "base_languages": {
+        "en": {
+          "normalized_regret": 0.7422081655595721,
+          "accuracy": 0.15,
+          "invalid_selection_rate": 0.7166666666666667,
+          "domain_accuracy": {
+            "inference_and_design": 0.19444444444444445,
+            "prediction_and_analysis": 0.08333333333333333,
+            "probability_and_bayes": 0.08333333333333333
+          },
+          "family_accuracy": {
+            "bayesian_check": 0.0,
+            "binary_count_glm": 0.0,
+            "categorical": 0.2,
+            "clustered_repeated": 0.0,
+            "experimental_causal": 0.25,
+            "group_comparison": 0.4,
+            "linear_robust": 0.2,
+            "missing_selection": 0.25,
+            "predictive_calibration": 0.16666666666666666,
+            "probability_distribution": 0.16666666666666666,
+            "survival": 0.25,
+            "time_series_leakage": 0.0
+          }
+        },
+        "zh_Hant": {
+          "normalized_regret": 0.692382996333756,
+          "accuracy": 0.26666666666666666,
+          "invalid_selection_rate": 0.65,
+          "domain_accuracy": {
+            "inference_and_design": 0.1388888888888889,
+            "prediction_and_analysis": 0.5,
+            "probability_and_bayes": 0.4166666666666667
+          },
+          "family_accuracy": {
+            "bayesian_check": 0.6666666666666666,
+            "binary_count_glm": 0.2,
+            "categorical": 0.0,
+            "clustered_repeated": 0.0,
+            "experimental_causal": 0.0,
+            "group_comparison": 0.2,
+            "linear_robust": 0.4,
+            "missing_selection": 0.0,
+            "predictive_calibration": 0.3333333333333333,
+            "probability_distribution": 0.16666666666666666,
+            "survival": 0.25,
+            "time_series_leakage": 0.6666666666666666
+          }
+        },
+        "zh_Hans": {
+          "normalized_regret": 0.5864316524815208,
+          "accuracy": 0.31666666666666665,
+          "invalid_selection_rate": 0.5166666666666667,
+          "domain_accuracy": {
+            "inference_and_design": 0.1388888888888889,
+            "prediction_and_analysis": 0.5833333333333334,
+            "probability_and_bayes": 0.5833333333333334
+          },
+          "family_accuracy": {
+            "bayesian_check": 0.8333333333333334,
+            "binary_count_glm": 0.0,
+            "categorical": 0.4,
+            "clustered_repeated": 0.0,
+            "experimental_causal": 0.0,
+            "group_comparison": 0.4,
+            "linear_robust": 0.2,
+            "missing_selection": 0.0,
+            "predictive_calibration": 0.3333333333333333,
+            "probability_distribution": 0.3333333333333333,
+            "survival": 0.0,
+            "time_series_leakage": 0.8333333333333334
+          }
+        }
+      },
+      "base_trilingual": {
+        "normalized_regret": 0.6736742714582831,
+        "accuracy": 0.24444444444444444,
+        "invalid_selection_rate": 0.6277777777777778
+      },
+      "smoke": {
+        "groups": 8,
+        "microsteps": 32,
+        "optimizer_updates": 8,
+        "trainable_parameters": 2523136,
+        "maximum_selector_tokens": 234,
+        "training_seconds": 219.643,
+        "microsteps_per_second": 0.1456909059368872,
+        "peak_memory_gb": 10.6308,
+        "post_smoke_english": {
+          "normalized_regret": 0.7422081655595721,
+          "accuracy": 0.15,
+          "invalid_selection_rate": 0.7166666666666667,
+          "domain_accuracy": {
+            "inference_and_design": 0.19444444444444445,
+            "prediction_and_analysis": 0.08333333333333333,
+            "probability_and_bayes": 0.08333333333333333
+          },
+          "family_accuracy": {
+            "bayesian_check": 0.0,
+            "binary_count_glm": 0.0,
+            "categorical": 0.2,
+            "clustered_repeated": 0.0,
+            "experimental_causal": 0.25,
+            "group_comparison": 0.4,
+            "linear_robust": 0.2,
+            "missing_selection": 0.25,
+            "predictive_calibration": 0.16666666666666666,
+            "probability_distribution": 0.16666666666666666,
+            "survival": 0.25,
+            "time_series_leakage": 0.0
+          }
+        },
+        "post_smoke_evaluation_seconds": 36.055,
+        "adapter_sha256": "c80dc78ae17ea0794a24598ea0fdee852f9a0670e1d445a115a978a189cc4a8f"
+      }
+    }
+  },
+  "decision": {
+    "recommended": "qwen3.5-4b",
+    "relative_regret_improvement": -0.05118149788254331,
+    "training_time_ratio": 1.0480150777745967,
+    "gates": {
+      "relative_regret": false,
+      "language_accuracy": false,
+      "peak_memory": true,
+      "training_time_ratio": true,
+      "finite_metrics": true
+    },
+    "all_gates_passed": false
+  },
+  "claim_boundary": "This local bake-off selects a 72-hour development base; it is not a public capability claim or a sealed-final result."
+}

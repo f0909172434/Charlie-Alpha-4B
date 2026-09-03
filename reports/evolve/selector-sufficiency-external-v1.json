@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "40cbb9ffc9bc2c26b943ad0843b6cda9a8e47e9ef4233b646abade83eead66f2",
+  "method": "E4 fresh two-source frozen H16 selective-selector safety evaluation",
+  "contract_fingerprint": "42a910729e36796672535044bdd7f070a59b3b881b0ea6bba92d6a79092f8510",
+  "data_fingerprint": "b9adbceec4054d78b412b25714cb29f56746ddf322717f056864b3e9a4c6de01",
+  "source_qualification_fingerprint": "33809d361b2d7c00b1d0d3fe085fb4e32a7e77ad7232f88c25512b9b25926616",
+  "fresh_external_evidence": true,
+  "source_qualified_not_blind": true,
+  "same_parent_weights": true,
+  "same_h14_prompt": true,
+  "h16_threshold_frozen_before_model_output": 0.75,
+  "scores": {
+    "menu-free-control": {
+      "count": 13,
+      "eligible_count": 13,
+      "eligible_accuracy": 0.6153846153846154,
+      "all_case_accuracy": 0.6153846153846154,
+      "valid_output_rate": 0.7692307692307693,
+      "in_catalog_prediction_rate": 0.7692307692307693
+    },
+    "raw-h14-diagnostic": {
+      "count": 13,
+      "eligible_count": 13,
+      "eligible_accuracy": 0.23076923076923078,
+      "all_case_accuracy": 0.23076923076923078,
+      "valid_output_rate": 1.0,
+      "in_catalog_prediction_rate": 1.0
+    },
+    "selective-h16-candidate": {
+      "count": 13,
+      "eligible_count": 13,
+      "eligible_accuracy": 0.6153846153846154,
+      "all_case_accuracy": 0.6153846153846154,
+      "valid_output_rate": 0.7692307692307693,
+      "in_catalog_prediction_rate": 0.7692307692307693
+    }
+  },
+  "selector_accept_count": 0,
+  "selector_accept_rate": 0.0,
+  "paired_control_vs_selective": {
+    "eligible_count": 13,
+    "both_correct": 8,
+    "candidate_only": 0,
+    "control_only": 0,
+    "both_wrong": 5,
+    "net_improvements": 0,
+    "mcnemar_exact_two_sided_p": 1.0
+  },
+  "source_paired_control_vs_selective": {
+    "genser-2007-immunology": {
+      "eligible_count": 4,
+      "both_correct": 1,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 3,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "turner-2025-medical-education": {
+      "eligible_count": 9,
+      "both_correct": 7,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 2,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    }
+  },
+  "external_gate": {
+    "passed": true,
+    "checks": {
+      "candidate_absolute_accuracy": true,
+      "candidate_noninferior_to_control": true,
+      "zero_control_only_losses": true,
+      "all_sources_nonnegative": true,
+      "validity_noninferior": true
+    },
+    "effect_points": {
+      "candidate_accuracy_vs_control": 0.0,
+      "valid_output_rate": 0.0
+    },
+    "worst_source_net_improvement": 0
+  },
+  "selective_external_safety_supported": true,
+  "champion_changed": false,
+  "release_authorized": false,
+  "historical_e3_reused": false,
+  "next_step": "freeze-operational-selective-runtime-and-seek-broader-independent-external-evidence",
+  "claim_boundary": "A pass supports only narrow external safety/non-degradation of the frozen H16 selective interface on these 13 source-authored cases. It does not establish broad statistical competence, champion replacement, or release readiness.",
+  "result_fingerprint": "8eb900d4aac968e687db4a976e97dc05043e5309262fd18e51b361ef47c3cfbe"
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "H13 frozen final-representation linear probe confirmation",
+  "contract_fingerprint": "497db2cd3c9245c0dd244faa080585e1ef8cb46b605c716a64f4ab38e626b99c",
+  "selection_result_fingerprint": "02a715095927ac80368bcb696168be31c6d24e32af0a28130d0213e69d63000c",
+  "same_parent_weights": true,
+  "confirmation_surface_fingerprint": "fa7e612b21ec514a81edce16a303d4b9196c1e47d4e93ba7773737a8e21f839c",
+  "confirmation_case_sha256": "2121389e192710013824da7abb91536428d24bd564c66ec9780fb85fac4f54d2",
+  "confirmation_coverage": {
+    "count": 120,
+    "observed_method_count": 21,
+    "missing_methods": [
+      "difference_in_means",
+      "gee",
+      "independent_t",
+      "ols",
+      "poisson_glm",
+      "randomization_inference",
+      "two_proportion"
+    ],
+    "method_counts": {
+      "ancova": 4,
+      "blocked_time_series_cv": 10,
+      "calibrated_logistic": 10,
+      "chi_square": 8,
+      "conjugate_bayes": 10,
+      "cox_ph": 2,
+      "firth_logistic": 5,
+      "fisher_exact": 2,
+      "hc3_ols": 2,
+      "huber_regression": 9,
+      "ipw": 7,
+      "logistic_glm": 1,
+      "logrank": 8,
+      "mann_whitney": 5,
+      "mixed_effects": 10,
+      "multiple_imputation": 8,
+      "negative_binomial_glm": 4,
+      "paired_t": 3,
+      "posterior_predictive": 8,
+      "welch_t": 2,
+      "wilcoxon_signed_rank": 2
+    }
+  },
+  "representations": {
+    "menu-free": "b64cd120192f511f5ed20842b9365db336fd9e229dd59043453fdc27231bfd53",
+    "flat-catalog": "09ee13e663b6680d73cc4d8e9445c2e6c548a182d45f51eee3e07f22c61675ee"
+  },
+  "fit_counts": {
+    "training": 240,
+    "selection": 72,
+    "confirmation": 120
+  },
+  "selected_route": "selector-head",
+  "scores": {
+    "menu-free": {
+      "count": 120,
+      "accuracy": 0.75,
+      "top3_accuracy": 0.9916666666666667,
+      "macro_recall_present_classes": 0.5744897959183674,
+      "present_class_count": 21,
+      "train_observed_class_count": 24,
+      "majority_class": "posterior_predictive",
+      "majority_accuracy": 0.06666666666666667,
+      "gain_over_majority_points": 68.33333333333333,
+      "ridge_lambda": 0.01
+    },
+    "flat-catalog": {
+      "count": 120,
+      "accuracy": 0.8,
+      "top3_accuracy": 0.9916666666666667,
+      "macro_recall_present_classes": 0.6149659863945578,
+      "present_class_count": 21,
+      "train_observed_class_count": 24,
+      "majority_class": "posterior_predictive",
+      "majority_accuracy": 0.06666666666666667,
+      "gain_over_majority_points": 73.33333333333334,
+      "ridge_lambda": 0.001
+    }
+  },
+  "paired_catalog_accuracy_gain_points": 5.000000000000004,
+  "confirmation_gate": {
+    "passed": true,
+    "checks": {
+      "menu_free_accuracy": true,
+      "menu_free_top3": true,
+      "menu_free_majority_gain": true
+    }
+  },
+  "representation_hypothesis_confirmed": true,
+  "next_step": "build-preregistered-28-way-selector-head",
+  "champion_changed": false,
+  "external_benchmark_opened": false,
+  "result_fingerprint": "340ffe7c4f3630adde436e6841196aa1a03da3537057b1096f2e4130fc35faff"
+}

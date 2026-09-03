@@ -1,0 +1,6 @@
+{"task_id":"retention-en-stem-1","benchmark":"retention-canary","domain":"stem","language":"en","prompt":"Answer with only the chemical symbol: What is the chemical symbol for sodium?","gold":"Na","max_tokens":256}
+{"task_id":"retention-en-general-1","benchmark":"retention-canary","domain":"general","language":"en","prompt":"Return only the next letter in this sequence: A, C, E, G, ?","gold":"I","max_tokens":256}
+{"task_id":"retention-zh-hant-stem-1","benchmark":"retention-canary","domain":"stem","language":"zh_Hant","prompt":"只回答數字：標準海平面下，水的攝氏沸點是多少？","gold":"100","max_tokens":256}
+{"task_id":"retention-zh-hant-general-1","benchmark":"retention-canary","domain":"general","language":"zh_Hant","prompt":"只回答星期名稱：星期一的下一天是？","gold":"星期二","max_tokens":256}
+{"task_id":"retention-zh-hans-stem-1","benchmark":"retention-canary","domain":"stem","language":"zh_Hans","prompt":"只回答化学式：水的化学式是什么？","gold":"H2O","max_tokens":256}
+{"task_id":"retention-zh-hans-general-1","benchmark":"retention-canary","domain":"general","language":"zh_Hans","prompt":"只回答英文单词：英文单词 hot 的反义词是什么？","gold":"cold","max_tokens":256}

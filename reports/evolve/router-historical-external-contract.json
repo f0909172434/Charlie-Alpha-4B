@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "method": "preregistered historical-external falsification gate",
+  "research_question": "Does the confirmed reduced family route improve historical P-Bench and StatQA over the v0.3 parent without regressing exact, method-set, or column-set ability?",
+  "candidate": {
+    "guarded_route_fingerprint": "0208c13da42df821f4f4043bde41d6f6619d01d4343ef8d0d6817d535899c54c",
+    "guarded_route_sha256": "c703a0f37755e339eb5f11084a1e945b22dd9e26652f7f32924de7bb5f98db86",
+    "mapping_fingerprint": "7ce33238346d1af25ec415d09d5506157a6029ce3bfcda0d0155fcaae86e8fd3",
+    "family_prompt_sha256": "fc9c213a217c51ad1f2a5f36f4501f1a1f1fd6b11b5ce2fbc25079f90f2d2fe8",
+    "sufficiency_prompt_sha256": "3567713f3afc95446aa3bb2410b0c50fbdec8f66bd22406ca2f43c18a756a4e7",
+    "task_aware_guard_scope": "The sufficiency guard applies to primary-method selection prompts. P-Bench uses the existing data compiler and StatQA is an explicit method/column extraction task, so neither is intercepted by the guard.",
+    "adapter_sha256": {
+      "expert-categorical-update-04": "59f4bf0ff5a7ce6f3a01b4f903ee3c08212b5b2b1609d7d903d77fa3c320ce74",
+      "expert-clustered_repeated-update-04": "ef748a67256c91adb008e52d9d89b11909d947456d16fbde8f58ad7271556b36",
+      "expert-experimental_causal-update-02": "d48cb83b8559decc3f173733494d6ba9a44f302393b487fa47ecac1da6a022a4",
+      "expert-group_comparison-update-04": "60b5e33dd356859333694c66a4df5f1e40beb05ac2bacf76eefec1df622dccb4",
+      "expert-predictive_calibration-update-04": "6f26fd20cb70e4992b2acafdfd275e64bc4a4a8822f7a3d5d36612723947af90",
+      "expert-time_series_leakage-update-03": "3b0003594892ce6fcadd434a03f04d74803d723a71bf31182d610d6dabf282dd",
+      "parent": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+    }
+  },
+  "control": {
+    "name": "v0.3-parent",
+    "report_sha256": "366ca5efb630c74a8f5df2f93c4b0f58e65c5963fe2b442f1482d60debb5068b",
+    "report_fingerprint": "6d359d3b46c6c98b6c6b00b106d93305dc3347855111630ae7dad0618a7e85f1",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "evaluation": {
+    "lock_fingerprint": "566dacaac6cd82491d7adf080f57ae32886959bbe109ac8f5176af46282c4b38",
+    "lock_sha256": "04205b3e4d292bd823b7fdadb0e2d06eee249cc527b2e97c4d1110f61ed8dfc8",
+    "p_bench_count": 90,
+    "statqa_count": 200,
+    "historical_and_previously_opened": true,
+    "formal_final_claim_allowed": false
+  },
+  "precontract_routing_only_diagnostic": {
+    "candidate_outputs_generated": false,
+    "gold_labels_consulted_for_candidate_design": false,
+    "p_bench": {
+      "count": 90,
+      "guard_insufficient_rate_if_misapplied": 0.08888888888888889,
+      "route_counts": {
+        "parent": 53,
+        "group_comparison": 21,
+        "categorical": 16
+      }
+    },
+    "statqa": {
+      "count": 200,
+      "guard_insufficient_rate_if_misapplied": 0.99,
+      "route_counts": {
+        "parent": 158,
+        "categorical": 34,
+        "group_comparison": 7,
+        "clustered_repeated": 1
+      }
+    }
+  },
+  "settings": {
+    "method_version": 1,
+    "excluded_family": "experimental_causal",
+    "family_route_threshold": 0.6,
+    "gates": {
+      "p_bench_raw_points": 3.0,
+      "statqa_exact_points": 5.0,
+      "maximum_statqa_submetric_regression_points": 3.0,
+      "minimum_guard_specificity": 0.98,
+      "minimum_guard_sensitivity": 0.98,
+      "minimum_retention_accuracy": 1.0
+    }
+  },
+  "adaptation_policy": "none; no output-based changes to routing, prompts, experts, or gates",
+  "stopping_rule": "complete both locked historical suites; resumable progress only",
+  "decision_rule": "Pass only if every P-Bench, StatQA, clarification, retention, and integrity gate passes. Passing is development evidence only; failing blocks champion promotion.",
+  "fingerprint": "cbb56af8bab0ccdc08c5ef7cb5bfa8e75c281fee957f514be2c30fbefb7112ec"
+}

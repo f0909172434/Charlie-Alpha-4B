@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+  "folds": {
+    "conyso-2026": {
+      "train_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/external-weight-bridge-v1/folds/conyso-2026/train.jsonl",
+      "train_sha256": "5e779b20c847222b040eba0702fc25bc60decad882a4238c4051875027e7df5b",
+      "training_records": 213,
+      "external_unique_records": 36,
+      "synthetic_replay_records": 69
+    },
+    "crucible-bench": {
+      "train_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/external-weight-bridge-v1/folds/crucible-bench/train.jsonl",
+      "train_sha256": "f05d3c067bfccb64cef71351e5bdcef7596360f0763f9ffde11b73e697871eec",
+      "training_records": 205,
+      "external_unique_records": 34,
+      "synthetic_replay_records": 69
+    },
+    "genser-2007-immunology": {
+      "train_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/external-weight-bridge-v1/folds/genser-2007-immunology/train.jsonl",
+      "train_sha256": "cf7b889eb0855b3f5def8132de57e6a1ac3a3c2295dab49249e143fbe5d3473d",
+      "training_records": 205,
+      "external_unique_records": 34,
+      "synthetic_replay_records": 69
+    },
+    "haq-2016": {
+      "train_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/external-weight-bridge-v1/folds/haq-2016/train.jsonl",
+      "train_sha256": "cedac20d8eabad2a6bd1f1f8e9aeea766418085bd21a00ade769e09fb077ee60",
+      "training_records": 181,
+      "external_unique_records": 28,
+      "synthetic_replay_records": 69
+    },
+    "shukla-2025": {
+      "train_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/external-weight-bridge-v1/folds/shukla-2025/train.jsonl",
+      "train_sha256": "830c63362856884837673cf5fbecaaee40cbf5285711f20a81dbfa1609020f92",
+      "training_records": 185,
+      "external_unique_records": 29,
+      "synthetic_replay_records": 69
+    },
+    "turner-2025-medical-education": {
+      "train_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/external-weight-bridge-v1/folds/turner-2025-medical-education/train.jsonl",
+      "train_sha256": "a5c222d4a94abd02d0bff5b59cdbce1a68a4fd85dddcabe1641d07439f8dff4f",
+      "training_records": 185,
+      "external_unique_records": 29,
+      "synthetic_replay_records": 69
+    },
+    "all-sources": {
+      "train_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/external-weight-bridge-v1/folds/all-sources/train.jsonl",
+      "train_sha256": "24032f03b5271696757a4fdded8528df934b45d80385398102caff4a0bb78ca0",
+      "training_records": 221,
+      "external_unique_records": 38,
+      "synthetic_replay_records": 69
+    }
+  },
+  "synthetic_retention_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/external-weight-bridge-v1/synthetic-retention.jsonl",
+  "synthetic_retention_sha256": "bf6f39a089cba23f4d3208560a02acf2d8d608a25e24bb981d24dd9d23b69dee",
+  "fold_training_started": false,
+  "fresh_external_evaluation_opened": false,
+  "data_amendment": {
+    "fingerprint": "3c7e806987d4382ce581cf334f7b257fed890241643cf1a123153ef475f5852c",
+    "implementation_sha256": "70b65ea4ef883c18efccafd5330f2bf6cccc499c5e8be30589a373a303d08ebc",
+    "scientific_contract_changed": false
+  },
+  "data_fingerprint": "00d8fee34c6495c64466d7566d9668a1f7224096fdd3b154536f93cde6d7212e"
+}

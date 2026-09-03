@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "837d8357d426849dd5e625b7d96555b4a5f81bf6855a8fc24a7f5c552a915e7c",
+  "method": "H7 fixed catalog grounding confirmation",
+  "contract_fingerprint": "5bcec5fab7ff97601d6994039b1f58746949ff74979d731510b9717b4f131b33",
+  "pilot_result_fingerprint": "f5a00c6fe665918ac947dddef7fc50a59de6977d2c1f70a71ab3229669a4cdfd",
+  "confirmation_manifest_fingerprint": "85b1164ac1a0c3c2a2c7f1160ae381c39cc1d27af4d21b47f82e92c1bd14c84a",
+  "same_parent_weights": true,
+  "scores": {
+    "menu-free-control": {
+      "count": 60,
+      "exact_accuracy": 0.0,
+      "method_set_accuracy": 0.03333333333333333,
+      "column_set_accuracy": 0.9166666666666666,
+      "mean_column_recall": 0.9833333333333333
+    },
+    "catalog-grounded": {
+      "count": 60,
+      "exact_accuracy": 0.21666666666666667,
+      "method_set_accuracy": 0.2833333333333333,
+      "column_set_accuracy": 0.9166666666666666,
+      "mean_column_recall": 0.9833333333333333
+    }
+  },
+  "confirmation_gate": {
+    "passed": true,
+    "checks": {
+      "exact_gain_over_control": true,
+      "method_gain_over_control": true,
+      "column_noninferior": true
+    },
+    "effect_points": {
+      "exact_vs_control": 21.666666666666668,
+      "method_vs_control": 25.0,
+      "columns_vs_control": 0.0
+    }
+  },
+  "synthetic_interface_confirmed": true,
+  "external_benchmark_authorized": false,
+  "next_step": "preregister-independent-external-interface-evidence",
+  "result_fingerprint": "f9e3b27a91b41f11a44cf21fde90f928cf198c36e751b2686dbe41a87809295c"
+}

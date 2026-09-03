@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "H13 frozen final-representation linear probe selection",
+  "contract_fingerprint": "497db2cd3c9245c0dd244faa080585e1ef8cb46b605c716a64f4ab38e626b99c",
+  "data_fingerprint": "1d287f9c3f0637f2e0a5f9469aa38a6a703251d057d03353392e2ce8aa885bb5",
+  "same_parent_weights": true,
+  "representations": {
+    "training_shard": {
+      "menu-free": "ea5c1b7c93fa5ec37eec2fe55b775a56344b621a795d6994ae39ff2f6621d6d4",
+      "flat-catalog": "28b6ae448eecb10d941f4b64ee7b0494bed156258a8633a521273ed4506ff8ca"
+    },
+    "selection_shard": {
+      "menu-free": "0ad98e6b1049e753306e6ae6c8cc3c2599671688eaaff836ffff5222ca6288e7",
+      "flat-catalog": "c8da3859d4f45ad3f780f220c8e09c402745a76cf7f8ec41d569e81e657148e9"
+    }
+  },
+  "scores": {
+    "menu-free": {
+      "count": 72,
+      "accuracy": 0.7916666666666666,
+      "top3_accuracy": 0.9861111111111112,
+      "macro_recall_present_classes": 0.6054421768707483,
+      "present_class_count": 21,
+      "train_observed_class_count": 24,
+      "majority_class": "posterior_predictive",
+      "majority_accuracy": 0.1111111111111111,
+      "gain_over_majority_points": 68.05555555555556,
+      "ridge_lambda": 0.01,
+      "lambda_sweep": [
+        {
+          "ridge_lambda": 0.01,
+          "accuracy": 0.7916666666666666,
+          "top3_accuracy": 0.9861111111111112
+        },
+        {
+          "ridge_lambda": 0.001,
+          "accuracy": 0.7777777777777778,
+          "top3_accuracy": 0.9722222222222222
+        },
+        {
+          "ridge_lambda": 0.1,
+          "accuracy": 0.75,
+          "top3_accuracy": 0.9444444444444444
+        },
+        {
+          "ridge_lambda": 1.0,
+          "accuracy": 0.7361111111111112,
+          "top3_accuracy": 0.7916666666666666
+        },
+        {
+          "ridge_lambda": 10.0,
+          "accuracy": 0.1111111111111111,
+          "top3_accuracy": 0.5555555555555556
+        }
+      ]
+    },
+    "flat-catalog": {
+      "count": 72,
+      "accuracy": 0.8194444444444444,
+      "top3_accuracy": 0.9861111111111112,
+      "macro_recall_present_classes": 0.6629818594104309,
+      "present_class_count": 21,
+      "train_observed_class_count": 24,
+      "majority_class": "posterior_predictive",
+      "majority_accuracy": 0.1111111111111111,
+      "gain_over_majority_points": 70.83333333333333,
+      "ridge_lambda": 0.001,
+      "lambda_sweep": [
+        {
+          "ridge_lambda": 0.001,
+          "accuracy": 0.8194444444444444,
+          "top3_accuracy": 0.9861111111111112
+        },
+        {
+          "ridge_lambda": 0.01,
+          "accuracy": 0.7777777777777778,
+          "top3_accuracy": 1.0
+        },
+        {
+          "ridge_lambda": 0.1,
+          "accuracy": 0.7777777777777778,
+          "top3_accuracy": 0.9444444444444444
+        },
+        {
+          "ridge_lambda": 1.0,
+          "accuracy": 0.7361111111111112,
+          "top3_accuracy": 0.9166666666666666
+        },
+        {
+          "ridge_lambda": 10.0,
+          "accuracy": 0.5833333333333334,
+          "top3_accuracy": 0.7361111111111112
+        }
+      ]
+    }
+  },
+  "paired_catalog_accuracy_gain_points": 2.777777777777779,
+  "selected_lambdas": {
+    "menu-free": 0.01,
+    "flat-catalog": 0.001
+  },
+  "selection_checks": {
+    "menu_free_accuracy": true,
+    "menu_free_top3": true,
+    "menu_free_majority_gain": true,
+    "catalog_accuracy": true,
+    "catalog_lift": false
+  },
+  "selected_route": "selector-head",
+  "confirmation_authorized": true,
+  "next_step": "confirm-dedicated-selector-head-representation",
+  "result_fingerprint": "02a715095927ac80368bcb696168be31c6d24e32af0a28130d0213e69d63000c"
+}

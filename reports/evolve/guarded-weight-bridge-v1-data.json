@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "contract_fingerprint": "9c66a3280a58de12ec301df6ee8af11ead6868035d82867d57b0dd5f9e55a571",
+  "historical_case_count": 38,
+  "historical_case_fingerprint": "665d1faa98066c46594a78244796f326773e4af611a52d9db131514d299355fb",
+  "synthetic_replay_count": 69,
+  "synthetic_replay_fingerprint": "543ae39b14ee3607974edb37c5527bc2d904b959445319e0b74d1735bad62bb4",
+  "training_records": 221,
+  "train_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/guarded-weight-bridge-v1/all-sources/train.jsonl",
+  "train_sha256": "24032f03b5271696757a4fdded8528df934b45d80385398102caff4a0bb78ca0",
+  "synthetic_retention_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/guarded-weight-bridge-v1/synthetic-retention.jsonl",
+  "synthetic_retention_sha256": "bf6f39a089cba23f4d3208560a02acf2d8d608a25e24bb981d24dd9d23b69dee",
+  "all_source_training_started": false,
+  "fresh_external_evaluation_opened": false,
+  "data_fingerprint": "8106ac8c54284cfc7862976474590d703daf88f19bcc1ea09e047520ba78a9a9"
+}

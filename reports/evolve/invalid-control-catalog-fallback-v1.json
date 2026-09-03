@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "H22_INVALID_CONTROL_CATALOG_FALLBACK_DEV_V1",
+  "status": "SUPPORTED_DEV_COMPOSITION",
+  "evidence_status": "opened-source-development-composition",
+  "contract_fingerprint": "4cc31e676ec1b765b38d373f5e43a1ae4f89fb5ae5f54be9a6ee92711ceb6bf8",
+  "data_fingerprint": "ad0c8b40e03c4af5f487f9f8409176e924046792df9143e931662b601fbdc99b",
+  "evaluation_fingerprint": "b1c7195b9753ed1ee6774f92fdacbf57dbe16db0f5b3721782bfc4ba6168399f",
+  "opening_fingerprint": "53a31e982edc5ffc548f6da311911bfbf7dde456359f38dff8fd1d3bb8294689",
+  "runtime_receipt_fingerprint": "35b200d6967d08edb5baaa1c622501c7849989bd53cdd08f64d340a88eb89929",
+  "model_call_counts": {
+    "reused_h21_controls": 24,
+    "new_menu_free_control_calls": 0,
+    "new_catalog_fallback_calls": 4,
+    "valid_control_fallback_calls": 0
+  },
+  "opportunity_gate": {
+    "passed": true,
+    "checks": {
+      "minimum_invalid_control_cases": true,
+      "minimum_invalid_control_sources": true,
+      "minimum_invalid_control_gold_methods": true,
+      "minimum_distinct_invalid_question_templates": true,
+      "maximum_single_template_fraction": true
+    },
+    "observed": {
+      "invalid_control_cases": 4,
+      "invalid_control_sources": 3,
+      "invalid_control_gold_methods": 2,
+      "distinct_invalid_question_templates": 2,
+      "maximum_single_template_fraction": 0.75,
+      "template_counts": {
+        "choose one catalog procedure for this study: a normally distributed continuous outcome is measured in two independent groups.": 3,
+        "choose one catalog procedure for this study: one ordinal or non-normally distributed sample is compared with a fixed hypothetical value.": 1
+      }
+    }
+  },
+  "scores": {
+    "control": {
+      "count": 24,
+      "correct_count": 19,
+      "accuracy": 0.7916666666666666,
+      "valid_count": 20,
+      "valid_output_rate": 0.8333333333333334,
+      "in_catalog_prediction_count": 20,
+      "in_catalog_prediction_rate": 0.8333333333333334
+    },
+    "catalog_guard": {
+      "count": 24,
+      "correct_count": 23,
+      "accuracy": 0.9583333333333334,
+      "valid_count": 24,
+      "valid_output_rate": 1.0,
+      "in_catalog_prediction_count": 24,
+      "in_catalog_prediction_rate": 1.0
+    }
+  },
+  "paired": {
+    "both_correct": 19,
+    "candidate_only": 4,
+    "control_only": 0,
+    "both_wrong": 1,
+    "count": 24,
+    "net_improvements": 4,
+    "mcnemar_exact_two_sided_p": 0.125
+  },
+  "source_paired": {
+    "PMC2996580": {
+      "both_correct": 3,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 0,
+      "count": 3,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "PMC6639881": {
+      "both_correct": 5,
+      "candidate_only": 2,
+      "control_only": 0,
+      "both_wrong": 1,
+      "count": 8,
+      "net_improvements": 2,
+      "mcnemar_exact_two_sided_p": 0.5
+    },
+    "PMC8327789": {
+      "both_correct": 5,
+      "candidate_only": 1,
+      "control_only": 0,
+      "both_wrong": 0,
+      "count": 6,
+      "net_improvements": 1,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "PMC8483143": {
+      "both_correct": 6,
+      "candidate_only": 1,
+      "control_only": 0,
+      "both_wrong": 0,
+      "count": 7,
+      "net_improvements": 1,
+      "mcnemar_exact_two_sided_p": 1.0
+    }
+  },
+  "template_summary": {
+    "invalid_case_count": 4,
+    "distinct_invalid_question_templates": 2,
+    "distinct_repaired_question_templates": 2,
+    "repaired_gold_methods": [
+      "independent_t",
+      "wilcoxon_signed_rank"
+    ],
+    "repair_sources": [
+      "PMC6639881",
+      "PMC8327789",
+      "PMC8483143"
+    ],
+    "valid_fallback_case_count": 4,
+    "template_details": [
+      {
+        "template": "choose one catalog procedure for this study: a normally distributed continuous outcome is measured in two independent groups.",
+        "case_count": 3,
+        "source_count": 3,
+        "gold_methods": [
+          "independent_t"
+        ],
+        "all_cases_gained": true,
+        "all_fallbacks_valid": true
+      },
+      {
+        "template": "choose one catalog procedure for this study: one ordinal or non-normally distributed sample is compared with a fixed hypothetical value.",
+        "case_count": 1,
+        "source_count": 1,
+        "gold_methods": [
+          "wilcoxon_signed_rank"
+        ],
+        "all_cases_gained": true,
+        "all_fallbacks_valid": true
+      }
+    ]
+  },
+  "result_gate": {
+    "passed": true,
+    "checks": {
+      "valid_control_identity": true,
+      "zero_control_only_losses": true,
+      "minimum_valid_fallback_cases": true,
+      "minimum_candidate_only_gains": true,
+      "minimum_net_improvements": true,
+      "minimum_distinct_repaired_question_templates": true,
+      "minimum_repaired_gold_methods": true,
+      "minimum_repair_source_count": true
+    },
+    "observed": {
+      "valid_control_identity_cases": 20,
+      "valid_fallback_cases": 4,
+      "candidate_only_gains": 4,
+      "control_only_losses": 0,
+      "net_improvements": 4,
+      "distinct_repaired_question_templates": 2,
+      "repaired_gold_method_count": 2,
+      "repair_source_count": 3
+    }
+  },
+  "model_output_opened": true,
+  "fresh_external_evidence": false,
+  "training_authorized": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "next_step": "seek-preregistered-fresh-evidence-for-this-composition",
+  "claim_boundary": "A pass supports only a development composition of the previously confirmed H7 catalog interface with an invalid-control identity guard on already-opened H21 cases. It cannot alter E5, establish fresh external capability, authorize training, replace the champion, publish, or release.",
+  "private_details_fingerprint": "69ece4e0df1d4f115abcda69f2e60d2abe8548cbba3af88c228daf82b7beb661",
+  "result_fingerprint": "0c2dc933fdfb04ab5569be8042afdbe55837bb3fb1dd8d19ad12b4959825ee1c"
+}

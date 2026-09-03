@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "terminal": true,
+  "method": "E1 official external vignette source availability audit",
+  "contract_fingerprint": "627c1721e6d9e38f7fdd5d59cd6a9b53a9321ca4644fe54f615afee4b7d1a425",
+  "source_receipt": {
+    "article_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11584160/",
+    "article_html_sha256": "973a67320886db72b5282267750ebc8422f56b34b04e38cdad7c5d9056139812",
+    "article_html_stable_sha256": "24a319a025b5064af63a3a01a0f975cc6bd07f8907bded4fe6eadbc5f7b2c6ca",
+    "bioc_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/PMC11584160/unicode",
+    "bioc_xml_sha256": "7c9507a9eaa0d607492ef22c096d9096b812a46271749407dbf81340bef94800",
+    "bioc_xml_stable_sha256": "1bb8504496ceddb5c40618e03832f3b59d8c31d08f52d5fe2f39eef6456779a1",
+    "bioc_passage_count": 69,
+    "bioc_table_count": 1,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11584160/pdf/PCR-15-178.pdf",
+    "pdf_sha256": "cfda4b7e86aa55b56ff8459dfd8de03f5cf73f674515b0d0bbfedd52c19df836",
+    "pdf_page_count": 5,
+    "pdf_download": {
+      "pow_required": true,
+      "difficulty": 4,
+      "challenge_sha256": "232abc0cda55e7ad704db3438974092ebd7ef8437a051bb49ea9db8f1883f24a",
+      "nonce": 105863
+    },
+    "supplementary_link_count": 0,
+    "supplementary_links": [],
+    "legacy_oa_api": {
+      "status": "http-404"
+    },
+    "visual_pdf_audit": {
+      "complete": true,
+      "all_pages_reviewed": true,
+      "page_count": 5,
+      "appendix_present": false,
+      "supplement_present": false,
+      "complete_vignette_set_present": false,
+      "answer_key_present": false,
+      "aggregate_table_count": 1,
+      "example_vignette_count": 1
+    }
+  },
+  "source_status": "published-source-omits-case-set",
+  "case_materialization_complete": false,
+  "expected_case_count": 27,
+  "materialized_case_count": 0,
+  "published_table_count": 1,
+  "published_table_summaries": [
+    {
+      "source_file": "PMC11584160.bioc.xml",
+      "table_index": 1,
+      "label": "picr_275_23-t001",
+      "caption": "Concordance and acceptance of answers provided by large language models in test and retest",
+      "row_count": 9,
+      "column_counts": [
+        5,
+        6
+      ]
+    }
+  ],
+  "source_failure": {
+    "class": "source-unavailable",
+    "parser_result": "No official source table contained exactly 27 complete vignette rows",
+    "reason": "The official PMC HTML, NCBI BioC full text, and visually reviewed five-page PDF publish aggregate performance plus one example vignette, but omit the complete 27 vignettes and their answer key required by the frozen contract."
+  },
+  "model_evaluation_started": false,
+  "evaluation_authorized": false,
+  "external_claim_decidable": false,
+  "independent_external_interface_supported": false,
+  "champion_unchanged": "v0.3.0-parent",
+  "release_authorized": false,
+  "materializer_version": 4,
+  "materializer_sha256": {
+    "download_official_package": "20ee0c6ae846f943665c4ead9ae6bd6ae4ac3ddcd326c746edb9071629ba0517",
+    "download_pmc_pdf": "2284e6ed459314c936e27346b04cf27c8d11941b9889d78e5a38b7b959ab5f49",
+    "pdf_page_count": "90e5e35f79189973c14acf0590d912612136afeec6d04ccd30e5f7627d922e91",
+    "stable_article_html": "2a01eff7389c6e6ebe60040949b8c80bb8ae9eb89b98ea77763463b546d35525",
+    "stable_bioc_xml": "f0a23c6d9258a318ce9fee839a89c104834703f3e192b4c89f1dfaced15004b5",
+    "supplementary_asset_links": "0b4d115d956317a3bf793904a18290b96934cb2b627f3a0285de809708c53385",
+    "nxml_tables": "372e867dd1a05ea29aecac7188a8d8ccd6deb9b3af4dfffe6e75795627c67d4e",
+    "docx_tables": "1fd3cc8d956bd212fc3870897adddee424ac53e7b967bb150581b18bb504707c",
+    "bioc_tables": "d5a5b75c3414ef6722a040e5b93f101687177badc893173d2467aac9c27138af",
+    "select_case_table": "62f6da772de625298f847e4d5850c0e586be63568d4efc8db6c1a0dc9a57e178"
+  },
+  "next_step": "close-e1-source-unavailable-without-model-evaluation",
+  "supersedes_source_audit_fingerprint": "329b525933c4eb9ff8f7cb41287d5cd08d30225c3843f37bda41ff32a0dbb9f4",
+  "fingerprint": "cb94076ba59bb3b6455fd0556a505f77625f1b2e4e9c3905353bdbf91270490d"
+}

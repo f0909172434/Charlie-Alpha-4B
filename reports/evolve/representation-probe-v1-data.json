@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "1d287f9c3f0637f2e0a5f9469aa38a6a703251d057d03353392e2ce8aa885bb5",
+  "contract_fingerprint": "497db2cd3c9245c0dd244faa080585e1ef8cb46b605c716a64f4ab38e626b99c",
+  "surface_fingerprints": {
+    "training_shard": "3734f96c1215adbbc7335f983e4cd95107220cd5bf70fb664d69ef90568e4281",
+    "selection_shard": "373d46d136c034b44942f1a0ec46a116dbba2006293785b53093f13ca9b250c1"
+  },
+  "case_sha256": {
+    "training_shard": "bd6ca4fd6cb949a124314944352338e2e9c547035768fe55317979052dd92623",
+    "selection_shard": "5139503166c0709f3cf58a729a0b9c588204786ae615498ee4f27d011ef58a0f"
+  },
+  "coverage": {
+    "training_shard": {
+      "count": 240,
+      "observed_method_count": 24,
+      "missing_methods": [
+        "gee",
+        "poisson_glm",
+        "randomization_inference",
+        "two_proportion"
+      ],
+      "method_counts": {
+        "ancova": 5,
+        "blocked_time_series_cv": 20,
+        "calibrated_logistic": 20,
+        "chi_square": 16,
+        "conjugate_bayes": 10,
+        "cox_ph": 3,
+        "difference_in_means": 1,
+        "firth_logistic": 13,
+        "fisher_exact": 4,
+        "hc3_ols": 5,
+        "huber_regression": 16,
+        "independent_t": 1,
+        "ipw": 16,
+        "logistic_glm": 5,
+        "logrank": 17,
+        "mann_whitney": 3,
+        "mixed_effects": 19,
+        "multiple_imputation": 17,
+        "negative_binomial_glm": 2,
+        "ols": 1,
+        "paired_t": 5,
+        "posterior_predictive": 28,
+        "welch_t": 10,
+        "wilcoxon_signed_rank": 3
+      }
+    },
+    "selection_shard": {
+      "count": 72,
+      "observed_method_count": 21,
+      "missing_methods": [
+        "difference_in_means",
+        "fisher_exact",
+        "gee",
+        "ols",
+        "poisson_glm",
+        "randomization_inference",
+        "two_proportion"
+      ],
+      "method_counts": {
+        "ancova": 1,
+        "blocked_time_series_cv": 6,
+        "calibrated_logistic": 6,
+        "chi_square": 6,
+        "conjugate_bayes": 2,
+        "cox_ph": 1,
+        "firth_logistic": 2,
+        "hc3_ols": 1,
+        "huber_regression": 5,
+        "independent_t": 1,
+        "ipw": 7,
+        "logistic_glm": 2,
+        "logrank": 5,
+        "mann_whitney": 3,
+        "mixed_effects": 6,
+        "multiple_imputation": 4,
+        "negative_binomial_glm": 2,
+        "paired_t": 1,
+        "posterior_predictive": 8,
+        "welch_t": 2,
+        "wilcoxon_signed_rank": 1
+      }
+    }
+  },
+  "confirmation_opened": false
+}

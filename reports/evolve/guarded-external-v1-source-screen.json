@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "E5 precontract source feasibility screen",
+  "screen_version": 1,
+  "master_contract_fingerprint": "35cd1762825de0724841875409ab9e3bd31454a92b43a9e9f86f37f34393f93f",
+  "source_screen_not_blind": true,
+  "screened_sources": {
+    "PMC8327789": {
+      "source_id": "PMC8327789",
+      "title": "An Introduction to Statistics: Choosing the Correct Statistical Test",
+      "doi": "10.5005/jp-journals-10071-23815",
+      "license": "CC BY-NC",
+      "snapshot_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC8327789/unicode",
+      "snapshot_sha256": "b40dc53865028489d13c010811c56947b8ba9e3f3353a83e324a0fb09392196f",
+      "method_bearing_cell_count": 18,
+      "eligible_count": 6,
+      "coverage_fraction": 0.3333333333333333,
+      "distinct_method_count": 6,
+      "method_counts": {
+        "independent_t": 1,
+        "logistic_glm": 1,
+        "mann_whitney": 1,
+        "ols": 1,
+        "paired_t": 1,
+        "wilcoxon_signed_rank": 1
+      },
+      "maximum_single_method_fraction": 0.16666666666666666,
+      "checks": {
+        "minimum_eligible_cases": false,
+        "minimum_distinct_methods": false,
+        "minimum_coverage_fraction": false,
+        "maximum_single_method_fraction": true,
+        "source_blind": false
+      },
+      "qualified": false,
+      "opened_before_master_contract": true
+    },
+    "PMC8483143": {
+      "source_id": "PMC8483143",
+      "title": "How to choose and interpret a statistical test? An update for budding researchers",
+      "doi": "10.4103/jfmpc.jfmpc_433_21",
+      "license": "CC BY-NC-SA",
+      "snapshot_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC8483143/unicode",
+      "snapshot_sha256": "326ab7eae0719c13cf48e58b98973795f4765ba922e4b684513f9862b026d49f",
+      "method_bearing_cell_count": 18,
+      "eligible_count": 7,
+      "coverage_fraction": 0.3888888888888889,
+      "distinct_method_count": 7,
+      "method_counts": {
+        "chi_square": 1,
+        "independent_t": 1,
+        "logistic_glm": 1,
+        "mann_whitney": 1,
+        "ols": 1,
+        "paired_t": 1,
+        "wilcoxon_signed_rank": 1
+      },
+      "maximum_single_method_fraction": 0.14285714285714285,
+      "checks": {
+        "minimum_eligible_cases": false,
+        "minimum_distinct_methods": false,
+        "minimum_coverage_fraction": false,
+        "maximum_single_method_fraction": true,
+        "source_blind": false
+      },
+      "qualified": false,
+      "opened_before_master_contract": true
+    },
+    "PMC6639881": {
+      "source_id": "PMC6639881",
+      "title": "Selection of Appropriate Statistical Methods for Data Analysis",
+      "doi": "10.4103/aca.ACA_248_18",
+      "license": "CC BY-NC-SA",
+      "snapshot_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC6639881/unicode",
+      "snapshot_sha256": "b881306838e425ae7319ef17c0fa7e690e350bd5a53a430c50b8bc271ee980fd",
+      "method_bearing_cell_count": 27,
+      "eligible_count": 9,
+      "coverage_fraction": 0.3333333333333333,
+      "distinct_method_count": 8,
+      "method_counts": {
+        "cox_ph": 1,
+        "independent_t": 1,
+        "logistic_glm": 1,
+        "mann_whitney": 1,
+        "ols": 1,
+        "paired_t": 1,
+        "two_proportion": 1,
+        "wilcoxon_signed_rank": 2
+      },
+      "maximum_single_method_fraction": 0.2222222222222222,
+      "checks": {
+        "minimum_eligible_cases": false,
+        "minimum_distinct_methods": true,
+        "minimum_coverage_fraction": false,
+        "maximum_single_method_fraction": true,
+        "source_blind": false
+      },
+      "qualified": false,
+      "opened_before_master_contract": true
+    },
+    "PMC2996580": {
+      "source_id": "PMC2996580",
+      "title": "Choosing statistical test",
+      "doi": "10.4103/0974-7788.72494",
+      "license": "CC BY",
+      "snapshot_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC2996580/unicode",
+      "snapshot_sha256": "eb7be3715e4a5f7e6d3bb609285d361551d44a74f6620a052c1dd8523325c2b9",
+      "method_bearing_cell_count": 11,
+      "eligible_count": 4,
+      "coverage_fraction": 0.36363636363636365,
+      "distinct_method_count": 4,
+      "method_counts": {
+        "chi_square": 1,
+        "fisher_exact": 1,
+        "logrank": 1,
+        "mann_whitney": 1
+      },
+      "maximum_single_method_fraction": 0.25,
+      "checks": {
+        "minimum_eligible_cases": false,
+        "minimum_distinct_methods": false,
+        "minimum_coverage_fraction": false,
+        "maximum_single_method_fraction": true,
+        "source_blind": false
+      },
+      "qualified": false,
+      "opened_before_master_contract": true
+    }
+  },
+  "aggregate_diagnostic_only": {
+    "source_count": 4,
+    "method_bearing_cell_count": 74,
+    "eligible_count": 26,
+    "coverage_fraction": 0.35135135135135137,
+    "distinct_methods": [
+      "chi_square",
+      "cox_ph",
+      "fisher_exact",
+      "independent_t",
+      "logistic_glm",
+      "logrank",
+      "mann_whitney",
+      "ols",
+      "paired_t",
+      "two_proportion",
+      "wilcoxon_signed_rank"
+    ],
+    "pooling_for_e5_forbidden": true
+  },
+  "status": "SOURCE_SCREEN_UNQUALIFIED",
+  "evaluation_authorized": false,
+  "model_output_opened": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "next_step": "preserve-zero-model-output-and-select-one-future-source-under-master-contract",
+  "claim_boundary": "This is a non-blind feasibility screen and a source-unavailable outcome, not a model evaluation. Screened sources cannot be pooled or reused as fresh E5 evidence.",
+  "private_details_fingerprint": "caec836d4d8192ccd1bb662db4127e7211e0362c6ed27b20bead866cf8ce79fe",
+  "result_fingerprint": "34ea53c6307c9eeca17a5940e59c22b3156cfa2dbe878c18a21cab618b0a02c2"
+}

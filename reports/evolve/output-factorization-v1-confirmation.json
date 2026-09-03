@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "25f4ed01c213f12d59b44ca7c0fd0c75cdf9f38172e189c6f39e915944d99aa2",
+  "method": "H10 factorized method and column interface confirmation",
+  "contract_fingerprint": "706de16b60c36c827a229e0ce927bc1eb1a2e6d1e9ece9462baabe4361f75a70",
+  "pilot_result_fingerprint": "e39b2b9f8f767c66dbd620e8d998ab0d802128f742cabd3d312c93c90f2371da",
+  "confirmation_manifest_fingerprint": "8c9423db1256d1eee23b48fc8d4310917d2a376554246a76da9f0609dbbff2ba",
+  "same_parent_weights": true,
+  "shared_columns": true,
+  "scores": {
+    "count": 60,
+    "joint_method_accuracy": 0.3333333333333333,
+    "factorized_method_accuracy": 0.35,
+    "column_set_accuracy": 0.9,
+    "mean_column_recall": 0.9888888888888889,
+    "joint_exact_accuracy": 0.25,
+    "factorized_exact_accuracy": 0.35
+  },
+  "confirmation_gate": {
+    "passed": false,
+    "checks": {
+      "minimum_factorized_method_accuracy": true,
+      "minimum_factorized_exact_accuracy": true,
+      "minimum_method_gain_over_joint": false,
+      "minimum_exact_gain_over_joint": true
+    },
+    "effect_points": {
+      "method_vs_joint": 1.6666666666666663,
+      "exact_vs_joint": 9.999999999999998
+    }
+  },
+  "synthetic_factorization_confirmed": false,
+  "external_benchmark_authorized": false,
+  "next_step": "reject-h10-output-factorization",
+  "result_fingerprint": "c9128f29e597e40bc5b6356264bcf99ecee42de3f09da0621335475a31530f4b"
+}

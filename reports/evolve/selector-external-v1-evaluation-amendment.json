@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "method": "E3 evaluator-only pre-output amendment",
+  "amendment_version": 1,
+  "contract_fingerprint": "b19db4e9b973552858199315d1ae534964c70a839742f1e5db16cdfdfead83ce",
+  "contract_sha256": "1d0dd60f70653412853ff115ed3317ce7240764c1dc87c54a106c8ee03b67906",
+  "data_fingerprint": "aa76dfc10acd80fde2e822e50a987ddf844fcd29c300c81979aacba6219e3fdb",
+  "data_sha256": "d3b2020ab64231f985f5d2cae0f96c8f9e273bd4ac70a9967dcd6e7e14d8010e",
+  "runtime_contract_fingerprint": "52919e7999f7347f1e62a73adc2702be589c6f62e4bb442a9d57c3563a556265",
+  "runtime_contract_sha256": "5e6b43b66a827bf3fc3c27b02ee984441a0d4a6649647da16cad5a2e17d71591",
+  "failed_attempt_evidence": {
+    "failed_progress_exists": true,
+    "failed_progress_rows": 0,
+    "failed_progress_status": {
+      "fingerprint": "bae3e47301eecefda1fef120d957a4e1da72c83d08beb02c2d2cad9b4644a957",
+      "completed": 0
+    },
+    "failed_progress_completed": 0,
+    "terminal_report_exists": false,
+    "no_model_answer_observed": true
+  },
+  "defects": [
+    {
+      "kind": "field-interface",
+      "observed": "frozen E3 rows use question while legacy E1 scorer expected vignette",
+      "failure_point": "prompt construction before the first model call"
+    },
+    {
+      "kind": "prompt-contract",
+      "observed": "legacy E1 scorer used a method-only prompt while the E3 contract requires the exact H14 methods+columns menu-free prompt",
+      "causal_risk": "control and selector-head would otherwise receive different prompts"
+    }
+  ],
+  "correction": {
+    "control_prompt": "use stats_catalog_grounding._messages(case, grounded=False), exactly the H14 menu-free methods+columns extraction prompt",
+    "selector_head_prompt": "unchanged frozen H14 menu-free representation prompt",
+    "field_adapter": "none; both arms consume the frozen question field directly",
+    "source_changed": false,
+    "cases_changed": false,
+    "eligibility_changed": false,
+    "mapping_changed": false,
+    "gates_changed": false,
+    "runtime_changed": false,
+    "head_changed": false
+  },
+  "implementation_sha256": {
+    "stats_selector_external_amendment.py": "9df20cab89c327d9cd501ed509530ce6619259b773f59285aa8bae44070b00f9",
+    "stats_selector_external.py": "2c7249b66dd4fd8f78ab67f669fff624c63093a223f2bb73bb32b914b278832e",
+    "stats_catalog_grounding.py": "4b9ea08e0515be65358aae7c2ebda4321b297a1de5ae76305b225de92b18ea5c"
+  },
+  "model_evaluation_started": false,
+  "claim_boundary": "A pass can support only narrow transfer of the frozen H14 method selector to the nine head-covered source-authored biomedical scenarios. It cannot establish 28-method coverage, column correctness, champion replacement, or release readiness.",
+  "fingerprint": "72f11de59c627d944338e189cae2fb33b61cc630551849415b5b8da87ee35eb9"
+}

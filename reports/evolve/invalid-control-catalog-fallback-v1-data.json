@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "method": "H22_INVALID_CONTROL_CATALOG_FALLBACK_DEV_V1",
+  "complete": true,
+  "contract_fingerprint": "4cc31e676ec1b765b38d373f5e43a1ae4f89fb5ae5f54be9a6ee92711ceb6bf8",
+  "h21_data_fingerprint": "2f3bffc327c6c4a963cd632e74a197eaf3a81d121303a36e4f4bf0e1c9040d0d",
+  "h21_result_fingerprint": "a97a2d59e997d92fdfc35fdbba468d55478454072150cf5d6ff675015e004fab",
+  "h21_control_ledger_sha256": "cb460a090e8d1f56bba2b611256cdd3cd48c15f0c031fba63a4f335d9c854939",
+  "invalid_case_count": 4,
+  "invalid_cases_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/invalid-control-catalog-fallback-v1/invalid-cases.jsonl",
+  "invalid_cases_sha256": "54e1549e40ff326129072742422c13d275e5591c2a7aa35fb5402555fde6d1de",
+  "invalid_case_fingerprint": "d8d6f0b4a4cf6127c8bc88dd8d4181b58000de92bb9d3bdebb999fd3213ef60d",
+  "opportunity_gate": {
+    "passed": true,
+    "checks": {
+      "minimum_invalid_control_cases": true,
+      "minimum_invalid_control_sources": true,
+      "minimum_invalid_control_gold_methods": true,
+      "minimum_distinct_invalid_question_templates": true,
+      "maximum_single_template_fraction": true
+    },
+    "observed": {
+      "invalid_control_cases": 4,
+      "invalid_control_sources": 3,
+      "invalid_control_gold_methods": 2,
+      "distinct_invalid_question_templates": 2,
+      "maximum_single_template_fraction": 0.75,
+      "template_counts": {
+        "choose one catalog procedure for this study: a normally distributed continuous outcome is measured in two independent groups.": 3,
+        "choose one catalog procedure for this study: one ordinal or non-normally distributed sample is compared with a fixed hypothetical value.": 1
+      }
+    }
+  },
+  "evaluation_authorized": true,
+  "model_output_opened": false,
+  "training_authorized": false,
+  "fresh_external_evidence": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "data_fingerprint": "ad0c8b40e03c4af5f487f9f8409176e924046792df9143e931662b601fbdc99b"
+}

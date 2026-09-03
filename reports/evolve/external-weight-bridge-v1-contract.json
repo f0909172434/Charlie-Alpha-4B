@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "method": "H19 source-held-out external representation LoRA bridge",
+  "method_version": 1,
+  "causal_question": "Can fixed-compute LoRA adaptation on five already-opened external sources plus balanced synthetic replay improve menu-free generation on the held-out sixth source without losing any previously correct controls or synthetic retention cases?",
+  "h18_negative_result_fingerprint": "2ddb39ee3cfab591ba815a9eb9d8cb062cfe32ec581360e3ff99d674819de390",
+  "h18_report_sha256": "e9ceba4bf8b865a2b3b731dc964d264ab056696e28d03b1fea4b4df2e65e5694",
+  "parent": {
+    "name": "v0.3.0-parent",
+    "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "historical_case_count": 38,
+  "historical_case_fingerprint": "665d1faa98066c46594a78244796f326773e4af611a52d9db131514d299355fb",
+  "fold_sources": [
+    "conyso-2026",
+    "crucible-bench",
+    "genser-2007-immunology",
+    "haq-2016",
+    "shukla-2025",
+    "turner-2025-medical-education"
+  ],
+  "source_counts": {
+    "conyso-2026": 2,
+    "crucible-bench": 4,
+    "genser-2007-immunology": 4,
+    "haq-2016": 10,
+    "shukla-2025": 9,
+    "turner-2025-medical-education": 9
+  },
+  "synthetic_replay": {
+    "source_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/selector-sufficiency-v1/cases/training_shard.jsonl",
+    "source_sha256": "eac921d58ca16f4217d9b60390ab259b81d7b6433fb6a9acf84c582c55b068d9",
+    "selected_count": 69,
+    "selected_fingerprint": "543ae39b14ee3607974edb37c5527bc2d904b959445319e0b74d1735bad62bb4",
+    "policy": "first canonical case per observed method and each full H16 style"
+  },
+  "synthetic_retention": {
+    "source_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/selector-sufficiency-v1/cases/confirmation_shard.jsonl",
+    "source_sha256": "3cff2e370b838feea50f9c48d24b412aab3757b24473d213a50578ec3bc3f92f",
+    "selected_count": 12,
+    "selected_fingerprint": "f92832185135f755eedf11b69a76f31671811cd50e18df9e2c3eef71646aa3a2",
+    "policy": "first audit-style H16 confirmation case per statistical family"
+  },
+  "settings": {
+    "method_version": 1,
+    "training_seed": 129000042,
+    "external_repeat": 4,
+    "microsteps": 96,
+    "max_seconds_per_fold": 1800,
+    "max_seq_length": 640,
+    "grad_accumulation_steps": 4,
+    "learning_rate_a": 5e-07,
+    "learning_rate_b": 2e-06,
+    "warmup_fraction": 0.03,
+    "weight_decay": 0.0,
+    "clear_cache_threshold_gb": 4.0,
+    "gates": {
+      "minimum_candidate_accuracy": 0.65,
+      "minimum_net_improvements": 1,
+      "maximum_control_only_losses": 0,
+      "minimum_worst_source_net_improvement": 0,
+      "maximum_validity_regression": 0.0,
+      "maximum_synthetic_accuracy_regression": 0.0,
+      "maximum_synthetic_validity_regression": 0.0
+    }
+  },
+  "fold_protocol": "Train six independent adapters from the unchanged parent. Each adapter excludes every row from its held-out source. Evaluate only that source, then aggregate paired results.",
+  "selection_policy": "No checkpoint selection or hyperparameter search. The fixed final microstep is used. A final all-source development adapter may be trained only if every aggregate, source-level, validity, and synthetic-retention gate passes.",
+  "claim_boundary": "H19 is historical source-held-out development evidence. It cannot reuse E2/E3/E4 as fresh evidence, replace the champion, authorize release, or establish external capability. A pass authorizes only a separately frozen new-source evaluation.",
+  "implementation_sha256": {
+    "stats_external_weight_bridge.py": "70dc9b3782dac492a16de8aaf93453e95bfa70cfbecf4bf0a4076da595e6814e",
+    "forge_training.py": "bb26d1660cc7ba0dbf8a40bb49d802b18cc9484682cc97985d9014fbbbdbb6a6",
+    "stats_training.py": "3c870b07111a10b94cfdc52a12ef0a920029d4ddb815ebb87fac948fd5911866",
+    "stats_selector_external_amendment.py": "9df20cab89c327d9cd501ed509530ce6619259b773f59285aa8bae44070b00f9",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9"
+  },
+  "fold_training_started": false,
+  "fresh_external_evaluation_opened": false,
+  "fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1"
+}

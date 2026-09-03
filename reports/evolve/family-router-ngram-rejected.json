@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "method": "temperature-scaled character n-gram multinomial Naive Bayes",
+  "model_sha256": "d4481c64d3ffa71a4d93eae29a4e1e98b0af3cf67dee9e849846b477630ceeb5",
+  "synthetic_validation_family_accuracy": 1.0,
+  "manual_canary": {
+    "count": 39,
+    "family_accuracy": 0.3888888888888889,
+    "language_family_accuracy": {
+      "en": 0.8333333333333334,
+      "zh_Hant": 0.16666666666666666,
+      "zh_Hans": 0.16666666666666666
+    },
+    "best_route_accuracy": 0.6666666666666666,
+    "best_language_route_accuracy": {
+      "en": 0.9230769230769231,
+      "zh_Hant": 0.5384615384615384,
+      "zh_Hans": 0.5384615384615384
+    }
+  },
+  "rejected": true,
+  "rejection_reason": "Synthetic template accuracy did not transfer to manually written Chinese questions and confidence did not separate the errors.",
+  "adapter_regret_validation_opened": false,
+  "confirmation_shard_opened": false,
+  "promotion_shard_opened": false,
+  "sealed_final_surface_opened": false
+}

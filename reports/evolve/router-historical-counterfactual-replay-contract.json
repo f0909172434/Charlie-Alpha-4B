@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "method": "post-H4 matched counterfactual parent completion",
+  "research_question": "After removing evaluator/runtime drift, does the frozen H4 routed policy change historical P-Bench or StatQA behavior relative to the same v0.3 parent?",
+  "supersedes": {
+    "contract_fingerprint": "6828f2641f60c3b4ccde1b2d153f4de0e148262c39d3797cbb847d49218406ef",
+    "reason": "v1 redundantly scheduled all 90 P-Bench parent replays. H4 already contains exact same-evaluator parent outputs for the 53 tasks frozen to the parent route. v2 reuses those outputs and replays only expert-routed counterfactual parent tasks.",
+    "outcome_independent_subset": true,
+    "v1_final_report_generated": false
+  },
+  "h4_candidate": {
+    "report_fingerprint": "5cbcfbbaf33fcdf112ab10b939e81cd78f99c297c923924a91fa33269fe1ca35",
+    "report_sha256": "ae68fa7c3e9a906352f8680532f2032294193df4f53e6dec51f85987a39d006e",
+    "terminal_status": "external-rejected"
+  },
+  "matched_control": {
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16",
+    "statqa_rows_reused_from_v1": 200,
+    "p_bench_parent_route_rows_reused_from_h4": 53,
+    "p_bench_expert_rows_reused_from_v1": 7,
+    "p_bench_expert_rows_remaining": 30,
+    "p_bench_total": 90,
+    "expert_route_task_ids_fingerprint": "4c8e8cfdf9f9d2344be8d812cca1d2409e5cfd95791339e2e7f2f1781aa043a0",
+    "remaining_task_ids_fingerprint": "1efb0c8c3f647883a6a2e079c9878bdb4d90c5fd4d2c54cdee956671adc02ca8"
+  },
+  "reuse_evidence": {
+    "v1_statqa_progress_sha256": "3e511066dbbf683a69ee1a5f20f28da4ffdb0dc1a8ecffd5d2f546b6814650ab",
+    "v1_statqa_progress_fingerprint": "77c842b3a1a4314ec91ec202770f8533f04a9d3ac824653bbc0b36249a17fc5e",
+    "v1_pbench_partial_sha256": "e722c565612663805ba5c01aea387fab4253da22262e4aa52e5ccb672a851054",
+    "v1_pbench_partial_fingerprint": "49d5502a638bee99b7324a9a2afdd2c898a67253181b1c203f64c51cada9c212",
+    "v1_pbench_partial_completed": 17,
+    "h4_pbench_progress": {
+      "expert-categorical-update-04": {
+        "sha256": "b41ba6c05509736d8e6ba458a7509a720f4dcd5f1fff44ec7d21b01d1f9e6fc3",
+        "count": 16
+      },
+      "expert-group_comparison-update-04": {
+        "sha256": "9c0be87bc7d86e00a9528e86815e2622571dc05d57cd8bc29d43001cc26f9ba4",
+        "count": 21
+      },
+      "parent": {
+        "sha256": "a59fff6dc291be3f6acbfe2fe7e73bcff25cc0d38e439a98ca0e2991a14651dc",
+        "count": 53
+      }
+    }
+  },
+  "evaluation": {
+    "lock_fingerprint": "566dacaac6cd82491d7adf080f57ae32886959bbe109ac8f5176af46282c4b38",
+    "lock_sha256": "04205b3e4d292bd823b7fdadb0e2d06eee249cc527b2e97c4d1110f61ed8dfc8",
+    "historical_and_previously_opened": true,
+    "formal_final_claim_allowed": false
+  },
+  "implementation_sha256": {
+    "stats_router_counterfactual.py": "6298e7611ec567d17cab270137ad5d5316cb1212949d066fa5ef77ff7ef5d37c",
+    "stats_router_external.py": "c4324e4755c918e0e329220da8fda3c150f3baa5a185d2411e0c0d389aa72d03",
+    "stats_router_replay.py": "6155521c1c7a4f9944ef75cf0d0a43abf4e5e0bdd2763f0e62e384a7b18a616f",
+    "stats_eval.py": "1656a33a2887b9b62c3393aecc2e7e9965e4436afbce1b241b2bc07366f58123",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9"
+  },
+  "adaptation_policy": "none; no model, prompt, route, expert, threshold, or gate changes",
+  "stopping_rule": "Complete the frozen expert-routed counterfactual parent set; compose it with exact H4 parent-route outputs and the complete v1 StatQA matched replay.",
+  "decision_policy": "Attribute mechanism effect only from matched parent versus frozen H4 candidate. Legacy-control drift is reported separately. H4 remains external-rejected.",
+  "fingerprint": "8d1a9997c801027044704f606b7abfba0c02ad4a19e9b135551694e98633efac"
+}

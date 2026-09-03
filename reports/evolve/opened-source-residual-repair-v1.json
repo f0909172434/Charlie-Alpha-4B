@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "H21_OPENED_SOURCE_RESIDUAL_REPAIR_DEV_V1",
+  "evaluation_fingerprint": "d8ad47c6b026069cdd66cf894b970ab09d4f64751d7d9ca438110c84f2874f85",
+  "same_prompt_and_decoding_both_stages": true,
+  "control_runtime_receipt_fingerprint": "22f3cd28c34e9c7b8c383ba34ee6697841b0eaf9c9f0ab7c523140d4378dd9bc",
+  "repair_runtime_receipt_fingerprint": "96963b755dc2dfd77dded231b7c5844d9f4fb1915b6e95757abe30580dadf16d",
+  "scores": {
+    "control": {
+      "count": 24,
+      "correct_count": 19,
+      "accuracy": 0.7916666666666666,
+      "valid_count": 20,
+      "valid_output_rate": 0.8333333333333334,
+      "in_catalog_prediction_count": 20,
+      "in_catalog_prediction_rate": 0.8333333333333334
+    },
+    "guarded_candidate": {
+      "count": 24,
+      "correct_count": 19,
+      "accuracy": 0.7916666666666666,
+      "valid_count": 20,
+      "valid_output_rate": 0.8333333333333334,
+      "in_catalog_prediction_count": 20,
+      "in_catalog_prediction_rate": 0.8333333333333334
+    }
+  },
+  "paired": {
+    "both_correct": 19,
+    "candidate_only": 0,
+    "control_only": 0,
+    "both_wrong": 5,
+    "count": 24,
+    "net_improvements": 0,
+    "mcnemar_exact_two_sided_p": 1.0
+  },
+  "source_paired": {
+    "PMC2996580": {
+      "both_correct": 3,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 0,
+      "count": 3,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "PMC6639881": {
+      "both_correct": 5,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 3,
+      "count": 8,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "PMC8327789": {
+      "both_correct": 5,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 1,
+      "count": 6,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "PMC8483143": {
+      "both_correct": 6,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 1,
+      "count": 7,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    }
+  },
+  "route_counts": {
+    "invalid-control-invalid-repair-fallback": 4,
+    "valid-control-identity": 20
+  },
+  "parse_reason_counts": {
+    "control": {
+      "unknown-method-id": 4,
+      "valid-canonical-method": 20
+    },
+    "repair": {
+      "unknown-method-id": 4
+    }
+  },
+  "model_call_counts": {
+    "control_calls": 24,
+    "control_invalid_count": 4,
+    "repair_calls": 4,
+    "valid_control_repair_calls": 0,
+    "total_calls": 28
+  },
+  "repair": {
+    "valid_repair_count": 0,
+    "correct_repair_count": 0,
+    "fallback_count": 4,
+    "precision": 0.0,
+    "precision_wilson_95": [
+      0.0,
+      1.0
+    ],
+    "correct_rate_per_call": 0.0,
+    "correct_rate_per_call_wilson_95": [
+      0.0,
+      0.4898908364545973
+    ]
+  },
+  "external_gate": {
+    "status": "CONFIRMED_NARROW_PASS",
+    "repair_coverage_sufficient": true,
+    "confirmatory_passed": true,
+    "coverage_checks": {
+      "minimum_invalid_control_opportunities": true,
+      "minimum_invalid_control_gold_methods": true,
+      "minimum_valid_control_identity_cases": true
+    },
+    "confirmatory_checks": {
+      "zero_control_only_losses": true,
+      "minimum_candidate_only_gains": true,
+      "minimum_net_improvements": true,
+      "minimum_accuracy_gain_points": true,
+      "maximum_mcnemar_p": true,
+      "validity_noninferior": true
+    },
+    "observed": {
+      "invalid_control_opportunities": 4,
+      "invalid_control_gold_method_count": 2,
+      "valid_control_identity_cases": 20,
+      "accuracy_gain_points": 0.0
+    }
+  },
+  "champion_changed": false,
+  "release_authorized": false,
+  "private_details_fingerprint": "2e8d3c9fdb450aa70d9ff25c85e4462b7238cddc538d90cacf7b7dfed6d34619",
+  "result_fingerprint": "a97a2d59e997d92fdfc35fdbba468d55478454072150cf5d6ff675015e004fab",
+  "evidence_status": "opened-source-development-only",
+  "contract_fingerprint": "eb8df93c9a511efa8b8635c4db0cbe277b3f3ad38c7d062e43e28885a31fa150",
+  "data_fingerprint": "2f3bffc327c6c4a963cd632e74a197eaf3a81d121303a36e4f4bf0e1c9040d0d",
+  "e5_source_screen_result_fingerprint": "34ea53c6307c9eeca17a5940e59c22b3156cfa2dbe878c18a21cab618b0a02c2",
+  "h20_adapter_sha256": "32f964f279157b2b8e3d0d87329d342e55fa88e512de5480f4a2dc96fdcd6b2d",
+  "opportunity_gate": {
+    "qualified": false,
+    "status": "INCONCLUSIVE_OPPORTUNITY",
+    "gates": {
+      "minimum_residual_invalid_cases": 6,
+      "minimum_residual_invalid_sources": 3,
+      "minimum_residual_invalid_gold_methods": 3
+    },
+    "checks": {
+      "minimum_residual_invalid_cases": false,
+      "minimum_residual_invalid_sources": true,
+      "minimum_residual_invalid_gold_methods": false
+    },
+    "observed": {
+      "residual_invalid_cases": 4,
+      "residual_invalid_sources": 3,
+      "residual_invalid_gold_methods": 2,
+      "residual_invalid_source_counts": {
+        "PMC6639881": 2,
+        "PMC8327789": 1,
+        "PMC8483143": 1
+      },
+      "residual_invalid_method_counts": {
+        "independent_t": 3,
+        "wilcoxon_signed_rank": 1
+      }
+    }
+  },
+  "status": "INCONCLUSIVE_OPPORTUNITY",
+  "training_authorized": false,
+  "fresh_external_evidence": false,
+  "claim_boundary": "This screen can authorize only a new development-only H21 training protocol. The four sources are already opened and cannot support a fresh E5 claim, model promotion, publication, or release."
+}

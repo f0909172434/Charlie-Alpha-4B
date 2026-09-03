@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "master_contract_fingerprint": "35cd1762825de0724841875409ab9e3bd31454a92b43a9e9f86f37f34393f93f",
+  "source_screen_result_fingerprint": "34ea53c6307c9eeca17a5940e59c22b3156cfa2dbe878c18a21cab618b0a02c2",
+  "source_selected": false,
+  "case_count": 0,
+  "cases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "evaluation_authorized": false,
+  "model_output_opened": false,
+  "terminal_state": "SOURCE_UNQUALIFIED",
+  "reason": "No single source was frozen before opening and no screened source meets the 150-case, eight-method, 80%-coverage, and concentration gates.",
+  "champion_changed": false,
+  "release_authorized": false,
+  "data_fingerprint": "0dd9602082eb55f1a3884fd7e2bc680d242e28b8520488b51eb38ec2d603e772"
+}

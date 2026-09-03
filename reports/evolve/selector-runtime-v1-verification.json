@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "runtime_contract_fingerprint": "52919e7999f7347f1e62a73adc2702be589c6f62e4bb442a9d57c3563a556265",
+  "checks": {
+    "implementation": true,
+    "h14_contract": true,
+    "h14_report": true,
+    "head_artifact": true,
+    "parent_adapter": true
+  },
+  "implementation_checks": {
+    "stats_selector_runtime.py": true,
+    "stats_agent.py": true
+  },
+  "passed": true,
+  "model_smoke_started": false,
+  "fingerprint": "efc8f3a1b4c7643181798351033592ce2d8528444326dd3e28ab693dc3cc2485"
+}

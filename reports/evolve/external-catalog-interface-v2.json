@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "6bce4e5a8d9c441001e97bdc2e644a69b8a30ef253471110f95eefab5515872b",
+  "method": "E2-v2 multi-source external fixed-catalog interface evaluation",
+  "contract_fingerprint": "115fb480320d969d69e0c074f73647ea96057083393b34627a914e1e64608629",
+  "data_fingerprint": "ecfc0a947d3232aab19791784c0f14ec8a1f71863bf372374665c63e217599c4",
+  "same_parent_weights": true,
+  "model_evaluation_started": true,
+  "scores": {
+    "menu-free-control": {
+      "count": 37,
+      "eligible_count": 17,
+      "eligible_accuracy": 0.5882352941176471,
+      "all_case_accuracy": 0.2702702702702703,
+      "valid_output_rate": 0.6216216216216216,
+      "in_catalog_prediction_rate": 0.6216216216216216
+    },
+    "flat-catalog": {
+      "count": 37,
+      "eligible_count": 17,
+      "eligible_accuracy": 0.7058823529411765,
+      "all_case_accuracy": 0.32432432432432434,
+      "valid_output_rate": 0.972972972972973,
+      "in_catalog_prediction_rate": 0.972972972972973
+    }
+  },
+  "paired": {
+    "eligible_count": 17,
+    "both_correct": 10,
+    "candidate_only": 2,
+    "control_only": 0,
+    "both_wrong": 5,
+    "net_improvements": 2,
+    "mcnemar_exact_two_sided_p": 0.5
+  },
+  "source_scores": {
+    "conyso-2026": {
+      "menu-free-control": {
+        "count": 8,
+        "eligible_count": 3,
+        "eligible_accuracy": 0.6666666666666666,
+        "all_case_accuracy": 0.25,
+        "valid_output_rate": 0.25,
+        "in_catalog_prediction_rate": 0.25
+      },
+      "flat-catalog": {
+        "count": 8,
+        "eligible_count": 3,
+        "eligible_accuracy": 0.6666666666666666,
+        "all_case_accuracy": 0.25,
+        "valid_output_rate": 0.875,
+        "in_catalog_prediction_rate": 0.875
+      },
+      "paired": {
+        "eligible_count": 3,
+        "both_correct": 2,
+        "candidate_only": 0,
+        "control_only": 0,
+        "both_wrong": 1,
+        "net_improvements": 0,
+        "mcnemar_exact_two_sided_p": 1.0
+      }
+    },
+    "crucible-bench": {
+      "menu-free-control": {
+        "count": 7,
+        "eligible_count": 4,
+        "eligible_accuracy": 0.75,
+        "all_case_accuracy": 0.42857142857142855,
+        "valid_output_rate": 0.5714285714285714,
+        "in_catalog_prediction_rate": 0.5714285714285714
+      },
+      "flat-catalog": {
+        "count": 7,
+        "eligible_count": 4,
+        "eligible_accuracy": 1.0,
+        "all_case_accuracy": 0.5714285714285714,
+        "valid_output_rate": 1.0,
+        "in_catalog_prediction_rate": 1.0
+      },
+      "paired": {
+        "eligible_count": 4,
+        "both_correct": 3,
+        "candidate_only": 1,
+        "control_only": 0,
+        "both_wrong": 0,
+        "net_improvements": 1,
+        "mcnemar_exact_two_sided_p": 1.0
+      }
+    },
+    "haq-2016": {
+      "menu-free-control": {
+        "count": 22,
+        "eligible_count": 10,
+        "eligible_accuracy": 0.5,
+        "all_case_accuracy": 0.22727272727272727,
+        "valid_output_rate": 0.7727272727272727,
+        "in_catalog_prediction_rate": 0.7727272727272727
+      },
+      "flat-catalog": {
+        "count": 22,
+        "eligible_count": 10,
+        "eligible_accuracy": 0.6,
+        "all_case_accuracy": 0.2727272727272727,
+        "valid_output_rate": 1.0,
+        "in_catalog_prediction_rate": 1.0
+      },
+      "paired": {
+        "eligible_count": 10,
+        "both_correct": 5,
+        "candidate_only": 1,
+        "control_only": 0,
+        "both_wrong": 4,
+        "net_improvements": 1,
+        "mcnemar_exact_two_sided_p": 1.0
+      }
+    }
+  },
+  "external_gate": {
+    "passed": true,
+    "checks": {
+      "source_coverage": true,
+      "flat_catalog_absolute_accuracy": true,
+      "method_gain_over_control": true,
+      "net_paired_improvements": true,
+      "validity_noninferior": true,
+      "cross_source_direction": true,
+      "worst_source_regression": true
+    },
+    "effect_points": {
+      "eligible_method_accuracy": 11.764705882352944,
+      "valid_output_rate": 35.135135135135144
+    },
+    "cross_source": {
+      "net_improvements": {
+        "conyso-2026": 0,
+        "crucible-bench": 1,
+        "haq-2016": 1
+      },
+      "nonnegative_source_count": 3,
+      "worst_source_net_improvement": 0
+    }
+  },
+  "independent_external_interface_supported": true,
+  "champion_unchanged": "v0.3.0-parent",
+  "release_authorized": false,
+  "historical_pbench_statqa_reopened": false,
+  "next_step": "preserve-e2-v2-positive-external-decision-source-evidence-without-weight-promotion",
+  "claim_boundary": "A pass supports an independent external decision-source context/interface elicitation claim only. It does not establish free-form clinical competence, change weights, replace the champion, authorize release, or reopen historical P-Bench/StatQA.",
+  "result_fingerprint": "e60e5a612368b68ba281fed11c21c972ed2d066b5ab1c614fb402f12d352e70f"
+}

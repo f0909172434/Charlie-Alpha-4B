@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "method": "E5 exact H20 two-stage single-source fresh external master protocol",
+  "method_version": 1,
+  "causal_question": "On one genuinely new source selected and frozen before opening, can the exact H20 runtime preserve every parser-valid v0.3 control and correctly repair enough parser-invalid controls to produce a statistically distinguishable paired gain?",
+  "evidence_status": "master-protocol-no-source-selected",
+  "runtime": {
+    "h20_contract_fingerprint": "9c66a3280a58de12ec301df6ee8af11ead6868035d82867d57b0dd5f9e55a571",
+    "h20_contract_sha256": "980ef573ed3f9dc3978397e0541b2b13c423841fe061e463edcbd59febb0ded0",
+    "h20_result_fingerprint": "955e9ce13ec0b0a87e844c3f0573c34580b737e6ef6270150498d4721daa8647",
+    "h20_result_sha256": "23e6467a02165e3e495b4d12fcb3205180af7957824374101e3a64468480122b",
+    "base_model": {
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "license": "Apache-2.0",
+      "snapshot_path": "/Users/wangzhikai/.cache/huggingface/hub/models--mlx-community--Qwen3.5-4B-MLX-4bit/snapshots/32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "file_sha256": {
+        "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+        "config.json": "f3efc81b2ea8d96a45301037d3ccccbcccdef44a961845c87f286aaddbc6eaaa",
+        "model.safetensors.index.json": "52e534c41f7b97708329c85f762e5882bf48bd5955a422c6ae74eba321e6048a",
+        "tokenizer.json": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4",
+        "tokenizer_config.json": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182",
+        "model.safetensors": "5fb9acd0246866381cf8c5c354c6db1019f6498eec4ccb4f5edcc71ffeacb2db"
+      }
+    },
+    "control": {
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+      "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16",
+      "adapter_config_sha256": "f86475351b4e99c5d7431c55f0e7740b842dcfbab670240d0df21398f084d750"
+    },
+    "repair": {
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/guarded-weight-bridge-v1/all-sources",
+      "adapter_sha256": "32f964f279157b2b8e3d0d87329d342e55fa88e512de5480f4a2dc96fdcd6b2d",
+      "adapter_config_sha256": "ac84f5e6805affec3fa8f0b08296720808f16d17f94eb8275a4d7945b6679250"
+    },
+    "prompt_messages_sha256": "669a09485baec348e3176f400534158bcc73082c7d8077564c2d579d8685b4d6",
+    "decoding": {
+      "max_tokens": 160,
+      "temperature": 0.0,
+      "top_p": 1.0
+    },
+    "fingerprint": "646896488847430545d914685bf89753c38fa6582553849c5d57d3d6968d741b"
+  },
+  "runtime_policy": [
+    "Generate every control exactly once with the unchanged v0.3 parent.",
+    "Never instantiate or call the repair adapter for a parser-valid control.",
+    "Call the H20 repair adapter exactly once for each parser-invalid control, using the same messages and decoding without exposing the control answer.",
+    "Use a parser-valid repair; otherwise retain the original invalid control."
+  ],
+  "parser_contract": "Strip thinking text, decode the first JSON object, require methods to be a one-item array, and accept only a frozen catalog identifier or pre-existing catalog alias. Empty, malformed, multi-method, and unknown-ID outputs are scientific invalids.",
+  "progress_contract": "Each phase uses one atomically rewritten ledger binding ordered case, prompt, request, adapter, runtime, parser, and decoding receipts. Any mismatch fails closed and never clears progress.",
+  "source_protocol": {
+    "source_count": 1,
+    "selection_timing": "Freeze a child contract with stable source ID, version, snapshot URL, license, complete-frame extraction rule, alias map, and all gates before opening content.",
+    "qualification_gates": {
+      "minimum_eligible_cases": 150,
+      "minimum_distinct_methods": 8,
+      "minimum_coverage_fraction": 0.8,
+      "maximum_single_method_fraction": 0.4
+    },
+    "overlap_rule": "Reject any source, version, derivative, or normalized question overlapping E2-E4, H17-H20, training, rule design, or the precontract feasibility screen.",
+    "opened_source_exclusions": {
+      "PMC8327789": {
+        "doi": "10.5005/jp-journals-10071-23815",
+        "snapshot_sha256": "b40dc53865028489d13c010811c56947b8ba9e3f3353a83e324a0fb09392196f",
+        "status": "opened-during-precontract-feasibility-screen"
+      },
+      "PMC8483143": {
+        "doi": "10.4103/jfmpc.jfmpc_433_21",
+        "snapshot_sha256": "326ab7eae0719c13cf48e58b98973795f4765ba922e4b684513f9862b026d49f",
+        "status": "opened-during-precontract-feasibility-screen"
+      },
+      "PMC6639881": {
+        "doi": "10.4103/aca.ACA_248_18",
+        "snapshot_sha256": "b881306838e425ae7319ef17c0fa7e690e350bd5a53a430c50b8bc271ee980fd",
+        "status": "opened-during-precontract-feasibility-screen"
+      },
+      "PMC2996580": {
+        "doi": "10.4103/0974-7788.72494",
+        "snapshot_sha256": "eb7be3715e4a5f7e6d3bb609285d361551d44a74f6620a052c1dd8523325c2b9",
+        "status": "opened-during-precontract-feasibility-screen"
+      }
+    },
+    "gold_isolation": "Gold and source answer fields are never passed to model-call code."
+  },
+  "evaluation_gates": {
+    "minimum_invalid_control_opportunities": 12,
+    "minimum_invalid_control_gold_methods": 3,
+    "minimum_valid_control_identity_cases": 50,
+    "minimum_candidate_only_gains": 6,
+    "minimum_net_improvements": 6,
+    "minimum_accuracy_gain_points": 4.0,
+    "maximum_mcnemar_p": 0.05
+  },
+  "terminal_states": [
+    "CONFIRMED_NARROW_PASS",
+    "SCIENTIFIC_FAIL",
+    "INCONCLUSIVE_REPAIR_COVERAGE",
+    "SOURCE_UNQUALIFIED",
+    "PROTOCOL_INVALID"
+  ],
+  "stopping_rule": "Every terminal state closes the selected child E5. Do not replace the source, add cases, retry scientific invalids, tune H20, or rerun on the same source.",
+  "historical_runtime_audit": {
+    "h20_evidence_remains_development_only": true,
+    "exact_two_stage_model_call_policy_previously_demonstrated": false,
+    "h20_smoke_adapter_calls": 38,
+    "exact_policy_adapter_calls_for_same_smoke_controls": 9,
+    "historical_prompt_comparable_cases": 22,
+    "historical_prompt_incomparable_cases": 16,
+    "reported_control_in_catalog_prediction_rate": 1.0,
+    "correct_control_in_catalog_prediction_rate": 0.7631578947368421,
+    "accuracy_and_h20_development_gate_affected_by_metric_defect": false,
+    "implication": "H20 motivates E5 but its reported smoke and all 38 paired rows cannot serve as an exact runtime confirmation."
+  },
+  "implementation_sha256": {
+    "stats_guarded_external_source.py": "bd4bfbf400aa1625b58bf8644d6b4bb76da7439029d1a3da47e728ef786e5ddc",
+    "stats_guarded_external.py": "bda4cef8c3118e0f6971f831770a141bea5a151741bc3ac47c2467a118ea9826",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9",
+    "stats_catalog.py": "3e0e54b2f4db69b95eac56c6896d4d244d019dee7630b129da9aef22a8eb07af",
+    "stats_catalog_grounding.py": "4b9ea08e0515be65358aae7c2ebda4321b297a1de5ae76305b225de92b18ea5c",
+    "stats_cross_format.py": "63924866643710cc25e87ce66cea8e4a36290eaaf0f93ccf7dd56b00d2d00934",
+    "stats_external_catalog.py": "c1a67ee9b146a1d12adfdbbab88297db2fe5b42cd218f062336376dfd902fdb5",
+    "stats_representation_probe.py": "87d78c05d1c5d5a723ae5d3084ba7c3d4a4d96c1645100adfa82aa4e1e920206",
+    "stats_training.py": "3c870b07111a10b94cfdc52a12ef0a920029d4ddb815ebb87fac948fd5911866"
+  },
+  "source_selected": false,
+  "model_output_opened": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "claim_boundary": "A pass may support only a narrow prospective claim for the exact H20 runtime on one source. It cannot establish multi-source generality, raw-adapter superiority, champion replacement, publication, or release readiness.",
+  "fingerprint": "35cd1762825de0724841875409ab9e3bd31454a92b43a9e9f86f37f34393f93f"
+}

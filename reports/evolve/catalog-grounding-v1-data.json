@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "ab20622a3936725ee41fd22a3ed19aa1b0ca1cafba35cc01caedac7f08565656",
+  "contract_fingerprint": "5bcec5fab7ff97601d6994039b1f58746949ff74979d731510b9717b4f131b33",
+  "selection_groups": 24,
+  "cases_sha256": "085a18b9b122a764295137655664dbe7201595abff8602d184c39ee0d398f3aa",
+  "confirmation_opened": false
+}

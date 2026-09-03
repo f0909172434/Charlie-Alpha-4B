@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "status": "superseded-before-completion",
+  "contract_fingerprint": "6828f2641f60c3b4ccde1b2d153f4de0e148262c39d3797cbb847d49218406ef",
+  "statqa_completed": 200,
+  "p_bench_completed": 17,
+  "p_bench_progress_sha256": "e722c565612663805ba5c01aea387fab4253da22262e4aa52e5ccb672a851054",
+  "reason": "v1 redundantly scheduled all 90 P-Bench parent replays. H4 already contains exact same-evaluator parent outputs for the 53 tasks frozen to the parent route. v2 reuses those outputs and replays only expert-routed counterfactual parent tasks.",
+  "replacement_contract_fingerprint": "8d1a9997c801027044704f606b7abfba0c02ad4a19e9b135551694e98633efac",
+  "research_decision_made_from_v1_partial": false
+}

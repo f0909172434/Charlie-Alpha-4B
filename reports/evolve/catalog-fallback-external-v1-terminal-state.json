@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "method": "E6_FRESH_SOURCE_CATALOG_FALLBACK_V1",
+  "master_contract_fingerprint": "4b6027022ff2ac3a08010895769676e5abda24fd7a1af58361ba0b163f607fd1",
+  "child_contract_fingerprint": null,
+  "status": "SOURCE_UNAVAILABLE",
+  "terminal_state": "SOURCE_UNAVAILABLE",
+  "reason": "metadata-screen-found-no-freezable-single-source-child",
+  "result_fingerprint": "ac27579eeb7efc2aa0ad918b2cc4d8aa3ade84b30b0e77d0d6c220a7c9958927",
+  "dataset_rows_opened": false,
+  "model_output_opened": false,
+  "training_authorized": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "fingerprint": "1e28f3204653fcd35f591449c845d82005e878585d2d26874dbcb617085e5db1"
+}

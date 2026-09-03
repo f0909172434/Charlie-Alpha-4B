@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "H19 source-held-out external representation LoRA bridge training",
+  "trainer_version": 1,
+  "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+  "data_fingerprint": "00d8fee34c6495c64466d7566d9668a1f7224096fdd3b154536f93cde6d7212e",
+  "fold_statuses": {
+    "conyso-2026": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "4a4d5ef6b80a3dda0272f47ca3f6ad273d702aca412ccfe95fe3aabf52e715eb",
+      "fold": "conyso-2026",
+      "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+      "data_fingerprint": "00d8fee34c6495c64466d7566d9668a1f7224096fdd3b154536f93cde6d7212e",
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/external-weight-bridge-v1/folds/conyso-2026",
+      "adapter_sha256": "c373a1f153f2973382e8e3bdf3c955d4609bbb7260bf98c114b1cb98e167f0f3",
+      "microsteps": 96,
+      "optimizer_updates": 24,
+      "training_records": 213,
+      "maximum_tokens": 227,
+      "trainable_parameters": 2129920,
+      "training_seed": 129000042,
+      "elapsed_seconds": 166.74,
+      "peak_memory_gb": 6.0453,
+      "fresh_external_evaluation_opened": false
+    },
+    "crucible-bench": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "5d0ee8d2ef829cb79307bd893f65fd09f442a4363c7c9e9a4c2616de7ab53375",
+      "fold": "crucible-bench",
+      "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+      "data_fingerprint": "00d8fee34c6495c64466d7566d9668a1f7224096fdd3b154536f93cde6d7212e",
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/external-weight-bridge-v1/folds/crucible-bench",
+      "adapter_sha256": "00bd514d8845a6bbeb305184195c96146053130348bf3dbb603ced9799191011",
+      "microsteps": 96,
+      "optimizer_updates": 24,
+      "training_records": 205,
+      "maximum_tokens": 227,
+      "trainable_parameters": 2129920,
+      "training_seed": 129000043,
+      "elapsed_seconds": 175.46,
+      "peak_memory_gb": 8.0638,
+      "fresh_external_evaluation_opened": false
+    },
+    "genser-2007-immunology": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "83e9a053a2aaacf4698ec1cedbe32b05b87ae5da5e6af60d27c76b7f2a88f573",
+      "fold": "genser-2007-immunology",
+      "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+      "data_fingerprint": "00d8fee34c6495c64466d7566d9668a1f7224096fdd3b154536f93cde6d7212e",
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/external-weight-bridge-v1/folds/genser-2007-immunology",
+      "adapter_sha256": "4dc7304063610891b06f625b86082b9755d3755fc741e8e50246aadddd77844b",
+      "microsteps": 96,
+      "optimizer_updates": 24,
+      "training_records": 205,
+      "maximum_tokens": 227,
+      "trainable_parameters": 2129920,
+      "training_seed": 129000044,
+      "elapsed_seconds": 159.82,
+      "peak_memory_gb": 10.0823,
+      "fresh_external_evaluation_opened": false
+    },
+    "haq-2016": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "4d4c30546b93f49566895d6cc94919c97f40b46122f66d1f979326e39c6ba686",
+      "fold": "haq-2016",
+      "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+      "data_fingerprint": "00d8fee34c6495c64466d7566d9668a1f7224096fdd3b154536f93cde6d7212e",
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/external-weight-bridge-v1/folds/haq-2016",
+      "adapter_sha256": "12b4cb046a2fed5c97b9d3710b43dc996bddc2b2afcd9af0f848c257d5ae3287",
+      "microsteps": 96,
+      "optimizer_updates": 24,
+      "training_records": 181,
+      "maximum_tokens": 227,
+      "trainable_parameters": 2129920,
+      "training_seed": 129000045,
+      "elapsed_seconds": 173.88,
+      "peak_memory_gb": 12.1007,
+      "fresh_external_evaluation_opened": false
+    },
+    "shukla-2025": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "ca5e9e73082640a9fa108ffbf7b6932732a11dc5b3c87e54ce20b5cc62d3abf0",
+      "fold": "shukla-2025",
+      "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+      "data_fingerprint": "00d8fee34c6495c64466d7566d9668a1f7224096fdd3b154536f93cde6d7212e",
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/external-weight-bridge-v1/folds/shukla-2025",
+      "adapter_sha256": "101026ce52ec3c54c079fac86ce198848b1bb38e98ee967bc455b04a0a31c4d4",
+      "microsteps": 96,
+      "optimizer_updates": 24,
+      "training_records": 185,
+      "maximum_tokens": 227,
+      "trainable_parameters": 2129920,
+      "training_seed": 129000046,
+      "elapsed_seconds": 193.06,
+      "peak_memory_gb": 14.1192,
+      "fresh_external_evaluation_opened": false
+    },
+    "turner-2025-medical-education": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "321fc31eb62cafa1763323fb406ebb42643bcb185b8937a89b953e5d8c4545d0",
+      "fold": "turner-2025-medical-education",
+      "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+      "data_fingerprint": "00d8fee34c6495c64466d7566d9668a1f7224096fdd3b154536f93cde6d7212e",
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/external-weight-bridge-v1/folds/turner-2025-medical-education",
+      "adapter_sha256": "4787f9203584557ff52b5d17e1bb1ac5a47678779fbee4f6fe10fb9def9ad136",
+      "microsteps": 96,
+      "optimizer_updates": 24,
+      "training_records": 185,
+      "maximum_tokens": 227,
+      "trainable_parameters": 2129920,
+      "training_seed": 129000047,
+      "elapsed_seconds": 205.63,
+      "peak_memory_gb": 16.1376,
+      "fresh_external_evaluation_opened": false
+    }
+  },
+  "scores": {
+    "historical-menu-free-control": {
+      "count": 38,
+      "eligible_count": 38,
+      "eligible_accuracy": 0.6052631578947368,
+      "all_case_accuracy": 0.6052631578947368,
+      "valid_output_rate": 0.7631578947368421,
+      "in_catalog_prediction_rate": 1.0
+    },
+    "source-held-out-lora": {
+      "count": 38,
+      "eligible_count": 38,
+      "eligible_accuracy": 0.5526315789473685,
+      "all_case_accuracy": 0.5526315789473685,
+      "valid_output_rate": 0.7631578947368421,
+      "in_catalog_prediction_rate": 0.7631578947368421
+    },
+    "synthetic-parent": {
+      "count": 12,
+      "eligible_count": 12,
+      "eligible_accuracy": 0.16666666666666666,
+      "all_case_accuracy": 0.16666666666666666,
+      "valid_output_rate": 0.4166666666666667,
+      "in_catalog_prediction_rate": 0.4166666666666667
+    },
+    "synthetic-fold-mean": {
+      "eligible_accuracy": 0.09722222222222221,
+      "valid_output_rate": 0.5
+    }
+  },
+  "paired": {
+    "eligible_count": 38,
+    "both_correct": 18,
+    "candidate_only": 3,
+    "control_only": 5,
+    "both_wrong": 12,
+    "net_improvements": -2,
+    "mcnemar_exact_two_sided_p": 0.7265625
+  },
+  "source_paired": {
+    "conyso-2026": {
+      "eligible_count": 2,
+      "both_correct": 2,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 0,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "crucible-bench": {
+      "eligible_count": 4,
+      "both_correct": 1,
+      "candidate_only": 0,
+      "control_only": 2,
+      "both_wrong": 1,
+      "net_improvements": -2,
+      "mcnemar_exact_two_sided_p": 0.5
+    },
+    "genser-2007-immunology": {
+      "eligible_count": 4,
+      "both_correct": 1,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 3,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "haq-2016": {
+      "eligible_count": 10,
+      "both_correct": 5,
+      "candidate_only": 0,
+      "control_only": 0,
+      "both_wrong": 5,
+      "net_improvements": 0,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "shukla-2025": {
+      "eligible_count": 9,
+      "both_correct": 4,
+      "candidate_only": 2,
+      "control_only": 1,
+      "both_wrong": 2,
+      "net_improvements": 1,
+      "mcnemar_exact_two_sided_p": 1.0
+    },
+    "turner-2025-medical-education": {
+      "eligible_count": 9,
+      "both_correct": 5,
+      "candidate_only": 1,
+      "control_only": 2,
+      "both_wrong": 1,
+      "net_improvements": -1,
+      "mcnemar_exact_two_sided_p": 1.0
+    }
+  },
+  "historical_gate": {
+    "passed": false,
+    "checks": {
+      "candidate_accuracy": false,
+      "net_improvements": false,
+      "zero_control_only_losses": false,
+      "all_sources_nonnegative": false,
+      "validity_noninferior": true,
+      "synthetic_accuracy_noninferior": false,
+      "synthetic_validity_noninferior": true
+    },
+    "worst_source_net_improvement": -2,
+    "mean_synthetic_accuracy": 0.09722222222222221,
+    "mean_synthetic_validity": 0.5
+  },
+  "selected": false,
+  "final_all_source_adapter": null,
+  "fresh_external_evidence": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "next_step": "preserve-h19-negative-and-retain-v0.3-menu-free-control",
+  "claim_boundary": "H19 is historical source-held-out development evidence. It cannot reuse E2/E3/E4 as fresh evidence, replace the champion, authorize release, or establish external capability. A pass authorizes only a separately frozen new-source evaluation.",
+  "pre_amendment_result_fingerprint": "71ab2dab39d6e58ec3639c5265d363629fd0f77f3016c80b03ed6fecb5489aba",
+  "data_amendment": {
+    "fingerprint": "3c7e806987d4382ce581cf334f7b257fed890241643cf1a123153ef475f5852c",
+    "implementation_sha256": "70b65ea4ef883c18efccafd5330f2bf6cccc499c5e8be30589a373a303d08ebc",
+    "scientific_contract_changed": false
+  },
+  "result_fingerprint": "f20979790a8ea0d547884283e8585f9778a66a5afbf078de1de4bfeabd3cef35"
+}

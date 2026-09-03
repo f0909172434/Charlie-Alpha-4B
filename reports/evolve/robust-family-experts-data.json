@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "9f310b8b656f112d2cb813dbcd857d60650e48f268f59f7e476310761dbd8c8d",
+  "contract_fingerprint": "64b476e1e3da9cf1decd163bdd7d458e74dbc3cbf4d45a900e47b6e181cc7ab7",
+  "parent_adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16",
+  "manifests": {
+    "training_pool": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "d9828db5b47ef8e10baaf36f3d0c9b51c90514b9dca000d892c6eeb14aa064aa",
+      "settings_name": "training_pool",
+      "count": 288,
+      "blueprint_sha256": "cff570fd94a1401a97beda700b5a9f89925e2829a32132f80ded864a89ae9e1f",
+      "sha256": "8abf7cb76a5463988fc61c54eaee08c96d0c319d4c49f6a8285e21f0ddb8f3fa",
+      "used_for_training": true,
+      "used_for_selection": false,
+      "confirmation_opened": false,
+      "promotion_opened": false,
+      "final_opened": false
+    },
+    "selection_fold_1": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "5fdc8235f34f2c8c3194758cfc29117c3d1f28dc641c70597c3cb9de239c6679",
+      "settings_name": "selection_fold_1",
+      "count": 360,
+      "blueprint_sha256": "086d4e742b7f829e4c62aab4461beda46639bb978fd6378bcfeb5327b85902c5",
+      "sha256": "c54f54e8d65a760509a409ea8655c7d0e054da997cb484c5a711a4d209f26b04",
+      "used_for_training": false,
+      "used_for_selection": true,
+      "confirmation_opened": false,
+      "promotion_opened": false,
+      "final_opened": false
+    },
+    "selection_fold_2": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "8bc741b7907512226a6114ba080e4225fb8a57540e4dcc298cbe9372504ad490",
+      "settings_name": "selection_fold_2",
+      "count": 360,
+      "blueprint_sha256": "fbd1bc59c7266ddef6454954ce1eb0a5c80fd1af2aaa8e0ca1fa402ce0061495",
+      "sha256": "78090345b1b2b98f674bfbed4311de619d5cac7eaba8acfe3a59c71d51ed8bc7",
+      "used_for_training": false,
+      "used_for_selection": true,
+      "confirmation_opened": false,
+      "promotion_opened": false,
+      "final_opened": false
+    },
+    "selection_fold_3": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "5c696753dd2132c18939c5c0d66f5b603951fcb1d28ba48171a7f66862b5ccad",
+      "settings_name": "selection_fold_3",
+      "count": 360,
+      "blueprint_sha256": "d2d9fdbb4bbb5771d1c3f16ddc94d5560c3a846c130d7218f97f0beba97f4bc8",
+      "sha256": "647f6d5f37a37bb3635875153c4717011f282db77d72691700e70aa3f2b99a77",
+      "used_for_training": false,
+      "used_for_selection": true,
+      "confirmation_opened": false,
+      "promotion_opened": false,
+      "final_opened": false
+    }
+  },
+  "target_hashes": {
+    "boltzmann-mean": "1135ae7abacb3bdcd51148cb3118abfaf53b0603d5dd02fc9a70ad0a06a5d467",
+    "direct-cvar": "42bfb55b0f6690880ab579846019e9fdf38bb2ae5dff212f819b7bfda9e1b14a",
+    "direct-mean": "a56cda96717463c3432c896ac345c5750763040d816906d9ea544465bb11360d"
+  },
+  "target_counts": {
+    "boltzmann-mean": 1152,
+    "direct-cvar": 1152,
+    "direct-mean": 1152
+  },
+  "target_audit": {
+    "records": 1152,
+    "semantic_groups": 288,
+    "families": 12,
+    "mean_parent_realized_regret": 0.4292142166333551,
+    "mean_target_expected_regret_improvement": {
+      "boltzmann-mean": 0.2550228795216932,
+      "direct-cvar": 0.021468090760357748,
+      "direct-mean": 0.021468090760357748
+    },
+    "cvar_weight_range": [
+      0.25,
+      2.5000000000000004
+    ],
+    "language_gradient_ratio_preserved_within_every_group": true
+  },
+  "confirmation_opened": false,
+  "promotion_opened": false,
+  "final_simulations_opened": false,
+  "final_scores_opened": false
+}

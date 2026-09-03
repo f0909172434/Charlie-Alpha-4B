@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "E4 two-source exact-alias source qualification",
+  "source_content_opened_for_qualification": true,
+  "model_output_opened": false,
+  "sources": {
+    "genser-2007-immunology": {
+      "title": "A guide to modern statistical analysis of immunological data",
+      "doi": "10.1186/1471-2172-8-27",
+      "pmcid": "PMC2234437",
+      "license": "CC BY",
+      "bioc_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC2234437/unicode",
+      "snapshot_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selective-external-v1/sources/genser-2007-immunology.json",
+      "snapshot_sha256": "fb2cf2142e89f025fbe7ad9b3f554bb1adc9b8075bed2b741bb72f14f5a500b2",
+      "table_id": "T2",
+      "method_row_count": 32,
+      "mapped_row_count": 4,
+      "mapped_method_count": 4,
+      "rows_sha256": "5688e168b09b1d32a6a97e601caa8867f06df54ad699d243d2a12e932a749524"
+    },
+    "turner-2025-medical-education": {
+      "title": "Uncovering Disparities in Medical Education: Advisory Guide to Assessing Data and Statistical Analysis",
+      "doi": "10.1007/s40670-025-02435-3",
+      "pmcid": "PMC12812112",
+      "license": "CC BY",
+      "bioc_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC12812112/unicode",
+      "snapshot_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selective-external-v1/sources/turner-2025-medical-education.json",
+      "snapshot_sha256": "3a18b629e6f815ab151f7d6e412240f07c24cc678c5a5e605ba8aaa5dbd98136",
+      "table_id": "Tab1",
+      "method_row_count": 14,
+      "mapped_row_count": 9,
+      "mapped_method_count": 8,
+      "rows_sha256": "35c218c0af44f517d52e287a2f8af5fe0911886e439c92b0f1bf002e099ddebe"
+    }
+  },
+  "extraction_policy": "Parse the complete frozen source table. Include every method-bearing row whose exact source method label appears in the predeclared source-specific alias map. Do not correct, broaden, or add aliases after model output. Source-authored parenthetical conditions are retained as prompt conditions after removing the method name.",
+  "alias_maps": {
+    "genser-2007-immunology": {
+      "Logistic regression": {
+        "method_id": "logistic_glm",
+        "condition": null
+      },
+      "Mann Whitney-U test": {
+        "method_id": "mann_whitney",
+        "condition": null
+      },
+      "Paired t-test": {
+        "method_id": "paired_t",
+        "condition": null
+      },
+      "t-test": {
+        "method_id": "independent_t",
+        "condition": null
+      }
+    },
+    "turner-2025-medical-education": {
+      "Chi-square test": {
+        "method_id": "chi_square",
+        "condition": null
+      },
+      "Chi-square test (categorical data)": {
+        "method_id": "chi_square",
+        "condition": "categorical data"
+      },
+      "Fisher’s exact test (small sample sizes)": {
+        "method_id": "fisher_exact",
+        "condition": "small sample sizes"
+      },
+      "Mann–Whitney U test (non-parametric alternative if data not normally distributed)": {
+        "method_id": "mann_whitney",
+        "condition": "data not normally distributed"
+      },
+      "Paired t-test (paired samples) (assuming normally distributed data)": {
+        "method_id": "paired_t",
+        "condition": "assuming normally distributed data"
+      },
+      "Simple linear regression": {
+        "method_id": "ols",
+        "condition": null
+      },
+      "Student’s t-test (independent samples)": {
+        "method_id": "independent_t",
+        "condition": "independent samples"
+      },
+      "Wilcoxon signed-rank test (non-parametric alternative) (data not normally distributed)": {
+        "method_id": "wilcoxon_signed_rank",
+        "condition": "data not normally distributed"
+      },
+      "logistic regression": {
+        "method_id": "logistic_glm",
+        "condition": null
+      }
+    }
+  },
+  "total_method_rows": 46,
+  "eligible_count": 13,
+  "eligible_by_source": {
+    "genser-2007-immunology": 4,
+    "turner-2025-medical-education": 9
+  },
+  "distinct_methods": [
+    "chi_square",
+    "fisher_exact",
+    "independent_t",
+    "logistic_glm",
+    "mann_whitney",
+    "ols",
+    "paired_t",
+    "wilcoxon_signed_rank"
+  ],
+  "distinct_method_count": 8,
+  "eligible_case_fingerprint": "f52b76c8ba708a60c69836c2f554fe943d7e39dbb0e6eb83582cbd71d1d1cd77",
+  "qualification_gate": {
+    "passed": true,
+    "checks": {
+      "source_count": true,
+      "eligible_count": true,
+      "per_source_count": true,
+      "distinct_methods": true
+    }
+  },
+  "evaluation_authorized": true,
+  "claim_boundary": "Qualification inspects source content and licenses only. It opens no model output and cannot establish external capability.",
+  "fingerprint": "33809d361b2d7c00b1d0d3fe085fb4e32a7e77ad7232f88c25512b9b25926616"
+}

@@ -1,0 +1,117 @@
+project:
+  display_name: "Charlie alpha"
+  model_id: "Charlie-Alpha-4B"
+  profile: "overnight"
+  seed: 42
+  license: "Apache-2.0"
+
+paths:
+  source_lock: "configs/sources.lock.json"
+  processed_dir: "data/processed"
+  distilled_dir: "data/distilled"
+  final_dir: "data/final"
+  manifest_dir: "data/manifests"
+  artifact_dir: "artifacts"
+  report_dir: "reports/generated"
+
+data:
+  max_seq_length: 1024
+  fallback_seq_length: 768
+  split_percentages:
+    train: 90
+    valid: 5
+    test: 5
+  english_targets:
+    math: 300
+    python: 150
+    cpp: 150
+  distilled_targets:
+    zh_Hant: 50
+    zh_Hans: 50
+  max_train_repeats_per_chinese_record: 8
+  language_token_ratios:
+    en: 0.84
+    zh_Hant: 0.08
+    zh_Hans: 0.08
+  domain_token_ratios:
+    math: 0.50
+    code: 0.50
+  code_language_ratios:
+    python: 0.50
+    cpp: 0.50
+  decontamination:
+    ngram_size: 8
+    overlap_threshold: 0.50
+
+distillation:
+  max_seconds: 3600
+  minimum_per_language: 10
+  max_new_tokens: 768
+  temperature: 0.2
+  retry_temperature: 0.0
+  top_p: 0.8
+
+training:
+  seed: 42
+  batch_size: 1
+  grad_accumulation_steps: 4
+  num_layers: 16
+  fallback_num_layers: 8
+  max_seq_length: 1024
+  fallback_seq_length: 768
+  max_epochs: 2
+  max_seconds: 21600
+  pilot_iterations: 40
+  checkpoint_every: 50
+  eval_every: 50
+  val_batches: -1
+  early_stop_evaluations: 2
+  warmup_fraction: 0.03
+  candidates:
+    - name: "pilot-a-qv-r8"
+      learning_rate: 1.0e-5
+      rank: 8
+      scale: 2.0
+      dropout: 0.05
+      keys: ["self_attn.q_proj", "self_attn.v_proj"]
+    - name: "pilot-b-qkvo-r16"
+      learning_rate: 5.0e-6
+      rank: 16
+      scale: 2.0
+      dropout: 0.05
+      keys:
+        - "self_attn.q_proj"
+        - "self_attn.k_proj"
+        - "self_attn.v_proj"
+        - "self_attn.o_proj"
+
+evaluation:
+  temperature: 0.0
+  task_limit: 60
+  math_max_new_tokens: 768
+  code_max_new_tokens: 768
+  math500_limit: 20
+  gsm8k_limit: 20
+  humaneval_limit: 10
+  mbpp_limit: 10
+  trilingual_per_language: 3
+  max_seconds_per_variant: 2700
+  stable_improvement_points: 2.0
+  max_subgroup_regression_points: 3.0
+  max_gguf_regression_points: 2.0
+
+release:
+  github_repo: "f0909172434/Charlie-Alpha-4B"
+  tag: "v0.1.0"
+  hf_mlx_slug: "Charlie-Alpha-4B-MLX-4bit"
+  hf_gguf_slug: "Charlie-Alpha-4B-GGUF"
+  gguf_quantization: "Q4_K_M"
+
+overnight:
+  total_seconds: 39600
+  data_seconds: 3600
+  distillation_seconds: 3600
+  pilot_seconds: 1800
+  training_seconds: 21600
+  evaluation_export_seconds: 7200
+  buffer_seconds: 1800

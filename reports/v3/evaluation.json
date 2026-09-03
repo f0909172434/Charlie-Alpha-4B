@@ -1,0 +1,217 @@
+{
+  "suite": "router-confirm",
+  "base": {
+    "expected_tasks": 62,
+    "completed_tasks": 62,
+    "coverage": 1.0,
+    "scores": {
+      "benchmark:GSM8K": {
+        "correct": 11,
+        "total": 12,
+        "accuracy": 0.9167
+      },
+      "benchmark:HumanEval+": {
+        "correct": 7,
+        "total": 8,
+        "accuracy": 0.875
+      },
+      "benchmark:MATH-500": {
+        "correct": 1,
+        "total": 12,
+        "accuracy": 0.0833
+      },
+      "benchmark:MBPP+": {
+        "correct": 4,
+        "total": 8,
+        "accuracy": 0.5
+      },
+      "benchmark:MGSM": {
+        "correct": 15,
+        "total": 16,
+        "accuracy": 0.9375
+      },
+      "benchmark:retention-v3": {
+        "correct": 4,
+        "total": 6,
+        "accuracy": 0.6667
+      },
+      "domain:code": {
+        "correct": 11,
+        "total": 16,
+        "accuracy": 0.6875
+      },
+      "domain:general": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.6667
+      },
+      "domain:math": {
+        "correct": 27,
+        "total": 40,
+        "accuracy": 0.675
+      },
+      "domain:stem": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.6667
+      },
+      "language:en": {
+        "correct": 24,
+        "total": 42,
+        "accuracy": 0.5714
+      },
+      "language:zh_Hans": {
+        "correct": 9,
+        "total": 10,
+        "accuracy": 0.9
+      },
+      "language:zh_Hant": {
+        "correct": 9,
+        "total": 10,
+        "accuracy": 0.9
+      },
+      "overall": {
+        "correct": 42,
+        "total": 62,
+        "accuracy": 0.6774
+      }
+    },
+    "suite": "router-confirm",
+    "variant": "qwen35-base",
+    "model": {
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "license": "Apache-2.0"
+    },
+    "adapter_sha256": null,
+    "route": {
+      "fallback": "qwen35-base"
+    },
+    "route_counts": {
+      "base": 62,
+      "adapter": 0
+    },
+    "elapsed_seconds": 477.25
+  },
+  "routed": {
+    "expected_tasks": 62,
+    "completed_tasks": 62,
+    "coverage": 1.0,
+    "scores": {
+      "benchmark:GSM8K": {
+        "correct": 11,
+        "total": 12,
+        "accuracy": 0.9167
+      },
+      "benchmark:HumanEval+": {
+        "correct": 8,
+        "total": 8,
+        "accuracy": 1.0
+      },
+      "benchmark:MATH-500": {
+        "correct": 1,
+        "total": 12,
+        "accuracy": 0.0833
+      },
+      "benchmark:MBPP+": {
+        "correct": 4,
+        "total": 8,
+        "accuracy": 0.5
+      },
+      "benchmark:MGSM": {
+        "correct": 15,
+        "total": 16,
+        "accuracy": 0.9375
+      },
+      "benchmark:retention-v3": {
+        "correct": 4,
+        "total": 6,
+        "accuracy": 0.6667
+      },
+      "domain:code": {
+        "correct": 12,
+        "total": 16,
+        "accuracy": 0.75
+      },
+      "domain:general": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.6667
+      },
+      "domain:math": {
+        "correct": 27,
+        "total": 40,
+        "accuracy": 0.675
+      },
+      "domain:stem": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.6667
+      },
+      "language:en": {
+        "correct": 25,
+        "total": 42,
+        "accuracy": 0.5952
+      },
+      "language:zh_Hans": {
+        "correct": 9,
+        "total": 10,
+        "accuracy": 0.9
+      },
+      "language:zh_Hant": {
+        "correct": 9,
+        "total": 10,
+        "accuracy": 0.9
+      },
+      "overall": {
+        "correct": 43,
+        "total": 62,
+        "accuracy": 0.6935
+      }
+    },
+    "suite": "router-confirm",
+    "variant": "routed",
+    "model": {
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "license": "Apache-2.0"
+    },
+    "adapter_sha256": "594da4ad202658ecd3d223aa5f10a024aa47038e2198c301c8cf821964156d58",
+    "route": {
+      "adapter_domains": [
+        "code"
+      ],
+      "adapter_languages": [
+        "zh_Hans",
+        "zh_Hant"
+      ],
+      "fallback": "qwen35-base"
+    },
+    "route_counts": {
+      "base": 26,
+      "adapter": 36
+    },
+    "elapsed_seconds": 471.72
+  },
+  "delta_percentage_points": {
+    "benchmark:GSM8K": 0.0,
+    "benchmark:HumanEval+": 12.5,
+    "benchmark:MATH-500": 0.0,
+    "benchmark:MBPP+": 0.0,
+    "benchmark:MGSM": 0.0,
+    "benchmark:retention-v3": 0.0,
+    "domain:code": 6.25,
+    "domain:general": 0.0,
+    "domain:math": 0.0,
+    "domain:stem": 0.0,
+    "language:en": 2.38,
+    "language:zh_Hans": 0.0,
+    "language:zh_Hant": 0.0,
+    "overall": 1.61
+  },
+  "gate_passed": false,
+  "gate": {
+    "improvement_points": 2.0,
+    "max_subgroup_regression_points": 2.0
+  }
+}

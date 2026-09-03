@@ -1,0 +1,12 @@
+{"task_id":"retention-v2-en-stem-1","benchmark":"retention-v2","domain":"stem","language":"en","prompt":"Answer with only the chemical symbol: What is the chemical symbol for potassium?","gold":"K","max_tokens":64}
+{"task_id":"retention-v2-en-general-1","benchmark":"retention-v2","domain":"general","language":"en","prompt":"Return only the next letter in this sequence: B, D, F, H, ?","gold":"J","max_tokens":64}
+{"task_id":"retention-v2-zh-hant-stem-1","benchmark":"retention-v2","domain":"stem","language":"zh_Hant","prompt":"只回答數字：標準大氣壓下，水的攝氏凝固點是多少？","gold":"0","max_tokens":64}
+{"task_id":"retention-v2-zh-hant-general-1","benchmark":"retention-v2","domain":"general","language":"zh_Hant","prompt":"只回答星期名稱：星期五的下一天是？","gold":"星期六","max_tokens":64}
+{"task_id":"retention-v2-zh-hans-stem-1","benchmark":"retention-v2","domain":"stem","language":"zh_Hans","prompt":"只回答化学式：二氧化碳的化学式是什么？","gold":"CO2","max_tokens":64}
+{"task_id":"retention-v2-zh-hans-general-1","benchmark":"retention-v2","domain":"general","language":"zh_Hans","prompt":"只回答英文单词：英文单词 up 的反义词是什么？","gold":"down","max_tokens":64}
+{"task_id":"retention-v2-en-stem-2","benchmark":"retention-v2","domain":"stem","language":"en","prompt":"Answer with only the planet name: Which planet is closest to the Sun?","gold":"Mercury","max_tokens":64}
+{"task_id":"retention-v2-en-general-2","benchmark":"retention-v2","domain":"general","language":"en","prompt":"Return only the next letter in this sequence: A, C, E, G, ?","gold":"I","max_tokens":64}
+{"task_id":"retention-v2-zh-hant-stem-2","benchmark":"retention-v2","domain":"stem","language":"zh_Hant","prompt":"只回答化學式：水的化學式是什麼？","gold":"H2O","max_tokens":64}
+{"task_id":"retention-v2-zh-hant-general-2","benchmark":"retention-v2","domain":"general","language":"zh_Hant","prompt":"只回答星期名稱：星期一的前一天是？","gold":"星期日","max_tokens":64}
+{"task_id":"retention-v2-zh-hans-stem-2","benchmark":"retention-v2","domain":"stem","language":"zh_Hans","prompt":"只回答元素符号：氧的元素符号是什么？","gold":"O","max_tokens":64}
+{"task_id":"retention-v2-zh-hans-general-2","benchmark":"retention-v2","domain":"general","language":"zh_Hans","prompt":"只回答英文单词：英文单词 hot 的反义词是什么？","gold":"cold","max_tokens":64}

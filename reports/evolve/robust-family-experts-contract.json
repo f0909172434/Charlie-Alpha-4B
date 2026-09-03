@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "method": "DGP-Regret cross-fit robust family-expert hypothesis",
+  "method_version": 1,
+  "settings": {
+    "method_version": 1,
+    "arms": [
+      "boltzmann-mean",
+      "direct-mean",
+      "direct-cvar"
+    ],
+    "training_pool": {
+      "split": "robust-expert-train-pool-v1",
+      "pool_count": 480,
+      "seed": 71000042,
+      "selected_per_family": 24
+    },
+    "selection_folds": [
+      {
+        "split": "robust-expert-selection-a-v1",
+        "pool_count": 480,
+        "seed": 72000042,
+        "selected_per_family": 30
+      },
+      {
+        "split": "robust-expert-selection-b-v1",
+        "pool_count": 480,
+        "seed": 73000042,
+        "selected_per_family": 30
+      },
+      {
+        "split": "robust-expert-selection-c-v1",
+        "pool_count": 480,
+        "seed": 74000042,
+        "selected_per_family": 30
+      }
+    ],
+    "confirmation_shard": {
+      "split": "robust-expert-confirmation-v1",
+      "pool_count": 960,
+      "seed": 75000042,
+      "selected_per_family": 60
+    },
+    "promotion_shard": {
+      "split": "robust-expert-promotion-v1",
+      "pool_count": 1920,
+      "seed": 76000042,
+      "selected_per_family": 120
+    },
+    "final_shard": {
+      "split": "robust-expert-final-v1",
+      "pool_count": 1920,
+      "seed": 77000042,
+      "selected_per_family": 120
+    },
+    "updates": 6,
+    "records_per_backward": 2,
+    "step_l2": 0.006,
+    "direct_trust_beta": 0.1,
+    "cvar_tail_fraction": 0.35,
+    "cvar_uniform_floor": 0.25,
+    "cache_limit_gb": 4.0,
+    "selection": {
+      "minimum_family_pooled_relative_improvement": 0.05,
+      "minimum_fold_relative_improvement": 0.02,
+      "minimum_improving_folds": 2,
+      "maximum_fold_relative_regression": 0.02,
+      "minimum_route_mean_relative_improvement": 0.075,
+      "minimum_route_worst_fold_relative_improvement": 0.03,
+      "minimum_candidate_relative_improvement_over_control": 0.05,
+      "bootstrap_ci_lower_floor": 0.0,
+      "bootstrap_repetitions": 5000
+    },
+    "gates": {
+      "minimum_surface_trilingual_relative_improvement": 0.0,
+      "maximum_invalidity_increase": 0.0,
+      "maximum_accuracy_regression": 0.03,
+      "maximum_retention_regression": 0.01,
+      "maximum_language_accuracy_regression": 0.03,
+      "maximum_language_regret_increase": 0.05,
+      "maximum_domain_accuracy_regression": 0.1,
+      "maximum_family_regret_increase": 0.08
+    },
+    "confirmation_gates": {
+      "minimum_relative_improvement": 0.075,
+      "minimum_router_family_accuracy": 0.85,
+      "minimum_language_router_accuracy": 0.8,
+      "maximum_wrong_expert_rate": 0.05,
+      "minimum_expert_coverage": 0.1,
+      "bootstrap_ci_lower_floor": 0.0,
+      "bootstrap_repetitions": 10000
+    },
+    "promotion_gates": {
+      "minimum_relative_improvement": 0.075,
+      "minimum_router_family_accuracy": 0.85,
+      "minimum_language_router_accuracy": 0.8,
+      "maximum_wrong_expert_rate": 0.05,
+      "minimum_expert_coverage": 0.1,
+      "bootstrap_ci_lower_floor": 0.0,
+      "bootstrap_repetitions": 10000
+    },
+    "final_gates": {
+      "minimum_parent_relative_improvement": 0.075,
+      "minimum_base_relative_improvement": 0.15,
+      "minimum_base_invalid_selection_relative_reduction": 0.2,
+      "minimum_router_family_accuracy": 0.85,
+      "minimum_language_router_accuracy": 0.8,
+      "maximum_wrong_expert_rate": 0.05,
+      "minimum_expert_coverage": 0.1,
+      "bootstrap_ci_lower_floor": 0.0,
+      "bootstrap_repetitions": 20000
+    }
+  },
+  "parent_adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16",
+  "base_model": {
+    "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+    "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+    "license": "Apache-2.0"
+  },
+  "blueprint_contracts": {
+    "training_pool": {
+      "split": "robust-expert-train-pool-v1",
+      "seed": 71000042,
+      "pool_count": 480,
+      "selected_per_family": 24,
+      "count": 288,
+      "family_counts": {
+        "group_comparison": 24,
+        "categorical": 24,
+        "linear_robust": 24,
+        "binary_count_glm": 24,
+        "clustered_repeated": 24,
+        "survival": 24,
+        "missing_selection": 24,
+        "experimental_causal": 24,
+        "probability_distribution": 24,
+        "bayesian_check": 24,
+        "predictive_calibration": 24,
+        "time_series_leakage": 24
+      },
+      "blueprint_sha256": "cff570fd94a1401a97beda700b5a9f89925e2829a32132f80ded864a89ae9e1f"
+    },
+    "selection_fold_1": {
+      "split": "robust-expert-selection-a-v1",
+      "seed": 72000042,
+      "pool_count": 480,
+      "selected_per_family": 30,
+      "count": 360,
+      "family_counts": {
+        "group_comparison": 30,
+        "categorical": 30,
+        "linear_robust": 30,
+        "binary_count_glm": 30,
+        "clustered_repeated": 30,
+        "survival": 30,
+        "missing_selection": 30,
+        "experimental_causal": 30,
+        "probability_distribution": 30,
+        "bayesian_check": 30,
+        "predictive_calibration": 30,
+        "time_series_leakage": 30
+      },
+      "blueprint_sha256": "086d4e742b7f829e4c62aab4461beda46639bb978fd6378bcfeb5327b85902c5"
+    },
+    "selection_fold_2": {
+      "split": "robust-expert-selection-b-v1",
+      "seed": 73000042,
+      "pool_count": 480,
+      "selected_per_family": 30,
+      "count": 360,
+      "family_counts": {
+        "group_comparison": 30,
+        "categorical": 30,
+        "linear_robust": 30,
+        "binary_count_glm": 30,
+        "clustered_repeated": 30,
+        "survival": 30,
+        "missing_selection": 30,
+        "experimental_causal": 30,
+        "probability_distribution": 30,
+        "bayesian_check": 30,
+        "predictive_calibration": 30,
+        "time_series_leakage": 30
+      },
+      "blueprint_sha256": "fbd1bc59c7266ddef6454954ce1eb0a5c80fd1af2aaa8e0ca1fa402ce0061495"
+    },
+    "selection_fold_3": {
+      "split": "robust-expert-selection-c-v1",
+      "seed": 74000042,
+      "pool_count": 480,
+      "selected_per_family": 30,
+      "count": 360,
+      "family_counts": {
+        "group_comparison": 30,
+        "categorical": 30,
+        "linear_robust": 30,
+        "binary_count_glm": 30,
+        "clustered_repeated": 30,
+        "survival": 30,
+        "missing_selection": 30,
+        "experimental_causal": 30,
+        "probability_distribution": 30,
+        "bayesian_check": 30,
+        "predictive_calibration": 30,
+        "time_series_leakage": 30
+      },
+      "blueprint_sha256": "d2d9fdbb4bbb5771d1c3f16ddc94d5560c3a846c130d7218f97f0beba97f4bc8"
+    },
+    "confirmation_shard": {
+      "split": "robust-expert-confirmation-v1",
+      "seed": 75000042,
+      "pool_count": 960,
+      "selected_per_family": 60,
+      "count": 720,
+      "family_counts": {
+        "group_comparison": 60,
+        "categorical": 60,
+        "linear_robust": 60,
+        "binary_count_glm": 60,
+        "clustered_repeated": 60,
+        "survival": 60,
+        "missing_selection": 60,
+        "experimental_causal": 60,
+        "probability_distribution": 60,
+        "bayesian_check": 60,
+        "predictive_calibration": 60,
+        "time_series_leakage": 60
+      },
+      "blueprint_sha256": "530e5b98a013b44970f8f45403e087e8288bf3e5f584a16b56c694c2c6d77ce9"
+    },
+    "promotion_shard": {
+      "split": "robust-expert-promotion-v1",
+      "seed": 76000042,
+      "pool_count": 1920,
+      "selected_per_family": 120,
+      "count": 1440,
+      "family_counts": {
+        "group_comparison": 120,
+        "categorical": 120,
+        "linear_robust": 120,
+        "binary_count_glm": 120,
+        "clustered_repeated": 120,
+        "survival": 120,
+        "missing_selection": 120,
+        "experimental_causal": 120,
+        "probability_distribution": 120,
+        "bayesian_check": 120,
+        "predictive_calibration": 120,
+        "time_series_leakage": 120
+      },
+      "blueprint_sha256": "71e155ea8a6a4fe25bb837680682b4dd087fb5c0cb2ea321edc39fe3eeaeb810"
+    },
+    "final_shard": {
+      "split": "robust-expert-final-v1",
+      "seed": 77000042,
+      "pool_count": 1920,
+      "selected_per_family": 120,
+      "count": 1440,
+      "family_counts": {
+        "group_comparison": 120,
+        "categorical": 120,
+        "linear_robust": 120,
+        "binary_count_glm": 120,
+        "clustered_repeated": 120,
+        "survival": 120,
+        "missing_selection": 120,
+        "experimental_causal": 120,
+        "probability_distribution": 120,
+        "bayesian_check": 120,
+        "predictive_calibration": 120,
+        "time_series_leakage": 120
+      },
+      "blueprint_sha256": "5d14f16eac22bfc84ea47a06b120d7ec15f91841dc5ccf4d07dd5c844cc00620"
+    }
+  },
+  "pairwise_blueprint_overlap": 0,
+  "training_started_at_registration": false,
+  "confirmation_opened": false,
+  "promotion_opened": false,
+  "final_blueprints_registered": true,
+  "final_simulations_opened": false,
+  "final_scores_opened": false,
+  "claim_boundary": "This preregisters a project-specific combination of direct simulator regret, CVaR-style tail weighting, family LoRA experts, and cross-fit gates. Mixture-of-LoRA, adaptive routing, robust optimization, and verifier-guided improvement have prior art; the contract makes no first-in-literature claim.",
+  "fingerprint": "64b476e1e3da9cf1decd163bdd7d458e74dbc3cbf4d45a900e47b6e181cc7ab7"
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "method": "H17 execution-only normalized-bank reconstruction amendment",
+  "amendment_version": 1,
+  "contract_fingerprint": "90927de761d28921860ec13708a904b8e9e144066a90ea3544bf4ba53b0f38d8",
+  "data_fingerprint": "7a8f1a1f3af1eccf6da1ba345e93b6d63827e5edbcd64c061e04e5970c8df292",
+  "preserved_representation_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/external-domain-bridge-v1/representations/historical-menu-free.npz",
+  "preserved_representation_sha256": "21386abdc5d6e8d9bba26e9fc9ace00e7c1de8a6280140303cd5f97ea45638ca",
+  "failure_boundary": {
+    "representations_opened": true,
+    "candidate_grid_persisted": false,
+    "training_report_exists": false,
+    "fresh_external_evaluation_opened": false,
+    "observed_error": "KeyError: normalized"
+  },
+  "permitted_change": "Reconstruct the deterministic centered-normalized view of the augmented support vectors before support scoring. The frozen vectors, center, residual training, hyperparameter grid, folds, labels, control outcomes, and gates are unchanged.",
+  "implementation_sha256": "6be1fa34bee8bc03962f0e3c0073caa260f46601980cab5159ebe71d1181d18b",
+  "scientific_contract_changed": false,
+  "fingerprint": "ff877cd0de6193b6be8ee93b98cfa49150f6a8cb0f809d5e1f8e5550ea44ff5a"
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "historical E3 readback of frozen H16 selective selector",
+  "historical_only": true,
+  "fresh_external_evidence": false,
+  "e3_fit_or_threshold_tuning_performed": false,
+  "h16_result_fingerprint": "d0433ce9042615a6fae356fc2fcbe6f6d297285649fb0e3c1bd7a65ee0d4831a",
+  "e3_result_fingerprint": "7525bbbe08c2ca003c0bb5b73bd7e38795b1b2ceb56953e96032bf50cbd6671a",
+  "threshold": 0.75,
+  "eligible_count": 9,
+  "selector_accept_count": 0,
+  "selector_accept_rate": 0.0,
+  "selective_candidate_accuracy": 0.5555555555555556,
+  "menu_free_control_accuracy": 0.5555555555555556,
+  "frozen_h14_accuracy": 0.1111111111111111,
+  "candidate_gain_over_frozen_h14_points": 44.44444444444445,
+  "candidate_change_from_control_points": 0.0,
+  "rows": [
+    {
+      "case_id": "shukla-2025-01",
+      "support_score": 0.3700521886256047,
+      "use_selector": false,
+      "selected_source": "menu-free-fallback",
+      "correct": false,
+      "control_correct": false,
+      "head_correct": false
+    },
+    {
+      "case_id": "shukla-2025-03",
+      "support_score": 0.4255183207484196,
+      "use_selector": false,
+      "selected_source": "menu-free-fallback",
+      "correct": true,
+      "control_correct": true,
+      "head_correct": false
+    },
+    {
+      "case_id": "shukla-2025-05",
+      "support_score": 0.2830419622181531,
+      "use_selector": false,
+      "selected_source": "menu-free-fallback",
+      "correct": true,
+      "control_correct": true,
+      "head_correct": false
+    },
+    {
+      "case_id": "shukla-2025-06",
+      "support_score": 0.43623503826270105,
+      "use_selector": false,
+      "selected_source": "menu-free-fallback",
+      "correct": false,
+      "control_correct": false,
+      "head_correct": false
+    },
+    {
+      "case_id": "shukla-2025-07",
+      "support_score": 0.4302930474227601,
+      "use_selector": false,
+      "selected_source": "menu-free-fallback",
+      "correct": false,
+      "control_correct": false,
+      "head_correct": false
+    },
+    {
+      "case_id": "shukla-2025-08",
+      "support_score": 0.5587321404550308,
+      "use_selector": false,
+      "selected_source": "menu-free-fallback",
+      "correct": true,
+      "control_correct": true,
+      "head_correct": true
+    },
+    {
+      "case_id": "shukla-2025-10",
+      "support_score": 0.46874941386664487,
+      "use_selector": false,
+      "selected_source": "menu-free-fallback",
+      "correct": true,
+      "control_correct": true,
+      "head_correct": false
+    },
+    {
+      "case_id": "shukla-2025-16",
+      "support_score": 0.40841877746130134,
+      "use_selector": false,
+      "selected_source": "menu-free-fallback",
+      "correct": true,
+      "control_correct": true,
+      "head_correct": false
+    },
+    {
+      "case_id": "shukla-2025-18",
+      "support_score": 0.34117704573671365,
+      "use_selector": false,
+      "selected_source": "menu-free-fallback",
+      "correct": false,
+      "control_correct": false,
+      "head_correct": false
+    }
+  ],
+  "next_step": "qualify-a-genuinely-new-external-source-for-frozen-h16",
+  "claim_boundary": "This reuses already-opened E3 after every H16 threshold and artifact was frozen. It is diagnostic only and cannot support a fresh external capability claim.",
+  "result_fingerprint": "4fca2cbf432352bb7042694594bb74ab0601ba7ce494b8ec8345c18cacfdc477"
+}

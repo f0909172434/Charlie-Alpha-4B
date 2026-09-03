@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "method": "H22_INVALID_CONTROL_CATALOG_FALLBACK_DEV_V1",
+  "method_version": 1,
+  "evidence_status": "opened-source-development-composition",
+  "causal_question": "When an H21 menu-free parent control is parser-invalid, can the independently confirmed fixed 28-method catalog prompt repair the canonical-ID interface while the guard preserves every parser-valid control?",
+  "hypothesis_origin": {
+    "h21_contract_fingerprint": "eb8df93c9a511efa8b8635c4db0cbe277b3f3ad38c7d062e43e28885a31fa150",
+    "h21_data_fingerprint": "2f3bffc327c6c4a963cd632e74a197eaf3a81d121303a36e4f4bf0e1c9040d0d",
+    "h21_result_fingerprint": "a97a2d59e997d92fdfc35fdbba468d55478454072150cf5d6ff675015e004fab",
+    "h21_report_sha256": "b6a827e31f2be5d9660c7a62da21d416eb80f9ff19e157baf6254130569dd3d9",
+    "h21_status": "INCONCLUSIVE_OPPORTUNITY",
+    "h21_residual_parse_reason": "unknown-method-id",
+    "h21_residual_case_count": 4,
+    "h21_residual_unique_question_templates": 2,
+    "h21_training_authorized": false
+  },
+  "catalog_prior": {
+    "h7_result_fingerprint": "f9e3b27a91b41f11a44cf21fde90f928cf198c36e751b2686dbe41a87809295c",
+    "h7_report_sha256": "0a5e489f897388729783a6674eb35f80d5dc53a0b5ff1fa00d44bb2111375607",
+    "h12_result_fingerprint": "b105ee64dcad97e3c55dd9d8fddf205409cd38df1ec8c990551e69088a2ab9a3",
+    "h12_report_sha256": "0f0801be0751e051481ec7fbfafc3a60846835352f330dce3089f0ab917f1618",
+    "catalog_reference_sha256": "516726d2a40e7f061bba462f1d2dfd66b8e42e99b7d29a6d900cd910b6c8b425"
+  },
+  "runtime": {
+    "control_source": "sealed-H21-parent-control-ledger",
+    "control_ledger_sha256": "cb460a090e8d1f56bba2b611256cdd3cd48c15f0c031fba63a4f335d9c854939",
+    "fallback_model": "unchanged-v0.3.0-parent",
+    "fallback_adapter": {
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+      "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16",
+      "adapter_config_sha256": "f86475351b4e99c5d7431c55f0e7740b842dcfbab670240d0df21398f084d750"
+    },
+    "fallback_prompt": "H7 fixed global 28-method catalog prompt",
+    "fallback_prompt_sha256": "5b3e77acc4cf7edc0ce5f88fe9376f22e5dfe6cae8b96a16a72e88ac943a856d",
+    "decoding": {
+      "max_tokens": 160,
+      "temperature": 0.0,
+      "top_p": 1.0
+    }
+  },
+  "routing_policy": [
+    "Reuse the sealed H21 parent control output; never call the parent menu-free control again.",
+    "Return every parser-valid H21 control byte-for-byte as the selected method prediction.",
+    "Only for each parser-invalid H21 control, call the unchanged parent once with the fixed global catalog prompt.",
+    "Use a parser-valid catalog fallback; otherwise retain the original invalid control.",
+    "Count identical normalized questions as one evidence template even when they occur in multiple sources."
+  ],
+  "opportunity_gates": {
+    "minimum_invalid_control_cases": 4,
+    "minimum_invalid_control_sources": 3,
+    "minimum_invalid_control_gold_methods": 2,
+    "minimum_distinct_invalid_question_templates": 2,
+    "maximum_single_template_fraction": 0.75
+  },
+  "result_gates": {
+    "minimum_valid_fallback_cases": 3,
+    "minimum_candidate_only_gains": 3,
+    "minimum_net_improvements": 3,
+    "minimum_distinct_repaired_question_templates": 2,
+    "minimum_repaired_gold_methods": 2,
+    "minimum_repair_source_count": 3
+  },
+  "terminal_states": [
+    "SUPPORTED_DEV_COMPOSITION",
+    "SCIENTIFIC_FAIL",
+    "INCONCLUSIVE_TEMPLATE_COVERAGE",
+    "PROTOCOL_INVALID"
+  ],
+  "stopping_rule": "Open the four frozen H21 invalid-control fallbacks once. Do not add aliases, change the catalog, choose another model, retry invalid outputs, count duplicate templates as independent evidence, train an adapter, or modify the result after opening.",
+  "implementation_sha256": {
+    "stats_invalid_control_catalog_fallback.py": "57e6eddcdf9a8ee0d4d94e84eb06c493daf2ef7646ea7a5a544810e99bc7a537",
+    "stats_catalog_grounding.py": "4b9ea08e0515be65358aae7c2ebda4321b297a1de5ae76305b225de92b18ea5c",
+    "stats_guarded_external.py": "bda4cef8c3118e0f6971f831770a141bea5a151741bc3ac47c2467a118ea9826",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9",
+    "stats_catalog.py": "3e0e54b2f4db69b95eac56c6896d4d244d019dee7630b129da9aef22a8eb07af"
+  },
+  "model_output_opened": false,
+  "fresh_external_evidence": false,
+  "training_authorized": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "claim_boundary": "A pass supports only a development composition of the previously confirmed H7 catalog interface with an invalid-control identity guard on already-opened H21 cases. It cannot alter E5, establish fresh external capability, authorize training, replace the champion, publish, or release.",
+  "fingerprint": "4cc31e676ec1b765b38d373f5e43a1ae4f89fb5ae5f54be9a6ee92711ceb6bf8"
+}

@@ -1,0 +1,97 @@
+{
+  "classification": "Experimental v0.3.0",
+  "weights_publishable": true,
+  "ability_gates_passed": false,
+  "dgp_regret_claim_allowed": true,
+  "gates": {
+    "catalog": {
+      "passed": true,
+      "failures": []
+    },
+    "source_locks_and_licenses": {
+      "passed": true,
+      "failures": []
+    },
+    "data_schema_and_split_isolation": {
+      "passed": true,
+      "failures": [],
+      "records": 3240
+    },
+    "sealed_evaluation_lock": {
+      "passed": true,
+      "failures": [],
+      "sha256": "04205b3e4d292bd823b7fdadb0e2d06eee249cc527b2e97c4d1110f61ed8dfc8"
+    },
+    "tracked_content": {
+      "passed": true,
+      "forbidden_tracked_files": []
+    },
+    "artifact_privacy": {
+      "passed": true,
+      "failures": []
+    },
+    "python_and_r_isolation": {
+      "passed": true,
+      "python": {
+        "passed": true,
+        "checks": {
+          "network_blocked": true,
+          "read_blocked": true,
+          "write_blocked": true,
+          "subprocess_blocked": true
+        },
+        "sandbox": {
+          "returncode": 0,
+          "timed_out": false,
+          "memory_exceeded": false,
+          "write_exceeded": false,
+          "output_exceeded": false,
+          "isolated": true,
+          "network_allowed": false,
+          "written_bytes": 0
+        }
+      },
+      "r": {
+        "passed": true,
+        "checks": {
+          "network_blocked": true,
+          "read_blocked": true,
+          "write_blocked": true,
+          "subprocess_blocked": true
+        },
+        "sandbox": {
+          "returncode": 0,
+          "timed_out": false,
+          "memory_exceeded": false,
+          "write_exceeded": false,
+          "output_exceeded": false,
+          "isolated": true,
+          "network_allowed": false,
+          "written_bytes": 0
+        }
+      }
+    },
+    "evaluation_present": {
+      "passed": true
+    },
+    "export_present": {
+      "passed": true
+    },
+    "adapter_load": {
+      "passed": true
+    },
+    "fused_mlx_load": {
+      "passed": true
+    },
+    "clean_environment_load": {
+      "passed": true
+    },
+    "router_equivalence": {
+      "passed": true
+    },
+    "v0_2_preserved": {
+      "passed": true
+    }
+  },
+  "gguf_publishable": false
+}

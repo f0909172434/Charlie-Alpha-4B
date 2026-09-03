@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "contract_fingerprint": "90927de761d28921860ec13708a904b8e9e144066a90ea3544bf4ba53b0f38d8",
+  "historical_cases_sha256": "c3a0042530b222ecd7be31e68ddfbc592f3e676d0c223b07da8858a074917144",
+  "historical_case_fingerprint": "665d1faa98066c46594a78244796f326773e4af611a52d9db131514d299355fb",
+  "case_count": 38,
+  "source_count": 6,
+  "source_counts": {
+    "conyso-2026": 2,
+    "crucible-bench": 4,
+    "genser-2007-immunology": 4,
+    "haq-2016": 10,
+    "shukla-2025": 9,
+    "turner-2025-medical-education": 9
+  },
+  "method_counts": {
+    "chi_square": 8,
+    "fisher_exact": 2,
+    "independent_t": 6,
+    "logistic_glm": 3,
+    "logrank": 1,
+    "mann_whitney": 5,
+    "ols": 2,
+    "paired_t": 6,
+    "welch_t": 1,
+    "wilcoxon_signed_rank": 4
+  },
+  "control_accuracy": 0.6052631578947368,
+  "fresh_external_evidence": false,
+  "representations_opened": false,
+  "data_fingerprint": "7a8f1a1f3af1eccf6da1ba345e93b6d63827e5edbcd64c061e04e5970c8df292"
+}

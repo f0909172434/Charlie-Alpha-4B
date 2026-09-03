@@ -1,0 +1,198 @@
+{
+  "suite": "final",
+  "base": {
+    "expected_tasks": 62,
+    "completed_tasks": 62,
+    "coverage": 1.0,
+    "scores": {
+      "benchmark:GSM8K": {
+        "correct": 11,
+        "total": 12,
+        "accuracy": 0.9167
+      },
+      "benchmark:HumanEval+": {
+        "correct": 7,
+        "total": 8,
+        "accuracy": 0.875
+      },
+      "benchmark:MATH-500": {
+        "correct": 4,
+        "total": 12,
+        "accuracy": 0.3333
+      },
+      "benchmark:MBPP+": {
+        "correct": 4,
+        "total": 8,
+        "accuracy": 0.5
+      },
+      "benchmark:MGSM": {
+        "correct": 13,
+        "total": 16,
+        "accuracy": 0.8125
+      },
+      "benchmark:retention-v2": {
+        "correct": 4,
+        "total": 6,
+        "accuracy": 0.6667
+      },
+      "domain:code": {
+        "correct": 11,
+        "total": 16,
+        "accuracy": 0.6875
+      },
+      "domain:general": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.6667
+      },
+      "domain:math": {
+        "correct": 28,
+        "total": 40,
+        "accuracy": 0.7
+      },
+      "domain:stem": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.6667
+      },
+      "language:en": {
+        "correct": 27,
+        "total": 42,
+        "accuracy": 0.6429
+      },
+      "language:zh_Hans": {
+        "correct": 10,
+        "total": 10,
+        "accuracy": 1.0
+      },
+      "language:zh_Hant": {
+        "correct": 6,
+        "total": 10,
+        "accuracy": 0.6
+      },
+      "overall": {
+        "correct": 43,
+        "total": 62,
+        "accuracy": 0.6935
+      }
+    },
+    "suite": "final",
+    "variant": "qwen35-base",
+    "model": {
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "license": "Apache-2.0"
+    },
+    "adapter_sha256": null,
+    "elapsed_seconds": 450.61,
+    "invalidated_cached_generations": 0
+  },
+  "forge": {
+    "expected_tasks": 62,
+    "completed_tasks": 62,
+    "coverage": 1.0,
+    "scores": {
+      "benchmark:GSM8K": {
+        "correct": 11,
+        "total": 12,
+        "accuracy": 0.9167
+      },
+      "benchmark:HumanEval+": {
+        "correct": 7,
+        "total": 8,
+        "accuracy": 0.875
+      },
+      "benchmark:MATH-500": {
+        "correct": 2,
+        "total": 12,
+        "accuracy": 0.1667
+      },
+      "benchmark:MBPP+": {
+        "correct": 5,
+        "total": 8,
+        "accuracy": 0.625
+      },
+      "benchmark:MGSM": {
+        "correct": 15,
+        "total": 16,
+        "accuracy": 0.9375
+      },
+      "benchmark:retention-v2": {
+        "correct": 4,
+        "total": 6,
+        "accuracy": 0.6667
+      },
+      "domain:code": {
+        "correct": 12,
+        "total": 16,
+        "accuracy": 0.75
+      },
+      "domain:general": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.6667
+      },
+      "domain:math": {
+        "correct": 28,
+        "total": 40,
+        "accuracy": 0.7
+      },
+      "domain:stem": {
+        "correct": 2,
+        "total": 3,
+        "accuracy": 0.6667
+      },
+      "language:en": {
+        "correct": 26,
+        "total": 42,
+        "accuracy": 0.619
+      },
+      "language:zh_Hans": {
+        "correct": 10,
+        "total": 10,
+        "accuracy": 1.0
+      },
+      "language:zh_Hant": {
+        "correct": 8,
+        "total": 10,
+        "accuracy": 0.8
+      },
+      "overall": {
+        "correct": 44,
+        "total": 62,
+        "accuracy": 0.7097
+      }
+    },
+    "suite": "final",
+    "variant": "forge",
+    "model": {
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "license": "Apache-2.0"
+    },
+    "adapter_sha256": "594da4ad202658ecd3d223aa5f10a024aa47038e2198c301c8cf821964156d58",
+    "elapsed_seconds": 440.53,
+    "invalidated_cached_generations": 0
+  },
+  "delta_percentage_points": {
+    "benchmark:GSM8K": 0.0,
+    "benchmark:HumanEval+": 0.0,
+    "benchmark:MATH-500": -16.66,
+    "benchmark:MBPP+": 12.5,
+    "benchmark:MGSM": 12.5,
+    "benchmark:retention-v2": 0.0,
+    "domain:code": 6.25,
+    "domain:general": 0.0,
+    "domain:math": 0.0,
+    "domain:stem": 0.0,
+    "language:en": -2.39,
+    "language:zh_Hans": 0.0,
+    "language:zh_Hant": 20.0,
+    "overall": 1.62
+  },
+  "gate_passed": false,
+  "gate": {
+    "overall_improvement_points": 2.0,
+    "maximum_language_or_domain_regression_points": 2.0
+  }
+}

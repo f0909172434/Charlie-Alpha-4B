@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "532871a48b47ea659d5dc6497a71c137f10b7e03252623f0db4be139e21dd4ab",
+  "method": "H9 fixed-catalog constrained likelihood ranking pilot",
+  "contract_fingerprint": "e372c3acbf845f975dbbc23e0c84c2acc30d31c6a9af7d13f4978cefe57671f1",
+  "data_fingerprint": "2b8dae8ea6c4767897dc755c1a3d52edf82e977aca783d332789ff4df904904e",
+  "same_parent_weights": true,
+  "scores": {
+    "count": 24,
+    "free_method_accuracy": 0.375,
+    "free_catalog_validity": 1.0,
+    "ranked_method_accuracy": 0.375,
+    "ranked_mean_reciprocal_rank": 0.6319444444444443,
+    "ranked_mean_gold_rank": 1.9583333333333333
+  },
+  "selection_gate": {
+    "passed": false,
+    "checks": {
+      "minimum_ranked_method_accuracy": true,
+      "minimum_gain_over_free_control": false,
+      "minimum_gain_over_h7_confirmed": true
+    },
+    "effect_points": {
+      "ranked_vs_free_control": 0.0,
+      "ranked_vs_h7_confirmed_catalog": 9.166666666666668
+    }
+  },
+  "selected_interface": null,
+  "confirmation_authorized": false,
+  "external_benchmark_authorized": false,
+  "result_fingerprint": "7f6517fecd3f0582f846388723156a6fee35355f3afbdd0914a09f8a951da0a0"
+}

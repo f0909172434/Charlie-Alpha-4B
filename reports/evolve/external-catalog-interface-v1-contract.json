@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "method": "E1 independent external fixed-catalog interface evaluation",
+  "method_version": 1,
+  "causal_question": "On all eligible cases from one independently published expert-validated vignette source, does adding H7's unchanged fixed 28-method catalog improve the unchanged v0.3 parent over the same menu-free canonical-ID prompt?",
+  "h12_result_fingerprint": "b105ee64dcad97e3c55dd9d8fddf205409cd38df1ec8c990551e69088a2ab9a3",
+  "h12_report_sha256": "0f0801be0751e051481ec7fbfafc3a60846835352f330dce3089f0ab917f1618",
+  "parent": {
+    "name": "v0.3.0-parent",
+    "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "source": {
+    "citation_key": "mondal-2024-expert-statistical-test-vignettes",
+    "doi": "10.4103/picr.picr_275_23",
+    "pmcid": "PMC11584160",
+    "expected_case_count": 27,
+    "oa_api_url": "https://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?id=PMC11584160",
+    "article_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11584160/"
+  },
+  "source_state_at_preregistration": {
+    "case_text_opened": false,
+    "answer_key_opened": false,
+    "local_source_files_present": false
+  },
+  "catalog": {
+    "procedure_count": 28,
+    "sha256": "3428353710fb26869d2e262163f567fddbc41a8e9884b19fb46d34719a0d57bf",
+    "source": "stats_catalog.PROCEDURES method_id + existing display name only"
+  },
+  "gold_and_prediction_aliases": {
+    "ancova": [
+      "ancova",
+      "analysis of covariance",
+      "randomized ancova",
+      "randomised ancova"
+    ],
+    "blocked_time_series_cv": [
+      "rolling origin time series validation",
+      "rolling origin validation",
+      "forward chaining validation",
+      "blocked time series cross validation"
+    ],
+    "calibrated_logistic": [
+      "cross fitted calibrated prediction model",
+      "calibrated logistic prediction model"
+    ],
+    "chi_square": [
+      "chi square test",
+      "chi squared test",
+      "pearson chi square test",
+      "pearsons chi square test",
+      "chi square test of independence",
+      "test of independence"
+    ],
+    "conjugate_bayes": [
+      "conjugate bayesian estimation",
+      "conjugate bayes"
+    ],
+    "cox_ph": [
+      "cox proportional hazards model",
+      "cox proportional hazards regression",
+      "cox regression",
+      "proportional hazards regression"
+    ],
+    "difference_in_means": [
+      "difference in means",
+      "randomized difference in means",
+      "randomised difference in means"
+    ],
+    "firth_logistic": [
+      "firth logistic regression",
+      "bias reduced logistic regression",
+      "bias reduced logistic model"
+    ],
+    "fisher_exact": [
+      "fisher exact test",
+      "fishers exact test"
+    ],
+    "gee": [
+      "generalized estimating equations",
+      "generalised estimating equations",
+      "gee"
+    ],
+    "hc3_ols": [
+      "ols with hc3 robust covariance",
+      "hc3 robust regression",
+      "heteroskedasticity robust linear regression"
+    ],
+    "huber_regression": [
+      "huber regression",
+      "huber robust regression"
+    ],
+    "independent_t": [
+      "pooled two sample t test",
+      "independent t test",
+      "independent samples t test",
+      "independent sample t test",
+      "unpaired t test",
+      "unpaired student t test",
+      "student t test for independent samples",
+      "two sample student t test"
+    ],
+    "ipw": [
+      "inverse probability weighting",
+      "inverse probability weighted analysis",
+      "ipw"
+    ],
+    "logistic_glm": [
+      "logistic regression",
+      "binary logistic regression",
+      "multiple logistic regression",
+      "multivariable logistic regression"
+    ],
+    "logrank": [
+      "log rank test",
+      "logrank test",
+      "kaplan meier and log rank comparison",
+      "kaplan meier analysis with log rank test"
+    ],
+    "mann_whitney": [
+      "mann whitney test",
+      "mann whitney u test",
+      "wilcoxon rank sum test",
+      "rank sum test",
+      "unpaired nonparametric test"
+    ],
+    "mixed_effects": [
+      "mixed effects model",
+      "mixed effect model",
+      "linear mixed model",
+      "random effects model",
+      "random intercept mixed model",
+      "random intercept model"
+    ],
+    "multiple_imputation": [
+      "multiple imputation",
+      "multiple imputation with pooled inference"
+    ],
+    "negative_binomial_glm": [
+      "negative binomial regression",
+      "negative binomial model"
+    ],
+    "ols": [
+      "ordinary least squares",
+      "linear regression",
+      "simple linear regression",
+      "multiple linear regression",
+      "multivariable linear regression"
+    ],
+    "paired_t": [
+      "paired t test",
+      "paired student t test",
+      "dependent t test",
+      "dependent samples t test"
+    ],
+    "poisson_glm": [
+      "poisson regression",
+      "poisson model"
+    ],
+    "posterior_predictive": [
+      "posterior predictive check",
+      "posterior predictive model check"
+    ],
+    "randomization_inference": [
+      "randomization inference",
+      "randomisation inference",
+      "permutation test under random assignment"
+    ],
+    "two_proportion": [
+      "two proportion score test",
+      "two proportion z test",
+      "two sample proportion test",
+      "z test for two proportions"
+    ],
+    "welch_t": [
+      "welch t test",
+      "welchs t test",
+      "welch two sample t test",
+      "unequal variance t test"
+    ],
+    "wilcoxon_signed_rank": [
+      "wilcoxon signed rank test",
+      "signed rank test",
+      "paired nonparametric test"
+    ]
+  },
+  "eligibility_policy": {
+    "minimum_eligible_cases": 12,
+    "minimum_coverage_fraction": 0.4
+  },
+  "gates": {
+    "minimum_flat_catalog_accuracy": 0.35,
+    "minimum_method_gain_points": 10.0,
+    "minimum_net_improvements": 2,
+    "maximum_validity_regression_points": 5.0
+  },
+  "generation_max_tokens": 64,
+  "arms": {
+    "menu-free-control": "Unchanged v0.3 parent receives the external vignette and canonical-ID JSON contract without a method catalog",
+    "flat-catalog": "Same parent, vignette, JSON contract, and decoding plus H7's fixed 28-method ID + display-name catalog"
+  },
+  "materialization_policy": "After this lock exists, retrieve only the official PMC package identified by the frozen PMCID; include all source vignettes in source order. Map gold labels only by the frozen exact alias table. Labels mapping to zero or multiple catalog procedures are out of catalog and excluded only from the primary paired denominator. No case, alias, prompt, gate, or output may be selected after seeing model answers.",
+  "adaptation_policy": "none after source or model outputs are opened",
+  "stopping_rule": "Materialize every frozen source vignette once, then run both arms once with resumable progress under one evaluator fingerprint.",
+  "decision_rule": "Pass only if source coverage, absolute flat-catalog accuracy, paired gain, net improvements, and output-validity gates all pass.",
+  "claim_boundary": "A pass supports an independent external context/interface elicitation claim only. It does not change weights, replace the champion, authorize release, or establish general statistical competence outside the eligible source cases.",
+  "evaluation_implementation_sha256": {
+    "canonicalize_method_label": "73b17eae70bf3954e8fcf194982cc22a36cf4e5f8c76d65f6745ec5bd171b5f8",
+    "messages": "03492515d9002a914ef7f4e83ab795ea5abc2ac5bcaa1156687ae059cbd7bf40",
+    "predicted_method": "95ec895d24cc837c1632df6e3e2a3d971eb2b2ed0bf74953cca56ee971232248",
+    "metrics": "2acd93c2181e0d291e3cbefc7cd7427d6475b54ca9d651579cb5e9fa8e62f674",
+    "paired_summary": "23a3fbe571a929a9fff6ac08988e39ace5a86c4c6358bde52e7b55c383ec5953",
+    "gate_report": "d03811f516cd0f607076e0d49f98b38af40c4f37e0ca9d6a12302171e413820d",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9",
+    "stats_catalog.py": "3e0e54b2f4db69b95eac56c6896d4d244d019dee7630b129da9aef22a8eb07af"
+  },
+  "external_source_opened": false,
+  "fingerprint": "627c1721e6d9e38f7fdd5d59cd6a9b53a9321ca4644fe54f615afee4b7d1a425"
+}

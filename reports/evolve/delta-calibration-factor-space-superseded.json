@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "superseded",
+  "method": "LoRA-factor-space interpolation",
+  "reason": "Interpolating A and B separately introduces quadratic cross terms and does not trace a linear path in effective adapter weight space.",
+  "selection_rule_unchanged": true,
+  "comparisons": {
+    "0.25": {
+      "valid_trilingual_relative_regret_improvement": 0.020611169192361067,
+      "dev_trilingual_relative_regret_improvement": 0.08484696224110791,
+      "valid_all_gates_passed": false,
+      "dev_all_gates_passed": true
+    },
+    "0.5": {
+      "valid_trilingual_relative_regret_improvement": 0.019480169013176233,
+      "dev_trilingual_relative_regret_improvement": 0.09697473724504395,
+      "valid_all_gates_passed": false,
+      "dev_all_gates_passed": false
+    },
+    "0.75": {
+      "valid_trilingual_relative_regret_improvement": 0.11749754447275598,
+      "dev_trilingual_relative_regret_improvement": 0.0890572217465454,
+      "valid_all_gates_passed": false,
+      "dev_all_gates_passed": false
+    },
+    "1.0": {
+      "valid_trilingual_relative_regret_improvement": 0.06861100382471519,
+      "dev_trilingual_relative_regret_improvement": 0.031962179117523366,
+      "valid_all_gates_passed": false,
+      "dev_all_gates_passed": false
+    }
+  },
+  "selected_scale": null,
+  "promotion_shard_opened": false,
+  "sealed_final_surface_opened": false,
+  "replacement_report": "reports/evolve/delta-calibration.json"
+}

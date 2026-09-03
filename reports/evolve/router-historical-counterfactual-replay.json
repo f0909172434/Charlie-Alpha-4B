@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "6f017242907ebea2794f2e4ba0a2e4001ed7333454df05eed3d4fa201554d7a5",
+  "counterfactual_replay_version": 1,
+  "method": "post-H4 matched counterfactual parent completion",
+  "lock_fingerprint": "8d1a9997c801027044704f606b7abfba0c02ad4a19e9b135551694e98633efac",
+  "evidence_composition": {
+    "statqa_matched_parent_rows_from_v1": 200,
+    "p_bench_matched_parent_rows_from_h4_parent_route": 53,
+    "p_bench_matched_parent_rows_from_v1_counterfactual": 7,
+    "p_bench_matched_parent_rows_newly_replayed": 30,
+    "p_bench_total": 90
+  },
+  "legacy_control_drift": {
+    "p_bench": {
+      "raw_correct": {
+        "count": 90,
+        "false_to_false": 35,
+        "false_to_true": 55,
+        "true_to_false": 0,
+        "true_to_true": 0,
+        "parent_accuracy": 0.0,
+        "candidate_accuracy": 0.6111111111111112,
+        "delta_points": 61.111111111111114,
+        "changed_correctness": 55
+      },
+      "strict_correct": {
+        "count": 90,
+        "false_to_false": 57,
+        "false_to_true": 33,
+        "true_to_false": 0,
+        "true_to_true": 0,
+        "parent_accuracy": 0.0,
+        "candidate_accuracy": 0.36666666666666664,
+        "delta_points": 36.666666666666664,
+        "changed_correctness": 33
+      }
+    },
+    "statqa": {
+      "exact_correct": {
+        "count": 200,
+        "false_to_false": 198,
+        "false_to_true": 0,
+        "true_to_false": 0,
+        "true_to_true": 2,
+        "parent_accuracy": 0.01,
+        "candidate_accuracy": 0.01,
+        "delta_points": 0.0,
+        "changed_correctness": 0
+      },
+      "method_correct": {
+        "count": 200,
+        "false_to_false": 189,
+        "false_to_true": 0,
+        "true_to_false": 0,
+        "true_to_true": 11,
+        "parent_accuracy": 0.055,
+        "candidate_accuracy": 0.055,
+        "delta_points": 0.0,
+        "changed_correctness": 0
+      },
+      "columns_correct": {
+        "count": 200,
+        "false_to_false": 156,
+        "false_to_true": 0,
+        "true_to_false": 0,
+        "true_to_true": 44,
+        "parent_accuracy": 0.22,
+        "candidate_accuracy": 0.22,
+        "delta_points": 0.0,
+        "changed_correctness": 0
+      }
+    }
+  },
+  "matched_candidate_effect": {
+    "p_bench": {
+      "raw_correct": {
+        "count": 90,
+        "false_to_false": 35,
+        "false_to_true": 0,
+        "true_to_false": 0,
+        "true_to_true": 55,
+        "parent_accuracy": 0.6111111111111112,
+        "candidate_accuracy": 0.6111111111111112,
+        "delta_points": 0.0,
+        "changed_correctness": 0
+      },
+      "strict_correct": {
+        "count": 90,
+        "false_to_false": 57,
+        "false_to_true": 0,
+        "true_to_false": 0,
+        "true_to_true": 33,
+        "parent_accuracy": 0.36666666666666664,
+        "candidate_accuracy": 0.36666666666666664,
+        "delta_points": 0.0,
+        "changed_correctness": 0
+      }
+    },
+    "statqa": {
+      "exact_correct": {
+        "count": 200,
+        "false_to_false": 198,
+        "false_to_true": 0,
+        "true_to_false": 0,
+        "true_to_true": 2,
+        "parent_accuracy": 0.01,
+        "candidate_accuracy": 0.01,
+        "delta_points": 0.0,
+        "changed_correctness": 0
+      },
+      "method_correct": {
+        "count": 200,
+        "false_to_false": 189,
+        "false_to_true": 0,
+        "true_to_false": 0,
+        "true_to_true": 11,
+        "parent_accuracy": 0.055,
+        "candidate_accuracy": 0.055,
+        "delta_points": 0.0,
+        "changed_correctness": 0
+      },
+      "columns_correct": {
+        "count": 200,
+        "false_to_false": 156,
+        "false_to_true": 0,
+        "true_to_false": 0,
+        "true_to_true": 44,
+        "parent_accuracy": 0.22,
+        "candidate_accuracy": 0.22,
+        "delta_points": 0.0,
+        "changed_correctness": 0
+      }
+    }
+  },
+  "absolute_metrics": {
+    "legacy-v0.3-parent": {
+      "p_bench_raw_accuracy": 0.0,
+      "p_bench_strict_accuracy": 0.0,
+      "statqa_exact_accuracy": 0.01
+    },
+    "matched-v0.3-parent": {
+      "p_bench_raw_accuracy": 0.6111111111111112,
+      "p_bench_strict_accuracy": 0.36666666666666664,
+      "statqa_exact_accuracy": 0.01
+    },
+    "h4-guarded-reduced-route": {
+      "p_bench_raw_accuracy": 0.6111111111111112,
+      "p_bench_strict_accuracy": 0.36666666666666664,
+      "statqa_exact_accuracy": 0.01
+    }
+  },
+  "diagnostic_flags": {
+    "legacy_pbench_drift_observed": true,
+    "legacy_statqa_drift_observed": false,
+    "matched_h4_pbench_effect_observed": false,
+    "matched_h4_statqa_effect_observed": false
+  },
+  "next_research_direction": "representation-transfer",
+  "next_research_direction_reason": "The frozen H4 router/experts add no matched historical accuracy over v0.3. Synthetic routing gains therefore do not transfer to either historical task format.",
+  "h4_terminal_status_unchanged": "external-rejected",
+  "automatic_champion_promotion": false,
+  "proceed_to_external_final": false,
+  "elapsed_seconds": 688.8883127499721
+}

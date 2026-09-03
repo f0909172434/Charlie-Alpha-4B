@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "9a0bd97e89ea01cb5f4c9fc2e1f7a45f5139b875a7dd7e5cd39867654ac4ef6a",
+  "contract_fingerprint": "c62c43546783088072e779571149da7440edf17d0f28eab7965c446d9c57cdad",
+  "source_selection_fingerprint": "622962b683b3e0a3212dcdacc6704662953bdaba9321cb8064257fca73a60e06",
+  "parent_adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16",
+  "target_families": [
+    "binary_count_glm",
+    "group_comparison",
+    "experimental_causal",
+    "linear_robust"
+  ],
+  "manifests": {
+    "training_pool": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "f8a9d920dfc88157b5ab7f38f4c884f62ce635def404a56366b132c9a9eec1f7",
+      "settings_name": "training_pool",
+      "count": 288,
+      "blueprint_sha256": "b1f15d2f110a204120d2b809f978d7450f87b79f25868d366314b6c56490c3ca",
+      "sha256": "9c0aeff980f4d5e2fcc70eb26a205bc9257a5fdce34cf598b1b02d8ea0ca9a0b",
+      "used_for_training": true,
+      "used_for_selection": false,
+      "confirmation_opened": false,
+      "promotion_opened": false,
+      "final_opened": false
+    },
+    "selection_fold_1": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "b060a29595fd9c999e1b78d1887f298de54db6e116635968336747dae26ba3c1",
+      "settings_name": "selection_fold_1",
+      "count": 360,
+      "blueprint_sha256": "679a6e23092a8af0208d46763d4c21c7005c8d543fcce52cd15241cc50bb2256",
+      "sha256": "b9fc094c108a229d7c14ca68eb0548664fca3ffb5a8900004b65c992f7197a93",
+      "used_for_training": false,
+      "used_for_selection": true,
+      "confirmation_opened": false,
+      "promotion_opened": false,
+      "final_opened": false
+    },
+    "selection_fold_2": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "6024d8f616c648ced7b97ebc25138810891e2609f2c57b4c681370df9c2e1f6a",
+      "settings_name": "selection_fold_2",
+      "count": 360,
+      "blueprint_sha256": "db20704fbda55920d25d0e995b7cdae3cb47cf249af1415be98f40013c479f67",
+      "sha256": "eed4171dd7887c0cc9d9abea58846e24771dc3fc43f641ba076507f28cb39ba4",
+      "used_for_training": false,
+      "used_for_selection": true,
+      "confirmation_opened": false,
+      "promotion_opened": false,
+      "final_opened": false
+    },
+    "selection_fold_3": {
+      "schema_version": 1,
+      "complete": true,
+      "fingerprint": "8128ee9ab54df25fad75e3b15563d9e97b4f603194df2a7e4415e5360bb597e5",
+      "settings_name": "selection_fold_3",
+      "count": 360,
+      "blueprint_sha256": "b92c7f5b0f1971bab1bd63ab74db41a7ad08bd7849b2dc28f698f0bfd7d958ec",
+      "sha256": "5297da07c80b2f0266fbfb9895ce89546470dfafffb81e02f912a6bf9977e0f4",
+      "used_for_training": false,
+      "used_for_selection": true,
+      "confirmation_opened": false,
+      "promotion_opened": false,
+      "final_opened": false
+    }
+  },
+  "target_hashes": {
+    "boltzmann-replay": "302d6f47d087198b104c21de719e280abc7ed06bc678987908f6bf000e5e1679",
+    "triggered-repair": "7e475bd7cccbdada0028aaa6d4e807b6481393d7366f3a1a8fa16275e8486808"
+  },
+  "target_counts": {
+    "boltzmann-replay": 384,
+    "triggered-repair": 384
+  },
+  "target_audit": {
+    "candidate_pool_records": 1152,
+    "candidate_pool_semantic_groups": 288,
+    "selected_semantic_groups": 96,
+    "selected_role_counts": {
+      "repair": 72,
+      "anchor": 24
+    },
+    "selected_group_sha256": "7d5ee659fd0b2943ec55f0aa0f23879da8b56ee5462310b5ad400d76e10d6fdb",
+    "mean_triggered_repair_lambda": 0.75,
+    "triggered_repair_lambda_range": [
+      0.0,
+      1.0
+    ],
+    "mean_target_expected_regret_improvement": {
+      "boltzmann-replay": 0.3186853657350835,
+      "triggered-repair": 0.2694491603080408
+    },
+    "language_gradient_ratio_preserved_within_every_group": true,
+    "matched_rows_and_loss_weights": true
+  },
+  "confirmation_opened": false,
+  "promotion_opened": false,
+  "final_simulations_opened": false,
+  "final_scores_opened": false
+}

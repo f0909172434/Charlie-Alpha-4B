@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "contract_fingerprint": "b19db4e9b973552858199315d1ae534964c70a839742f1e5db16cdfdfead83ce",
+  "source_content_fingerprint": "2253aa4d580fcbc71149e04d7ed5af99ab18282318c760a09d3560ff26316dbb",
+  "cases_sha256": "3320a2437583b719ba85325c2b629bc17993d0f5358bb685a0bb491bcf52fcca",
+  "case_count": 20,
+  "head_eligible_count": 9,
+  "head_coverage_fraction": 0.45,
+  "materializer_version": 1,
+  "materializer_sha256": {
+    "stats_selector_external.py": "2c7249b66dd4fd8f78ab67f669fff624c63093a223f2bb73bb32b914b278832e",
+    "stats_external_catalog.py": "c1a67ee9b146a1d12adfdbbab88297db2fe5b42cd218f062336376dfd902fdb5"
+  },
+  "checks": {
+    "source_fingerprint": true,
+    "case_count": true,
+    "head_eligible_cases": true,
+    "head_coverage": true
+  },
+  "evaluation_authorized": true,
+  "model_evaluation_started": false,
+  "data_fingerprint": "aa76dfc10acd80fde2e822e50a987ddf844fcd29c300c81979aacba6219e3fdb"
+}

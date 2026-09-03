@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "H12 multi-seed flat-catalog interface replication",
+  "contract_fingerprint": "2c6d92b5e62e674d7361dbe82ae4f159bad81d1f61a2b3ebb755b61819b2512c",
+  "data_fingerprint": "2dc61c5c79ebe7e2901495bbd7f4a4192a058506243daae41c08e289068d465b",
+  "same_parent_weights": true,
+  "fold_scores": {
+    "fold_1": {
+      "menu-free-control": {
+        "format_shift": {
+          "count": 60,
+          "exact_accuracy": 0.0,
+          "method_set_accuracy": 0.03333333333333333,
+          "column_set_accuracy": 0.85,
+          "mean_column_recall": 0.95
+        }
+      },
+      "flat-catalog": {
+        "format_shift": {
+          "count": 60,
+          "exact_accuracy": 0.3,
+          "method_set_accuracy": 0.36666666666666664,
+          "column_set_accuracy": 0.85,
+          "mean_column_recall": 0.9444444444444444
+        }
+      }
+    },
+    "fold_2": {
+      "menu-free-control": {
+        "format_shift": {
+          "count": 60,
+          "exact_accuracy": 0.0,
+          "method_set_accuracy": 0.0,
+          "column_set_accuracy": 0.8833333333333333,
+          "mean_column_recall": 0.9333333333333333
+        }
+      },
+      "flat-catalog": {
+        "format_shift": {
+          "count": 60,
+          "exact_accuracy": 0.36666666666666664,
+          "method_set_accuracy": 0.4166666666666667,
+          "column_set_accuracy": 0.8666666666666667,
+          "mean_column_recall": 0.9277777777777777
+        }
+      }
+    },
+    "fold_3": {
+      "menu-free-control": {
+        "format_shift": {
+          "count": 60,
+          "exact_accuracy": 0.0,
+          "method_set_accuracy": 0.03333333333333333,
+          "column_set_accuracy": 0.9166666666666666,
+          "mean_column_recall": 1.0
+        }
+      },
+      "flat-catalog": {
+        "format_shift": {
+          "count": 60,
+          "exact_accuracy": 0.36666666666666664,
+          "method_set_accuracy": 0.45,
+          "column_set_accuracy": 0.9,
+          "mean_column_recall": 0.9944444444444444
+        }
+      }
+    }
+  },
+  "replication_gate": {
+    "passed": true,
+    "checks": {
+      "pooled_exact_gain": true,
+      "pooled_method_gain": true,
+      "pooled_column_noninferior": true,
+      "replicated_folds": true
+    },
+    "pooled_count": 180,
+    "pooled_accuracy": {
+      "menu-free-control": {
+        "exact_accuracy": 0.0,
+        "method_set_accuracy": 0.022222222222222223,
+        "column_set_accuracy": 0.8833333333333333
+      },
+      "flat-catalog": {
+        "exact_accuracy": 0.34444444444444444,
+        "method_set_accuracy": 0.4111111111111111,
+        "column_set_accuracy": 0.8722222222222222
+      }
+    },
+    "pooled_effect_points": {
+      "exact": 34.44444444444444,
+      "method": 38.88888888888889,
+      "columns": -1.1111111111111072
+    },
+    "fold_effect_points": {
+      "fold_1": {
+        "exact": 30.0,
+        "method": 33.33333333333333,
+        "columns": 0.0
+      },
+      "fold_2": {
+        "exact": 36.666666666666664,
+        "method": 41.66666666666667,
+        "columns": -1.6666666666666607
+      },
+      "fold_3": {
+        "exact": 36.666666666666664,
+        "method": 41.66666666666667,
+        "columns": -1.6666666666666607
+      }
+    },
+    "qualifying_folds": 3
+  },
+  "synthetic_catalog_interface_replicated": true,
+  "external_benchmark_authorized": false,
+  "next_step": "preregister-independent-external-catalog-interface-evidence",
+  "result_fingerprint": "b105ee64dcad97e3c55dd9d8fddf205409cd38df1ec8c990551e69088a2ab9a3"
+}

@@ -1,0 +1,379 @@
+{
+  "schema_version": 1,
+  "method": "H5 cross-format representation repair",
+  "method_version": 1,
+  "causal_question": "Does restoring gradient support on plan/tool/report tokens create cross-format method-and-column extraction gains that selector-only continuation cannot produce?",
+  "matched_replay_fingerprint": "6f017242907ebea2794f2e4ba0a2e4001ed7333454df05eed3d4fa201554d7a5",
+  "matched_replay_sha256": "5354270b466a97337ed0654c76c9ba070b654b7625169e86c4a78db270e3d397",
+  "parent": {
+    "name": "v0.3.0-parent",
+    "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "settings": {
+    "method_version": 1,
+    "training_seed": 89010042,
+    "minimum_normalized_distance": 1e-06,
+    "training_pool": {
+      "split": "cross-format-repair-train-v1",
+      "pool_count": 240,
+      "seed": 89000042,
+      "selected_per_family": 1
+    },
+    "selection_shard": {
+      "split": "cross-format-repair-selection-v1",
+      "pool_count": 480,
+      "seed": 90000042,
+      "selected_per_family": 2
+    },
+    "confirmation_shard": {
+      "split": "cross-format-repair-confirmation-v1",
+      "pool_count": 960,
+      "seed": 91000042,
+      "selected_per_family": 5
+    },
+    "microsteps": 48,
+    "max_seconds": 1800,
+    "max_seq_length": 640,
+    "grad_accumulation_steps": 4,
+    "validation_every": 48,
+    "checkpoint_every": 48,
+    "learning_rate_a": 5e-07,
+    "learning_rate_b": 2e-06,
+    "warmup_fraction": 0.03,
+    "weight_decay": 0.0,
+    "clear_cache_threshold_gb": 4.0,
+    "arms": {
+      "selector-only-full-sequence": {
+        "method": 1.0,
+        "plan_tool": 0.0,
+        "report": 0.0
+      },
+      "multi-token-representation": {
+        "method": 0.45,
+        "plan_tool": 0.35,
+        "report": 0.2
+      }
+    },
+    "selection_gates": {
+      "minimum_exact_gain_over_parent_points": 5.0,
+      "minimum_exact_gain_over_control_points": 5.0,
+      "minimum_method_gain_over_control_points": 0.0,
+      "minimum_column_gain_over_control_points": 0.0,
+      "maximum_selector_relative_regret_increase": 0.02,
+      "maximum_selector_accuracy_regression_points": 3.0,
+      "maximum_invalidity_increase": 0.0
+    },
+    "confirmation_gates": {
+      "minimum_exact_gain_over_parent_points": 5.0,
+      "minimum_exact_gain_over_control_points": 5.0,
+      "minimum_method_gain_over_control_points": 0.0,
+      "minimum_column_gain_over_control_points": 0.0,
+      "maximum_selector_relative_regret_increase": 0.02,
+      "maximum_selector_accuracy_regression_points": 3.0,
+      "maximum_invalidity_increase": 0.0
+    }
+  },
+  "blueprint_contracts": {
+    "training_pool": {
+      "split": "cross-format-repair-train-v1",
+      "seed": 89000042,
+      "pool_count": 240,
+      "selected_per_family": 1,
+      "count": 12,
+      "blueprint_sha256": "2facdebadc9238c3ebe2fcf4c13c9e1891181f87e675bd556d22af63effcb78b",
+      "family_counts": {
+        "group_comparison": 1,
+        "categorical": 1,
+        "linear_robust": 1,
+        "binary_count_glm": 1,
+        "clustered_repeated": 1,
+        "survival": 1,
+        "missing_selection": 1,
+        "experimental_causal": 1,
+        "probability_distribution": 1,
+        "bayesian_check": 1,
+        "predictive_calibration": 1,
+        "time_series_leakage": 1
+      }
+    },
+    "selection_shard": {
+      "split": "cross-format-repair-selection-v1",
+      "seed": 90000042,
+      "pool_count": 480,
+      "selected_per_family": 2,
+      "count": 24,
+      "blueprint_sha256": "50e61faae9e831bc396dde02a7c939a8bc40075ede7e156463220ff11a5cc666",
+      "family_counts": {
+        "group_comparison": 2,
+        "categorical": 2,
+        "linear_robust": 2,
+        "binary_count_glm": 2,
+        "clustered_repeated": 2,
+        "survival": 2,
+        "missing_selection": 2,
+        "experimental_causal": 2,
+        "probability_distribution": 2,
+        "bayesian_check": 2,
+        "predictive_calibration": 2,
+        "time_series_leakage": 2
+      }
+    },
+    "confirmation_shard": {
+      "split": "cross-format-repair-confirmation-v1",
+      "seed": 91000042,
+      "pool_count": 960,
+      "selected_per_family": 5,
+      "count": 60,
+      "blueprint_sha256": "fd796545d424638e9ee700c0685b2994ad87bc2b5abc9714ec0f15ef2679159b",
+      "family_counts": {
+        "group_comparison": 5,
+        "categorical": 5,
+        "linear_robust": 5,
+        "binary_count_glm": 5,
+        "clustered_repeated": 5,
+        "survival": 5,
+        "missing_selection": 5,
+        "experimental_causal": 5,
+        "probability_distribution": 5,
+        "bayesian_check": 5,
+        "predictive_calibration": 5,
+        "time_series_leakage": 5
+      }
+    }
+  },
+  "historical_overlap_audit": {
+    "method": "Exact blueprint IDs, semantic parameter hashes, and within-family normalized L-infinity nearest-neighbor distance",
+    "historical_source_manifest_fingerprint": "6da8a62894ed8e7725574849a048ed0fe9976fce9949c94cf310add4fdc723f5",
+    "historical_source_files": [
+      {
+        "path": "data/evolve/cycles/cycle-0001/promotion.jsonl",
+        "sha256": "df5cd102ce5744442605123b5a4db6529cb8f571e4eaeac014d86ce0b076db97",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0002/promotion.jsonl",
+        "sha256": "28957cf440d174274e5070ae1a98293864a01daaca93f853871b93175cd7769a",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0003/promotion.jsonl",
+        "sha256": "b89b9752a1989198b369ea3e4cb7d64aa15edabc1dc520ce92597dc2eb7a5828",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0004/promotion.jsonl",
+        "sha256": "9552d9d709043698f5f772ad507190b3662511bb59e36db6c4b236b3366ad4bb",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0005/promotion.jsonl",
+        "sha256": "93288ac55b67250ad4f6af558c33717b182020182fea2f5f242d2b4688b0fc93",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/selection_fold_1.jsonl",
+        "sha256": "c54f54e8d65a760509a409ea8655c7d0e054da997cb484c5a711a4d209f26b04",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/selection_fold_2.jsonl",
+        "sha256": "78090345b1b2b98f674bfbed4311de619d5cac7eaba8acfe3a59c71d51ed8bc7",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/selection_fold_3.jsonl",
+        "sha256": "647f6d5f37a37bb3635875153c4717011f282db77d72691700e70aa3f2b99a77",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/training_pool.jsonl",
+        "sha256": "8abf7cb76a5463988fc61c54eaee08c96d0c319d4c49f6a8285e21f0ddb8f3fa",
+        "scenario_rows": 288
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/selection_fold_1.jsonl",
+        "sha256": "b9fc094c108a229d7c14ca68eb0548664fca3ffb5a8900004b65c992f7197a93",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/selection_fold_2.jsonl",
+        "sha256": "eed4171dd7887c0cc9d9abea58846e24771dc3fc43f641ba076507f28cb39ba4",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/selection_fold_3.jsonl",
+        "sha256": "5297da07c80b2f0266fbfb9895ce89546470dfafffb81e02f912a6bf9977e0f4",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/training_pool.jsonl",
+        "sha256": "9c0aeff980f4d5e2fcc70eb26a205bc9257a5fdce34cf598b1b02d8ea0ca9a0b",
+        "scenario_rows": 288
+      },
+      {
+        "path": "data/stats/blueprints/dev.jsonl",
+        "sha256": "6ccec8ea2c631f748f1aa087e8b3682bd0410cc407089defb34c11f5575ca158",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/stats/blueprints/final.jsonl",
+        "sha256": "340b776c266360c06eb1ec5e0bafffe6bfaddffb308da9fea22ba8487ac94f7f",
+        "scenario_rows": 120
+      },
+      {
+        "path": "data/stats/blueprints/random/train.jsonl",
+        "sha256": "60d5d5f3b6c26706d94c652b36f51ccde65ddb00d1097d4890a098645b822af5",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/blueprints/train.jsonl",
+        "sha256": "bd7185d1df41f56c34c7a4a9d26c0e129cf1193325f97ab4f24ff2558e2ea2a6",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/blueprints/valid.jsonl",
+        "sha256": "cead11ab6a7f9c9f6b9408686f48071a301922f8e766bada2dd30a43800d4a4a",
+        "scenario_rows": 30
+      },
+      {
+        "path": "data/stats/surface/dev.jsonl",
+        "sha256": "fa44de8180c41adac4d789f913f417b6110748e17ef2d2ccd80599d6c6a2100c",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/stats/surface/final.jsonl",
+        "sha256": "435e635921f8c5999118e783e1ad3dd9b91802dd60d9b1b79fcfc223ffe8d8bc",
+        "scenario_rows": 120
+      },
+      {
+        "path": "data/stats/surface/random/train.jsonl",
+        "sha256": "4a40be6376b66bf1a3be90c4a8397f7dcdabaf2935879de6cdd66d3995aaf8e5",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/surface/train.jsonl",
+        "sha256": "16c7a2e0afeff7da0a6cb4fee2cba40d77e8abf0b0a183f9dffa1663e02a1b9e",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/surface/valid.jsonl",
+        "sha256": "e798aeb8a46b786cec6e75c2d15b41f5eacbbab66e25ec7cdb1bc28999cf7648",
+        "scenario_rows": 30
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-experts/confirmation.jsonl",
+        "sha256": "117aecbbb6067b894a81faa45c3c1fd9f2ee7017220053ced8f5ea2932e28c14",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-experts/selection-surface.jsonl",
+        "sha256": "66ebbf1adf4d95899a73e7c4cc4816f1cdd70c09c22bdf0a49df7563e8e5a7f6",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router/validation.jsonl",
+        "sha256": "b92dfd8787972eebde51f333a0a8a4586f917a0aa01886b277536bd2fffb657d",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/confirmation.jsonl",
+        "sha256": "dc59b1b8d5dc912b7b8a890bc2985f814b36d13ed3b0d72fe447d40b92370d22",
+        "scenario_rows": 360
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/independent-replication-v1/replication.jsonl",
+        "sha256": "c9c1b43ac3f88f879b06599af4a4d367cd5a467967d5913bfd1c4fb9516b4024",
+        "scenario_rows": 900
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/promotion/promotion.jsonl",
+        "sha256": "13546dc58140522a8ccfb2cad04e5dd014614b56088e1ec043dab889de22e06d",
+        "scenario_rows": 720
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/reduced-route-v1/confirmation.jsonl",
+        "sha256": "be6a25b30bf67936e19d150d5812a3d6ac37cc05a480658f3e7dbf25a8f43123",
+        "scenario_rows": 900
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/sufficiency-guard-thresholded-v1/confirmation.jsonl",
+        "sha256": "327fafe3c31b92b6f85b785713e66bc8eff08f8704bf501405bbc1120f00f9ac",
+        "scenario_rows": 900
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/sufficiency-guard-v1/confirmation.jsonl",
+        "sha256": "645b4ffb6c1b108bca0b585601fddad7d218b5da022dd86b65ee2bed5796515c",
+        "scenario_rows": 900
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/validation.jsonl",
+        "sha256": "b06f0aadedefdb8f4510e9fb2dfb220358918ef82c99cda5e6d464458e9d386e",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-route/confirmation.jsonl",
+        "sha256": "4ad3e678fb5cf222fca64b00967eb75a8fa060ff2d1d8e7b5d2192f6f27e6fbe",
+        "scenario_rows": 120
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-router/calibration.jsonl",
+        "sha256": "b6bb3b41949defe4ed5916adf642c0e0b8c30080ecbe0531bf4c833195c06f38",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-router/train.jsonl",
+        "sha256": "d23cb242235bc0110d3cd985db88563bae98c74fcdad2deb32c3b812af8b34ce",
+        "scenario_rows": 720
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-router/validation.jsonl",
+        "sha256": "b92dfd8787972eebde51f333a0a8a4586f917a0aa01886b277536bd2fffb657d",
+        "scenario_rows": 240
+      }
+    ],
+    "historical_unique_blueprints": 10698,
+    "historical_unique_semantic_points": 10618,
+    "new_blueprints": 96,
+    "blueprint_id_overlap_count": 0,
+    "semantic_overlap_count": 0,
+    "minimum_normalized_linf_distance": 0.026808699506753242,
+    "minimum_distance_family": "bayesian_check",
+    "registered_minimum_normalized_distance": 1e-06,
+    "passed": true
+  },
+  "implementation_sha256": {
+    "stats_cross_format.py": "a354ae27330ad0a9a3751caab9361a1bf6fe1ded47037e4b442c0389cfa1341f",
+    "stats_training.py": "3c870b07111a10b94cfdc52a12ef0a920029d4ddb815ebb87fac948fd5911866",
+    "stats_data.py": "374f04b97b156f820be5aeebfaf6129a606e3098f750f35b432b79412e632540",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9"
+  },
+  "arms": {
+    "selector-only-full-sequence": {
+      "full_sequence": true,
+      "component_weights": {
+        "method": 1.0,
+        "plan_tool": 0.0,
+        "report": 0.0
+      }
+    },
+    "multi-token-representation": {
+      "full_sequence": true,
+      "component_weights": {
+        "method": 0.45,
+        "plan_tool": 0.35,
+        "report": 0.2
+      }
+    }
+  },
+  "matched_compute": "Same parent, training records, full sequence length, shuffle seed, microsteps, gradient accumulation, optimizer, learning rates, and checkpoint endpoint.",
+  "format_shift": "Selection and confirmation remove the candidate menu and request a JSON object with methods and columns; gold is deterministically compiled from the registered DGP plan.",
+  "selection_policy": "Only multi-token-representation can advance, and only if every registered selection gate passes. The endpoint is the fixed final microstep; no checkpoint shopping.",
+  "confirmation_policy": "The confirmation surface must remain unsimulated until selection passes. Historical P-Bench and StatQA may not be used for H5 tuning or selection.",
+  "claim_boundary": "H5 can establish a project-internal synthetic cross-format mechanism only. Any external capability claim requires a separately preregistered independent benchmark.",
+  "training_started_at_registration": false,
+  "selection_opened": false,
+  "confirmation_simulations_opened": false,
+  "external_benchmark_opened": false,
+  "fingerprint": "cead6cd7ccddcd76ae9ee18e0e5500ac83d1359d602b9d76496885a293127b6a"
+}

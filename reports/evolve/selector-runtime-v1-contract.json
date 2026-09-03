@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "runtime": "selector-runtime-v1",
+  "runtime_version": 1,
+  "source_h14_result_fingerprint": "cbec02c2f27e1938b1a218866ffcc0da637565acddb8f589c9090ba89eed93ee",
+  "source_h14_contract_fingerprint": "8ad56776f3617b5a59588f0b2e86d96c804de22842570360fa6250236a7661a4",
+  "source_h14_report_sha256": "3a9fc45d0e3bf97af97c2b07423adcc43da3c4698e76f43f36ae37ab69f6b13b",
+  "source_h14_contract_sha256": "bc78898d57873dce12e05ac1636f5f023f4332b338d2adc49d2cb42a9579d2a7",
+  "parent": {
+    "name": "v0.3.0-parent",
+    "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "selector_head": {
+    "source": "H13 menu-free final-RMSNorm representations, training+selection only",
+    "ridge_lambda": 0.01,
+    "fit_count": 312,
+    "output_slots": 28,
+    "observed_method_count": 24,
+    "observed_methods": [
+      "independent_t",
+      "welch_t",
+      "mann_whitney",
+      "paired_t",
+      "wilcoxon_signed_rank",
+      "chi_square",
+      "fisher_exact",
+      "ols",
+      "hc3_ols",
+      "huber_regression",
+      "logistic_glm",
+      "firth_logistic",
+      "negative_binomial_glm",
+      "mixed_effects",
+      "cox_ph",
+      "logrank",
+      "multiple_imputation",
+      "ipw",
+      "difference_in_means",
+      "ancova",
+      "conjugate_bayes",
+      "posterior_predictive",
+      "calibrated_logistic",
+      "blocked_time_series_cv"
+    ],
+    "weight_sha256": "fe5b71f323ee19c16e0d862442011be24e4bfba51f54c8633534e17d08488923",
+    "artifact_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selector-head-v1/head.npz",
+    "artifact_sha256": "9144d057c8a82cf954cd23c398a6a13e622bb327b880e0af7d3002898f6117b1",
+    "training_case_ids_sha256": "dd2c77764d7404a9b76f8ac847af3e4011bff3af2a001ab9d5af3f28c8534a05",
+    "selection_case_ids_sha256": "91b2b85d5991fdaaacb1f5ac50362fb0d6a3c13672c5dc6d444a5491156706e4"
+  },
+  "prompt_contract": "exact H14 menu-free canonical methods+columns extraction prompt; thinking disabled",
+  "output_contract": {
+    "methods": "one canonical method ID from the frozen observed-method head",
+    "columns": "columns parsed from the same parent model's menu-free JSON generation"
+  },
+  "coverage": {
+    "catalog_method_count": 28,
+    "observed_method_count": 24,
+    "missing_methods": [
+      "gee",
+      "poisson_glm",
+      "randomization_inference",
+      "two_proportion"
+    ],
+    "policy": "missing methods are not silently added or guessed; broad 28-method deployment claims remain unauthorized"
+  },
+  "diagnostics": {
+    "top3_methods": "ranking only, not a calibrated probability",
+    "score_margin": "linear-score gap only, not confidence"
+  },
+  "implementation_sha256": {
+    "stats_selector_runtime.py": "ab82117056986e13a8f5562b5784b3021385d4aa206a349c3125a89511064e51",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9"
+  },
+  "claim_boundary": "This freezes the operational form of the confirmed synthetic H14 mechanism. It does not create new evidence, change v0.3 weights, promote a champion, or authorize release.",
+  "fingerprint": "52919e7999f7347f1e62a73adc2702be589c6f62e4bb442a9d57c3563a556265"
+}

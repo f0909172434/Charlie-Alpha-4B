@@ -1,0 +1,18 @@
+{
+  "data.json": {
+    "mtime_ns": 1788178778321062415,
+    "sha256": "e8d27fb0f81be8a66b669659496c7ec7dccc0b87c223271d092df14c6104c1c3"
+  },
+  "master-contract.json": {
+    "mtime_ns": 1788178754634680205,
+    "sha256": "0250a11bb77e0642502c42b9576441a20e5d65021d389fa1088ad93b31652d21"
+  },
+  "source-availability.json": {
+    "mtime_ns": 1788178765361153339,
+    "sha256": "f9b9bfd931a49929cf98dec117171248a9b6a826dae47eace2e52af473be5d3c"
+  },
+  "terminal-state.json": {
+    "mtime_ns": 1788178778321461581,
+    "sha256": "ce09ac383276ba7329f3e315f097a536323959a5c4318f345a6b9fc8f30290f0"
+  }
+}

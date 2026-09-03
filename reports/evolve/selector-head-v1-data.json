@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "contract_fingerprint": "8ad56776f3617b5a59588f0b2e86d96c804de22842570360fa6250236a7661a4",
+  "selection_surface_fingerprint": "137cb0b10a52f3afc62f215916446028a33033382d29ed19a55f1470e0a6d335",
+  "selection_case_sha256": "4c3ad11986a1987c534bff7fee5fc317089f51f027f2a36352e96b265297aa24",
+  "selection_count": 72,
+  "confirmation_opened": false,
+  "fingerprint": "142ba19a16b5ac347590de6c0de9c5c93a94f2ead4ec10c77d43940933b6cac2"
+}

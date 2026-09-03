@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "E6_FRESH_SOURCE_CATALOG_FALLBACK_V1",
+  "master_contract_fingerprint": "4b6027022ff2ac3a08010895769676e5abda24fd7a1af58361ba0b163f607fd1",
+  "source_availability_fingerprint": "9f27cb702607f681da6680c638723ab37c237f541850c497f6cf3951f31432ef",
+  "source_selected": false,
+  "case_count": 0,
+  "cases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "terminal_state": "SOURCE_UNAVAILABLE",
+  "evaluation_authorized": false,
+  "model_output_opened": false,
+  "training_authorized": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "data_fingerprint": "ac27579eeb7efc2aa0ad918b2cc4d8aa3ade84b30b0e77d0d6c220a7c9958927"
+}

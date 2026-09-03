@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "9c6b602542b9394d28fd6cfb85356136018e7e24e5d24ac5cf31101d9105c617",
+  "method": "E3 amended external natural-language selector-head transfer evaluation",
+  "contract_fingerprint": "b19db4e9b973552858199315d1ae534964c70a839742f1e5db16cdfdfead83ce",
+  "data_fingerprint": "aa76dfc10acd80fde2e822e50a987ddf844fcd29c300c81979aacba6219e3fdb",
+  "runtime_contract_fingerprint": "52919e7999f7347f1e62a73adc2702be589c6f62e4bb442a9d57c3563a556265",
+  "evaluation_amendment_fingerprint": "72f11de59c627d944338e189cae2fb33b61cc630551849415b5b8da87ee35eb9",
+  "evaluation_amendment_applied": true,
+  "same_parent_weights": true,
+  "same_h14_prompt_both_arms": true,
+  "model_evaluation_started": true,
+  "scores": {
+    "menu-free-control": {
+      "count": 20,
+      "eligible_count": 9,
+      "eligible_accuracy": 0.5555555555555556,
+      "all_case_accuracy": 0.25,
+      "valid_output_rate": 0.4,
+      "in_catalog_prediction_rate": 0.4
+    },
+    "selector-head": {
+      "count": 20,
+      "eligible_count": 9,
+      "eligible_accuracy": 0.1111111111111111,
+      "all_case_accuracy": 0.05,
+      "valid_output_rate": 1.0,
+      "in_catalog_prediction_rate": 1.0
+    }
+  },
+  "paired": {
+    "eligible_count": 9,
+    "both_correct": 1,
+    "candidate_only": 0,
+    "control_only": 4,
+    "both_wrong": 4,
+    "net_improvements": -4,
+    "mcnemar_exact_two_sided_p": 0.125
+  },
+  "external_gate": {
+    "passed": false,
+    "checks": {
+      "head_absolute_accuracy": false,
+      "method_gain": false,
+      "net_improvements": false,
+      "head_validity": true
+    },
+    "method_gain_points": -44.44444444444445
+  },
+  "external_selector_head_transfer_supported": false,
+  "champion_unchanged": "v0.3.0-parent",
+  "release_authorized": false,
+  "historical_pbench_statqa_reopened": false,
+  "next_step": "treat-h14-as-synthetic-format-limited-and-study-representation-transfer",
+  "claim_boundary": "A pass can support only narrow transfer of the frozen H14 method selector to the nine head-covered source-authored biomedical scenarios. It cannot establish 28-method coverage, column correctness, champion replacement, or release readiness.",
+  "result_fingerprint": "7525bbbe08c2ca003c0bb5b73bd7e38795b1b2ceb56953e96032bf50cbd6671a"
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "E2-v2 direct-tabular multi-source qualification",
+  "source_count": 3,
+  "sources": [
+    {
+      "source_id": "haq-2016",
+      "case_count": 22,
+      "eligible_count": 10,
+      "selection_rule": "all non-NA cells from published Tables 1 and 2 in source order",
+      "coverage_fraction": 0.45454545454545453
+    },
+    {
+      "source_id": "conyso-2026",
+      "case_count": 8,
+      "eligible_count": 3,
+      "selection_rule": "all data rows in the published selector CSV in source order",
+      "coverage_fraction": 0.375
+    },
+    {
+      "source_id": "crucible-bench",
+      "case_count": 7,
+      "eligible_count": 4,
+      "selection_rule": "all rows in README Parametric Tests and Non-Parametric Tests tables in source order",
+      "coverage_fraction": 0.5714285714285714
+    }
+  ],
+  "case_count": 37,
+  "eligible_count": 17,
+  "coverage_fraction": 0.4594594594594595,
+  "qualification_gate": {
+    "passed": true,
+    "checks": {
+      "minimum_eligible_cases": true,
+      "minimum_coverage_fraction": true,
+      "minimum_source_count": true
+    }
+  },
+  "model_evaluation_started": false,
+  "claim_boundary": "Qualification only: this establishes enough independent external decision-table coverage to preregister E2-v2. It is not model evidence.",
+  "fingerprint": "c5baa88367cca3658859d925f816caa8fec497ba970eec48d34fd81204252f0b"
+}

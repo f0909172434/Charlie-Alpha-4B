@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "method": "H21_OPENED_SOURCE_RESIDUAL_REPAIR_DEV_V1_GATE_INTERPRETATION",
+  "source_report_result_fingerprint": "a97a2d59e997d92fdfc35fdbba468d55478454072150cf5d6ff675015e004fab",
+  "source_report_sha256": "b6a827e31f2be5d9660c7a62da21d416eb80f9ff19e157baf6254130569dd3d9",
+  "contract_fingerprint": "eb8df93c9a511efa8b8635c4db0cbe277b3f3ad38c7d062e43e28885a31fa150",
+  "data_fingerprint": "2f3bffc327c6c4a963cd632e74a197eaf3a81d121303a36e4f4bf0e1c9040d0d",
+  "authoritative_scientific_gate_path": "opportunity_gate",
+  "authoritative_status": "INCONCLUSIVE_OPPORTUNITY",
+  "training_authorized": false,
+  "authoritative_gates": {
+    "minimum_residual_invalid_cases": 6,
+    "minimum_residual_invalid_sources": 3,
+    "minimum_residual_invalid_gold_methods": 3
+  },
+  "authoritative_observed": {
+    "residual_invalid_cases": 4,
+    "residual_invalid_sources": 3,
+    "residual_invalid_gold_methods": 2,
+    "residual_invalid_source_counts": {
+      "PMC6639881": 2,
+      "PMC8327789": 1,
+      "PMC8483143": 1
+    },
+    "residual_invalid_method_counts": {
+      "independent_t": 3,
+      "wilcoxon_signed_rank": 1
+    }
+  },
+  "non_authoritative_runtime_diagnostic": {
+    "path": "external_gate",
+    "reported_status": "CONFIRMED_NARROW_PASS",
+    "interpretation": "Transport/accounting self-check only. H21 intentionally invoked the reusable exact runtime with zero minima and maximum p=1.0; this status is not a scientific pass and cannot authorize training, E5 evidence, promotion, publication, or release."
+  },
+  "model_calls_added_by_audit": 0,
+  "fresh_external_evidence": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "fingerprint": "c786c4eff492c147f4357207033961e3a7d0c47f383249b0044e76daa053d075"
+}

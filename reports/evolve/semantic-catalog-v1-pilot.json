@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "f5eaf44be1bf8878a6df809176af184c430e34286db9db3b393718b5100b598d",
+  "method": "H11 semantic fixed-catalog grounding pilot",
+  "contract_fingerprint": "ac05fcb1536bdc2d36308c8b182296a0ecbc90cbfd47eaa8b25ea064be42a8e9",
+  "data_fingerprint": "26941237645402dc7e67f354c749b8d0673fdb1d9e93845a797f3bbdbd8a9181",
+  "same_parent_weights": true,
+  "scores": {
+    "flat-catalog": {
+      "count": 24,
+      "exact_accuracy": 0.25,
+      "method_set_accuracy": 0.3333333333333333,
+      "column_set_accuracy": 0.75,
+      "mean_column_recall": 0.9027777777777777
+    },
+    "semantic-catalog": {
+      "count": 24,
+      "exact_accuracy": 0.375,
+      "method_set_accuracy": 0.4583333333333333,
+      "column_set_accuracy": 0.8333333333333334,
+      "mean_column_recall": 0.9305555555555555
+    }
+  },
+  "selection_gate": {
+    "passed": true,
+    "checks": {
+      "minimum_semantic_method_accuracy": true,
+      "minimum_semantic_exact_accuracy": true,
+      "method_gain_over_flat": true,
+      "exact_gain_over_flat": true,
+      "column_noninferior": true
+    },
+    "effect_points": {
+      "exact_vs_control": 12.5,
+      "method_vs_control": 12.5,
+      "columns_vs_control": 8.333333333333337
+    }
+  },
+  "selected_interface": "semantic-catalog",
+  "confirmation_authorized": true,
+  "external_benchmark_authorized": false,
+  "result_fingerprint": "e9a1519e28b531ec570c0f8a74f6d04f371abe24c583460a9863b1af0c5607bd"
+}

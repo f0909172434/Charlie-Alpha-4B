@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "E6 fresh-source metadata availability readback",
+  "master_contract_fingerprint": "4b6027022ff2ac3a08010895769676e5abda24fd7a1af58361ba0b163f607fd1",
+  "metadata_screen_fingerprint": "774ff734c62a655c4c6cd67aba4ea32d1cfcf63596245248cabf8b79176df7d1",
+  "metadata_screen_sha256": "0865db871a674c9e7f21f565122bac054a93e9926a7d9050f44858d71e3f2264",
+  "candidate_count": 24,
+  "near_candidate_count": 7,
+  "source_gates": {
+    "minimum_eligible_cases": 150,
+    "minimum_distinct_methods": 8,
+    "minimum_coverage_fraction": 0.8,
+    "maximum_single_method_fraction": 0.4
+  },
+  "status": "SOURCE_UNAVAILABLE",
+  "metadata_screen_status": "NO_SOURCE_SELECTED_METADATA_SCREEN",
+  "source_selected": false,
+  "child_contract_created": false,
+  "dataset_rows_opened": false,
+  "model_output_opened": false,
+  "evaluation_authorized": false,
+  "training_authorized": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "reason": "None of the 24 metadata-only candidates can establish before opening a complete single-source question-to-canonical-method frame satisfying 150/8/80%/40%.",
+  "next_step": "wait-for-a-new-source-that-can-be-frozen-under-the-unchanged-master",
+  "fingerprint": "9f27cb702607f681da6680c638723ab37c237f541850c497f6cf3951f31432ef"
+}

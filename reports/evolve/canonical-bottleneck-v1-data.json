@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "3ab382c21d3845b835753f19bfe0f83b908c77e1466beaeb8d4e4ef4883fe204",
+  "contract_fingerprint": "2c00f51cbde033844af110f65511aff4cd2d92a2854fc18fd6deb65a259fe7ac",
+  "training_groups": 48,
+  "training_records_per_arm": 48,
+  "selection_groups": 24,
+  "file_sha256": {
+    "display-name-json": "06fe8963f7fc65b7976e8b7673e9432cfe4bab92926b10141de2b27d2a40e873",
+    "canonical-id-json": "8e03a9bf923c3c81689351201947ff76aebeaf724bc95669466e2d16a23b7d2d",
+    "selector": "eddb1426290dfb36debec9596a50f329514fde21cfe0abe85e96ece46783a7b2",
+    "cases": "871f47a1003e623264dfcfa0896272df53ff8aa9704f0c68f56f8f5512a031c0"
+  },
+  "confirmation_opened": false
+}

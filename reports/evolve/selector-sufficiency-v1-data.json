@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "e97f5dede6a440d918cdbd8cc67c1008f04730a849d1adb3fcb5c86111654701",
+  "contract_fingerprint": "2b3280066bb7cfda9e243bb37de3c3ba79dffcab796a46680d4fd4acddd8b8ce",
+  "surface_fingerprints": {
+    "training_shard": "38f3f4be3a9188795b56f227404be99f37801aca883becf8b2263105aaa4cf94",
+    "selection_shard": "fd0d394525ca67bdd9b9dd4758fda3fb5224f0ab6d4e4a495e598ac156d3b613"
+  },
+  "case_sha256": {
+    "training_shard": "eac921d58ca16f4217d9b60390ab259b81d7b6433fb6a9acf84c582c55b068d9",
+    "selection_shard": "31ad72cb12f9b2554ec64b1d0c78ada024ca987defcdee5050cd8f9f150eb20d"
+  },
+  "coverage": {
+    "training_shard": {
+      "semantic_point_count": 144,
+      "eligible_semantic_point_count": 144,
+      "eligible_fraction": 1.0,
+      "eligible_method_count": 23,
+      "eligible_method_counts": {
+        "ancova": 6,
+        "blocked_time_series_cv": 12,
+        "calibrated_logistic": 12,
+        "chi_square": 9,
+        "conjugate_bayes": 6,
+        "cox_ph": 4,
+        "firth_logistic": 8,
+        "fisher_exact": 3,
+        "hc3_ols": 4,
+        "huber_regression": 8,
+        "independent_t": 1,
+        "ipw": 8,
+        "logistic_glm": 2,
+        "logrank": 8,
+        "mann_whitney": 6,
+        "mixed_effects": 11,
+        "multiple_imputation": 10,
+        "negative_binomial_glm": 2,
+        "ols": 1,
+        "paired_t": 3,
+        "posterior_predictive": 16,
+        "welch_t": 3,
+        "wilcoxon_signed_rank": 1
+      }
+    },
+    "selection_shard": {
+      "semantic_point_count": 48,
+      "eligible_semantic_point_count": 48,
+      "eligible_fraction": 1.0,
+      "eligible_method_count": 16,
+      "eligible_method_counts": {
+        "ancova": 2,
+        "blocked_time_series_cv": 4,
+        "calibrated_logistic": 4,
+        "chi_square": 4,
+        "conjugate_bayes": 1,
+        "cox_ph": 3,
+        "firth_logistic": 3,
+        "huber_regression": 4,
+        "ipw": 4,
+        "logistic_glm": 1,
+        "logrank": 1,
+        "mann_whitney": 3,
+        "mixed_effects": 4,
+        "multiple_imputation": 2,
+        "posterior_predictive": 7,
+        "welch_t": 1
+      }
+    }
+  },
+  "data_gate": {
+    "passed": true,
+    "checks": {
+      "training_eligible_semantics": true,
+      "selection_eligible_semantics": true,
+      "training_eligible_fraction": true,
+      "selection_eligible_fraction": true
+    }
+  },
+  "selection_authorized": true,
+  "confirmation_opened": false
+}

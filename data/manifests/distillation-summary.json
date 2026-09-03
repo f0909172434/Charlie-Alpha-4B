@@ -1,0 +1,38 @@
+{
+  "fingerprint": "016404e802e989f12bbc8c0d9309bb818dc527c654e1f2555900b1bb737e0f4a",
+  "complete": false,
+  "counts": {
+    "zh_Hant": {
+      "valid": 3,
+      "test": 3,
+      "train": 29
+    },
+    "zh_Hans": {
+      "valid": 3,
+      "test": 3,
+      "train": 11
+    }
+  },
+  "totals": {
+    "zh_Hant": 35,
+    "zh_Hans": 17
+  },
+  "failures": {
+    "output does not contain enough zh_Hant script evidence": 4,
+    "unparsed output": 33,
+    "question: numbers changed": 25,
+    "question: formulas changed": 11,
+    "question: numbers changed; output does not contain enough zh_Hant script evidence": 2,
+    "answer: numbers changed": 2,
+    "question: formulas changed; answer: formulas changed; answer: numbers changed": 2,
+    "question: formulas changed; question: numbers changed": 4,
+    "question: numbers changed; answer: numbers changed": 1,
+    "output does not contain enough zh_Hans script evidence": 1,
+    "question: code blocks changed; question: formulas changed; question: numbers changed": 1,
+    "question: numbers changed; output does not contain enough zh_Hans script evidence": 1
+  },
+  "elapsed_seconds": 3601.09,
+  "teacher_repo": "mlx-community/Qwen3.5-9B-MLX-4bit",
+  "teacher_revision": "938d8919941c6e7efd3c7150eff7fe9d12afa631",
+  "minimum_complete": true
+}

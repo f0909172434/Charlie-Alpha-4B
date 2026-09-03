@@ -1,0 +1,514 @@
+{
+  "schema_version": 1,
+  "method": "H16 hidden-geometry selector sufficiency guard",
+  "method_version": 1,
+  "causal_question": "Can a one-class hidden-state geometry guard identify when the frozen H14 selector is operating inside its declared fine-grained DGP regime, preserving selector use for fully specified prompts while rejecting prompts that omit decision-critical conditions?",
+  "h15_result_fingerprint": "c0107dd174d755a89959975e496fe7ea3d52893813f30676b62750054aa18dfc",
+  "h15_report_sha256": "5284124f861388577d24934041bb7b27544ca5b1a509578a32ae9fe39c9ca801",
+  "historical_e3_diagnostic_fingerprint": "d8a70d5f7f4118e8bb3d1356a9847be262552d100eb1d4cd8aec7379fce607d5",
+  "historical_e3_diagnostic_sha256": "657f971515a8168318b9ab0f62cc51dfc11adab7ccd6470049493e389711efe8",
+  "historical_e3_used_for_threshold_selection": false,
+  "parent": {
+    "name": "v0.3.0-parent",
+    "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "frozen_h14_head": {
+    "source": "H13 menu-free final-RMSNorm representations, training+selection only",
+    "ridge_lambda": 0.01,
+    "fit_count": 312,
+    "output_slots": 28,
+    "observed_method_count": 24,
+    "observed_methods": [
+      "independent_t",
+      "welch_t",
+      "mann_whitney",
+      "paired_t",
+      "wilcoxon_signed_rank",
+      "chi_square",
+      "fisher_exact",
+      "ols",
+      "hc3_ols",
+      "huber_regression",
+      "logistic_glm",
+      "firth_logistic",
+      "negative_binomial_glm",
+      "mixed_effects",
+      "cox_ph",
+      "logrank",
+      "multiple_imputation",
+      "ipw",
+      "difference_in_means",
+      "ancova",
+      "conjugate_bayes",
+      "posterior_predictive",
+      "calibrated_logistic",
+      "blocked_time_series_cv"
+    ],
+    "weight_sha256": "fe5b71f323ee19c16e0d862442011be24e4bfba51f54c8633534e17d08488923",
+    "artifact_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selector-head-v1/head.npz",
+    "artifact_sha256": "9144d057c8a82cf954cd23c398a6a13e622bb327b880e0af7d3002898f6117b1",
+    "training_case_ids_sha256": "dd2c77764d7404a9b76f8ac847af3e4011bff3af2a001ab9d5af3f28c8534a05",
+    "selection_case_ids_sha256": "91b2b85d5991fdaaacb1f5ac50362fb0d6a3c13672c5dc6d444a5491156706e4"
+  },
+  "settings": {
+    "method_version": 1,
+    "minimum_normalized_distance": 1e-06,
+    "training_shard": {
+      "split": "selector-sufficiency-train-v1",
+      "pool_count": 2880,
+      "seed": 123000042,
+      "selected_per_family": 12
+    },
+    "selection_shard": {
+      "split": "selector-sufficiency-selection-v1",
+      "pool_count": 960,
+      "seed": 124000042,
+      "selected_per_family": 4
+    },
+    "confirmation_shard": {
+      "split": "selector-sufficiency-confirmation-v1",
+      "pool_count": 1440,
+      "seed": 125000042,
+      "selected_per_family": 6
+    },
+    "thresholds": [
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.88,
+      0.9,
+      0.92,
+      0.93,
+      0.94,
+      0.95,
+      0.96,
+      0.97
+    ],
+    "data_gates": {
+      "minimum_training_eligible_semantic_points": 96,
+      "minimum_selection_eligible_semantic_points": 30,
+      "minimum_confirmation_eligible_semantic_points": 45,
+      "minimum_eligible_fraction": 0.7
+    },
+    "selection_gates": {
+      "minimum_full_acceptance": 0.85,
+      "minimum_full_style_acceptance": 0.8,
+      "minimum_reduced_rejection": 0.9,
+      "minimum_reduced_style_rejection": 0.85,
+      "minimum_accepted_head_accuracy": 0.65,
+      "maximum_accepted_head_accuracy_regression_points": 3.0
+    },
+    "confirmation_gates": {
+      "minimum_full_acceptance": 0.8,
+      "minimum_full_style_acceptance": 0.75,
+      "minimum_reduced_rejection": 0.85,
+      "minimum_reduced_style_rejection": 0.8,
+      "minimum_accepted_head_accuracy": 0.6,
+      "maximum_accepted_head_accuracy_regression_points": 5.0
+    }
+  },
+  "styles": {
+    "selector_safe": [
+      "audit",
+      "researcher",
+      "vignette"
+    ],
+    "fallback_required": [
+      "conventional",
+      "partial"
+    ],
+    "reduced_semantics": "same source DGP and simulator gold, but the rendered prompt intentionally omits condition facts required to justify the simulator's fine-grained method choice; gold method accuracy is therefore not scored on reduced prompts"
+  },
+  "guard": {
+    "kind": "one-class centered nearest-cosine support score",
+    "training_bank": "all H14-covered training semantic points rendered in audit, researcher, and vignette styles; no reduced rendering enters the bank",
+    "center": "arithmetic mean of the frozen training-bank hidden vectors",
+    "score": "maximum cosine similarity between the mean-centered query vector and any mean-centered training-bank vector",
+    "decision": "use H14 selector iff support_score >= selected threshold; else fallback",
+    "threshold_grid": [
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.88,
+      0.9,
+      0.92,
+      0.93,
+      0.94,
+      0.95,
+      0.96,
+      0.97
+    ]
+  },
+  "selection_policy": "Select one threshold on the fresh selection shard only. It must pass every full-style retention, reduced-style rejection, and accepted-head-accuracy gate. Among eligible thresholds maximize the weaker of full retention and reduced rejection, then full retention, then accepted-head accuracy, then prefer the lower threshold.",
+  "confirmation_policy": "The confirmation simulations and representations remain unopened until selection freezes one threshold. Confirmation uses that threshold without adaptation.",
+  "claim_boundary": "H16 is a synthetic selector-support diagnosis and runtime-safety mechanism. It does not rescue E3, establish new external capability, change model weights, replace the champion, or authorize release.",
+  "blueprint_contracts": {
+    "training_shard": {
+      "split": "selector-sufficiency-train-v1",
+      "seed": 123000042,
+      "pool_count": 2880,
+      "selected_per_family": 12,
+      "count": 144,
+      "blueprint_sha256": "2f30b070977003e77b3c5ae6bfe0de5274e95e07e57ea6b691a6f801bad17d2e"
+    },
+    "selection_shard": {
+      "split": "selector-sufficiency-selection-v1",
+      "seed": 124000042,
+      "pool_count": 960,
+      "selected_per_family": 4,
+      "count": 48,
+      "blueprint_sha256": "f586b2157a427269482013d10aec1b0ceab7f0e29517bca42b374d6ffb2281b6"
+    },
+    "confirmation_shard": {
+      "split": "selector-sufficiency-confirmation-v1",
+      "seed": 125000042,
+      "pool_count": 1440,
+      "selected_per_family": 6,
+      "count": 72,
+      "blueprint_sha256": "9128dbb5dcc36163ac5086b811ff8715fe0ddcd7d0ea844b82b245c35e29fc64"
+    }
+  },
+  "historical_overlap_audit": {
+    "method": "Exact blueprint IDs, semantic parameter hashes, and within-family normalized L-infinity nearest-neighbor distance",
+    "historical_source_manifest_fingerprint": "5c6828424e630e8b6d89df0f9c5c0f5051056c613b9a19aac92cbe7d100645da",
+    "historical_source_files": [
+      {
+        "path": "data/evolve/canonical-bottleneck-v1/surfaces/selection_shard.jsonl",
+        "sha256": "f2f291cb3891ba4fee0f19d0ae717ee4ea134def44b9483b6030ee089b135611",
+        "scenario_rows": 24
+      },
+      {
+        "path": "data/evolve/canonical-bottleneck-v1/surfaces/training_pool.jsonl",
+        "sha256": "7733a688184ae633d899bcad2bd97b506facff1da8bf1958b6072c8de6ae3d0d",
+        "scenario_rows": 48
+      },
+      {
+        "path": "data/evolve/catalog-distillation-v1/surfaces/selection_shard.jsonl",
+        "sha256": "92a73796375cdb95f7bc33e5682ab483ec1fa8e96c7a52a95f0c163e61a0260f",
+        "scenario_rows": 24
+      },
+      {
+        "path": "data/evolve/catalog-distillation-v1/surfaces/training_pool.jsonl",
+        "sha256": "314f4b6072714c11ca929f313a2e64b75db7b640501c0c8331f8cebcc8257f74",
+        "scenario_rows": 96
+      },
+      {
+        "path": "data/evolve/catalog-grounding-v1/surfaces/confirmation_shard.jsonl",
+        "sha256": "f121fe9473d6c3c2f9144beaafa3923a0e1b09c371ec5fb25ff2219a01b73014",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/catalog-grounding-v1/surfaces/selection_shard.jsonl",
+        "sha256": "b942d6ae0427dfa9be1d05d572cf6d757a76f73de357f940928c3149565728fa",
+        "scenario_rows": 24
+      },
+      {
+        "path": "data/evolve/catalog-interface-replication-v1/folds/fold_1.jsonl",
+        "sha256": "68200e574f2341101da82388904b775addb5815565a48e5d2a8c23a05e341418",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/catalog-interface-replication-v1/folds/fold_2.jsonl",
+        "sha256": "e3966f1fce324975bd0f8898d488004a1b0f99c9218b9c6aeaef4264653c404f",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/catalog-interface-replication-v1/folds/fold_3.jsonl",
+        "sha256": "cf08e79aa1e6960d7b31b23c1bdd4f8f8bd5bd8c6c87419498b1c9fbb23589fc",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/catalog-ranking-v1/surfaces/selection_shard.jsonl",
+        "sha256": "73059227a91f910df694401722d874f4eaf8bb4f5c0822a339f4fb5b5091cd69",
+        "scenario_rows": 24
+      },
+      {
+        "path": "data/evolve/cross-format-repair-v1/surfaces/selection_shard.jsonl",
+        "sha256": "d5fdf89371bd164c383d2d7db44cbee3fc16b0083ea2de52aa728c2ecbf6241f",
+        "scenario_rows": 24
+      },
+      {
+        "path": "data/evolve/cross-format-repair-v1/surfaces/training_pool.jsonl",
+        "sha256": "455119e409c1f3c15e8a143f95e427effcf2d19d74d9e3b0aaf081d489056f44",
+        "scenario_rows": 12
+      },
+      {
+        "path": "data/evolve/cross-format-repair-v2/surfaces/selection_shard.jsonl",
+        "sha256": "daed48ebe1555e5fb2c778567722a786465b1f42069f043f9bfb43c303ef8f47",
+        "scenario_rows": 24
+      },
+      {
+        "path": "data/evolve/cross-format-repair-v2/surfaces/training_pool.jsonl",
+        "sha256": "db669011aaa9b8501f827765b4d88c398ba6c00ba99ce8715b23d48a48f473c8",
+        "scenario_rows": 12
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0001/promotion.jsonl",
+        "sha256": "df5cd102ce5744442605123b5a4db6529cb8f571e4eaeac014d86ce0b076db97",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0002/promotion.jsonl",
+        "sha256": "28957cf440d174274e5070ae1a98293864a01daaca93f853871b93175cd7769a",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0003/promotion.jsonl",
+        "sha256": "b89b9752a1989198b369ea3e4cb7d64aa15edabc1dc520ce92597dc2eb7a5828",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0004/promotion.jsonl",
+        "sha256": "9552d9d709043698f5f772ad507190b3662511bb59e36db6c4b236b3366ad4bb",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/cycles/cycle-0005/promotion.jsonl",
+        "sha256": "93288ac55b67250ad4f6af558c33717b182020182fea2f5f242d2b4688b0fc93",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/output-factorization-v1/surfaces/confirmation_shard.jsonl",
+        "sha256": "edac6d2255e413b536b0998f36f8fe86f50b6a7c8035c66fbdf6ede703c8a33e",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/output-factorization-v1/surfaces/selection_shard.jsonl",
+        "sha256": "e7dcb79a129635b2c5cac342179421f40e3262cf9905d14afa904423047a22c9",
+        "scenario_rows": 24
+      },
+      {
+        "path": "data/evolve/representation-probe-v1/surfaces/confirmation_shard.jsonl",
+        "sha256": "3546f9899971e4d1c197715eddb269825dddca59ce55cec6f30f9edecacc1136",
+        "scenario_rows": 120
+      },
+      {
+        "path": "data/evolve/representation-probe-v1/surfaces/selection_shard.jsonl",
+        "sha256": "a49260a7f5c28d41cedd4bebdf5aa1a735cecf516061feeed24c6c0258bb0022",
+        "scenario_rows": 72
+      },
+      {
+        "path": "data/evolve/representation-probe-v1/surfaces/training_shard.jsonl",
+        "sha256": "8ae907b183b135fa06b097afcae8eb9cff1fd9ef6bf172e21f25a1f6a93aced1",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/selection_fold_1.jsonl",
+        "sha256": "c54f54e8d65a760509a409ea8655c7d0e054da997cb484c5a711a4d209f26b04",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/selection_fold_2.jsonl",
+        "sha256": "78090345b1b2b98f674bfbed4311de619d5cac7eaba8acfe3a59c71d51ed8bc7",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/selection_fold_3.jsonl",
+        "sha256": "647f6d5f37a37bb3635875153c4717011f282db77d72691700e70aa3f2b99a77",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/robust-family-experts/surfaces/training_pool.jsonl",
+        "sha256": "8abf7cb76a5463988fc61c54eaee08c96d0c319d4c49f6a8285e21f0ddb8f3fa",
+        "scenario_rows": 288
+      },
+      {
+        "path": "data/evolve/selector-head-v1/surfaces/confirmation_shard.jsonl",
+        "sha256": "e8436249973d331efa3abe3807e18104ae8bf3cb21e41afa5a224164342c5149",
+        "scenario_rows": 120
+      },
+      {
+        "path": "data/evolve/selector-head-v1/surfaces/selection_shard.jsonl",
+        "sha256": "aa4e51ca32161beb9062ff8ddeb723d7cbed6bea14073d4821ff019e2b2636c4",
+        "scenario_rows": 72
+      },
+      {
+        "path": "data/evolve/semantic-catalog-v1/surfaces/confirmation_shard.jsonl",
+        "sha256": "484210be8deff77b59a15e15b5bfde89d8299c10e3fc3c4ba4532badd7af9acf",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/evolve/semantic-catalog-v1/surfaces/selection_shard.jsonl",
+        "sha256": "147d3fb6309d7b136e3302ee9398cea40dc79db279d14ba5ad49bb8703d9d165",
+        "scenario_rows": 24
+      },
+      {
+        "path": "data/evolve/style-invariance-v1/surfaces/confirmation_shard.jsonl",
+        "sha256": "6a671093645f058716be71f7b837dfda5490b36fa01dcad3d7e78d59403cc643",
+        "scenario_rows": 72
+      },
+      {
+        "path": "data/evolve/style-invariance-v1/surfaces/selection_shard.jsonl",
+        "sha256": "e95411d9296794ac95792bc29cbda6a6313821b81c962b2e7812fc4d3795433b",
+        "scenario_rows": 48
+      },
+      {
+        "path": "data/evolve/style-invariance-v1/surfaces/training_shard.jsonl",
+        "sha256": "c2e9a8e1cf0201c1a53dc3af1c1a6dff72773aea59625705019b59e4eb88020c",
+        "scenario_rows": 144
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/selection_fold_1.jsonl",
+        "sha256": "b9fc094c108a229d7c14ca68eb0548664fca3ffb5a8900004b65c992f7197a93",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/selection_fold_2.jsonl",
+        "sha256": "eed4171dd7887c0cc9d9abea58846e24771dc3fc43f641ba076507f28cb39ba4",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/selection_fold_3.jsonl",
+        "sha256": "5297da07c80b2f0266fbfb9895ce89546470dfafffb81e02f912a6bf9977e0f4",
+        "scenario_rows": 360
+      },
+      {
+        "path": "data/evolve/targeted-repair/surfaces/training_pool.jsonl",
+        "sha256": "9c0aeff980f4d5e2fcc70eb26a205bc9257a5fdce34cf598b1b02d8ea0ca9a0b",
+        "scenario_rows": 288
+      },
+      {
+        "path": "data/stats/blueprints/dev.jsonl",
+        "sha256": "6ccec8ea2c631f748f1aa087e8b3682bd0410cc407089defb34c11f5575ca158",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/stats/blueprints/final.jsonl",
+        "sha256": "340b776c266360c06eb1ec5e0bafffe6bfaddffb308da9fea22ba8487ac94f7f",
+        "scenario_rows": 120
+      },
+      {
+        "path": "data/stats/blueprints/random/train.jsonl",
+        "sha256": "60d5d5f3b6c26706d94c652b36f51ccde65ddb00d1097d4890a098645b822af5",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/blueprints/train.jsonl",
+        "sha256": "bd7185d1df41f56c34c7a4a9d26c0e129cf1193325f97ab4f24ff2558e2ea2a6",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/blueprints/valid.jsonl",
+        "sha256": "cead11ab6a7f9c9f6b9408686f48071a301922f8e766bada2dd30a43800d4a4a",
+        "scenario_rows": 30
+      },
+      {
+        "path": "data/stats/surface/dev.jsonl",
+        "sha256": "fa44de8180c41adac4d789f913f417b6110748e17ef2d2ccd80599d6c6a2100c",
+        "scenario_rows": 60
+      },
+      {
+        "path": "data/stats/surface/final.jsonl",
+        "sha256": "435e635921f8c5999118e783e1ad3dd9b91802dd60d9b1b79fcfc223ffe8d8bc",
+        "scenario_rows": 120
+      },
+      {
+        "path": "data/stats/surface/random/train.jsonl",
+        "sha256": "4a40be6376b66bf1a3be90c4a8397f7dcdabaf2935879de6cdd66d3995aaf8e5",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/surface/train.jsonl",
+        "sha256": "16c7a2e0afeff7da0a6cb4fee2cba40d77e8abf0b0a183f9dffa1663e02a1b9e",
+        "scenario_rows": 240
+      },
+      {
+        "path": "data/stats/surface/valid.jsonl",
+        "sha256": "e798aeb8a46b786cec6e75c2d15b41f5eacbbab66e25ec7cdb1bc28999cf7648",
+        "scenario_rows": 30
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-experts/confirmation.jsonl",
+        "sha256": "117aecbbb6067b894a81faa45c3c1fd9f2ee7017220053ced8f5ea2932e28c14",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-experts/selection-surface.jsonl",
+        "sha256": "66ebbf1adf4d95899a73e7c4cc4816f1cdd70c09c22bdf0a49df7563e8e5a7f6",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router/validation.jsonl",
+        "sha256": "b92dfd8787972eebde51f333a0a8a4586f917a0aa01886b277536bd2fffb657d",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/confirmation.jsonl",
+        "sha256": "dc59b1b8d5dc912b7b8a890bc2985f814b36d13ed3b0d72fe447d40b92370d22",
+        "scenario_rows": 360
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/independent-replication-v1/replication.jsonl",
+        "sha256": "c9c1b43ac3f88f879b06599af4a4d367cd5a467967d5913bfd1c4fb9516b4024",
+        "scenario_rows": 900
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/promotion/promotion.jsonl",
+        "sha256": "13546dc58140522a8ccfb2cad04e5dd014614b56088e1ec043dab889de22e06d",
+        "scenario_rows": 720
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/reduced-route-v1/confirmation.jsonl",
+        "sha256": "be6a25b30bf67936e19d150d5812a3d6ac37cc05a480658f3e7dbf25a8f43123",
+        "scenario_rows": 900
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/sufficiency-guard-thresholded-v1/confirmation.jsonl",
+        "sha256": "327fafe3c31b92b6f85b785713e66bc8eff08f8704bf501405bbc1120f00f9ac",
+        "scenario_rows": 900
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/sufficiency-guard-v1/confirmation.jsonl",
+        "sha256": "645b4ffb6c1b108bca0b585601fddad7d218b5da022dd86b65ee2bed5796515c",
+        "scenario_rows": 900
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-llm-router-v2/validation.jsonl",
+        "sha256": "b06f0aadedefdb8f4510e9fb2dfb220358918ef82c99cda5e6d464458e9d386e",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-route/confirmation.jsonl",
+        "sha256": "4ad3e678fb5cf222fca64b00967eb75a8fa060ff2d1d8e7b5d2192f6f27e6fbe",
+        "scenario_rows": 120
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-router/calibration.jsonl",
+        "sha256": "b6bb3b41949defe4ed5916adf642c0e0b8c30080ecbe0531bf4c833195c06f38",
+        "scenario_rows": 240
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-router/train.jsonl",
+        "sha256": "d23cb242235bc0110d3cd985db88563bae98c74fcdad2deb32c3b812af8b34ce",
+        "scenario_rows": 720
+      },
+      {
+        "path": "artifacts/evolve/common-descent/family-router/validation.jsonl",
+        "sha256": "b92dfd8787972eebde51f333a0a8a4586f917a0aa01886b277536bd2fffb657d",
+        "scenario_rows": 240
+      }
+    ],
+    "historical_unique_blueprints": 12306,
+    "historical_unique_semantic_points": 12226,
+    "new_blueprints": 264,
+    "blueprint_id_overlap_count": 0,
+    "semantic_overlap_count": 0,
+    "minimum_normalized_linf_distance": 0.014407321028543585,
+    "minimum_distance_family": "probability_distribution",
+    "registered_minimum_normalized_distance": 1e-06,
+    "passed": true
+  },
+  "implementation_sha256": {
+    "stats_selector_sufficiency.py": "dd36efd1c30a47c09bef0c3ae60f9e7ef7cadbc67f2e6b9554545169cb38d78c",
+    "stats_style_invariance.py": "6c3c216eb95dbe384f61a2409e7ccfbc9b0e8858f5a1012aa57e3a42e9061b81",
+    "stats_representation_probe.py": "87d78c05d1c5d5a723ae5d3084ba7c3d4a4d96c1645100adfa82aa4e1e920206",
+    "stats_selector_head.py": "bf9a5aaf42308661a713de3c54abbdb5f2e99a04bbaaf056c244a886d255cdb5",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9"
+  },
+  "confirmation_simulations_opened": false,
+  "external_benchmark_opened": false,
+  "fingerprint": "2b3280066bb7cfda9e243bb37de3c3ba79dffcab796a46680d4fd4acddd8b8ce"
+}

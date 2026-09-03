@@ -1,0 +1,144 @@
+project:
+  display_name: "Charlie alpha"
+  model_id: "Charlie-Alpha-4B"
+  version: "0.3.0"
+  profile: "stats-dgp-regret"
+  seed: 42
+  license: "Apache-2.0"
+
+paths:
+  source_lock: "configs/sources.lock.json"
+  stats_dir: "data/stats"
+  simulation_dir: "data/stats/simulations"
+  final_dir: "data/stats/final"
+  teacher_dir: "data/stats/teacher"
+  eval_lock: "configs/evaluation.stats.lock.json"
+  artifact_dir: "artifacts/stats"
+  report_dir: "reports/stats/generated"
+  pixi_manifest: "pixi.toml"
+
+stats_data:
+  schema_version: 1
+  dgp_families: 12
+  procedure_count: 28
+  train_semantic_groups: 240
+  valid_semantic_groups: 30
+  dev_dgps: 60
+  final_dgps: 120
+  split_seed: 42
+  languages:
+    en: 0.70
+    zh_Hant: 0.15
+    zh_Hans: 0.15
+  domain_mix:
+    inference_and_design: 0.60
+    probability_and_bayes: 0.20
+    prediction_and_analysis: 0.20
+  examples_per_train_group:
+    en_boundary_a: 1.4
+    en_boundary_b: 1.4
+    zh_Hant: 0.6
+    zh_Hans: 0.6
+  max_candidates: 6
+  initial_repetitions: 128
+  escalation_repetitions: [256, 512]
+  ranking_uncertainty_margin: 0.035
+  regret_temperature: 0.15
+  latin_hypercube_rounds: 1
+  active_failure_rounds: 2
+  decontamination_ngram: 8
+  teacher_refinement_limit: 120
+
+stats_training:
+  batch_size: 1
+  grad_accumulation_steps: 4
+  num_layers: 4
+  max_seq_length: 640
+  oom_seq_length: 512
+  rank: 32
+  oom_rank: 16
+  scale: 20.0
+  dropout: 0.05
+  pilot_microsteps: 160
+  full_epochs: 2
+  max_seconds: 10800
+  validation_every: 160
+  checkpoint_every: 100
+  early_stop_evaluations: 2
+  warmup_fraction: 0.03
+  weight_decay: 0.01
+  learning_rate_a: 2.0e-6
+  learning_rate_b: 8.0e-6
+  component_weights:
+    method: 0.45
+    plan_tool: 0.35
+    report: 0.20
+  targets:
+    - "linear_attn.in_proj_qkv"
+    - "linear_attn.out_proj"
+    - "self_attn.q_proj"
+    - "self_attn.v_proj"
+  variants:
+    - name: "hard-label"
+      target: "hard"
+      curriculum: "random"
+    - name: "regret-random"
+      target: "soft"
+      curriculum: "random"
+    - name: "dgp-regret"
+      target: "soft"
+      curriculum: "active-boundary"
+
+stats_calibration:
+  candidate_delta_scales: [0.5, 0.75, 1.0]
+  selection_order: [validity, normalized_regret, retention]
+
+stats_tools:
+  max_calls: 4
+  timeout_seconds: 20
+  memory_bytes: 2147483648
+  max_write_bytes: 33554432
+  max_output_bytes: 65536
+  max_files: 3
+  max_file_bytes: 26214400
+  max_total_bytes: 52428800
+  allowed_extensions: [".csv", ".tsv", ".json", ".parquet"]
+
+stats_evaluation:
+  seed: 42
+  temperature: 0.0
+  final_dgps: 120
+  p_bench: 90
+  statqa: 200
+  trilingual_semantic_tasks: 30
+  clarification_cases: 30
+  bootstrap_repetitions: 10000
+  gates:
+    regret_relative_improvement: 0.15
+    invalid_selection_relative_reduction: 0.20
+    p_bench_raw_points: 3.0
+    statqa_points: 5.0
+    trilingual_points: 5.0
+    max_subgroup_regression_points: 3.0
+    dgp_regret_vs_hard_relative: 0.05
+    gguf_max_regression_points: 2.0
+
+stats_release:
+  github_repo: "f0909172434/Charlie-Alpha-4B"
+  tag: "v0.3.0"
+  hf_mlx_repo: "f0909172434/Charlie-Alpha-4B-MLX-4bit"
+  hf_gguf_repo: "f0909172434/Charlie-Alpha-4B-GGUF"
+  gguf_quantization: "Q4_K_M"
+  preserve_tag: "v0.2.0"
+  allow_experimental: true
+
+stats_budget:
+  total_seconds: 50400
+  preflight_seconds: 1800
+  simulation_seconds: 5400
+  data_seconds: 5400
+  pilot_seconds: 7200
+  training_seconds: 10800
+  evaluation_seconds: 10800
+  export_seconds: 7200
+  buffer_seconds: 1800

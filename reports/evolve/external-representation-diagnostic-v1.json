@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "historical E3 readback with post-H15 frozen probes",
+  "historical_only": true,
+  "fresh_external_evidence": false,
+  "e3_fit_or_tuning_performed": false,
+  "e3_result_fingerprint": "7525bbbe08c2ca003c0bb5b73bd7e38795b1b2ceb56953e96032bf50cbd6671a",
+  "h15_result_fingerprint": "c0107dd174d755a89959975e496fe7ea3d52893813f30676b62750054aa18dfc",
+  "e3_cases_sha256": "3320a2437583b719ba85325c2b629bc17993d0f5358bb685a0bb491bcf52fcca",
+  "representation_sha256": "e9de3b84f5807c96cadb67a1009312d998dd60946222890469d390f5c2dd0867",
+  "eligible_external_count": 9,
+  "menu_free_control_accuracy": 0.5555555555555556,
+  "models": {
+    "frozen-h14": {
+      "observed_method_count": 24,
+      "covered_external_count": 9,
+      "all_nine": {
+        "count": 9,
+        "accuracy": 0.1111111111111111,
+        "top3_accuracy": 0.1111111111111111,
+        "macro_recall_present_classes": 0.1111111111111111,
+        "present_class_count": 9,
+        "train_observed_class_count": 24,
+        "majority_class": "independent_t",
+        "majority_accuracy": 0.1111111111111111,
+        "gain_over_majority_points": 0.0
+      },
+      "covered_only": {
+        "count": 9,
+        "accuracy": 0.1111111111111111,
+        "top3_accuracy": 0.1111111111111111,
+        "macro_recall_present_classes": 0.1111111111111111,
+        "present_class_count": 9,
+        "train_observed_class_count": 24,
+        "majority_class": "independent_t",
+        "majority_accuracy": 0.1111111111111111,
+        "gain_over_majority_points": 0.0
+      }
+    },
+    "h15-audit-only": {
+      "observed_method_count": 22,
+      "covered_external_count": 8,
+      "all_nine": {
+        "count": 9,
+        "accuracy": 0.0,
+        "top3_accuracy": 0.3333333333333333,
+        "macro_recall_present_classes": 0.0,
+        "present_class_count": 9,
+        "train_observed_class_count": 22,
+        "majority_class": "independent_t",
+        "majority_accuracy": 0.1111111111111111,
+        "gain_over_majority_points": -11.11111111111111
+      },
+      "covered_only": {
+        "count": 8,
+        "accuracy": 0.0,
+        "top3_accuracy": 0.375,
+        "macro_recall_present_classes": 0.0,
+        "present_class_count": 8,
+        "train_observed_class_count": 22,
+        "majority_class": "independent_t",
+        "majority_accuracy": 0.0,
+        "gain_over_majority_points": 0.0
+      }
+    },
+    "h15-style-diverse": {
+      "observed_method_count": 22,
+      "covered_external_count": 8,
+      "all_nine": {
+        "count": 9,
+        "accuracy": 0.1111111111111111,
+        "top3_accuracy": 0.4444444444444444,
+        "macro_recall_present_classes": 0.1111111111111111,
+        "present_class_count": 9,
+        "train_observed_class_count": 22,
+        "majority_class": "independent_t",
+        "majority_accuracy": 0.1111111111111111,
+        "gain_over_majority_points": 0.0
+      },
+      "covered_only": {
+        "count": 8,
+        "accuracy": 0.125,
+        "top3_accuracy": 0.5,
+        "macro_recall_present_classes": 0.125,
+        "present_class_count": 8,
+        "train_observed_class_count": 22,
+        "majority_class": "independent_t",
+        "majority_accuracy": 0.0,
+        "gain_over_majority_points": 12.5
+      }
+    }
+  },
+  "rows": [
+    {
+      "case_id": "shukla-2025-01",
+      "gold_method_id": "independent_t",
+      "menu_free_control_correct": false,
+      "predictions": {
+        "frozen-h14": "paired_t",
+        "h15-audit-only": "wilcoxon_signed_rank",
+        "h15-style-diverse": "mann_whitney"
+      }
+    },
+    {
+      "case_id": "shukla-2025-03",
+      "gold_method_id": "mann_whitney",
+      "menu_free_control_correct": true,
+      "predictions": {
+        "frozen-h14": "posterior_predictive",
+        "h15-audit-only": "posterior_predictive",
+        "h15-style-diverse": "posterior_predictive"
+      }
+    },
+    {
+      "case_id": "shukla-2025-05",
+      "gold_method_id": "fisher_exact",
+      "menu_free_control_correct": true,
+      "predictions": {
+        "frozen-h14": "chi_square",
+        "h15-audit-only": "posterior_predictive",
+        "h15-style-diverse": "fisher_exact"
+      }
+    },
+    {
+      "case_id": "shukla-2025-06",
+      "gold_method_id": "chi_square",
+      "menu_free_control_correct": false,
+      "predictions": {
+        "frozen-h14": "calibrated_logistic",
+        "h15-audit-only": "posterior_predictive",
+        "h15-style-diverse": "posterior_predictive"
+      }
+    },
+    {
+      "case_id": "shukla-2025-07",
+      "gold_method_id": "logrank",
+      "menu_free_control_correct": false,
+      "predictions": {
+        "frozen-h14": "posterior_predictive",
+        "h15-audit-only": "calibrated_logistic",
+        "h15-style-diverse": "posterior_predictive"
+      }
+    },
+    {
+      "case_id": "shukla-2025-08",
+      "gold_method_id": "paired_t",
+      "menu_free_control_correct": true,
+      "predictions": {
+        "frozen-h14": "paired_t",
+        "h15-audit-only": "wilcoxon_signed_rank",
+        "h15-style-diverse": "wilcoxon_signed_rank"
+      }
+    },
+    {
+      "case_id": "shukla-2025-10",
+      "gold_method_id": "wilcoxon_signed_rank",
+      "menu_free_control_correct": true,
+      "predictions": {
+        "frozen-h14": "paired_t",
+        "h15-audit-only": "calibrated_logistic",
+        "h15-style-diverse": "posterior_predictive"
+      }
+    },
+    {
+      "case_id": "shukla-2025-16",
+      "gold_method_id": "ols",
+      "menu_free_control_correct": true,
+      "predictions": {
+        "frozen-h14": "calibrated_logistic",
+        "h15-audit-only": "calibrated_logistic",
+        "h15-style-diverse": "blocked_time_series_cv"
+      }
+    },
+    {
+      "case_id": "shukla-2025-18",
+      "gold_method_id": "logistic_glm",
+      "menu_free_control_correct": false,
+      "predictions": {
+        "frozen-h14": "welch_t",
+        "h15-audit-only": "posterior_predictive",
+        "h15-style-diverse": "posterior_predictive"
+      }
+    }
+  ],
+  "diagnosis": "H15 style-diverse linear decoding does not recover E3. The external failure therefore persists after synthetic style diversification and is more consistent with task/semantic distribution shift than a surface-prose-only shift.",
+  "next_step": "freeze a new external semantic-bridge mechanism without E3 fitting, then test it on a genuinely new external source",
+  "claim_boundary": "This reuses already-opened E3 only for diagnosis. It cannot support a new capability claim, model promotion, release, or selection on E3.",
+  "result_fingerprint": "d8a70d5f7f4118e8bb3d1356a9847be262552d100eb1d4cd8aec7379fce607d5"
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "method": "H21_OPENED_SOURCE_RESIDUAL_REPAIR_DEV_V1",
+  "complete": true,
+  "contract_fingerprint": "eb8df93c9a511efa8b8635c4db0cbe277b3f3ad38c7d062e43e28885a31fa150",
+  "e5_source_screen_result_fingerprint": "34ea53c6307c9eeca17a5940e59c22b3156cfa2dbe878c18a21cab618b0a02c2",
+  "case_count": 24,
+  "eligible_cell_count": 26,
+  "ambiguity_exclusion_count": 2,
+  "source_count": 4,
+  "distinct_method_count": 10,
+  "source_counts": {
+    "PMC2996580": 3,
+    "PMC6639881": 8,
+    "PMC8327789": 6,
+    "PMC8483143": 7
+  },
+  "method_counts": {
+    "chi_square": 2,
+    "cox_ph": 1,
+    "fisher_exact": 1,
+    "independent_t": 3,
+    "logistic_glm": 3,
+    "logrank": 1,
+    "mann_whitney": 3,
+    "ols": 3,
+    "paired_t": 3,
+    "wilcoxon_signed_rank": 4
+  },
+  "cases_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/opened-source-residual-repair-v1/cases.jsonl",
+  "cases_sha256": "fc779f21ef1416eed10e5e99b7e643044a35b66670202a27c526dd27f4fd6c36",
+  "case_fingerprint": "925157e821836069dfc7420cb88e76bda413fcb9d51ee413186cefc79ee6397e",
+  "question_extraction_manifest_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/data/evolve/opened-source-residual-repair-v1/question-extraction-manifest.json",
+  "question_extraction_manifest_sha256": "eb11fbd8ce0424737d479a976865facf516b8b0532f434775dc67239faf5b722",
+  "question_extraction_manifest_fingerprint": "c6916f1a2d1e1800f36d2f85d25212ea5400ca6df154716fe84e1805463ed4e9",
+  "development_only": true,
+  "fresh_external_evidence": false,
+  "model_output_opened": false,
+  "training_authorized": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "data_fingerprint": "2f3bffc327c6c4a963cd632e74a197eaf3a81d121303a36e4f4bf0e1c9040d0d"
+}

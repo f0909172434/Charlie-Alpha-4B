@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "H16 hidden-geometry selector sufficiency confirmation",
+  "contract_fingerprint": "2b3280066bb7cfda9e243bb37de3c3ba79dffcab796a46680d4fd4acddd8b8ce",
+  "selection_result_fingerprint": "09fb715657a136573854cfbc9e61929ca98a92e82016fc1681ed6755894a571f",
+  "same_parent_weights": true,
+  "confirmation_surface_fingerprint": "ca2aa437d79e12ff94a41bab8bb2eef15e2060eaff0ae6543e5bb8b86d27ffdc",
+  "confirmation_case_sha256": "3cff2e370b838feea50f9c48d24b412aab3757b24473d213a50578ec3bc3f92f",
+  "confirmation_coverage": {
+    "semantic_point_count": 72,
+    "eligible_semantic_point_count": 72,
+    "eligible_fraction": 1.0,
+    "eligible_method_count": 18,
+    "eligible_method_counts": {
+      "blocked_time_series_cv": 6,
+      "calibrated_logistic": 6,
+      "chi_square": 6,
+      "conjugate_bayes": 4,
+      "cox_ph": 1,
+      "difference_in_means": 1,
+      "firth_logistic": 5,
+      "hc3_ols": 3,
+      "huber_regression": 3,
+      "ipw": 6,
+      "logrank": 5,
+      "mann_whitney": 4,
+      "mixed_effects": 6,
+      "multiple_imputation": 5,
+      "negative_binomial_glm": 1,
+      "posterior_predictive": 7,
+      "welch_t": 1,
+      "wilcoxon_signed_rank": 2
+    }
+  },
+  "representations": {
+    "audit": "152e931ab808df51c0512bbdf3d65a939292dc74854f525a5095e1b66b63d7fd",
+    "researcher": "e4eea4cf0dbd911e44ef3744f1ad5538382c7d98bddffe672052ac76dd5a0e29",
+    "vignette": "4ed81ae647f247f6144edaff5759a4ee1b0365d0979a76b11c1a95c3f4f90984",
+    "conventional": "0420a969ae204b9c49fd38924d5a77e9620fa7ba0ff92fcae40fd31594ab2086",
+    "partial": "32e3a610ad49242b47d390590a03db59e7387e5f11919233d901f19995685a96"
+  },
+  "training_bank_sha256": "a5443de4e53ede69cda45a0624eaa2f31c0cb1be3c727b7eb91093ed66db2800",
+  "selected_threshold": 0.75,
+  "metrics": {
+    "threshold": 0.75,
+    "full_acceptance": 1.0,
+    "minimum_full_style_acceptance": 1.0,
+    "full_acceptance_by_style": {
+      "audit": 1.0,
+      "researcher": 1.0,
+      "vignette": 1.0
+    },
+    "reduced_rejection": 1.0,
+    "minimum_reduced_style_rejection": 1.0,
+    "reduced_rejection_by_style": {
+      "conventional": 1.0,
+      "partial": 1.0
+    },
+    "unguarded_head_accuracy": 0.7361111111111112,
+    "accepted_head_accuracy": 0.7361111111111112,
+    "accepted_head_accuracy_change_points": 0.0,
+    "accepted_full_count": 216,
+    "total_full_count": 216
+  },
+  "confirmation_gate": {
+    "passed": true,
+    "checks": {
+      "full_acceptance": true,
+      "minimum_full_style_acceptance": true,
+      "reduced_rejection": true,
+      "minimum_reduced_style_rejection": true,
+      "accepted_head_accuracy": true,
+      "accepted_head_noninferior": true
+    }
+  },
+  "selector_sufficiency_guard_confirmed": true,
+  "next_step": "freeze-selective-selector-runtime-and-read-back-e3-historically",
+  "champion_changed": false,
+  "release_authorized": false,
+  "external_benchmark_opened": false,
+  "result_fingerprint": "d0433ce9042615a6fae356fc2fcbe6f6d297285649fb0e3c1bd7a65ee0d4831a"
+}

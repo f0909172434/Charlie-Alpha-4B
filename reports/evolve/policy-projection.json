@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "method": "DGP Policy Projection",
+  "complete": true,
+  "data_fingerprint": "5e1bbc7ee751ea2f36f3ba599707633e4e00b1c7fd8b614b6a531fa9905bde48",
+  "training_compute_equal": true,
+  "same_parent": true,
+  "same_records": true,
+  "same_validation": true,
+  "seeds": [
+    {
+      "seed": 42,
+      "training_order": [
+        "oracle-control",
+        "policy-projection"
+      ],
+      "arms": {
+        "oracle-control": {
+          "selected_checkpoint": "parent",
+          "validation": {
+            "normalized_regret": 0.36074121255061764,
+            "accuracy": 0.4666666666666667,
+            "invalid_selection_rate": 0.3
+          },
+          "selected_validation_loss": 1.6807851791381836,
+          "elapsed_seconds": 483.15,
+          "peak_memory_gb": 5.9267
+        },
+        "policy-projection": {
+          "selected_checkpoint": "parent",
+          "validation": {
+            "normalized_regret": 0.36074121255061764,
+            "accuracy": 0.4666666666666667,
+            "invalid_selection_rate": 0.3
+          },
+          "selected_validation_loss": 1.6807851791381836,
+          "elapsed_seconds": 530.27,
+          "peak_memory_gb": 7.9452
+        }
+      },
+      "projection_win": false
+    },
+    {
+      "seed": 314,
+      "training_order": [
+        "policy-projection",
+        "oracle-control"
+      ],
+      "arms": {
+        "oracle-control": {
+          "selected_checkpoint": "parent",
+          "validation": {
+            "normalized_regret": 0.36074121255061764,
+            "accuracy": 0.4666666666666667,
+            "invalid_selection_rate": 0.3
+          },
+          "selected_validation_loss": 1.6807851791381836,
+          "elapsed_seconds": 544.73,
+          "peak_memory_gb": 11.9822
+        },
+        "policy-projection": {
+          "selected_checkpoint": "parent",
+          "validation": {
+            "normalized_regret": 0.36074121255061764,
+            "accuracy": 0.4666666666666667,
+            "invalid_selection_rate": 0.3
+          },
+          "selected_validation_loss": 1.6807851791381836,
+          "elapsed_seconds": 530.84,
+          "peak_memory_gb": 9.9637
+        }
+      },
+      "projection_win": false
+    },
+    {
+      "seed": 2718,
+      "training_order": [
+        "oracle-control",
+        "policy-projection"
+      ],
+      "arms": {
+        "oracle-control": {
+          "selected_checkpoint": "parent",
+          "validation": {
+            "normalized_regret": 0.36074121255061764,
+            "accuracy": 0.4666666666666667,
+            "invalid_selection_rate": 0.3
+          },
+          "selected_validation_loss": 1.6807851791381836,
+          "elapsed_seconds": 536.61,
+          "peak_memory_gb": 13.9921
+        },
+        "policy-projection": {
+          "selected_checkpoint": "microstep-0000040",
+          "validation": {
+            "normalized_regret": 0.32320213605599546,
+            "accuracy": 0.4666666666666667,
+            "invalid_selection_rate": 0.3
+          },
+          "selected_validation_loss": 1.723322868347168,
+          "elapsed_seconds": 533.26,
+          "peak_memory_gb": 5.9182
+        }
+      },
+      "projection_win": true
+    }
+  ],
+  "aggregate": {
+    "oracle_control_regret": 0.3607412125506177,
+    "policy_projection_regret": 0.3482281870524102,
+    "relative_regret_improvement": 0.03468698630171542,
+    "oracle_control_invalidity": 0.3,
+    "policy_projection_invalidity": 0.3,
+    "projection_seed_wins": 1
+  },
+  "gates": {
+    "seed_wins": false,
+    "mean_relative_regret": false,
+    "mean_invalidity": true,
+    "finite_metrics": true
+  },
+  "proceed_to_promotion": false,
+  "sealed_promotion_surface_opened": false,
+  "sealed_final_surface_opened": false,
+  "claim_boundary": "This matched reusable-dev pilot tests a policy objective. It is not a sealed-final capability result or evidence of general self-improvement."
+}

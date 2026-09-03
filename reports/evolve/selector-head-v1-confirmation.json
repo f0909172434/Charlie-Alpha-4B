@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "H14 menu-free selector-head confirmation",
+  "contract_fingerprint": "8ad56776f3617b5a59588f0b2e86d96c804de22842570360fa6250236a7661a4",
+  "pilot_result_fingerprint": "93e5eddf1069efa07fa890cb34bfe1e2beaaa634f5e4e659b0d6099c82c70026",
+  "same_parent_weights": true,
+  "confirmation_surface_fingerprint": "f26f90ebbcf320fe1c49db42d93456959108f9a0897ebf7fec90ac98ffa44a71",
+  "confirmation_case_sha256": "0ee70d4ae546786151f409b2907bc71055dba0e3b839743958d574c54a93493a",
+  "scores": {
+    "menu-free-control": {
+      "count": 120,
+      "exact_accuracy": 0.0,
+      "method_set_accuracy": 0.025,
+      "column_set_accuracy": 0.9083333333333333,
+      "mean_column_recall": 0.986111111111111
+    },
+    "selector-head": {
+      "count": 120,
+      "exact_accuracy": 0.7,
+      "method_set_accuracy": 0.775,
+      "column_set_accuracy": 0.9083333333333333,
+      "mean_column_recall": 0.986111111111111
+    }
+  },
+  "confirmation_gate": {
+    "passed": true,
+    "checks": {
+      "head_method_accuracy": true,
+      "head_exact_accuracy": true,
+      "method_gain": true,
+      "exact_gain": true,
+      "column_noninferior": true
+    },
+    "effect_points": {
+      "exact": 70.0,
+      "method": 75.0,
+      "columns": 0.0
+    }
+  },
+  "selector_head_architecture_confirmed": true,
+  "champion_changed": false,
+  "release_authorized": false,
+  "external_benchmark_opened": false,
+  "next_step": "freeze-selector-head-runtime-and-seek-new-external-evidence",
+  "result_fingerprint": "cbec02c2f27e1938b1a218866ffcc0da637565acddb8f589c9090ba89eed93ee"
+}

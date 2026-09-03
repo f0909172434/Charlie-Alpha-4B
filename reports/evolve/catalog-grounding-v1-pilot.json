@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "a456466f6f39f882fdd5400b34138da6549e5a2ad4f948af3080c2e23955531c",
+  "method": "H7 fixed catalog grounding pilot",
+  "contract_fingerprint": "5bcec5fab7ff97601d6994039b1f58746949ff74979d731510b9717b4f131b33",
+  "data_fingerprint": "ab20622a3936725ee41fd22a3ed19aa1b0ca1cafba35cc01caedac7f08565656",
+  "same_parent_weights": true,
+  "scores": {
+    "menu-free-control": {
+      "count": 24,
+      "exact_accuracy": 0.0,
+      "method_set_accuracy": 0.041666666666666664,
+      "column_set_accuracy": 0.9583333333333334,
+      "mean_column_recall": 1.0
+    },
+    "catalog-grounded": {
+      "count": 24,
+      "exact_accuracy": 0.2916666666666667,
+      "method_set_accuracy": 0.3333333333333333,
+      "column_set_accuracy": 0.9583333333333334,
+      "mean_column_recall": 1.0
+    }
+  },
+  "selection_gate": {
+    "passed": true,
+    "checks": {
+      "exact_gain_over_control": true,
+      "method_gain_over_control": true,
+      "column_noninferior": true
+    },
+    "effect_points": {
+      "exact_vs_control": 29.166666666666668,
+      "method_vs_control": 29.166666666666664,
+      "columns_vs_control": 0.0
+    }
+  },
+  "selected_interface": "catalog-grounded",
+  "confirmation_authorized": true,
+  "external_benchmark_authorized": false,
+  "result_fingerprint": "f5a00c6fe665918ac947dddef7fc50a59de6977d2c1f70a71ab3229669a4cdfd"
+}

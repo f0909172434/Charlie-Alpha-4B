@@ -1,0 +1,1041 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "E5 future-source metadata-only qualification screen",
+  "screen_version": 1,
+  "master_contract_fingerprint": "35cd1762825de0724841875409ab9e3bd31454a92b43a9e9f86f37f34393f93f",
+  "prior_source_screen_result_fingerprint": "34ea53c6307c9eeca17a5940e59c22b3156cfa2dbe878c18a21cab618b0a02c2",
+  "receipt_manifest": {
+    "path": "data/evolve/guarded-external-v1/future-source-metadata/metadata-receipts.json",
+    "sha256": "9dc5831065b1dbfa7b0e80311039c6f704c8ddb368b180c9e7f0b229b1e539c5",
+    "receipt_count": 87,
+    "request_kinds": [
+      "github-repository-metadata",
+      "github-tree-metadata",
+      "hub-metadata",
+      "hub-tree-metadata",
+      "osf-registration-metadata",
+      "viewer-is-valid",
+      "viewer-size",
+      "viewer-splits",
+      "viewer-statistics",
+      "zenodo-record-metadata"
+    ],
+    "allowed_metadata_requests_only": true,
+    "rows_endpoint_called": false,
+    "first_rows_endpoint_called": false,
+    "parquet_endpoint_called": false,
+    "raw_blob_endpoint_called": false,
+    "download_endpoint_called": false,
+    "dataset_files_downloaded": false,
+    "dataset_card_examples_opened": false
+  },
+  "source_gates": {
+    "minimum_eligible_cases": 150,
+    "minimum_distinct_methods": 8,
+    "minimum_coverage_fraction": 0.8,
+    "maximum_single_method_fraction": 0.4
+  },
+  "candidate_count": 24,
+  "near_candidate_count": 7,
+  "candidates": [
+    {
+      "provider": "github",
+      "source_id": "Amazing-BIG-Tree/StatBench-Data-Pipeline",
+      "title": "StatBench Data Pipeline",
+      "revision": "810004a7545002d4beec594fdd0cf04a0f059935",
+      "license": null,
+      "metadata_facts": {
+        "repository_size_kib": 1641,
+        "blob_count": 49,
+        "blob_bytes": 2051397,
+        "tree_truncated": false,
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The repository is a data-building pipeline, not a released single-source labeled dataset.",
+        "Repository metadata exposes no license, row count, method count, or source manifest."
+      ]
+    },
+    {
+      "provider": "github",
+      "source_id": "albertsimonyan74/bayes-benchmark",
+      "title": "Bayes Benchmark",
+      "revision": "14924b33063e40e6bc0169468317e910adedf742",
+      "license": "MIT",
+      "metadata_facts": {
+        "repository_size_kib": 74153,
+        "blob_count": 957,
+        "blob_bytes": 174886946,
+        "tree_truncated": false,
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The reasoning benchmark metadata does not state a method-selection label schema, eligible row count, or eight-method coverage."
+      ]
+    },
+    {
+      "provider": "github",
+      "source_id": "behavioral-data/BLADE",
+      "title": "BLADE",
+      "revision": "6118fa8d5007b91aa8c91c518182db82446a4547",
+      "license": "Apache-2.0",
+      "metadata_facts": {
+        "repository_size_kib": 16732,
+        "blob_count": 198,
+        "blob_bytes": 69849042,
+        "tree_truncated": false,
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "BLADE is a multi-dataset analysis benchmark rather than a single-source question-to-method-label frame.",
+        "Metadata does not establish an E5-complete frame or eight canonical method labels."
+      ]
+    },
+    {
+      "provider": "github",
+      "source_id": "crishnagarkarleeds/statistics-llm",
+      "title": "Statistics LLM",
+      "revision": "dfc35f2b726615ca894abbb7aa1e62d2a12899e1",
+      "license": "MIT",
+      "metadata_facts": {
+        "repository_size_kib": 2058,
+        "blob_count": 18,
+        "blob_bytes": 3004558,
+        "tree_truncated": false,
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The question bank is packaged as PDF content.",
+        "Repository metadata exposes no row-level schema or canonical method-label frame."
+      ]
+    },
+    {
+      "provider": "github",
+      "source_id": "shufe-zj-AILab/STATBench",
+      "title": "STATBench",
+      "revision": "55a5bc2dec5bcef547cad260595eef6f0cd3b615",
+      "license": null,
+      "metadata_facts": {
+        "repository_size_kib": 286,
+        "blob_count": 11,
+        "blob_bytes": 1305504,
+        "tree_truncated": false,
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "Repository metadata states that a released portion has only 100 questions.",
+        "The question/options/answer frame does not expose canonical statistical-method IDs and the repository has no license."
+      ]
+    },
+    {
+      "provider": "github",
+      "source_id": "xxxiaol/QRData",
+      "title": "QRData",
+      "revision": "de450af45ff7101b328bb064c6b475f73414a7ed",
+      "license": "NOASSERTION",
+      "metadata_facts": {
+        "repository_size_kib": 23373,
+        "blob_count": 35,
+        "blob_bytes": 27186467,
+        "tree_truncated": false,
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "Metadata does not establish row count, eight canonical method labels, or a complete frame.",
+        "The GitHub license field is NOASSERTION."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "0v01111/StatEval-Foundational-knowledge",
+      "title": "StatEval Foundational Knowledge",
+      "revision": "136c37d3164a22534d49697465ae6f03471972e3",
+      "license": "mit",
+      "metadata_facts": {
+        "processed_row_count": 0,
+        "processed_row_count_confirmed": false,
+        "split_row_counts": {},
+        "schema_columns": [],
+        "statistics_http_status": 500,
+        "statistics_error": "ArrowInvalid",
+        "pinned_tree_files": [
+          {
+            "path": ".gitattributes",
+            "size": 2461,
+            "lfs_sha256": null
+          },
+          {
+            "path": "Foundational-knowledge.jsonl",
+            "size": 1571492,
+            "lfs_sha256": null
+          },
+          {
+            "path": "README.md",
+            "size": 24,
+            "lfs_sha256": null
+          }
+        ]
+      },
+      "near_candidate": true,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "Viewer generation fails because answer values drift between scalar and list types.",
+        "No processed row count, stable method-label schema, or complete frame is available at metadata level."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "0v01111/StatEval-Statistical-Research",
+      "title": "StatEval Statistical Research",
+      "revision": "e8b1f11c01e7d823feab25ea7948a66e63925ed5",
+      "license": "mit",
+      "metadata_facts": {
+        "processed_row_count": 0,
+        "processed_row_count_confirmed": false,
+        "split_row_counts": {},
+        "schema_columns": [],
+        "statistics_http_status": 500,
+        "statistics_error": "ArrowNotImplementedError",
+        "pinned_tree_files": [
+          {
+            "path": ".gitattributes",
+            "size": 2461,
+            "lfs_sha256": null
+          },
+          {
+            "path": "README.md",
+            "size": 24,
+            "lfs_sha256": null
+          },
+          {
+            "path": "data-00000-of-00001.arrow",
+            "size": 107000272,
+            "lfs_sha256": "11af1280fcfe9acdd299e4161e640b439ed8be9513915f8de0987600d27f1ef8"
+          },
+          {
+            "path": "dataset_info.json",
+            "size": 727,
+            "lfs_sha256": null
+          },
+          {
+            "path": "state.json",
+            "size": 247,
+            "lfs_sha256": null
+          }
+        ]
+      },
+      "near_candidate": true,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The repository contains a 107 MB Arrow file, but Viewer generation fails on an empty struct field.",
+        "No processed row count, stable method-label schema, or complete frame is available at metadata level."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "Lots-of-LoRAs/task710_mmmlu_answer_generation_high_school_statistics",
+      "title": "MMLU High School Statistics answer generation",
+      "revision": "b22a335eca9fecd7938d232517aabfb0f9064e64",
+      "license": [
+        "apache-2.0"
+      ],
+      "metadata_facts": {
+        "processed_row_count": 175,
+        "processed_row_count_confirmed": true,
+        "split_row_counts": {
+          "train": 140,
+          "test": 18,
+          "valid": 17
+        },
+        "schema_columns": [
+          "id",
+          "input",
+          "output"
+        ],
+        "statistics_http_status": 200,
+        "statistics_error": null,
+        "pinned_tree_files": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The repository contains 175 records and only 140 training records.",
+        "Its id/input/output frame has no independent canonical statistical-method label."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "StatAILab/StatEval",
+      "title": "StatEval",
+      "revision": "0e2d28b99fa4662f5016f70a2ca7abcecee5cac7",
+      "license": "mit",
+      "metadata_facts": {
+        "processed_row_count": 0,
+        "processed_row_count_confirmed": false,
+        "split_row_counts": {},
+        "schema_columns": [],
+        "statistics_http_status": 500,
+        "statistics_error": "CastError",
+        "pinned_tree_files": [
+          {
+            "path": ".gitattributes",
+            "size": 2504,
+            "lfs_sha256": null
+          },
+          {
+            "path": "README.md",
+            "size": 1535,
+            "lfs_sha256": null
+          },
+          {
+            "path": "foundational_test.jsonl",
+            "size": 2560148,
+            "lfs_sha256": null
+          },
+          {
+            "path": "research_test.jsonl",
+            "size": 9158308,
+            "lfs_sha256": null
+          }
+        ]
+      },
+      "near_candidate": true,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "Viewer generation fails because source files expose incompatible column sets.",
+        "Metadata does not establish canonical method labels or a complete single-source frame."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "WithinUsAI/Statistics_25k",
+      "title": "Statistics 25k",
+      "revision": "710640cbfd071e46ea00eccad149888b75dae4a8",
+      "license": "cc-by-4.0",
+      "metadata_facts": {
+        "processed_row_count": 25000,
+        "processed_row_count_confirmed": true,
+        "split_row_counts": {
+          "train": 25000
+        },
+        "schema_columns": [],
+        "statistics_http_status": 500,
+        "statistics_error": "StatisticsComputationError",
+        "pinned_tree_files": [
+          {
+            "path": ".gitattributes",
+            "size": 2524,
+            "lfs_sha256": null
+          },
+          {
+            "path": "README.md",
+            "size": 341,
+            "lfs_sha256": null
+          },
+          {
+            "path": "statistics_25k_train.jsonl",
+            "size": 28095267,
+            "lfs_sha256": "2cf1201ab1001cc2fcbb3d667e279d25ac15d60858fb9b7d45e6937b899d42fd"
+          }
+        ]
+      },
+      "near_candidate": true,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The Viewer confirms 25,000 rows but statistics generation fails before a stable complete schema is exposed.",
+        "Metadata does not establish a study-question field, a method-label field, or eight canonical methods."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "Yoxas/statistical_literacy",
+      "title": "Statistical Literacy",
+      "revision": "20aaf41a8a6237e79372b99f2bb731941f5eb6e7",
+      "license": "apache-2.0",
+      "metadata_facts": {
+        "processed_row_count": 11243,
+        "processed_row_count_confirmed": true,
+        "split_row_counts": {
+          "train": 11243
+        },
+        "schema_columns": [
+          "Abstract",
+          "Authors",
+          "DOI",
+          "ISSN",
+          "Publisher",
+          "QueryDate",
+          "Source",
+          "Title",
+          "Type",
+          "Year"
+        ],
+        "statistics_http_status": 200,
+        "statistics_error": null,
+        "pinned_tree_files": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The 11,243-row schema is bibliographic metadata with title, abstract, authors, DOI, and publication fields.",
+        "It contains no question-to-method-label frame."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "Yoxas/statistical_literacyv2",
+      "title": "Statistical Literacy v2",
+      "revision": "96a4a153659e045dc16542a8a22d8a82338dc2da",
+      "license": "apache-2.0",
+      "metadata_facts": {
+        "processed_row_count": 42834,
+        "processed_row_count_confirmed": true,
+        "split_row_counts": {
+          "train": 42834
+        },
+        "schema_columns": [
+          "Abstract",
+          "Authors",
+          "DOI",
+          "Source",
+          "Title",
+          "Year"
+        ],
+        "statistics_http_status": 200,
+        "statistics_error": null,
+        "pinned_tree_files": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The 42,834-row schema is a bibliographic corpus.",
+        "It contains no question-to-method-label frame."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "Zhaorun/hypothesis_testing",
+      "title": "Hypothesis Testing",
+      "revision": "bd2f14fbe758fefdab921c84c297117d57a5a23b",
+      "license": "mit",
+      "metadata_facts": {
+        "processed_row_count": null,
+        "processed_row_count_confirmed": false,
+        "split_row_counts": {},
+        "schema_columns": [],
+        "statistics_http_status": null,
+        "statistics_error": null,
+        "pinned_tree_files": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "Viewer metadata reports no supported dataset files.",
+        "Repository metadata does not establish a question-to-method-label frame."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "gaochenyin/StatEval",
+      "title": "StatEval mirror",
+      "revision": "0896011e30938258d61a1eedbbce2dafa17d9422",
+      "license": "mit",
+      "metadata_facts": {
+        "processed_row_count": 0,
+        "processed_row_count_confirmed": false,
+        "split_row_counts": {},
+        "schema_columns": [],
+        "statistics_http_status": 500,
+        "statistics_error": "CastError",
+        "pinned_tree_files": [
+          {
+            "path": ".gitattributes",
+            "size": 2504,
+            "lfs_sha256": null
+          },
+          {
+            "path": "README.md",
+            "size": 1562,
+            "lfs_sha256": null
+          },
+          {
+            "path": "foundational_test.jsonl",
+            "size": 694940,
+            "lfs_sha256": null
+          },
+          {
+            "path": "research_test.json",
+            "size": 4691652,
+            "lfs_sha256": null
+          }
+        ]
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "Viewer generation fails because source files expose incompatible column sets.",
+        "It is a StatEval derivative or mirror and cannot independently establish a fresh E5 source."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "introvoyz041/handbook-of-statistical-methods-for-precision-medicine",
+      "title": "Handbook of Statistical Methods for Precision Medicine",
+      "revision": "b2ca4cc1e7bd18783aa5a82339574af71afc818b",
+      "license": null,
+      "metadata_facts": {
+        "processed_row_count": 482,
+        "processed_row_count_confirmed": true,
+        "split_row_counts": {
+          "train": 482
+        },
+        "schema_columns": [
+          "image"
+        ],
+        "statistics_http_status": 200,
+        "statistics_error": null,
+        "pinned_tree_files": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The 482 records expose only an image field.",
+        "Hub metadata does not state a license and no question-label frame exists."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "joey234/mmlu-high_school_statistics",
+      "title": "MMLU High School Statistics",
+      "revision": "5de533fb6527b1ddc43a2ff9f7fdcb20f265d3ba",
+      "license": null,
+      "metadata_facts": {
+        "processed_row_count": 221,
+        "processed_row_count_confirmed": true,
+        "split_row_counts": {
+          "dev": 5,
+          "test": 216
+        },
+        "schema_columns": [
+          "answer",
+          "fewshot_context",
+          "fewshot_context_neg",
+          "neg_question",
+          "question"
+        ],
+        "statistics_http_status": 200,
+        "statistics_error": null,
+        "pinned_tree_files": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The 221 records use multiple-choice answer labels rather than canonical statistical-method IDs.",
+        "Hub metadata does not state a license."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "ofrencber/scholargate-research-methods",
+      "title": "ScholarGate Research Methods",
+      "revision": "e6250d756656158d890d8f4a6fda00f705bb29e6",
+      "license": "cc-by-4.0",
+      "metadata_facts": {
+        "processed_row_count": 6620,
+        "processed_row_count_confirmed": true,
+        "split_row_counts": {
+          "train": 6620
+        },
+        "schema_columns": [
+          "aliases",
+          "citations",
+          "definition",
+          "domain",
+          "family",
+          "fullName",
+          "license",
+          "limitations",
+          "markdownUrl",
+          "name",
+          "originator",
+          "related",
+          "slug",
+          "source",
+          "strengths",
+          "subfamily",
+          "updatedAt",
+          "url"
+        ],
+        "statistics_http_status": 200,
+        "statistics_error": null,
+        "pinned_tree_files": [
+          {
+            "path": ".gitattributes",
+            "size": 2554,
+            "lfs_sha256": null
+          },
+          {
+            "path": "LICENSE",
+            "size": 343,
+            "lfs_sha256": null
+          },
+          {
+            "path": "README.md",
+            "size": 2795,
+            "lfs_sha256": null
+          },
+          {
+            "path": "SHA256SUMS.txt",
+            "size": 471,
+            "lfs_sha256": null
+          },
+          {
+            "path": "croissant.json",
+            "size": 1464,
+            "lfs_sha256": null
+          },
+          {
+            "path": "datacite.json",
+            "size": 1616,
+            "lfs_sha256": null
+          },
+          {
+            "path": "methods.jsonl",
+            "size": 13729993,
+            "lfs_sha256": "12927edae02c5bbc97671c8299a22646617a4d06683e90b90617d4b4161a0b77"
+          },
+          {
+            "path": "taxonomy.json",
+            "size": 347680,
+            "lfs_sha256": null
+          }
+        ]
+      },
+      "near_candidate": true,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The 6,620 records form a method-reference catalog, not a study-question to method-label frame.",
+        "The eight observed family values are taxonomy families, not eight frozen canonical method IDs.",
+        "The name field has no metadata-level unique count, so at least 150 catalog-mapped cases cannot be established without opening records."
+      ]
+    },
+    {
+      "provider": "hugging-face",
+      "source_id": "vjain/AP_statistics",
+      "title": "AP Statistics",
+      "revision": "50d347a681092e160c861fa45419b9992fdeffbf",
+      "license": "mit",
+      "metadata_facts": {
+        "processed_row_count": 6736,
+        "processed_row_count_confirmed": true,
+        "split_row_counts": {
+          "train": 6736
+        },
+        "schema_columns": [
+          "text"
+        ],
+        "statistics_http_status": 200,
+        "statistics_error": null,
+        "pinned_tree_files": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "All 6,736 records expose only one text field.",
+        "There is no independent gold method-label field."
+      ]
+    },
+    {
+      "provider": "osf",
+      "source_id": "osf:j96k4",
+      "title": "Forensic statistical method selection audit",
+      "revision": null,
+      "license": null,
+      "metadata_facts": {
+        "registration_id": "j96k4",
+        "registered_at": "2026-04-11T13:46:44.869174",
+        "registration_supplement": "OSF Preregistration",
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The OSF object is an ANOVA reporting-audit preregistration rather than an eight-method labeled dataset.",
+        "Registration metadata does not provide a license, versioned file size, row count, or complete frame."
+      ]
+    },
+    {
+      "provider": "zenodo",
+      "source_id": "zenodo:10653965",
+      "title": "MUSI",
+      "revision": "10653965",
+      "license": "cc-by-4.0",
+      "metadata_facts": {
+        "doi": "10.5281/zenodo.10653965",
+        "files": [
+          {
+            "name": "MUSI-main.zip",
+            "size": 7017,
+            "checksum": "md5:24adc4bd5cbd13a14bd6dc7bfd0fec22"
+          }
+        ],
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "The record describes decision-tree software rather than a labeled dataset."
+      ]
+    },
+    {
+      "provider": "zenodo",
+      "source_id": "zenodo:13240122",
+      "title": "Statistical Tests Classifiers",
+      "revision": "13240122",
+      "license": "cc-by-4.0",
+      "metadata_facts": {
+        "doi": "10.5281/zenodo.13240122",
+        "files": [
+          {
+            "name": "statisticalTestsCLassifiers.xlsx",
+            "size": 82792,
+            "checksum": "md5:75ced26a5cd5be9fa14262bd1b3086b5"
+          }
+        ],
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": true,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "Record metadata exposes one 82,792-byte XLSX but no row count, schema, method coverage, or complete frame."
+      ]
+    },
+    {
+      "provider": "zenodo",
+      "source_id": "zenodo:22043861",
+      "title": "Human-supervised AI statistical decision support",
+      "revision": "22043861",
+      "license": "cc-by-4.0",
+      "metadata_facts": {
+        "doi": "10.5281/zenodo.22043861",
+        "files": [
+          {
+            "name": "ZENODO_human_supervised_AI_method_supplementary_package_v1.0.0.zip",
+            "size": 4000006,
+            "checksum": "md5:0d84398af3361e707539abec660fcf2f"
+          }
+        ],
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": false,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "Record metadata describes 68 studies and 74 rules, below the 150-case source gate.",
+        "The unit is not a study-question to canonical-method case frame."
+      ]
+    },
+    {
+      "provider": "zenodo",
+      "source_id": "zenodo:22140684",
+      "title": "Towards standardized prompts for statistical reasoning",
+      "revision": "22140684",
+      "license": "cc-by-4.0",
+      "metadata_facts": {
+        "doi": "10.5281/zenodo.22140684",
+        "files": [
+          {
+            "name": "merged.xlsx",
+            "size": 14921,
+            "checksum": "md5:af95e788f14ed3303fcf31b5209d1ea4"
+          }
+        ],
+        "row_count": null,
+        "schema_columns": []
+      },
+      "near_candidate": true,
+      "qualification_checks": {
+        "minimum_eligible_cases_demonstrated": false,
+        "minimum_distinct_methods_demonstrated": false,
+        "minimum_coverage_fraction_demonstrated": false,
+        "maximum_method_concentration_demonstrated": false,
+        "complete_frame_freezable_before_opening": false,
+        "alias_map_freezable_before_opening": false,
+        "overlap_manifest_freezable_before_opening": false,
+        "qualified_child_contract_freezable": false
+      },
+      "disposition": "metadata-only-reject",
+      "rejection_reasons": [
+        "Record metadata exposes one 14,921-byte XLSX but no row count, schema, method count, or complete frame."
+      ]
+    }
+  ],
+  "status": "NO_SOURCE_SELECTED_METADATA_SCREEN",
+  "source_selected": false,
+  "selected_source_id": null,
+  "child_contract_created": false,
+  "complete_frame_opened": false,
+  "dataset_rows_opened": false,
+  "model_output_opened": false,
+  "evaluation_authorized": false,
+  "training_authorized": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "stopping_reason": "No screened source can demonstrate, from metadata alone, a stable complete question-to-canonical-method frame with at least 150 eligible cases, eight methods, 80% mapping coverage, and no method above 40%.",
+  "search_limit": "This closes the screened candidate set, not the existence of all possible public sources. A later source may be considered only under the unchanged E5 master before opening rows or examples.",
+  "next_step": "preserve-e5-unopened-and-develop-a-separate-opened-source-runtime-hypothesis",
+  "claim_boundary": "This is a metadata-only source-availability result. It is neither a model evaluation nor evidence against H20, and it cannot justify lowering E5 gates, pooling sources, opening a visibly unqualified dataset, training on candidate rows, or changing the champion.",
+  "fingerprint": "774ff734c62a655c4c6cd67aba4ea32d1cfcf63596245248cabf8b79176df7d1"
+}

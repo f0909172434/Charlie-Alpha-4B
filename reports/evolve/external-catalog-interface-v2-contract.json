@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "method": "E2-v2 multi-source external fixed-catalog interface evaluation",
+  "method_version": 1,
+  "causal_question": "Across a frozen pool of three independently authored external statistical-test decision tables, does adding H7's unchanged fixed 28-method catalog improve the unchanged v0.3 parent over the same menu-free canonical-ID prompt?",
+  "supersedes": {
+    "e1_result_fingerprint": "6d2c9f155e8d66581e05e1483ad676aac5ffbc79e996dec7c854da2ffb0e7cb0",
+    "reason": "E1 was source-unavailable before model evaluation; E2-v1 single-source qualification found no source satisfying both 12 eligible cases and 40% coverage."
+  },
+  "h12_result_fingerprint": "b105ee64dcad97e3c55dd9d8fddf205409cd38df1ec8c990551e69088a2ab9a3",
+  "h12_report_sha256": "0f0801be0751e051481ec7fbfafc3a60846835352f330dce3089f0ab917f1618",
+  "parent": {
+    "name": "v0.3.0-parent",
+    "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "catalog": {
+    "procedure_count": 28,
+    "catalog_sha256": "3428353710fb26869d2e262163f567fddbc41a8e9884b19fb46d34719a0d57bf",
+    "alias_sha256": "c94d9a473ac667bddf3b8d3d0f4e7813f92596df0e2571618aa9f6fcedf9183f",
+    "alias_policy": "unchanged E1 exact alias table; no post-source additions"
+  },
+  "source_qualification_fingerprint": "c5baa88367cca3658859d925f816caa8fec497ba970eec48d34fd81204252f0b",
+  "sources": [
+    {
+      "source_id": "haq-2016",
+      "citation_key": "haq-nazir-2016-which-statistical-hypothesis-test",
+      "doi": "10.4103/2008-7802.183653",
+      "pmcid": "PMC4910310",
+      "license": "CC BY-NC-SA 3.0",
+      "license_source_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/PMC4910310/unicode",
+      "table_1_url": "https://cdn.ncbi.nlm.nih.gov/pmc/blobs/1363/4910310/55451c4d5354/IJPVM-7-81-g001.jpg",
+      "table_1_sha256": "464cbfc93b739eb4d7fa52388f98c3bcdd5876b99a398e8521d9cd7f756bdeb4",
+      "table_2_url": "https://cdn.ncbi.nlm.nih.gov/pmc/blobs/1363/4910310/a14e0f72696b/IJPVM-7-81-g002.jpg",
+      "table_2_sha256": "b6776ab0b2950cc70a0c80768741ef35876dfe6ecb25b138bc1b58d5f436f8b5",
+      "expected_case_count": 22,
+      "expected_eligible_count": 10,
+      "extraction_rule": "Retain every non-NA cell from Table 1 then Table 2 in row-major source order. The complete table transcription was frozen before any E2 model output."
+    },
+    {
+      "source_id": "conyso-2026",
+      "citation_key": "conyso-2026-hypothesis-test-selector",
+      "license": "CC BY 4.0",
+      "license_page_url": "https://conyso.com/reference-hypothesis-test-selector.html",
+      "csv_url": "https://conyso.com/reference-hypothesis-test-selector.csv",
+      "csv_sha256": "43836f94abf282db6e1df3162f143b76639c1d52005f47ddde672b29ade76efa",
+      "expected_case_count": 8,
+      "expected_eligible_count": 3,
+      "extraction_rule": "Retain every CSV data row in source order."
+    },
+    {
+      "source_id": "crucible-bench",
+      "citation_key": "north-shore-ai-crucible-bench",
+      "repository": "North-Shore-AI/crucible_bench",
+      "revision": "cfc785c66eccf3a2b1df25f6fd8179f034e39142",
+      "license": "MIT",
+      "readme_url": "https://raw.githubusercontent.com/North-Shore-AI/crucible_bench/cfc785c66eccf3a2b1df25f6fd8179f034e39142/README.md",
+      "readme_sha256": "7dc2443e467854b985a3626b012115a0eda0709a4f9d53a32781029f2601f7dc",
+      "license_url": "https://raw.githubusercontent.com/North-Shore-AI/crucible_bench/cfc785c66eccf3a2b1df25f6fd8179f034e39142/LICENSE",
+      "license_sha256": "a706bdd005bbf349ad6b47025b7d128ad03d21f59bd0155643a39beb3a482878",
+      "expected_case_count": 7,
+      "expected_eligible_count": 4,
+      "extraction_rule": "Retain every Markdown row under the README Parametric Tests and Non-Parametric Tests tables, in source order."
+    }
+  ],
+  "source_reconnaissance_state": {
+    "source_content_opened_for_qualification_before_contract": true,
+    "model_outputs_opened": false,
+    "note": "E2-v2 is source-qualified rather than source-blinded. All selection, extraction, alias, prompt, and evaluation rules are frozen before the first model answer."
+  },
+  "case_pool_policy": {
+    "source_type": "direct tabular condition-to-test mappings only",
+    "minimum_sources": 3,
+    "minimum_eligible_cases": 12,
+    "minimum_coverage_fraction": 0.4,
+    "unmapped_policy": "Retain every unmapped source row in total coverage accounting; exclude it only from the primary paired correctness denominator."
+  },
+  "generation_max_tokens": 64,
+  "gates": {
+    "minimum_flat_catalog_accuracy": 0.35,
+    "minimum_method_gain_points": 10.0,
+    "minimum_net_improvements": 2,
+    "maximum_validity_regression_points": 5.0,
+    "minimum_nonnegative_sources": 2,
+    "minimum_worst_source_net_improvement": -1
+  },
+  "arms": {
+    "menu-free-control": "Unchanged v0.3 parent receives the frozen external case and canonical-ID JSON contract without a method catalog",
+    "flat-catalog": "Same parent, case, JSON contract, decoding, and case order plus H7's unchanged fixed 28-method ID + display-name catalog"
+  },
+  "adaptation_policy": "none after the first E2-v2 model answer is observed",
+  "stopping_rule": "Materialize all 37 frozen source rows once. If the 12-case/40%-coverage gate passes, run both arms exactly once with resumable progress under one evaluator fingerprint.",
+  "decision_rule": "Pass only if pooled coverage, flat-catalog absolute accuracy, paired gain, net improvements, output validity, and pre-registered cross-source robustness gates pass.",
+  "claim_boundary": "A pass supports an independent external decision-source context/interface elicitation claim only. It does not establish free-form clinical competence, change weights, replace the champion, authorize release, or reopen historical P-Bench/StatQA.",
+  "evaluation_implementation_sha256": {
+    "qualification_summary": "d86abf386673bae43f814e95e427986bc6c2c55b37d9f5e753bc3d5ddb9dd9f4",
+    "haq_cases": "52e8ada51bc5b5377f712adf8d7b1054056ed25bbdd2f6ee2824bda704cbeb68",
+    "parse_conyso_csv": "360f6c7e4fc30c57efac72bd5947495a412bb30260f023cce58db27d8fd25d53",
+    "parse_crucible_readme": "6a982120e054a845eed3c465532aabec8b4516e0102defab52b6594506c2a5e5",
+    "build_case": "b0e2f45020cb2ce334600772b39bc04a36b7d53f21a42d0fe94a9c66a0f9e18e",
+    "external_v2_gate": "f671e8a19a8e56499c71f3dc4b8913e2f0655d27109d885272c77d545ad79d45",
+    "e1_evaluator_manifest": "4ccd94277eba7edf0e6ba5a375075cb88aca3476ff3153fae2915363a7e37453"
+  },
+  "model_evaluation_started": false,
+  "fingerprint": "115fb480320d969d69e0c074f73647ea96057083393b34627a914e1e64608629"
+}

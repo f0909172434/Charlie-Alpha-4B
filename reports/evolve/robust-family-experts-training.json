@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "e10311bc9161747f834755bdf5d85206567ca190fb410ba06ecd2a7d6c8d251c",
+  "contract_fingerprint": "64b476e1e3da9cf1decd163bdd7d458e74dbc3cbf4d45a900e47b6e181cc7ab7",
+  "arms": [
+    "boltzmann-mean",
+    "direct-mean",
+    "direct-cvar"
+  ],
+  "families": [
+    "bayesian_check",
+    "binary_count_glm",
+    "categorical",
+    "clustered_repeated",
+    "experimental_causal",
+    "group_comparison",
+    "linear_robust",
+    "missing_selection",
+    "predictive_calibration",
+    "probability_distribution",
+    "survival",
+    "time_series_leakage"
+  ],
+  "expert_fingerprints": {
+    "boltzmann-mean": {
+      "bayesian_check": "2f58dab6b1b6db95f8a7138dd0da5eed0fc3ff3ee5661f840aa46503c5138aec",
+      "binary_count_glm": "07a5ec755a402bf7aedc2f83253dfc1e8fce92efe96c1eca0e6047fb6bf5af9e",
+      "categorical": "231e45760395db8c7d10407f39612646bc6e4b18d82f6eb4e10b7fe4b273374b",
+      "clustered_repeated": "a12dde184fe864ca696e0d1a0ec1c348f893b7d31482c90931fb8a6f70110943",
+      "experimental_causal": "7ad265dcce698f54c2c715fa05960feac969001bd1a064f71b3dda17ca9fd2a1",
+      "group_comparison": "c8ca5b189457455be4997c6e16537948f3fed7d171636849406ceb799d4a05c5",
+      "linear_robust": "5dcf0603848f068aa39dfe783dc3f8df92c06707ffcd254a3be7ad1d0ec25f5c",
+      "missing_selection": "f9c86f827a4c9890c36df29c6d0fa8dcfcba3b56580fd58232f7e55d6cdfc3ca",
+      "predictive_calibration": "04be4e8e137650498e4f873b51b8f791bff42e4fe37a250b5cb57f1b32850a94",
+      "probability_distribution": "d43cf5989cd90a3e0b6dd4f4b418514d04e43ac2d71fd4d4c03d56bf485ce2e9",
+      "survival": "7cbe3d8d3dc16f2439697d40ce327957571626f062852e06d58b96dd0df9e448",
+      "time_series_leakage": "e7cb9b7346e1676e03958c91407213f535dcb8dbbbd08eaf101bed62444a4c33"
+    },
+    "direct-mean": {
+      "bayesian_check": "5751badb25351372572d3015802edd05969b67ffe12e0e937f67aa9a9f1fcd1e",
+      "binary_count_glm": "8766f07a325bb884ae074ce525626a0ff73a2e2664645e7469912ff9ef02c67b",
+      "categorical": "c4535d09fe59ea25dc0e9081e7c53bc6c5e6dee95dbaae0be0ff1f95e992f3d1",
+      "clustered_repeated": "f01056031ad85d645d89909eacc535a079ff8335b91632480f8912fc068cfe52",
+      "experimental_causal": "ea5db1227209d03871ba8e0ff2a664e19bf51818ead070319bef4b9ffd33a041",
+      "group_comparison": "399a567488ab3d3a5fc7250e043023e4f31f7d8a6217f3a2421dab78732726d2",
+      "linear_robust": "84bf1d98ab516dc060c6216ba83f9f8607dbd4a917d5258a902f035f3ad0ccd2",
+      "missing_selection": "b9de971c5c75537f312c1f62ccfb227001b6f84c619d4d63bef56f11a25b1b42",
+      "predictive_calibration": "81b35237bd5343c408f6114e54c59bd72eb3ec76c1cb3803ca0cd6c0d4e368ed",
+      "probability_distribution": "4c9d7c8864cc1e919bdab27cf55ad41f2701637052c5a79cb75e71e571f95c95",
+      "survival": "218f1932da858a6052584768745cd9b9a669603b6a8705eab3cd9f84b162b074",
+      "time_series_leakage": "42eadf693dadac214288d8108140fa10d144a380376deb463e161385e98a2859"
+    },
+    "direct-cvar": {
+      "bayesian_check": "307fdf0cb899bbe957b4eb0a379f9529971c1dd8d7e8f76824a609f24ee25914",
+      "binary_count_glm": "e91a2af2027d536d5530844ffba2bbcc5d8f16de8d30b6cf30d18cb5d6f922f0",
+      "categorical": "da31f7e430ecfc55c303241c39aad34a2560e726d9bc23f3aea45830e8b3793b",
+      "clustered_repeated": "0d3ae1ea62f758cc7816a0e78c680fd25db8f3c89b0caab217275d5378452fc0",
+      "experimental_causal": "830a22402f482379b60432bc53b070510b477276bf22f6a655bbc86861114c99",
+      "group_comparison": "4906605a72c20dfeeccb26c70088e0ebc3ae66522f158a9befc46a048791776a",
+      "linear_robust": "f20efd6e5349bdfaf238f8d73f4919af19a32ca2db8bc1cdce00e8e121a617ef",
+      "missing_selection": "a68983e99f8b3c125260f2b4b28d36195cacc09ae425f566e2986f600f5daf7b",
+      "predictive_calibration": "4630ec00f91f27dc75857b10db932873c524755bd98d73c75fb40ce9ab1665e0",
+      "probability_distribution": "06665e05e7a4840c814411586ac25386363072379f310167873772168274f2a0",
+      "survival": "fa48a8e12e12789162d8909c85dc5712c7e3f9b1c3102fc173dec2fbbb88bc3f",
+      "time_series_leakage": "2835bf8075abb516a74a3d476b742d6d72c05b4e37fde20eeea782a64198b1f8"
+    }
+  },
+  "matched_backward_compute": true,
+  "backward_record_exposures": {
+    "boltzmann-mean": 6912,
+    "direct-mean": 6912,
+    "direct-cvar": 6912
+  },
+  "expected_backward_record_exposures": {
+    "boltzmann-mean": 6912,
+    "direct-mean": 6912,
+    "direct-cvar": 6912
+  },
+  "backward_calls": {
+    "boltzmann-mean": 3456,
+    "direct-mean": 3456,
+    "direct-cvar": 3456
+  },
+  "selection_opened": false,
+  "confirmation_opened": false,
+  "promotion_opened": false,
+  "final_simulations_opened": false,
+  "final_scores_opened": false
+}

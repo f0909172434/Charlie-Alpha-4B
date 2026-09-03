@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "method": "H19 synthetic-retention field adapter amendment",
+  "amendment_version": 1,
+  "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+  "failure_boundary": {
+    "fold_training_started": false,
+    "fold_status_count": 0,
+    "partial_fold_file_count": 7,
+    "partial_fold_sha256": {
+      "all-sources": "24032f03b5271696757a4fdded8528df934b45d80385398102caff4a0bb78ca0",
+      "conyso-2026": "5e779b20c847222b040eba0702fc25bc60decad882a4238c4051875027e7df5b",
+      "crucible-bench": "f05d3c067bfccb64cef71351e5bdcef7596360f0763f9ffde11b73e697871eec",
+      "genser-2007-immunology": "cf7b889eb0855b3f5def8132de57e6a1ac3a3c2295dab49249e143fbe5d3473d",
+      "haq-2016": "cedac20d8eabad2a6bd1f1f8e9aeea766418085bd21a00ade769e09fb077ee60",
+      "shukla-2025": "830c63362856884837673cf5fbecaaee40cbf5285711f20a81dbfa1609020f92",
+      "turner-2025-medical-education": "a5c222d4a94abd02d0bff5b59cdbce1a68a4fd85dddcabe1641d07439f8dff4f"
+    },
+    "data_report_written": false,
+    "fresh_external_evaluation_opened": false,
+    "observed_error": "KeyError: gold_method_id"
+  },
+  "permitted_change": "For H16 synthetic retention rows only, copy the sole frozen gold_methods entry into the evaluator's gold_method_id field. Questions, labels, fold membership, replay counts, training records, compute, optimizer, and gates remain unchanged.",
+  "implementation_sha256": "70b65ea4ef883c18efccafd5330f2bf6cccc499c5e8be30589a373a303d08ebc",
+  "scientific_contract_changed": false,
+  "fingerprint": "3c7e806987d4382ce581cf334f7b257fed890241643cf1a123153ef475f5852c"
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "terminal": true,
+  "fingerprint": "3ab2c25e35081b5813c61d81e75636bd4254f26780ee3e98d062cfb0bf75fc69",
+  "method": "E1 independent external fixed-catalog interface evaluation",
+  "contract_fingerprint": "627c1721e6d9e38f7fdd5d59cd6a9b53a9321ca4644fe54f615afee4b7d1a425",
+  "source_audit_fingerprint": "cb94076ba59bb3b6455fd0556a505f77625f1b2e4e9c3905353bdbf91270490d",
+  "model_evaluation_started": false,
+  "external_gate": {
+    "passed": false,
+    "decidable": false,
+    "reason": "frozen external source omitted the case set and answer key"
+  },
+  "independent_external_interface_supported": false,
+  "independent_external_interface_rejected": false,
+  "champion_unchanged": "v0.3.0-parent",
+  "release_authorized": false,
+  "next_step": "close-e1-source-unavailable-without-model-evaluation",
+  "claim_boundary": "A pass supports an independent external context/interface elicitation claim only. It does not change weights, replace the champion, authorize release, or establish general statistical competence outside the eligible source cases.",
+  "result_fingerprint": "6d2c9f155e8d66581e05e1483ad676aac5ffbc79e996dec7c854da2ffb0e7cb0"
+}

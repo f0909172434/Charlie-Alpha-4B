@@ -1,0 +1,138 @@
+project:
+  display_name: "Charlie alpha"
+  model_id: "Charlie-Alpha-4B"
+  version: "0.2.0-research"
+  profile: "forge-overnight"
+  seed: 20260824
+  license: "Apache-2.0"
+
+paths:
+  source_lock: "configs/sources.lock.json"
+  v1_processed_dir: "data/processed"
+  forge_dir: "data/v2/forge"
+  score_dir: "artifacts/v2/scores"
+  translation_dir: "data/v2/translations"
+  final_dir: "data/v2/final"
+  eval_lock: "configs/evaluation.v2.lock.json"
+  artifact_dir: "artifacts/v2"
+  report_dir: "reports/v2/generated"
+
+forge:
+  max_seq_length: 832
+  translation_source_max_length: 700
+  train_semantic_groups: 52
+  valid_semantic_groups: 6
+  group_categories:
+    math: 0.50
+    python: 0.25
+    cpp: 0.25
+  language_gradient_ratios:
+    en: 0.70
+    zh_Hans: 0.15
+    zh_Hant: 0.15
+  english_replay_per_group: 3
+  selective_keep_fraction: 0.75
+  final_token_floor: 32
+  excess_loss_floor: 0.0
+  diversity_penalty: 0.20
+  translation_max_seconds: 4200
+  translation_max_new_tokens: 1024
+  teacher_temperature: 0.0
+
+training_v2:
+  batch_size: 1
+  grad_accumulation_steps: 6
+  num_layers: 4
+  max_seq_length: 704
+  padding_buckets: [384, 544, 704]
+  rank: 32
+  scale: 20.0
+  dropout: 0.05
+  pilot_microsteps: 48
+  full_epochs: 2
+  max_seconds: 18000
+  validation_every: 48
+  checkpoint_every: 48
+  early_stop_evaluations: 2
+  warmup_fraction: 0.03
+  weight_decay: 0.01
+  lora_plus_ratio: 4.0
+  targets:
+    - "linear_attn.in_proj_qkv"
+    - "linear_attn.out_proj"
+    - "self_attn.q_proj"
+    - "self_attn.v_proj"
+  candidates:
+    - name: "tail4-r32-standard"
+      num_layers: 4
+      rank: 32
+      learning_rate_a: 1.0e-5
+      learning_rate_b: 1.0e-5
+      selective_loss: true
+    - name: "tail4-r32-loraplus"
+      num_layers: 4
+      rank: 32
+      learning_rate_a: 2.5e-6
+      learning_rate_b: 1.0e-5
+      selective_loss: true
+    - name: "tail4-r32-loraplus-fast"
+      num_layers: 4
+      rank: 32
+      learning_rate_a: 5.0e-6
+      learning_rate_b: 2.0e-5
+      selective_loss: true
+    - name: "tail4-r32-loraplus-fast-fullmask"
+      num_layers: 4
+      rank: 32
+      learning_rate_a: 5.0e-6
+      learning_rate_b: 2.0e-5
+      selective_loss: false
+
+calibration_v2:
+  method: "LoRA-B delta-scale line search"
+  candidate_delta_scales: [0.125, 0.16, 0.18, 0.22, 0.25]
+  selected_delta_scale: 0.22
+  selection_policy: >-
+    locked development accuracy first, then maximum language/domain regression,
+    then the smaller delta scale; final remains sealed
+
+evaluation_v2:
+  seed: 20260824
+  prompt_version: "adaptive-math-cot-v3"
+  dev:
+    math500: 6
+    gsm8k: 6
+    humaneval_plus: 4
+    mbpp_plus: 4
+    mgsm_zh_hans: 4
+    mgsm_zh_hant: 4
+  final:
+    math500: 12
+    gsm8k: 12
+    humaneval_plus: 8
+    mbpp_plus: 8
+    mgsm_zh_hans: 8
+    mgsm_zh_hant: 8
+  temperature: 0.0
+  math_max_new_tokens: 1024
+  code_max_new_tokens: 640
+  max_seconds_per_variant: 5400
+  pilot_max_seconds_per_variant: 420
+  release_improvement_points: 2.0
+  max_subgroup_regression_points: 2.0
+
+release:
+  github_repo: "f0909172434/Charlie-Alpha-4B"
+  tag: "v0.2.0"
+  hf_mlx_slug: "Charlie-Alpha-4B-MLX-4bit"
+  hf_gguf_slug: "Charlie-Alpha-4B-GGUF"
+  gguf_quantization: "Q4_K_M"
+
+overnight_v2:
+  total_seconds: 39600
+  scoring_seconds: 2400
+  translation_seconds: 4200
+  pilot_seconds: 3600
+  training_seconds: 18000
+  evaluation_export_seconds: 9600
+  buffer_seconds: 1800

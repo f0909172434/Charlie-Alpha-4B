@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "fa6a1c9b21272b4efca0d3d0e9a39141cefa69d3075c265ea3d26127c6d7b3b7",
+  "contract_fingerprint": "6feb195fd1f715c2ab1a9af903bcccddc6095c34ae7f30ec648fbb0751f8d7ef",
+  "surface_fingerprints": {
+    "training_shard": "33cf2b3bb737483b2e0f94870d91f09dfdec5b7eaa3cfca0f3620caf5a5c7cd4",
+    "selection_shard": "537bdcb0159f9b696703b3252917b642ff528a5bb93796b6bac2fa43b9061099"
+  },
+  "case_sha256": {
+    "training_shard": "65bfa0431978fb89fb9219f5e70d8b07564dd1fcdd3af2c344ed6eac45b8c3b2",
+    "selection_shard": "8881113b436ef810ce436ad75aeb111b6d02c84c6992c5ef6f487b80a8e615ec"
+  },
+  "coverage": {
+    "training_shard": {
+      "semantic_point_count": 144,
+      "eligible_semantic_point_count": 143,
+      "eligible_fraction": 0.9930555555555556,
+      "eligible_method_count": 22,
+      "eligible_method_counts": {
+        "ancova": 3,
+        "blocked_time_series_cv": 12,
+        "calibrated_logistic": 12,
+        "chi_square": 10,
+        "conjugate_bayes": 5,
+        "cox_ph": 2,
+        "firth_logistic": 6,
+        "fisher_exact": 2,
+        "hc3_ols": 4,
+        "huber_regression": 9,
+        "ipw": 11,
+        "logistic_glm": 3,
+        "logrank": 10,
+        "mann_whitney": 2,
+        "mixed_effects": 11,
+        "multiple_imputation": 9,
+        "negative_binomial_glm": 2,
+        "ols": 1,
+        "paired_t": 2,
+        "posterior_predictive": 19,
+        "welch_t": 6,
+        "wilcoxon_signed_rank": 2
+      }
+    },
+    "selection_shard": {
+      "semantic_point_count": 48,
+      "eligible_semantic_point_count": 48,
+      "eligible_fraction": 1.0,
+      "eligible_method_count": 16,
+      "eligible_method_counts": {
+        "ancova": 4,
+        "blocked_time_series_cv": 4,
+        "calibrated_logistic": 4,
+        "chi_square": 3,
+        "conjugate_bayes": 5,
+        "cox_ph": 1,
+        "firth_logistic": 4,
+        "fisher_exact": 1,
+        "huber_regression": 4,
+        "logrank": 3,
+        "mann_whitney": 1,
+        "mixed_effects": 4,
+        "multiple_imputation": 4,
+        "posterior_predictive": 3,
+        "welch_t": 1,
+        "wilcoxon_signed_rank": 2
+      }
+    }
+  },
+  "data_gate": {
+    "passed": true,
+    "checks": {
+      "training_eligible_semantics": true,
+      "selection_eligible_semantics": true,
+      "training_eligible_fraction": true,
+      "selection_eligible_fraction": true
+    }
+  },
+  "selection_authorized": true,
+  "confirmation_opened": false
+}

@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "method": "H18 historical source-held-out external exemplar router",
+  "method_version": 1,
+  "causal_question": "After the H17 linear bridge failed, can nonparametric method voting among other historical external sources safely rescue any H16-rejected cases while preserving the menu-free control and H16's synthetic sufficiency behavior?",
+  "h17_negative_result_fingerprint": "2f0f8d3c79af923671b16ecf8a067b830bba20bd65cdca5436974cf5c1e1c531",
+  "h17_report_sha256": "8fef3afafffd0199e5e3efd4c69dd786c1dfdbcc3f988c243863fc879ca0762d",
+  "historical_case_count": 38,
+  "historical_case_fingerprint": "665d1faa98066c46594a78244796f326773e4af611a52d9db131514d299355fb",
+  "historical_representation_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/external-domain-bridge-v1/representations/historical-menu-free.npz",
+  "historical_representation_sha256": "21386abdc5d6e8d9bba26e9fc9ace00e7c1de8a6280140303cd5f97ea45638ca",
+  "historical_source_counts": {
+    "conyso-2026": 2,
+    "crucible-bench": 4,
+    "genser-2007-immunology": 4,
+    "haq-2016": 10,
+    "shukla-2025": 9,
+    "turner-2025-medical-education": 9
+  },
+  "h14": {
+    "contract_fingerprint": "8ad56776f3617b5a59588f0b2e86d96c804de22842570360fa6250236a7661a4",
+    "contract_sha256": "bc78898d57873dce12e05ac1636f5f023f4332b338d2adc49d2cb42a9579d2a7",
+    "head_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selector-head-v1/head.npz",
+    "head_sha256": "9144d057c8a82cf954cd23c398a6a13e622bb327b880e0af7d3002898f6117b1"
+  },
+  "h16": {
+    "result_fingerprint": "d0433ce9042615a6fae356fc2fcbe6f6d297285649fb0e3c1bd7a65ee0d4831a",
+    "report_sha256": "1f34b909751c7beae453aeae9505cb975cf364490583d0fba3303b16b23f9a62",
+    "threshold": 0.75,
+    "bank_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selector-sufficiency-v1/training-bank.npz",
+    "bank_sha256": "a5443de4e53ede69cda45a0624eaa2f31c0cb1be3c727b7eb91093ed66db2800"
+  },
+  "synthetic_retention_representations": {
+    "audit": {
+      "path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selector-sufficiency-v1/representations/confirmation_shard/audit.npz",
+      "sha256": "152e931ab808df51c0512bbdf3d65a939292dc74854f525a5095e1b66b63d7fd"
+    },
+    "researcher": {
+      "path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selector-sufficiency-v1/representations/confirmation_shard/researcher.npz",
+      "sha256": "e4eea4cf0dbd911e44ef3744f1ad5538382c7d98bddffe672052ac76dd5a0e29"
+    },
+    "vignette": {
+      "path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selector-sufficiency-v1/representations/confirmation_shard/vignette.npz",
+      "sha256": "4ed81ae647f247f6144edaff5759a4ee1b0365d0979a76b11c1a95c3f4f90984"
+    },
+    "conventional": {
+      "path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selector-sufficiency-v1/representations/confirmation_shard/conventional.npz",
+      "sha256": "0420a969ae204b9c49fd38924d5a77e9620fa7ba0ff92fcae40fd31594ab2086"
+    },
+    "partial": {
+      "path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/evolve/selector-sufficiency-v1/representations/confirmation_shard/partial.npz",
+      "sha256": "32e3a610ad49242b47d390590a03db59e7387e5f11919233d901f19995685a96"
+    }
+  },
+  "settings": {
+    "method_version": 1,
+    "normalization_modes": [
+      "unit",
+      "h16-centered"
+    ],
+    "neighbors": [
+      1,
+      3,
+      5,
+      7
+    ],
+    "temperatures": [
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "support_thresholds": [
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      0.95
+    ],
+    "margin_thresholds": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.5
+    ],
+    "gates": {
+      "minimum_historical_net_improvements": 1,
+      "maximum_control_only_losses": 0,
+      "minimum_external_exemplar_count": 2,
+      "minimum_external_exemplar_sources": 2,
+      "maximum_reduced_external_exemplar_acceptance": 0.2
+    }
+  },
+  "routing_order": [
+    "frozen H16 support accepts -> frozen H14 head",
+    "otherwise external exemplar support and vote margin pass -> exemplar vote",
+    "otherwise -> exact frozen menu-free control prediction"
+  ],
+  "cross_source_protocol": "Each historical source is scored only from exemplars belonging to the other five sources. Every grid value and gate is frozen before any H18 vote is computed.",
+  "claim_boundary": "H18 is historical development evidence only. It cannot reuse E2/E3/E4 as fresh evidence, replace the champion, authorize release, or establish external capability.",
+  "implementation_sha256": {
+    "stats_external_exemplar_router.py": "363a31d7b05abedad120510108c97cda0e659eb695cbc039769df9f895823979",
+    "stats_external_domain_bridge.py": "b9280ccb2acdd5a9b9b39e4056d391cc0c2a1fc40b0928f275cd6ed6af681015",
+    "stats_selector_sufficiency.py": "dd36efd1c30a47c09bef0c3ae60f9e7ef7cadbc67f2e6b9554545169cb38d78c",
+    "stats_selector_head.py": "bf9a5aaf42308661a713de3c54abbdb5f2e99a04bbaaf056c244a886d255cdb5"
+  },
+  "fresh_external_evaluation_opened": false,
+  "fingerprint": "addda29c2ed51bbdddf166cb56a274efc5849f10c213829a5abfd57800fdabe8"
+}

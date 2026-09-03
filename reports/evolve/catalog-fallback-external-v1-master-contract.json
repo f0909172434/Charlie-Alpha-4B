@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "method": "E6_FRESH_SOURCE_CATALOG_FALLBACK_V1",
+  "method_version": 1,
+  "causal_question": "On one genuinely new source selected and frozen before opening, can the unchanged parent preserve every parser-valid menu-free control and use the fixed global 28-method catalog prompt to repair a statistically distinguishable set of invalid controls across independent question templates?",
+  "evidence_status": "master-protocol-no-source-selected",
+  "hypothesis_origin": {
+    "h22_result_fingerprint": "0c2dc933fdfb04ab5569be8042afdbe55837bb3fb1dd8d19ad12b4959825ee1c",
+    "h22_report_sha256": "2dc299a0fd29398963869a1dcd3d76a594219ea934a7a7a902d61b28a10f41c3",
+    "h22_development_status": "SUPPORTED_DEV_COMPOSITION",
+    "h22_case_mcnemar_p": 0.125,
+    "h22_fresh_external_evidence": false,
+    "h22_training_authorized": false
+  },
+  "runtime": {
+    "base_model": {
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "license": "Apache-2.0",
+      "snapshot_path": "/Users/wangzhikai/.cache/huggingface/hub/models--mlx-community--Qwen3.5-4B-MLX-4bit/snapshots/32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "file_sha256": {
+        "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+        "config.json": "f3efc81b2ea8d96a45301037d3ccccbcccdef44a961845c87f286aaddbc6eaaa",
+        "model.safetensors.index.json": "52e534c41f7b97708329c85f762e5882bf48bd5955a422c6ae74eba321e6048a",
+        "tokenizer.json": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4",
+        "tokenizer_config.json": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182",
+        "model.safetensors": "5fb9acd0246866381cf8c5c354c6db1019f6498eec4ccb4f5edcc71ffeacb2db"
+      }
+    },
+    "parent": {
+      "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+      "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16",
+      "adapter_config_sha256": "f86475351b4e99c5d7431c55f0e7740b842dcfbab670240d0df21398f084d750"
+    },
+    "control_prompt_sha256": "669a09485baec348e3176f400534158bcc73082c7d8077564c2d579d8685b4d6",
+    "fallback_prompt_sha256": "5b3e77acc4cf7edc0ce5f88fe9376f22e5dfe6cae8b96a16a72e88ac943a856d",
+    "decoding": {
+      "max_tokens": 160,
+      "temperature": 0.0,
+      "top_p": 1.0
+    },
+    "h22_result_fingerprint": "0c2dc933fdfb04ab5569be8042afdbe55837bb3fb1dd8d19ad12b4959825ee1c",
+    "h22_report_sha256": "2dc299a0fd29398963869a1dcd3d76a594219ea934a7a7a902d61b28a10f41c3",
+    "fingerprint": "050edd19a34e7d08872af7faaa353d9a4288a613f0db72cc9c2c772efd2c9f53"
+  },
+  "runtime_policy": [
+    "Generate every menu-free parent control exactly once.",
+    "Never call the catalog fallback for a parser-valid control.",
+    "After all controls complete and the control model is released, call the unchanged parent exactly once for each parser-invalid control using the fixed global 28-method catalog prompt.",
+    "Use a parser-valid catalog fallback; otherwise retain the original invalid control.",
+    "Never expose gold labels, source answer fields, or other cases to either model caller."
+  ],
+  "prompt_policy": {
+    "control": "H21/E5 menu-free canonical extraction prompt",
+    "fallback": "same extraction prompt plus H7 fixed global 28-method catalog",
+    "case_specific_menu_forbidden": true,
+    "same_question_and_decoding": true,
+    "prompt_change_is_only_the_fixed_global_catalog": true
+  },
+  "progress_contract": "Control and fallback phases use separate atomically rewritten ledgers. Every call writes a started receipt before model invocation; an interrupted call fails closed and is never retried.",
+  "source_protocol": {
+    "source_count": 1,
+    "selection_timing": "Freeze one child contract with stable source identity, revision, snapshot, license, complete-frame extraction, alias map, overlap normalization, frozen historical question-hash corpus, and all gates before opening rows or examples. Build the case-specific overlap manifest only after the one-shot row opening and before any model call.",
+    "qualification_gates": {
+      "minimum_eligible_cases": 150,
+      "minimum_distinct_methods": 8,
+      "minimum_coverage_fraction": 0.8,
+      "maximum_single_method_fraction": 0.4
+    },
+    "supported_snapshot_formats": [
+      "json-array",
+      "jsonl-records"
+    ],
+    "complete_frame_policy": "The generic E6 verifier deterministically rebuilds every method-bearing frame row from the frozen source snapshot, role-constrained categorical decision fields, declarative field paths, alias map, and all-nonempty-source-method-records rule. Record IDs, questions, answer or method fields, and unrestricted text cannot enter the decision frame. Materialized frame bytes, questions, gold mappings, case IDs, and semantic-template hashes must match that rebuild.",
+    "permissive_license_allowlist": [
+      "Apache-2.0",
+      "BSD-2-Clause",
+      "BSD-3-Clause",
+      "CC-BY-3.0",
+      "CC-BY-4.0",
+      "CC0-1.0",
+      "MIT",
+      "ODC-BY-1.0",
+      "PDDL-1.0"
+    ],
+    "license_evidence_required": {
+      "canonical_identifier": true,
+      "stable_license_url": true,
+      "frozen_before_rows_open": true
+    },
+    "opened_source_exclusions": {
+      "PMC8327789": {
+        "doi": "10.5005/jp-journals-10071-23815",
+        "snapshot_sha256": "b40dc53865028489d13c010811c56947b8ba9e3f3353a83e324a0fb09392196f",
+        "status": "opened-during-precontract-feasibility-screen"
+      },
+      "PMC8483143": {
+        "doi": "10.4103/jfmpc.jfmpc_433_21",
+        "snapshot_sha256": "326ab7eae0719c13cf48e58b98973795f4765ba922e4b684513f9862b026d49f",
+        "status": "opened-during-precontract-feasibility-screen"
+      },
+      "PMC6639881": {
+        "doi": "10.4103/aca.ACA_248_18",
+        "snapshot_sha256": "b881306838e425ae7319ef17c0fa7e690e350bd5a53a430c50b8bc271ee980fd",
+        "status": "opened-during-precontract-feasibility-screen"
+      },
+      "PMC2996580": {
+        "doi": "10.4103/0974-7788.72494",
+        "snapshot_sha256": "eb7be3715e4a5f7e6d3bb609285d361551d44a74f6620a052c1dd8523325c2b9",
+        "status": "opened-during-precontract-feasibility-screen"
+      }
+    },
+    "overlap_rule": "Reject any source, version, derivative, or normalized question overlapping training, P-Bench, StatQA, E2-E5, H17-H22, or source/rule development.",
+    "semantic_template_contract": {
+      "primary_inferential_unit": "semantic-decision-template",
+      "cluster_key": "frozen-normalized-complete-frame-tuple",
+      "assignment_timing": "before-model-output",
+      "normalization": "recursive-casefold-whitespace-v1",
+      "template_id_rule": "canonical-sha256-of-normalized-decision-frame",
+      "question_materialization_rule": "normalized-question-field-only",
+      "source_projection_frozen_in_child_extraction_contract": true,
+      "exact_duplicate_messages_count_once": true,
+      "semantic_paraphrases_with_same_decision_frame_count_once": true,
+      "representative_rule": "lowest-sha256-case-id",
+      "model_output_fields_used": [],
+      "outcome_aware_reclustering": false
+    },
+    "template_rule": "The child contract freezes a normalized complete-frame clustering rule before rows open. After the one-shot row opening and before model calls, an immutable manifest assigns every case to one semantic decision template without using model outputs; duplicate messages and semantic paraphrases sharing the same decision frame count once.",
+    "gold_isolation": "Gold and source answer fields never cross the model-call boundary."
+  },
+  "opportunity_gates": {
+    "minimum_invalid_control_opportunities": 12,
+    "minimum_invalid_control_gold_methods": 4,
+    "minimum_distinct_invalid_question_templates": 8,
+    "maximum_single_invalid_template_fraction": 0.25,
+    "maximum_single_invalid_method_case_fraction": 0.5,
+    "maximum_single_invalid_method_template_fraction": 0.5,
+    "minimum_valid_control_identity_cases": 75
+  },
+  "result_gates": {
+    "minimum_candidate_only_gains": 6,
+    "minimum_net_improvements": 6,
+    "minimum_accuracy_gain_points": 4.0,
+    "maximum_case_mcnemar_p": 0.05,
+    "minimum_distinct_repaired_question_templates": 6,
+    "minimum_template_net_improvements": 6,
+    "minimum_repaired_gold_methods": 3,
+    "maximum_single_repaired_method_fraction": 0.5,
+    "maximum_template_mcnemar_p": 0.05,
+    "minimum_valid_fallback_precision": 0.8,
+    "maximum_valid_but_wrong_fallbacks": 1
+  },
+  "terminal_states": [
+    "CONFIRMED_NARROW_FRESH_SOURCE_PASS",
+    "SCIENTIFIC_FAIL",
+    "INCONCLUSIVE_OPPORTUNITY",
+    "SOURCE_UNQUALIFIED",
+    "SOURCE_UNAVAILABLE",
+    "PROTOCOL_INVALID"
+  ],
+  "terminal_state_rules": {
+    "SOURCE_UNAVAILABLE": "no child can be frozen from metadata without opening rows",
+    "SOURCE_UNQUALIFIED": "one frozen child fails source gates after one-shot opening",
+    "INCONCLUSIVE_OPPORTUNITY": "qualified source lacks frozen opportunity coverage",
+    "CONFIRMED_NARROW_FRESH_SOURCE_PASS": "all case and template gates pass",
+    "SCIENTIFIC_FAIL": "opportunity passes but one or more result gates fail",
+    "PROTOCOL_INVALID": "identity, routing, receipt, extraction, or replay integrity fails"
+  },
+  "stopping_rule": "Every terminal state closes this E6 child. Do not replace the source, add cases, alter templates, tune prompts, add aliases, retry invalid calls, train weights, or rerun after opening.",
+  "metadata_screen": {
+    "fingerprint": "774ff734c62a655c4c6cd67aba4ea32d1cfcf63596245248cabf8b79176df7d1",
+    "sha256": "0865db871a674c9e7f21f565122bac054a93e9926a7d9050f44858d71e3f2264",
+    "candidate_count": 24,
+    "rows_opened": false,
+    "status": "NO_SOURCE_SELECTED_METADATA_SCREEN"
+  },
+  "implementation_sha256": {
+    "stats_catalog_fallback_external.py": "5351fc0e54f7da8a97d4921e9e7dd83b37eb95b502a1f1eca72df73b5f631c2d",
+    "stats_invalid_control_catalog_fallback.py": "57e6eddcdf9a8ee0d4d94e84eb06c493daf2ef7646ea7a5a544810e99bc7a537",
+    "stats_guarded_external.py": "bda4cef8c3118e0f6971f831770a141bea5a151741bc3ac47c2467a118ea9826",
+    "stats_catalog_grounding.py": "4b9ea08e0515be65358aae7c2ebda4321b297a1de5ae76305b225de92b18ea5c",
+    "stats_external_catalog.py": "c1a67ee9b146a1d12adfdbbab88297db2fe5b42cd218f062336376dfd902fdb5",
+    "stats_agent.py": "f985691a56d4d3b945fcc091264ce04ec20319c29e445e0ee5da836246e8b8c9",
+    "stats_catalog.py": "3e0e54b2f4db69b95eac56c6896d4d244d019dee7630b129da9aef22a8eb07af",
+    "stats_representation_probe.py": "87d78c05d1c5d5a723ae5d3084ba7c3d4a4d96c1645100adfa82aa4e1e920206"
+  },
+  "source_selected": false,
+  "model_output_opened": false,
+  "training_authorized": false,
+  "champion_changed": false,
+  "release_authorized": false,
+  "claim_boundary": "A pass can support only the exact parent-plus-fixed-catalog identity-guard runtime on one preregistered source. It cannot establish multi-source generality, authorize training, replace v0.3.0-parent, publish, or release.",
+  "fingerprint": "4b6027022ff2ac3a08010895769676e5abda24fd7a1af58361ba0b163f607fd1"
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "H14 menu-free selector-head pilot",
+  "contract_fingerprint": "8ad56776f3617b5a59588f0b2e86d96c804de22842570360fa6250236a7661a4",
+  "data_fingerprint": "142ba19a16b5ac347590de6c0de9c5c93a94f2ead4ec10c77d43940933b6cac2",
+  "same_parent_weights": true,
+  "scores": {
+    "menu-free-control": {
+      "count": 72,
+      "exact_accuracy": 0.0,
+      "method_set_accuracy": 0.027777777777777776,
+      "column_set_accuracy": 0.9027777777777778,
+      "mean_column_recall": 0.9722222222222222
+    },
+    "selector-head": {
+      "count": 72,
+      "exact_accuracy": 0.7361111111111112,
+      "method_set_accuracy": 0.8055555555555556,
+      "column_set_accuracy": 0.9027777777777778,
+      "mean_column_recall": 0.9722222222222222
+    }
+  },
+  "selection_gate": {
+    "passed": true,
+    "checks": {
+      "head_method_accuracy": true,
+      "head_exact_accuracy": true,
+      "method_gain": true,
+      "exact_gain": true,
+      "column_noninferior": true
+    },
+    "effect_points": {
+      "exact": 73.61111111111111,
+      "method": 77.77777777777779,
+      "columns": 0.0
+    }
+  },
+  "selected_architecture": "selector-head",
+  "confirmation_authorized": true,
+  "next_step": "confirm-selector-head",
+  "result_fingerprint": "93e5eddf1069efa07fa890cb34bfe1e2beaaa634f5e4e659b0d6099c82c70026"
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "2dc61c5c79ebe7e2901495bbd7f4a4192a058506243daae41c08e289068d465b",
+  "contract_fingerprint": "2c6d92b5e62e674d7361dbe82ae4f159bad81d1f61a2b3ebb755b61819b2512c",
+  "fold_counts": {
+    "fold_1": 60,
+    "fold_2": 60,
+    "fold_3": 60
+  },
+  "fold_manifest_fingerprints": {
+    "fold_1": "708bc9981f2609cd9d9c8faac3c855b108804880fd8c5b9367d6b66c19799375",
+    "fold_2": "8d34a886c12604646008e344bd96d25e1b275de74fef6e719f602a3062a884c4",
+    "fold_3": "1e60a3a9850216c5e54e5cc1a8158a37a855f631d23d0e82359c8178422c7951"
+  },
+  "case_sha256": {
+    "fold_1": "a8a287b3877f48689b63365aad7fde324bf811ac0cb17c478eef900bf7f6c4f7",
+    "fold_2": "b777e9c3e050aeffc44493be124fb3293d4d55a0c7c9fd02c287f5c6c7206e49",
+    "fold_3": "ceebcf3242577acdf84c3b3dc07af98e705c579c3f89e358ae54cabc53be67cb"
+  }
+}

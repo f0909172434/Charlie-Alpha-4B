@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "status": "accepted-before-selection",
+  "amendment_version": 1,
+  "contract_fingerprint": "e85703c5b081ab4b28aa5985cad000c4324c9d9a5bf0e19b20e925e7424b5643",
+  "data_fingerprint": "d6b7b60ad888fa7e2fa4f66b7434499331df69d655935ec1badd07346ff001f0",
+  "bug": "The frozen v2 pilot passed selection records directly to _score_loaded_selector, which requires (record, simulation) pairs. The run failed before _load_progress and before any menu-free generation.",
+  "correction": "Zip each frozen selection record with the matching frozen selection simulation by blueprint_id before selector scoring. Menu-free cases, adapters, gates, output scoring, and the confirmation rule are unchanged.",
+  "selection_outputs_before_amendment": 0,
+  "confirmation_opened_before_amendment": false,
+  "training_reused_without_retraining": true,
+  "fixed_arm_weights": {
+    "multi-token-representation": {
+      "adapter_sha256": "346ff60ffa99993e8ae3c8d89fd2f4adf93ea455f1f8b383b37b7e7df5fb5a9d",
+      "microsteps": 48,
+      "optimizer_updates": 12
+    },
+    "selector-only-full-sequence": {
+      "adapter_sha256": "124f65fc0791c725ae6841c20080d1ef369d9c727211d10b3a754bc99c24f431",
+      "microsteps": 48,
+      "optimizer_updates": 12
+    }
+  },
+  "selection_pair_count": 24,
+  "selection_pair_fingerprint": "4075655f61531751ffe161bb659bdd23405373a431d5dfd41b379501763bc9ae",
+  "frozen_selection_sha256": {
+    "records": "35202a0e0eb7f61797ac29751598d1d5e1366ccac5548bf6bdee1515fa19190c",
+    "surface": "daed48ebe1555e5fb2c778567722a786465b1f42069f043f9bfb43c303ef8f47",
+    "format_cases": "5c8d2235176759aa2b77fc1b60802b686d5bb4983172dcae3cf8a561917c76c2"
+  },
+  "amendment_implementation_sha256": "4a009db9af37afe1f519e03d6077f4c0f1b4226a276e3aef2edf3e8fb5002ee2",
+  "research_policy_change": false,
+  "training_policy_change": false,
+  "selection_gate_change": false,
+  "fingerprint": "fa313652d50124aafaf3f29e73e3b9b77d8aae30fc541768bf3d552fd7b0a643"
+}

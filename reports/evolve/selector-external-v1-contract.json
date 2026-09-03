@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "method": "E3 external natural-language selector-head transfer",
+  "runtime_contract_fingerprint": "52919e7999f7347f1e62a73adc2702be589c6f62e4bb442a9d57c3563a556265",
+  "runtime_contract_sha256": "5e6b43b66a827bf3fc3c27b02ee984441a0d4a6649647da16cad5a2e17d71591",
+  "h14_result_fingerprint": "cbec02c2f27e1938b1a218866ffcc0da637565acddb8f589c9090ba89eed93ee",
+  "source": {
+    "pmcid": "PMC12627256",
+    "doi": "10.7759/cureus.94949",
+    "bioc_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC12627256/unicode",
+    "license": "CC BY",
+    "case_count": 20,
+    "source_pairing_rule": "pair Appendix scenarios 1-20 with Table 1 statistical-test rows 1-20 in source order",
+    "content_fingerprint": "2253aa4d580fcbc71149e04d7ed5af99ab18282318c760a09d3560ff26316dbb",
+    "payload_sha256": "e2045721fc5d7a300b1ceb8cc69e191b8020efe3d2f643d07a9c2c51c1183419"
+  },
+  "source_qualification_fingerprint": "ca847bb513da2b30464294992f46ecfc6c39178e54827c1b143cc0b4841d3fc4",
+  "source_method_mapping": {
+    "Student's t-test": "independent_t",
+    "One-way ANOVA": null,
+    "Mann-Whitney U test": "mann_whitney",
+    "Kruskal-Wallis H test": null,
+    "Fisher's exact test": "fisher_exact",
+    "Chi-square test": "chi_square",
+    "Log-rank test": "logrank",
+    "Paired t-test": "paired_t",
+    "Repeated measures ANOVA": null,
+    "Wilcoxon signed-rank test": "wilcoxon_signed_rank",
+    "Friedman test": null,
+    "McNemar's test": null,
+    "Pearson's correlation": null,
+    "Spearman's correlation": null,
+    "Kappa agreement": null,
+    "Linear regression": "ols",
+    "Ordered logistic regression": null,
+    "Binary logistic regression": "logistic_glm",
+    "Multinomial logistic regression": null,
+    "Poisson regression": "poisson_glm"
+  },
+  "source_method_mapping_sha256": "5337ca5a2397d67c011a43caee71186e2233a1c1359e89c7fe1d331b07107b0c",
+  "eligibility_policy": "score only source rows whose frozen gold maps to an H13-observed selector-head method; retain all 20 rows in coverage accounting",
+  "arms": {
+    "menu-free-control": "unchanged v0.3 parent under the H14 menu-free canonical extraction prompt",
+    "selector-head": "same frozen parent prompt representation with the frozen selector-runtime-v1 head"
+  },
+  "gates": {
+    "minimum_head_eligible_accuracy": 0.55,
+    "minimum_method_gain_points": 20.0,
+    "minimum_net_improvements": 2,
+    "minimum_head_valid_output_rate": 1.0
+  },
+  "implementation_sha256": {
+    "stats_selector_external.py": "2c7249b66dd4fd8f78ab67f669fff624c63093a223f2bb73bb32b914b278832e",
+    "stats_external_catalog.py": "c1a67ee9b146a1d12adfdbbab88297db2fe5b42cd218f062336376dfd902fdb5"
+  },
+  "model_evaluation_started": false,
+  "historical_pbench_statqa_reopened": false,
+  "claim_boundary": "A pass can support only narrow transfer of the frozen H14 method selector to the nine head-covered source-authored biomedical scenarios. It cannot establish 28-method coverage, column correctness, champion replacement, or release readiness.",
+  "fingerprint": "b19db4e9b973552858199315d1ae534964c70a839742f1e5db16cdfdfead83ce"
+}

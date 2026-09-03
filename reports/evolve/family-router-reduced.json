@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "e1e3f54ba31d5a02ae555cadb2cabbbb813b014824d6427b8937452073b66362",
+  "method": "preregistered reduced family-router independent confirmation",
+  "contract_fingerprint": "9e3ab8ca86d6266cbbaf752ffae511d15ac49219cc42bf930b475c01f814ce02",
+  "manifest": {
+    "schema_version": 1,
+    "fingerprint": "8bd944a2053b984765f79c5e11f8c8e7ee2de273d151f36d83386f72988448ae",
+    "split": "evolve-llm-family-router-v2-reduced-confirmation-v1",
+    "seed": 86000042,
+    "count": 900,
+    "view": "scoring",
+    "sha256": "be6a25b30bf67936e19d150d5812a3d6ac37cc05a480658f3e7dbf25a8f43123",
+    "used_for_router_training": false,
+    "used_for_temperature_calibration": false,
+    "used_for_threshold_selection": false,
+    "used_for_confirmation": true,
+    "used_for_promotion": false,
+    "used_for_expert_training": false,
+    "promotion_surface_opened": false,
+    "final_surface_opened": false,
+    "immutable": true
+  },
+  "absolute_metrics": {
+    "v0.3-parent": {
+      "count": 900,
+      "normalized_regret": 0.40225280619798137,
+      "accuracy": 0.4888888888888889,
+      "invalid_selection_rate": 0.3211111111111111,
+      "domain_accuracy": {
+        "inference_and_design": 0.362962962962963,
+        "prediction_and_analysis": 0.7166666666666667,
+        "probability_and_bayes": 0.6388888888888888
+      },
+      "languages": {
+        "en": {
+          "count": 900,
+          "normalized_regret": 0.40225280619798137,
+          "accuracy": 0.4888888888888889,
+          "invalid_selection_rate": 0.3211111111111111
+        },
+        "zh_Hans": {
+          "count": 900,
+          "normalized_regret": 0.4373328028617789,
+          "accuracy": 0.44666666666666666,
+          "invalid_selection_rate": 0.3655555555555556
+        },
+        "zh_Hant": {
+          "count": 900,
+          "normalized_regret": 0.4227528117225624,
+          "accuracy": 0.4588888888888889,
+          "invalid_selection_rate": 0.33444444444444443
+        }
+      },
+      "retention": {
+        "count": 24,
+        "accuracy": 1.0,
+        "groups": {
+          "domain:code": 1.0,
+          "domain:general": 1.0,
+          "domain:math": 1.0,
+          "domain:stem": 1.0,
+          "language:en": 1.0,
+          "language:zh_Hans": 1.0,
+          "language:zh_Hant": 1.0
+        }
+      }
+    },
+    "reduced-routed-experts": {
+      "count": 900,
+      "normalized_regret": 0.3490842614334057,
+      "accuracy": 0.5288888888888889,
+      "invalid_selection_rate": 0.27,
+      "domain_accuracy": {
+        "inference_and_design": 0.37777777777777777,
+        "prediction_and_analysis": 0.8722222222222222,
+        "probability_and_bayes": 0.6388888888888888
+      },
+      "languages": {
+        "en": {
+          "count": 900,
+          "normalized_regret": 0.3490842614334057,
+          "accuracy": 0.5288888888888889,
+          "invalid_selection_rate": 0.27
+        },
+        "zh_Hans": {
+          "count": 900,
+          "normalized_regret": 0.3751654393013239,
+          "accuracy": 0.5111111111111111,
+          "invalid_selection_rate": 0.3022222222222222
+        },
+        "zh_Hant": {
+          "count": 900,
+          "normalized_regret": 0.40407691083612857,
+          "accuracy": 0.4911111111111111,
+          "invalid_selection_rate": 0.3188888888888889
+        }
+      },
+      "retention": {
+        "count": 24,
+        "accuracy": 1.0,
+        "groups": {
+          "domain:code": 1.0,
+          "domain:general": 1.0,
+          "domain:math": 1.0,
+          "domain:stem": 1.0,
+          "language:en": 1.0,
+          "language:zh_Hans": 1.0,
+          "language:zh_Hant": 1.0
+        }
+      }
+    }
+  },
+  "comparison": {
+    "parent_trilingual_regret": 0.4207794735941075,
+    "candidate_trilingual_regret": 0.37610887052361935,
+    "trilingual_relative_regret_improvement": 0.10616155462368948,
+    "parent_accuracy": 0.4888888888888889,
+    "candidate_accuracy": 0.5288888888888889,
+    "parent_invalidity": 0.3211111111111111,
+    "candidate_invalidity": 0.27,
+    "parent_language_accuracy": {
+      "en": 0.4888888888888889,
+      "zh_Hans": 0.44666666666666666,
+      "zh_Hant": 0.4588888888888889
+    },
+    "candidate_language_accuracy": {
+      "en": 0.5288888888888889,
+      "zh_Hans": 0.5111111111111111,
+      "zh_Hant": 0.4911111111111111
+    },
+    "parent_language_regret": {
+      "en": 0.40225280619798137,
+      "zh_Hans": 0.4373328028617789,
+      "zh_Hant": 0.4227528117225624
+    },
+    "candidate_language_regret": {
+      "en": 0.3490842614334057,
+      "zh_Hans": 0.3751654393013239,
+      "zh_Hant": 0.40407691083612857
+    },
+    "parent_family_regret": {
+      "bayesian_check": 0.18888888888888888,
+      "binary_count_glm": 0.5472773786166509,
+      "categorical": 0.45108535969652336,
+      "clustered_repeated": 0.360556915798516,
+      "experimental_causal": 0.6324728438353188,
+      "group_comparison": 0.6154048256400109,
+      "linear_robust": 0.4601640800754757,
+      "missing_selection": 0.3265640059271647,
+      "predictive_calibration": 0.37777777777777777,
+      "probability_distribution": 0.3954154610183036,
+      "survival": 0.43283582089552236,
+      "time_series_leakage": 0.18888888888888888
+    },
+    "candidate_family_regret": {
+      "bayesian_check": 0.18888888888888888,
+      "binary_count_glm": 0.5472773786166509,
+      "categorical": 0.43748504905157065,
+      "clustered_repeated": 0.15576342778600547,
+      "experimental_causal": 0.6200828321488441,
+      "group_comparison": 0.5510581391042857,
+      "linear_robust": 0.4601640800754757,
+      "missing_selection": 0.3265640059271647,
+      "predictive_calibration": 0.25555555555555554,
+      "probability_distribution": 0.3954154610183036,
+      "survival": 0.43283582089552236,
+      "time_series_leakage": 0.0
+    },
+    "gates": {
+      "trilingual_regret": true,
+      "accuracy": true,
+      "invalidity": true,
+      "retention": true,
+      "language_accuracy": true,
+      "language_regret": true,
+      "domain_accuracy": true,
+      "family_regret": true,
+      "finite_metrics": true
+    },
+    "all_gates_passed": true
+  },
+  "route_metrics": {
+    "count": 2700,
+    "family_accuracy": 0.8896296296296297,
+    "language_family_accuracy": {
+      "en": 0.8844444444444445,
+      "zh_Hans": 0.9,
+      "zh_Hant": 0.8844444444444445
+    },
+    "expert_coverage": 0.43592592592592594,
+    "wrong_expert_rate": 0.01037037037037037,
+    "wrong_expert_count": 28
+  },
+  "paired_bootstrap": {
+    "mean_regret_improvement": 0.04467060307048816,
+    "ci95_lower": 0.03220880794678768,
+    "ci95_upper": 0.0577543696432433
+  },
+  "gates": {
+    "model_trilingual_regret": true,
+    "model_accuracy": true,
+    "model_invalidity": true,
+    "model_retention": true,
+    "model_language_accuracy": true,
+    "model_language_regret": true,
+    "model_domain_accuracy": true,
+    "model_family_regret": true,
+    "model_finite_metrics": true,
+    "relative_regret": true,
+    "router_family_accuracy": true,
+    "router_language_accuracy": true,
+    "wrong_expert_rate": true,
+    "expert_coverage": true,
+    "paired_bootstrap": true,
+    "fresh_surface_integrity": true
+  },
+  "passed": true,
+  "candidate_status": "confirmation-survivor",
+  "proceed_to_external_benchmark_design": true,
+  "automatic_champion_promotion": false,
+  "fresh_confirmation_surface_opened": true,
+  "fresh_confirmation_surface_retired": true,
+  "interpretation": "The prospectively reduced route independently confirmed and can advance to an external-benchmark contract.",
+  "claim_boundary": "Fresh synthetic confirmation does not establish external benchmark validity or operational runtime acceptability."
+}

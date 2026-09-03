@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "fingerprint": "1375bf393e6d5347a741d4666e8d4cd27255affe30b728be3b920e84acf2aab9",
+  "contract_fingerprint": "cead6cd7ccddcd76ae9ee18e0e5500ac83d1359d602b9d76496885a293127b6a",
+  "training_groups": 12,
+  "training_records": 48,
+  "selection_groups": 24,
+  "selection_records": 24,
+  "format_cases": 24,
+  "train_sha256": "72c12fca56721cc53812f1aa6c4aa0f60aa9343201e6175b67cb0378de0543c2",
+  "selection_sha256": "0e2de2c4fb0ea33711b5d7cabf4c3b034b7cb9c295575f690544810c58208bc6",
+  "format_sha256": "6c24be4f74068f685e377b6235f4b6e7ca11643288c4a37a66e7ce8491bd0ead",
+  "confirmation_opened": false
+}

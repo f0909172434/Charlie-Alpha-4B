@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "method": "H20 invalid-control guarded external weight bridge",
+  "method_version": 1,
+  "causal_question": "Can the H19 source-held-out LoRA bridge safely repair invalid menu-free control outputs when the runtime structurally preserves every valid control output?",
+  "hypothesis_origin": "Post-H19 retrospective development diagnosis: four of five H19 control-only losses were invalid LoRA outputs, while two of three H19 gains repaired invalid controls.",
+  "evidence_status": "retrospective-historical-development-only",
+  "h19": {
+    "result_fingerprint": "f20979790a8ea0d547884283e8585f9778a66a5afbf078de1de4bfeabd3cef35",
+    "report_sha256": "8f487e9d9172f5b9d4e07b9c09af16865d401c3a649561d1598a7d1bb296bf94",
+    "contract_fingerprint": "a16381182bfba15f5dd901b42a3d3350175c3f6c2a8baedc8ce38d60322fb7d1",
+    "contract_sha256": "adf19697a482e4ca5ceffaea36822846a2f4d25cdedcb5be0678e801bd83eda0",
+    "fold_adapter_sha256": {
+      "conyso-2026": "c373a1f153f2973382e8e3bdf3c955d4609bbb7260bf98c114b1cb98e167f0f3",
+      "crucible-bench": "00bd514d8845a6bbeb305184195c96146053130348bf3dbb603ced9799191011",
+      "genser-2007-immunology": "4dc7304063610891b06f625b86082b9755d3755fc741e8e50246aadddd77844b",
+      "haq-2016": "12b4cb046a2fed5c97b9d3710b43dc996bddc2b2afcd9af0f848c257d5ae3287",
+      "shukla-2025": "101026ce52ec3c54c079fac86ce198848b1bb38e98ee967bc455b04a0a31c4d4",
+      "turner-2025-medical-education": "4787f9203584557ff52b5d17e1bb1ac5a47678779fbee4f6fe10fb9def9ad136"
+    },
+    "held_out_detail_sha256": {
+      "conyso-2026": "84c4e9da0859e6d5effa96da0ab083fc704cba5e7f7571c5187669ce627a66f6",
+      "crucible-bench": "31db3e26c29085f5eff9e3b4e11eebcab2f936db08a064489836bbd797f262dc",
+      "genser-2007-immunology": "198f23483a70cb18e2f5edcd4f557642edf72341db82e4efc596e6abd605f6a4",
+      "haq-2016": "06f1ab6a978078deca953de138ddda0b7969dfac7e2cfbd4381a9a65492b9ccf",
+      "shukla-2025": "c3cb086f983fd197694f6edf7ed740ac33ed38c440cc426f714c2c349b862950",
+      "turner-2025-medical-education": "7564573ccd4fb1a89cad05920be8790c52743c8f13103b6f5fb1c17aae21c42e"
+    },
+    "synthetic_detail_sha256": {
+      "conyso-2026": "ac9455fcaa22ef3b6f34c188991a57d77b5c4164dfd2def388de616ed505752f",
+      "crucible-bench": "ac9455fcaa22ef3b6f34c188991a57d77b5c4164dfd2def388de616ed505752f",
+      "genser-2007-immunology": "ac9455fcaa22ef3b6f34c188991a57d77b5c4164dfd2def388de616ed505752f",
+      "haq-2016": "db72500de67aec1ce589a27616a85fbae0091f1c6b2579a89421610f7ab456f7",
+      "shukla-2025": "ac9455fcaa22ef3b6f34c188991a57d77b5c4164dfd2def388de616ed505752f",
+      "turner-2025-medical-education": "ac9455fcaa22ef3b6f34c188991a57d77b5c4164dfd2def388de616ed505752f"
+    },
+    "parent_synthetic_detail_sha256": "f080adb31aba946ff61847b3721c35c36715cb407b2f48700bb9009f07636eb9"
+  },
+  "parent": {
+    "name": "v0.3.0-parent",
+    "adapter_path": "/Users/wangzhikai/Documents/Codex/2026-08-23/Charlie-Alpha-4B/artifacts/stats/adapters/calibrated-scale-1p0",
+    "adapter_sha256": "e644b7087c00321f16add940997f8809204458ff6bc51c97a795fed32d3e0b16"
+  },
+  "fold_sources": [
+    "conyso-2026",
+    "crucible-bench",
+    "genser-2007-immunology",
+    "haq-2016",
+    "shukla-2025",
+    "turner-2025-medical-education"
+  ],
+  "runtime_policy": [
+    "If the unchanged menu-free control output is valid, return it unchanged.",
+    "Only when the control output is invalid, query the H20 LoRA adapter.",
+    "If the LoRA output is valid, return it; otherwise retain the invalid control output."
+  ],
+  "structural_safety": "A correct control prediction is necessarily valid and therefore cannot be replaced under this runtime. Exact control correctness cannot decrease by construction.",
+  "settings": {
+    "method_version": 1,
+    "training_seed": 129000142,
+    "external_repeat": 4,
+    "microsteps": 96,
+    "max_seconds": 1800,
+    "max_seq_length": 640,
+    "grad_accumulation_steps": 4,
+    "learning_rate_a": 5e-07,
+    "learning_rate_b": 2e-06,
+    "warmup_fraction": 0.03,
+    "weight_decay": 0.0,
+    "clear_cache_threshold_gb": 4.0,
+    "gates": {
+      "minimum_historical_net_improvements": 1,
+      "maximum_control_only_losses": 0,
+      "minimum_worst_source_net_improvement": 0,
+      "minimum_correct_invalid_control_repairs": 1,
+      "minimum_repair_source_count": 1,
+      "maximum_synthetic_accuracy_regression": 0.0,
+      "maximum_synthetic_validity_regression": 0.0
+    }
+  },
+  "selection_policy": "Read back the already-open H19 source-held-out and synthetic details under the fixed validity guard. Train one new all-source adapter from the unchanged v0.3 parent only if every historical and synthetic gate passes. No checkpoint selection, learning-rate search, source fitting, or fresh external source is allowed.",
+  "claim_boundary": "H20 is a post-H19 historical development mechanism. It cannot turn E2/E3/E4 into fresh evidence, replace the champion, authorize release, or establish external capability. Its adapter and runtime remain development-only, and E5 stays unopened.",
+  "implementation_sha256": {
+    "stats_guarded_weight_bridge.py": "f09fda140b35524e233899e3aacf418a51e6cbdd1a346c84bf4268b5cc3bafc9",
+    "stats_external_weight_bridge.py": "70dc9b3782dac492a16de8aaf93453e95bfa70cfbecf4bf0a4076da595e6814e",
+    "stats_external_weight_bridge_amendment.py": "70b65ea4ef883c18efccafd5330f2bf6cccc499c5e8be30589a373a303d08ebc",
+    "forge_training.py": "bb26d1660cc7ba0dbf8a40bb49d802b18cc9484682cc97985d9014fbbbdbb6a6",
+    "stats_training.py": "3c870b07111a10b94cfdc52a12ef0a920029d4ddb815ebb87fac948fd5911866",
+    "stats_selector_external_amendment.py": "9df20cab89c327d9cd501ed509530ce6619259b773f59285aa8bae44070b00f9"
+  },
+  "all_source_training_started": false,
+  "fresh_external_evaluation_opened": false,
+  "fingerprint": "9c66a3280a58de12ec301df6ee8af11ead6868035d82867d57b0dd5f9e55a571"
+}

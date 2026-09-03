@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "method": "E2-v2 frozen external direct-tabular materialization",
+  "contract_fingerprint": "115fb480320d969d69e0c074f73647ea96057083393b34627a914e1e64608629",
+  "source_receipts": {
+    "haq-2016": {
+      "table_1_sha256": "464cbfc93b739eb4d7fa52388f98c3bcdd5876b99a398e8521d9cd7f756bdeb4",
+      "table_2_sha256": "b6776ab0b2950cc70a0c80768741ef35876dfe6ecb25b138bc1b58d5f436f8b5",
+      "license_evidence_contains": "CC BY-NC-SA"
+    },
+    "conyso-2026": {
+      "csv_sha256": "43836f94abf282db6e1df3162f143b76639c1d52005f47ddde672b29ade76efa",
+      "license_evidence_contains": "CC BY 4.0"
+    },
+    "crucible-bench": {
+      "revision": "cfc785c66eccf3a2b1df25f6fd8179f034e39142",
+      "readme_sha256": "7dc2443e467854b985a3626b012115a0eda0709a4f9d53a32781029f2601f7dc",
+      "license_sha256": "a706bdd005bbf349ad6b47025b7d128ad03d21f59bd0155643a39beb3a482878"
+    }
+  },
+  "case_count": 37,
+  "eligible_count": 17,
+  "out_of_catalog_count": 20,
+  "coverage_fraction": 0.4594594594594595,
+  "source_counts": {
+    "conyso-2026": {
+      "case_count": 8,
+      "eligible_count": 3,
+      "coverage_fraction": 0.375,
+      "eligible_method_counts": {
+        "chi_square": 1,
+        "paired_t": 1,
+        "two_proportion": 1
+      }
+    },
+    "crucible-bench": {
+      "case_count": 7,
+      "eligible_count": 4,
+      "coverage_fraction": 0.5714285714285714,
+      "eligible_method_counts": {
+        "independent_t": 1,
+        "paired_t": 1,
+        "welch_t": 1,
+        "wilcoxon_signed_rank": 1
+      }
+    },
+    "haq-2016": {
+      "case_count": 22,
+      "eligible_count": 10,
+      "coverage_fraction": 0.45454545454545453,
+      "eligible_method_counts": {
+        "chi_square": 4,
+        "independent_t": 2,
+        "mann_whitney": 2,
+        "paired_t": 1,
+        "wilcoxon_signed_rank": 1
+      }
+    }
+  },
+  "coverage_gate": {
+    "passed": true,
+    "checks": {
+      "all_frozen_sources_materialized": true,
+      "expected_total_case_count": true,
+      "minimum_eligible_cases": true,
+      "minimum_coverage_fraction": true
+    }
+  },
+  "evaluation_authorized": true,
+  "model_evaluation_started": false,
+  "materializer_version": 1,
+  "materializer_sha256": {
+    "qualification_summary": "d86abf386673bae43f814e95e427986bc6c2c55b37d9f5e753bc3d5ddb9dd9f4",
+    "haq_cases": "52e8ada51bc5b5377f712adf8d7b1054056ed25bbdd2f6ee2824bda704cbeb68",
+    "parse_conyso_csv": "360f6c7e4fc30c57efac72bd5947495a412bb30260f023cce58db27d8fd25d53",
+    "parse_crucible_readme": "6a982120e054a845eed3c465532aabec8b4516e0102defab52b6594506c2a5e5",
+    "build_case": "b0e2f45020cb2ce334600772b39bc04a36b7d53f21a42d0fe94a9c66a0f9e18e",
+    "external_v2_gate": "f671e8a19a8e56499c71f3dc4b8913e2f0655d27109d885272c77d545ad79d45",
+    "e1_evaluator_manifest": "4ccd94277eba7edf0e6ba5a375075cb88aca3476ff3153fae2915363a7e37453"
+  },
+  "cases_sha256": "eb1aa4a844536b72dbb7fa78a10e6086b5c9082712b62ff2482cffb11db8bec2",
+  "data_fingerprint": "ecfc0a947d3232aab19791784c0f14ec8a1f71863bf372374665c63e217599c4",
+  "unmapped_gold_labels_sha256": "e1699bbdf160d4c23d94952ecdb0c062a72966eb621d158186a827abc04f38b0",
+  "next_step": "run-one-shot-e2-v2-menu-free-vs-flat-catalog-evaluation",
+  "fingerprint": "efa9ea848c7b2e06c6f1d445a586319443b17aa08bec5d10fb88d6f409f4fc57"
+}

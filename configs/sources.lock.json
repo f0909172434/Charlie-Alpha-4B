@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "resolved_at": "2026-08-23T00:00:00Z",
+  "models": {
+    "research_base_hf": {
+      "repo_id": "Qwen/Qwen3.5-4B",
+      "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+      "license": "Apache-2.0"
+    },
+    "research_base_mlx_4bit": {
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3",
+      "license": "Apache-2.0"
+    },
+    "base_hf": {
+      "repo_id": "Qwen/Qwen3-4B-Thinking-2507",
+      "revision": "768f209d9ea81521153ed38c47d515654e938aea",
+      "license": "Apache-2.0"
+    },
+    "base_mlx_4bit": {
+      "repo_id": "mlx-community/Qwen3-4B-Thinking-2507-4bit",
+      "revision": "627b019c66f22d4de0a641d289b41497651a55c9",
+      "license": "Apache-2.0"
+    },
+    "teacher_hf": {
+      "repo_id": "Qwen/Qwen3.5-9B",
+      "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+      "license": "Apache-2.0"
+    },
+    "teacher_mlx_4bit": {
+      "repo_id": "mlx-community/Qwen3.5-9B-MLX-4bit",
+      "revision": "938d8919941c6e7efd3c7150eff7fe9d12afa631",
+      "license": "Apache-2.0"
+    }
+  },
+  "datasets": {
+    "mgsm_eval": {
+      "repo_id": "CohereLabs/global-mgsm",
+      "revision": "29087245a1a9788d4e0413f4927e994d49633bbb",
+      "split": "test",
+      "license": "CC-BY-4.0"
+    },
+    "limo_reference": {
+      "repo_id": "GAIR/LIMO",
+      "revision": "b60f4462da9d927930b9c9bd43399cf875564416",
+      "split": "train",
+      "license": "Apache-2.0",
+      "policy": "research-reference-only-not-used-by-default"
+    },
+    "math_train": {
+      "repo_id": "open-r1/OpenR1-Math-220k",
+      "revision": "e4e141ec9dea9f8326f4d347be56105859b2bd68",
+      "config": "default",
+      "split": "train",
+      "license": "Apache-2.0"
+    },
+    "code_train": {
+      "repo_id": "open-r1/codeforces-cots",
+      "revision": "39ac85c150806230473c70ad72c31f6232fe3f41",
+      "cpp_config": "solutions_short_and_long_decontaminated",
+      "python_config": "solutions_py_decontaminated",
+      "split": "train",
+      "license": "ODC-By-4.0"
+    },
+    "math500_eval": {
+      "repo_id": "HuggingFaceH4/MATH-500",
+      "revision": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+      "split": "test",
+      "license": "MIT"
+    },
+    "gsm8k_eval": {
+      "repo_id": "openai/gsm8k",
+      "revision": "740312add88f781978c0658806c59bc2815b9866",
+      "config": "main",
+      "split": "test",
+      "license": "MIT"
+    },
+    "p_bench_eval": {
+      "repo_id": "May2222/P-Bench",
+      "revision": "402205db5904b45b3f1f0aca895980f712fd61d3",
+      "split": "benchmark",
+      "license": "CC-BY-4.0",
+      "policy": "evaluation-only"
+    },
+    "statqa_eval": {
+      "repo_id": "HKUSTDial/StatQA",
+      "git_url": "https://github.com/HKUSTDial/StatQA.git",
+      "revision": "3d5f6b5b6926600dc952f39d79dfdef82999aeeb",
+      "license": "GPL-3.0-only",
+      "policy": "evaluation-only-no-redistribution"
+    }
+  },
+  "tools": {
+    "llama_cpp": {
+      "repo_id": "ggml-org/llama.cpp",
+      "git_url": "https://github.com/ggml-org/llama.cpp.git",
+      "revision": "6657ded4faa3b8450221119fc6b4d002e35104a2",
+      "license": "MIT"
+    }
+  },
+  "evaluation_artifacts": {
+    "humaneval_plus": {
+      "version": "v0.1.10",
+      "url": "https://github.com/evalplus/humanevalplus_release/releases/download/v0.1.10/HumanEvalPlus.jsonl.gz",
+      "content_sha256": "42526ec0e7d5f3ee0b06d6ced98f8c8bae3d76519151bfb3d36f79010645bd7f",
+      "license": "Apache-2.0 / original HumanEval terms"
+    },
+    "mbpp_plus": {
+      "version": "v0.2.0",
+      "url": "https://github.com/evalplus/mbppplus_release/releases/download/v0.2.0/MbppPlus.jsonl.gz",
+      "content_sha256": "b54e762755248ca411b523c917fa9f93c07b5ff2966bf60b3917b853926a3dad",
+      "license": "Apache-2.0 / original MBPP terms"
+    }
+  }
+}
