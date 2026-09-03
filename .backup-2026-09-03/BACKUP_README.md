@@ -10,4 +10,4 @@ Created for archival deletion on 2026-09-03 Asia/Taipei.
 - GitHub: `f0909172434/Charlie-Alpha-4B`, branch `archive/backup-2026-09-03`
 - Hugging Face: `f0909172434/Charlie-Alpha-4B-MLX-4bit`, prefix `archive/2026-09-03/`
 
-The complete research workspace is stored under the Hugging Face archive prefix. GitHub stores a source/report/data snapshot plus the original Git bundle on a separate archive branch. Local `.venv`, `.pixi`, caches, and `.env` are intentionally excluded; recreate dependencies from `uv.lock`, `pixi.lock`, and `pyproject.toml`.
+The complete research workspace is stored under the Hugging Face archive prefix. The 9 original symbolic-link targets are recorded in the integrity manifest and are not materialized on Hugging Face. GitHub stores a source/report/data snapshot plus the original Git bundle on a separate archive branch. Local `.venv`, `.pixi`, caches, and `.env` are intentionally excluded; recreate dependencies from `uv.lock`, `pixi.lock`, and `pyproject.toml`.
