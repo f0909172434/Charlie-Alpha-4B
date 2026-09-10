@@ -19,4 +19,7 @@ jobs:
       - run: uv sync --extra eval --group dev --locked
       - run: uv run ruff check src tests
       - run: uv run pytest
+      - run: uv run python scripts/inspect_published_results.py
+      - run: uv run python scripts/test_inspect_published_results.py
+      - run: uv run ruff check scripts/inspect_published_results.py scripts/test_inspect_published_results.py
 

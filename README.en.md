@@ -136,3 +136,5 @@ credentials, and machine paths. The v0.2 FORGE code and artifacts remain at Git 
 
 Project code and derivative model artifacts use [Apache-2.0](LICENSE). Upstream data retains its
 original terms.
+
+[Inspect frozen results before the full reproduction recipe](docs/REPRODUCIBILITY.md)
