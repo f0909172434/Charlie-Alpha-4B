@@ -125,3 +125,5 @@ p 值。adapter 也沒有學會在資訊不足案例中穩定要求補充資料�
 提交。v0.2 FORGE 的程式與成果保留在 Git tag `v0.2.0`。
 
 專案程式碼與模型衍生物採 [Apache-2.0](LICENSE)；上游資料仍遵循各自授權。
+
+[先檢視凍結結果，再選擇完整重現](docs/REPRODUCIBILITY.md)
